@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Ans.Net10/">
+    <File Path="LICENSE" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="Ans.Net10.Common/Ans.Net10.Common.csproj" />
+</Solution>

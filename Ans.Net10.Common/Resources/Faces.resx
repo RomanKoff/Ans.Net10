@@ -1,0 +1,277 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Address" xml:space="preserve">
+    <value>Адрес</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Комментарий</value>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="CreatorUser" xml:space="preserve">
+    <value>Автор</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="DateCreate" xml:space="preserve">
+    <value>Дата создания|Создан</value>
+  </data>
+  <data name="DateLock" xml:space="preserve">
+    <value>Дата блокировки|Блокировка</value>
+  </data>
+  <data name="DateUpdate" xml:space="preserve">
+    <value>Дата редактирования|Изменен</value>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>День</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Подразделение</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+  <data name="DisplayedName" xml:space="preserve">
+    <value>Отображаемое имя</value>
+  </data>
+  <data name="EditorUser" xml:space="preserve">
+    <value>Редактор</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Адрес эл. почты|Эл. почта</value>
+  </data>
+  <data name="Emails" xml:space="preserve">
+    <value>Адреса эл. почты (через ;)|Эл. почта</value>
+  </data>
+  <data name="Expires" xml:space="preserve">
+    <value>Истекает</value>
+  </data>
+  <data name="Filename" xml:space="preserve">
+    <value>Имя файла|Файл</value>
+  </data>
+  <data name="FIO" xml:space="preserve">
+    <value>ФИО</value>
+  </data>
+  <data name="FullTitle" xml:space="preserve">
+    <value>Полное название</value>
+  </data>
+  <data name="FullTitleEn" xml:space="preserve">
+    <value>Полное название (англ.)</value>
+  </data>
+  <data name="FullTitleRu" xml:space="preserve">
+    <value>Полное название (рус.)</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Пол</value>
+  </data>
+  <data name="GivenName" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Высота</value>
+  </data>
+  <data name="Id" xml:space="preserve">
+    <value>Ключ</value>
+  </data>
+  <data name="IdUsername" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Дополнительная информация</value>
+  </data>
+  <data name="IsActive" xml:space="preserve">
+    <value>Активно</value>
+  </data>
+  <data name="IsClose" xml:space="preserve">
+    <value>Закрыто</value>
+  </data>
+  <data name="IsDisabled" xml:space="preserve">
+    <value>Отключено|Откл.</value>
+  </data>
+  <data name="IsEnabled" xml:space="preserve">
+    <value>Включено|Вкл.</value>
+  </data>
+  <data name="IsHidden" xml:space="preserve">
+    <value>Скрытый</value>
+  </data>
+  <data name="IsLost" xml:space="preserve">
+    <value>Потерянный</value>
+  </data>
+  <data name="IsPublished" xml:space="preserve">
+    <value>Опубликовано</value>
+  </data>
+  <data name="IsRemoved" xml:space="preserve">
+    <value>Удалено</value>
+  </data>
+  <data name="Keywords" xml:space="preserve">
+    <value>Ключевые слова</value>
+  </data>
+  <data name="Length" xml:space="preserve">
+    <value>Длина</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Ссылка</value>
+  </data>
+  <data name="Links" xml:space="preserve">
+    <value>Ссылки (через ;)</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Лог</value>
+  </data>
+  <data name="MasterPtr" xml:space="preserve">
+    <value>Родительский элемент</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Месяц</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="NameIdentifier" xml:space="preserve">
+    <value>Уникальный идентификатор</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Номер</value>
+  </data>
+  <data name="Ord" xml:space="preserve">
+    <value>Сортировка</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Сортировка</value>
+  </data>
+  <data name="ParentPtr" xml:space="preserve">
+    <value>Вышестоящий элемент (в структуре)|В структуре</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Телефон||+7-000-000-00-00</value>
+  </data>
+  <data name="Phones" xml:space="preserve">
+    <value>Телефоны (через ;)|Тел.|+7-000-000-00-00</value>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Место</value>
+  </data>
+  <data name="Properties" xml:space="preserve">
+    <value>Свойства</value>
+  </data>
+  <data name="Props" xml:space="preserve">
+    <value>Настраиваемые свойства (служебное поле)|Свойства</value>
+  </data>
+  <data name="Ratio" xml:space="preserve">
+    <value>Соотношение</value>
+  </data>
+  <data name="Remark" xml:space="preserve">
+    <value>Примечание</value>
+  </data>
+  <data name="ShortTitle" xml:space="preserve">
+    <value>Короткое название</value>
+  </data>
+  <data name="ShortTitleEn" xml:space="preserve">
+    <value>Короткое название (англ.)|Сокр. (en)</value>
+  </data>
+  <data name="ShortTitleRu" xml:space="preserve">
+    <value>Короткое название (рус.)|Сокр. (ru)</value>
+  </data>
+  <data name="Site" xml:space="preserve">
+    <value>Сайт</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
+  <data name="Summary" xml:space="preserve">
+    <value>Краткое описание</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Теги</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Название</value>
+  </data>
+  <data name="TitleEn" xml:space="preserve">
+    <value>Название (англ.)</value>
+  </data>
+  <data name="TitleRu" xml:space="preserve">
+    <value>Название (рус.)</value>
+  </data>
+  <data name="UpdateUser" xml:space="preserve">
+    <value>Редактор</value>
+  </data>
+  <data name="Url" xml:space="preserve">
+    <value>Url-адрес</value>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Ширина</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Год</value>
+  </data>
+</root>

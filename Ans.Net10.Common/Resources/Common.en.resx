@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Array_DaysOfWeek" xml:space="preserve">
+    <value>;Monday;Tuesday;Wednesday;Thursday;Friday;Saturday;Sunday</value>
+  </data>
+  <data name="Array_DaysOfWeek2" xml:space="preserve">
+    <value>;Mo;Tu;We;Th;Fr;Sa;Su</value>
+  </data>
+  <data name="Array_DaysOfWeek3" xml:space="preserve">
+    <value>;Mon;Tue;Wed;Thu;Fri;Sat;Sun</value>
+  </data>
+  <data name="Array_Months" xml:space="preserve">
+    <value>;January;February;March;April;May;June;July;August;September;October;November;December</value>
+  </data>
+  <data name="Array_Months2" xml:space="preserve">
+    <value>;Jan.;Feb.;Mar.;Apr.;May;Jun.;Jul.;Aug.;Sep.;Oct.;Nov.;Dec.</value>
+  </data>
+  <data name="Format_Date_Full" xml:space="preserve">
+    <value>MMMM d, yyyy</value>
+  </data>
+  <data name="Format_Date_DayAndMonth" xml:space="preserve">
+    <value>MMMM d</value>
+  </data>
+  <data name="Format_Date_Day" xml:space="preserve">
+    <value>%d</value>
+  </data>
+  <data name="Format_DateTime_DayAndMonth" xml:space="preserve">
+    <value>MMMM d' at 'H:mm</value>
+  </data>
+  <data name="Format_DateTime_Full" xml:space="preserve">
+    <value>MMMM d, yyyy' at 'H:mm</value>
+  </data>
+  <data name="Format_DateTime_Today" xml:space="preserve">
+    <value>'Today at 'H:mm</value>
+  </data>
+  <data name="Format_DateTime_Tomorrow" xml:space="preserve">
+    <value>'Tomorrow at 'H:mm</value>
+  </data>
+  <data name="Format_DateTime_Yesterday" xml:space="preserve">
+    <value>'Yesterday at 'H:mm</value>
+  </data>
+  <data name="Format_Date_Today" xml:space="preserve">
+    <value>'Today'</value>
+  </data>
+  <data name="Format_Date_Tomorrow" xml:space="preserve">
+    <value>'Tomorrow'</value>
+  </data>
+  <data name="Format_Date_Yesterday" xml:space="preserve">
+    <value>'Yesterday'</value>
+  </data>
+  <data name="Format_LengthKB" xml:space="preserve">
+    <value>### ### ### ###' KB'</value>
+  </data>
+  <data name="Registry_Months" xml:space="preserve">
+    <value>1=January;2=February;3=March;4=April;5=May;6=June;7=July;8=August;9=September;10=October;11=November;12=December;0=none</value>
+  </data>
+  <data name="Registry_Months2" xml:space="preserve">
+    <value>1=Jan;2=Feb;3=Mar;4=Apr;5=May;6=Jun;7=Jul;8=Aug;9=Sep;10=Oct;11=Nov;12=Dec;0=none</value>
+  </data>
+  <data name="Template_DataCreate" xml:space="preserve">
+    <value>Created: {0}</value>
+  </data>
+  <data name="Template_DataUpdate" xml:space="preserve">
+    <value>Changed: {0}</value>
+  </data>
+  <data name="Template_ParentPtr" xml:space="preserve">
+    <value>Parent {0} (in the structure)</value>
+  </data>
+  <data name="Text_AllItems" xml:space="preserve">
+    <value>–all–</value>
+  </data>
+  <data name="Text_EmptyItem" xml:space="preserve">
+    <value>–empty–</value>
+  </data>
+  <data name="Text_Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="Text_PressAnyKeyToExit" xml:space="preserve">
+    <value>Press any key to exit</value>
+  </data>
+  <data name="Text_PressEscToExit" xml:space="preserve">
+    <value>Press ESC to exit</value>
+  </data>
+</root>

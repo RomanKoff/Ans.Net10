@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0,
+      Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Template_DataMaxValueLimit" xml:space="preserve">
+    <value>Не может быть позже {0}</value>
+    <comment>Should be no later than {0}</comment>
+  </data>
+  <data name="Template_DataMinValueLimit" xml:space="preserve">
+    <value>Не может быть раньше {0}</value>
+    <comment>Should be not earlier than {0}</comment>
+  </data>
+  <data name="Template_LengthMaxLimit" xml:space="preserve">
+    <value>Не может содержать больше {0} символов</value>
+    <comment>Should not contain more than {0} characters</comment>
+  </data>
+  <data name="Template_LengthMinLimit" xml:space="preserve">
+    <value>Не может содержать меньше {0} символов</value>
+    <comment>Should contain not less than {0} characters</comment>
+  </data>
+  <data name="Template_NumberMaxValueLimit" xml:space="preserve">
+    <value>Не может быть больше {0}</value>
+    <comment>Should be no more than {0}</comment>
+  </data>
+  <data name="Template_NumberMinValueLimit" xml:space="preserve">
+    <value>Не может быть меньше {0}</value>
+    <comment>Should be not less than {0}</comment>
+  </data>
+  <data name="Template_PageTitle_Add" xml:space="preserve">
+    <value>Создание {0}</value>
+    <comment>Add {0}</comment>
+  </data>
+  <data name="Template_PageTitle_Delete" xml:space="preserve">
+    <value>Удаление {0}</value>
+    <comment>Delete {0}</comment>
+  </data>
+  <data name="Template_PageTitle_Details" xml:space="preserve">
+    <value>Параметры {0}</value>
+    <comment>Details {0}</comment>
+  </data>
+  <data name="Template_PageTitle_Edit" xml:space="preserve">
+    <value>Редактирование {0}</value>
+    <comment>Edit {0}</comment>
+  </data>
+  <data name="Template_PageTitle_List" xml:space="preserve">
+    <value>{0}</value>
+    <comment>{0}</comment>
+  </data>
+  <data name="Text_Add" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="Text_Cancel" xml:space="preserve">
+    <value>Отменить</value>
+  </data>
+  <data name="Text_EmptyItems" xml:space="preserve">
+    <value>Нет элементов.</value>
+  </data>
+  <data name="Text_Help" xml:space="preserve">
+    <value>Справка</value>
+    <comment>Help</comment>
+  </data>
+  <data name="Text_ObjectContainsData" xml:space="preserve">
+    <value>Запись не может быть удалена, поскольку на нее ссылаются другие объекты</value>
+    <comment>The record cannot be deleted because it is referenced by other objects</comment>
+  </data>
+  <data name="Text_RequiredField" xml:space="preserve">
+    <value>Обязательное поле</value>
+    <comment>Required field</comment>
+  </data>
+  <data name="Text_RequiresAUniqueValue" xml:space="preserve">
+    <value>Требуется уникальное значение</value>
+    <comment>A unique value is required</comment>
+  </data>
+  <data name="Text_Save" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Text_SubmitAdd" xml:space="preserve">
+    <value>Создать</value>
+  </data>
+  <data name="Text_SubmitAddAndEdit" xml:space="preserve">
+    <value>Создать и продолжить редактирование</value>
+    <comment>Create and continue editing</comment>
+  </data>
+  <data name="Text_SubmitDelete" xml:space="preserve">
+    <value>Удалить</value>
+  </data>
+  <data name="Text_SubmitSave" xml:space="preserve">
+    <value>Сохранить</value>
+  </data>
+  <data name="Text_SuchAnObjectExists" xml:space="preserve">
+    <value>Такой объект уже существует</value>
+    <comment>Such an object already exists</comment>
+  </data>
+  <data name="Text_ValueAndConfirmDoNotMatch" xml:space="preserve">
+    <value>Подтверждение не совпадает с исходным значением</value>
+    <comment>The confirmation does not match the original value</comment>
+  </data>
+  <data name="Text_ValueDoesNotFit" xml:space="preserve">
+    <value>Значение не соответствует формату</value>
+    <comment>The value does not match the format</comment>
+  </data>
+  <data name="Text_ValueIsRequired" xml:space="preserve">
+    <value>Требуется значение</value>
+    <comment>A value is required</comment>
+  </data>
+  <data name="Title_Delete" xml:space="preserve">
+    <value>удалить</value>
+  </data>
+  <data name="Title_Detail" xml:space="preserve">
+    <value>просмотр</value>
+  </data>
+  <data name="Title_Edit" xml:space="preserve">
+    <value>редактировать</value>
+  </data>
+</root>
