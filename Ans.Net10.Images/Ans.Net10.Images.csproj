@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<NeutralLanguage>ru</NeutralLanguage>
+
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>LibImagesDocs.xml</DocumentationFile>
+		<NoWarn>1591;1573</NoWarn>
+
+		<Version>10.2.0</Version>
+		<VersionPrefix>$(Version)</VersionPrefix>
+		<Authors>Roman Koff</Authors>
+		<Copyright>$(Authors)</Copyright>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.17.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
+	</ItemGroup>
+
+</Project>

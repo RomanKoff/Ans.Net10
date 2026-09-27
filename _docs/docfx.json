@@ -1,48 +1,49 @@
 {
-  "$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
-  "metadata": [
-    {
-      "src": [
-        {
-          "src": "../",
-          "files": [
-            "Ans.Net10.Common/Ans.Net10.Common.csproj",
-            "Ans.Net10.Psql/Ans.Net10.Psql.csproj"
-          ]
-        }
-      ],
-      "dest": "api"
-    }
-  ],
-  "build": {
-    "content": [
-      {
-        "files": [
-          "**/*.{md,yml}"
-        ],
-        "exclude": [
-          "_site/**"
-        ]
-      }
-    ],
-    "resource": [
-      {
-        "files": [
-          "images/**"
-        ]
-      }
-    ],
-    "output": "_site",
-    "template": [
-      "default",
-      "modern",
-      "templates/ans"
-    ],
-    "globalMetadata": {
-      "_appName": "Ans.Net10 Docs",
-      "_appTitle": "Ans.Net10 Docs",
-      "_enableSearch": true,
-      "pdf": false
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+	"metadata": [
+		{
+			"src": [
+				{
+					"src": "../",
+					"files": [
+						"Ans.Net10.Common/Ans.Net10.Common.csproj",
+						"Ans.Net10.Images/Ans.Net10.Images.csproj",
+						"Ans.Net10.Psql/Ans.Net10.Psql.csproj"
+					]
+				}
+			],
+			"dest": "api"
+		}
+	],
+	"build": {
+		"content": [
+			{
+				"files": [
+					"**/*.{md,yml}"
+				],
+				"exclude": [
+					"_site/**"
+				]
+			}
+		],
+		"resource": [
+			{
+				"files": [
+					"images/**"
+				]
+			}
+		],
+		"output": "_site",
+		"template": [
+			"default",
+			"modern",
+			"templates/ans"
+		],
+		"globalMetadata": {
+			"_appName": "Ans.Net10 Docs",
+			"_appTitle": "Ans.Net10 Docs",
+			"_enableSearch": true,
+			"pdf": false
+		}
+	}
 }

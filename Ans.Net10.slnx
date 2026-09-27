@@ -4,8 +4,10 @@
     <File Path=".gitignore" />
     <File Path="LICENSE" />
     <File Path="README.md" />
+    <File Path="_docs/docfx.json" />
   </Folder>
   <Project Path="Ans.Net10.Common/Ans.Net10.Common.csproj" />
+  <Project Path="Ans.Net10.Images/Ans.Net10.Images.csproj" Id="dbb5d3e5-7981-4857-a7d4-d3405c117cbd" />
   <Project Path="Ans.Net10.Psql/Ans.Net10.Psql.csproj" Id="946904c0-933e-41ed-92ef-3dada53de89e" />
   <Project Path="_test_common/_test_common.csproj" Id="c80764bd-821e-4b74-bbfe-7d03f483bef4" />
 </Solution>

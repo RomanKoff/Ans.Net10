@@ -1,0 +1,624 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ans.Net10.Images</name>
+    </assembly>
+    <members>
+        <member name="T:Ans.Net10.Images.LibImagesInfo">
+            <summary>
+            Предоставляет информацию о текущей вызывающей сборке библиотеки.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Images.ImageHelper">
+            <summary>
+            Предоставляет механизмы для управления жизненным циклом графического объекта Magick.NET, 
+            чтения его EXIF-метаданных и подготовки к операциям модификации.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Images.ImageHelper.#ctor(Ans.Net10.Images.MediaFileInfo)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Images.ImageHelper"/> на основе 
+            метаданных переданного объекта информации о файле.
+            </summary>
+            <param name="info">
+            Объект информации о медиафайле <see cref="T:Ans.Net10.Images.MediaFileInfo"/>.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="info"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Images.ImageHelper.Info">
+            <summary>
+            Возвращает метаданные и физические характеристики анализируемого файла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.ImageHelper.Image">
+            <summary>
+            Возвращает живой графический объект движка ImageMagick. 
+            Равен <see langword="null"/>, если файл не является валидным веб-изображением.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.ImageHelper.Exif">
+            <summary>
+            Возвращает профиль EXIF-метаданных изображения. 
+            Равен <see langword="null"/>, если у изображения отсутствуют метаданные или формат их не поддерживает.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.ImageHelper.ExifOrientation">
+            <summary>
+            Возвращает строковое представление тега пространственной ориентации из EXIF-метаданных файла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.ImageHelper.Modify">
+            <summary>
+            Получает или задает строку параметров или инструкций для динамической модификации изображения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.ImageHelper.ShiftDefault">
+            <summary>
+            Получает или задает режим фиксированного смещения рамки кадрирования, 
+            применяемый по умолчанию при автоматическом кропе.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Images.ImageHelper.Dispose(System.Boolean)">
+            <summary>
+            Освобождает управляемые (и при необходимости неуправляемые) ресурсы, используемые объектом.
+            </summary>
+            <param name="disposing">
+            Значение <see langword="true"/> для освобождения как управляемых, так и неуправляемых ресурсов; 
+            значение <see langword="false"/> для освобождения только неуправляемых ресурсов.
+            </param>
+        </member>
+        <member name="M:Ans.Net10.Images.ImageHelper.Dispose">
+            <summary>
+            Выполняет очистку ресурсов, закрытие графических контекстов движка и деаллокацию памяти.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Images.ImageSizeEnum">
+            <summary>
+            Перечень стандартных категорий адаптивных размеров графических объектов (изображений).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Images.ImageSizeEnum.Unknown">
+            <summary>
+            Размер не определен или неизвестен.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Images.ImageSizeEnum.Extrasmall">
+            <summary>
+            Экстра-малый размер (ориентир базовой стороны до 256 пикселей).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Images.ImageSizeEnum.Small">
+            <summary>
+            Малый размер (ориентир базовой стороны до 576 пикселей).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Images.ImageSizeEnum.Medium">
+            <summary>
+            Средний размер (ориентир базовой стороны до 768 пикселей).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Images.ImageSizeEnum.Large">
+            <summary>
+            Большой размер (ориентир базовой стороны до 992 пикселей).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Images.ImageSizeEnum.Extralarge">
+            <summary>
+            Экстра-большой размер (ориентир базовой стороны от 1200 пикселей).
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Images.MediaFileInfo">
+            <summary>
+            Предоставляет комплексную структурированную информацию о медиафайле, 
+            включая его MIME-тип, параметры контейнера и геометрические характеристики изображений.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Images.MediaFileInfo.#ctor(System.IO.FileInfo)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Images.MediaFileInfo"/> на основе 
+            существующего информационного объекта файла.
+            </summary>
+            <param name="info">
+            Информационный объект целевого файла системы <see cref="T:System.IO.FileInfo"/>.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="info"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.MediaFileInfo.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Images.MediaFileInfo"/> по указанному пути к файлу.
+            </summary>
+            <param name="path">
+            Абсолютный или относительный путь к исследуемому файлу на диске.
+            </param>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если параметр <paramref name="path"/> пуст или содержит некорректные символы.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.FileInfo">
+            <summary>
+            Возвращает системный информационный объект файла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.ContentInfo">
+            <summary>
+            Возвращает метаданные типа контента, определенные по расширению файла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.MagickImageInfo">
+            <summary>
+            Возвращает низкоуровневые метаданные заголовка изображения движка Magick.NET. 
+            Равен <see langword="null"/>, если файл не является валидным веб-изображением.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.ResizeHelper">
+            <summary>
+            Возвращает хелпер расчёта пропорций и изменения размеров изображения. 
+            Равен <see langword="null"/>, если файл не является веб-изображением.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Length">
+            <summary>
+            Возвращает размер файла в байтах.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Mimetype">
+            <summary>
+            Возвращает строго определенный MIME-тип контента (например, "image/webp").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Format">
+            <summary>
+            Возвращает строковое представление формата графического файла в нижнем регистре (например, "png", "webp").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.IsWebImage">
+            <summary>
+            Возвращает признак того, является ли файл стандартным оптимизированным изображением для Web.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.IsJpeg">
+            <summary>
+            Возвращает признак того, относится ли текущее изображение к формату JPEG.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.IsInvalidImage">
+            <summary>
+            Возвращает признак того, что файл задекларирован как изображение, но его структура повреждена или невалидна.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.MaxSize">
+            <summary>
+            Возвращает максимально доступную категорию адаптивного размера для текущего изображения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.SizeIndex">
+            <summary>
+            Возвращает числовой индекс максимального адаптивного размера изображения (от 1 до 5).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.HasSmall">
+            <summary>
+            Возвращает признак возможности генерации миниатюры малого размера (Small).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.HasMedium">
+            <summary>
+            Возвращает признак возможности генерации миниатюры среднего размера (Medium).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.HasLarge">
+            <summary>
+            Возвращает признак возможности генерации миниатюры большого размера (Large).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.HasExtralarge">
+            <summary>
+            Возвращает признак возможности генерации миниатюры экстра-большого размера (Extralarge).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.FullName">
+            <summary>
+            Возвращает полный абсолютный путь к файлу.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Name">
+            <summary>
+            Возвращает имя файла с расширением.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.NameWithoutExtension">
+            <summary>
+            Возвращает чистое имя файла без расширения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Extension">
+            <summary>
+            Возвращает расширение файла (включая ведущую точку).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.DirectoryPath">
+            <summary>
+            Возвращает полный путь к каталогу, в котором расположен файл.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Width">
+            <summary>
+            Возвращает фактическую ширину изображения в пикселях. Если файл не является изображением, возвращает 0.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Height">
+            <summary>
+            Возвращает фактическую высоту изображения в пикселях. Если файл не является изображением, возвращает 0.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Orientation">
+            <summary>
+            Возвращает пространственную ориентацию графического объекта на основе соотношения сторон.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.Ratio">
+            <summary>
+            Возвращает коэффициент соотношения сторон изображения (Ширина / Высота).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.IsNearSquare">
+            <summary>
+            Возвращает признак того, что геометрическая форма изображения близка к квадрату.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Images.Exts">
+            <summary>
+            Методы расширения для обработки, масштабирования, кадрирования
+            и сохранения графических объектов библиотеки Magick.NET.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetResizer(ImageMagick.MagickImage)">
+            <summary>
+            Возвращает инициализированный экземпляр хелпера масштабирования 
+            на основе текущих геометрических размеров изображения.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <returns>
+            Новый объект <see cref="T:Ans.Net10.Common.ImageResizeHelper"/> с заполненными параметрами ширины и высоты.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetResizeInside(ImageMagick.MagickImage,System.UInt32,System.UInt32,System.Boolean,System.Boolean)">
+            <summary>
+            Пропорционально масштабирует изображение таким образом, чтобы оно гарантированно 
+            и полностью вписалось внутрь указанной прямоугольной рамки.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="width">
+            Максимально допустимая ширина целевой рамки в пикселях.
+            </param>
+            <param name="height">
+            Максимально допустимая высота целевой рамки в пикселях.
+            </param>
+            <param name="noIncrease">
+            Если установлено значение <see langword="true"/>, исходно маленькое изображение 
+            не будет увеличиваться (апскейлиться), если размеры рамки больше самого изображения.
+            </param>
+            <param name="useMaskBackground">
+            Признак необходимости наложения шахматной текстуры (CHECKERBOARD) в качестве подложки 
+            под изображение для визуального обозначения областей прозрачности.
+            </param>
+            <returns>
+            Новый объект измененного изображения, реализующий интерфейс <see cref="T:ImageMagick.IMagickImage"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetResizeAround(ImageMagick.MagickImage,System.UInt32,System.UInt32)">
+            <summary>
+            Пропорционально масштабирует изображение так, чтобы оно полностью заполнило 
+            указанную прямоугольную рамку снаружи (подготовка под последующее кадрирование).
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="width">
+            Целевая ширина рамки кадрирования в пикселях.
+            </param>
+            <param name="height">
+            Целевая высота рамки кадрирования в пикселях.
+            </param>
+            <returns>
+            Новый объект измененного изображения, реализующий интерфейс <see cref="T:ImageMagick.IMagickImage"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetResizeAverage(ImageMagick.MagickImage,System.UInt32)">
+            <summary>
+            Масштабирует изображение нелинейным методом усреднения пропорций вокруг заданной стороны квадрата.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="side">
+            Размер целевой стороны условного квадрата в пикселях.
+            </param>
+            <returns>
+            Новый объект измененного изображения, реализующий интерфейс <see cref="T:ImageMagick.IMagickImage"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetResizeAndCrop(ImageMagick.MagickImage,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+            Выполняет последовательные операции изменения геометрического размера изображения 
+            и последующего точечного кадрирования (обрезки) по заданным координатам.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="width">
+            Новая целевая ширина изображения перед операцией кадрирования в пикселях.
+            </param>
+            <param name="height">
+            Новая целевая высота изображения перед операцией кадрирования в пикселях.
+            </param>
+            <param name="cropX">
+            Стартовая координата обрезки по оси X (горизонтальное смещение от левого края).
+            </param>
+            <param name="cropY">
+            Стартовая координата обрезки по оси Y (вертикальное смещение от верхнего края).
+            </param>
+            <param name="cropWidth">
+            Итоговая ширина вырезаемой области (рамки кропа) в пикселях.
+            </param>
+            <param name="cropHeight">
+            Итоговая высота вырезаемой области (рамки кропа) в пикселях.
+            </param>
+            <returns>
+            Новый объект кадрированного изображения, реализующий интерфейс <see cref="T:ImageMagick.IMagickImage"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetResizeAroundAndCrop(ImageMagick.MagickImage,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+            Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, 
+            а затем выполняет кадрирование по строго заданным координатам.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="width">
+            Целевая ширина рамки масштабирования в пикселях.
+            </param>
+            <param name="height">
+            Целевая высота рамки масштабирования в пикселях.
+            </param>
+            <param name="cropX">
+            Стартовая координата обрезки по оси X.
+            </param>
+            <param name="cropY">
+            Стартовая координата обрезки по оси Y.
+            </param>
+            <param name="cropWidth">
+            Ширина финального кадрированного изображения в пикселях.
+            </param>
+            <param name="cropHeight">
+            Высота финального кадрированного изображения в пикселях.
+            </param>
+            <returns>
+            Измененное и кадрированное изображение в виде <see cref="T:ImageMagick.IMagickImage"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetResizeAroundAndCrop(ImageMagick.MagickImage,System.UInt32,System.UInt32,System.UInt32,System.UInt32,Ans.Net10.Common.ImageShiftEnum,Ans.Net10.Common.ImageShiftEnum)">
+            <summary>
+            Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, 
+            а затем выполняет кадрирование (обрезку) с автоматическим расчетом стартовых координат 
+            на основе переданных режимов смещения по вертикали и горизонтали.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="width">
+            Целевая ширина рамки масштабирования в пикселях.
+            </param>
+            <param name="height">
+            Целевая высота рамки масштабирования в пикселях.
+            </param>
+            <param name="cropWidth">
+            Ширина финального кадрированного изображения в пикселях.
+            </param>
+            <param name="cropHeight">
+            Высота финального кадрированного изображения in пикселях.
+            </param>
+            <param name="shiftVertical">
+            Вариант фиксированного вертикального смещения рамки кропа (вверх, центр, вниз).
+            </param>
+            <param name="shiftHorizontal">
+            Вариант фиксированного горизонтального смещения рамки кропа (влево, центр, вправо).
+            </param>
+            <returns>
+            Измененное и кадрированное изображение в виде <see cref="T:ImageMagick.IMagickImage"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeInside(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.Boolean,System.Boolean)">
+            <summary>
+            Пропорционально масштабирует изображение внутрь заданной прямоугольной рамки 
+            и сохраняет полученный результат в файл на диске с указанием уровня качества.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="filename">
+            Абсолютный или относительный путь к создаваемому файлу на диске.
+            </param>
+            <param name="width">
+            Максимально допустимая ширина целевой рамки в пикселях.
+            </param>
+            <param name="height">
+            Максимально допустимая высота целевой рамки в пикселях.
+            </param>
+            <param name="quality">
+            Уровень сжатия/качества результирующего изображения (от 1 до 100).
+            </param>
+            <param name="noIncrease">
+            Если установлено значение <see langword="true"/>, исходно маленькое изображение не будет увеличиваться.
+            </param>
+            <param name="useMaskBackground">
+            Признак необходимости наложения шахматной текстуры под прозрачные области.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAround(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+            Пропорционально масштабирует изображение так, чтобы оно полностью заполнило указанную рамку снаружи, 
+            и сохраняет полученный результат в файл на диске с указанием уровня качества.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="filename">
+            Абсолютный или относительный путь к создаваемому файлу на диске.
+            </param>
+            <param name="width">
+            Целевая ширина рамки в пикселях.
+            </param>
+            <param name="height">
+            Целевая высота рамки в пикселях.
+            </param>
+            <param name="quality">
+            Уровень сжатия/качества результирующего изображения (от 1 до 100).
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAverage(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32)">
+            <summary>
+            Масштабирует изображение методом усреднения пропорций вокруг заданной стороны квадрата 
+            и сохраняет полученный результат в файл на диске с указанием уровня качества.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="filename">
+            Абсолютный или относительный путь к создаваемому файлу на диске.
+            </param>
+            <param name="side">
+            Размер целевой стороны условного квадрата в пикселях.
+            </param>
+            <param name="quality">
+            Уровень сжатия/качества результирующего изображения (от 1 до 100).
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAroundAndCrop(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32)">
+            <summary>
+            Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
+            по строго заданным координатам и сохраняет итоговый результат в файл на диске.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="filename">
+            Абсолютный или относительный путь к создаваемому файлу на диске.
+            </param>
+            <param name="width">
+            Целевая ширина рамки масштабирования в пикселях.
+            </param>
+            <param name="height">
+            Целевая высота рамки масштабирования в пикселях.
+            </param>
+            <param name="cropX">
+            Стартовая координата обрезки по оси X.
+            </param>
+            <param name="cropY">
+            Стартовая координата обрезки по оси Y.
+            </param>
+            <param name="cropWidth">
+            Ширина финального кадрированного изображения в пикселях.
+            </param>
+            <param name="cropHeight">
+            Высота финального кадрированного изображения в пикселях.
+            </param>
+            <param name="quality">
+            Уровень сжатия/качества результирующего изображения (от 1 до 100).
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAroundAndCrop(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.UInt32,Ans.Net10.Common.ImageShiftEnum,Ans.Net10.Common.ImageShiftEnum,System.UInt32)">
+            <summary>
+            Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
+            на основе режимов смещения и сохраняет итоговый результат в файл на диске.
+            </summary>
+            <param name="image">
+            Исходное изображение Magick.NET.
+            </param>
+            <param name="filename">
+            Абсолютный или относительный путь к создаваемому файлу на диске.
+            </param>
+            <param name="width">
+            Целевая ширина рамки масштабирования в пикселях.
+            </param>
+            <param name="height">
+            Целевая высота рамки масштабирования в пикселях.
+            </param>
+            <param name="cropWidth">
+            Ширина финального кадрированного изображения в пикселях.
+            </param>
+            <param name="cropHeight">
+            Высота финального кадрированного изображения в пикселях.
+            </param>
+            <param name="shiftVertical">
+            Вариант фиксированного вертикального смещения рамки кропа.
+            </param>
+            <param name="shiftHorizontal">
+            Вариант фиксированного горизонтального смещения рамки кропа.
+            </param>
+            <param name="quality">
+            Уровень сжатия/качества результирующего изображения (от 1 до 100).
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
+            </exception>
+        </member>
+    </members>
+</doc>
