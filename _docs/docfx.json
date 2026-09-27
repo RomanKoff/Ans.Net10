@@ -6,7 +6,8 @@
         {
           "src": "../",
           "files": [
-            "Ans.Net10.Common/Ans.Net10.Common.csproj"
+            "Ans.Net10.Common/Ans.Net10.Common.csproj",
+            "Ans.Net10.Psql/Ans.Net10.Psql.csproj"
           ]
         }
       ],
