@@ -1,0 +1,130 @@
+﻿using Ans.Net10.Common;
+using Ans.Net10.Common.Crud;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace Ans.Net10.Psql.Crud
+{
+
+	/// <summary>
+	/// Базовая реализация репозитория CRUD-операций для PostgreSQL с использованием EF Core.
+	/// </summary>
+	/// <typeparam name="T">Тип доменной сущности.</typeparam>
+	public class CrudRepository<T>
+		: __CrudRepository_Base<T>,
+		ICrudRepository<T>
+		where T : class
+	{
+
+		public CrudRepository(
+			DbContext dbContext)
+			: base(dbContext)
+		{
+		}
+
+
+		public override IQueryable<T> GetItemsAsQueryable(
+			Expression<Func<T, bool>>? filter = null)
+		{
+			var query = DbSet.AsNoTracking();
+			return filter != null ? query.Where(filter) : query;
+		}
+
+
+		public override T? GetItem(
+			int id)
+		{
+			return DbSet.Find(id);
+		}
+
+
+		public override T? GetItem(
+			Expression<Func<T, bool>> filter)
+		{
+			return DbSet.AsNoTracking().FirstOrDefault(filter);
+		}
+
+
+		public override int GetItemsCount(
+			Expression<Func<T, bool>>? filter = null)
+		{
+			return filter != null
+				? DbSet.Count(filter)
+				: DbSet.Count();
+		}
+
+
+		public override void Add(
+			T entity)
+		{
+			DbSet.Add(entity);
+		}
+
+
+		public override void UpdateEvery(
+			T entity)
+		{
+			DbContext.Entry(entity).State = EntityState.Modified;
+		}
+
+
+		public override void UpdateSelective(
+			T entity,
+			IEnumerable<string> properties)
+		{
+			var entry = DbContext.Entry(entity);
+			if (entry.State == EntityState.Detached)
+				DbSet.Attach(entity);
+			foreach (var property in properties)
+				entry.Property(property).IsModified = true;
+		}
+
+
+		public override void Remove(
+			T entity)
+		{
+			DbSet.Remove(entity);
+		}
+
+
+		public override void Remove(
+			int id)
+		{
+			var entity = GetItem(id);
+			if (entity != null)
+				Remove(entity);
+		}
+
+
+		public override void AddManyrefs(
+			int masterPtr,
+			IEnumerable<int> keys)
+		{
+			// Базовая заглушка. Переопределяется в конкретных репозиториях связующих таблиц,
+			// либо реализуется через динамический SQL / Shadow Properties контекста.
+		}
+
+
+		public override void RemoveManyrefs(
+			int masterPtr,
+			IEnumerable<int> keys)
+		{
+			// Базовая заглушка для удаления коллекции связей.
+		}
+
+
+		public override void ManyrefUpdate(
+			int masterPtr,
+			IEnumerable<int> oldKeys,
+			IEnumerable<int> newKeys)
+		{
+			var comparer = new KeysComparer(oldKeys, newKeys);
+			if (comparer.HasDeleted)
+				RemoveManyrefs(masterPtr, comparer.Deleted);
+			if (comparer.HasAdded)
+				AddManyrefs(masterPtr, comparer.Added);
+		}
+
+	}
+
+}

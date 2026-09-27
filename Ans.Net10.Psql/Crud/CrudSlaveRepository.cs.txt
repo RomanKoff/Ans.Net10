@@ -1,0 +1,49 @@
+﻿using Ans.Net10.Common.Crud;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace Ans.Net10.Psql.Crud
+{
+
+	/// <summary>
+	/// Репозиторий для работы с подчиненными (Slave) сущностями PostgreSQL.
+	/// </summary>
+	/// <typeparam name="T">Тип доменной сущности, реализующей ISlaveEntity.</typeparam>
+	public class CrudSlaveRepository<T>
+		: CrudRepository<T>,
+		ICrudSlaveRepository<T>
+		where T : class, ISlaveEntity, new()
+	{
+
+		public CrudSlaveRepository(
+			DbContext dbContext)
+			: base(dbContext)
+		{
+		}
+
+
+		public virtual T GetNew(
+			int masterPtr)
+		{
+			return new T { MasterPtr = masterPtr };
+		}
+
+
+		public virtual IQueryable<T> GetItemsAsQueryable(
+			int masterPtr,
+			Expression<Func<T, bool>>? filter = null)
+		{
+			var baseQuery = DbSet.AsNoTracking().Where(x => x.MasterPtr == masterPtr);
+			return filter != null ? baseQuery.Where(filter) : baseQuery;
+		}
+
+
+		public virtual int GetItemsCount(
+			int masterPtr)
+		{
+			return DbSet.Count(x => x.MasterPtr == masterPtr);
+		}
+
+	}
+
+}

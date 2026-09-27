@@ -6,4 +6,6 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="Ans.Net10.Common/Ans.Net10.Common.csproj" />
+  <Project Path="Ans.Net10.Psql/Ans.Net10.Psql.csproj" Id="946904c0-933e-41ed-92ef-3dada53de89e" />
+  <Project Path="_test_common/_test_common.csproj" Id="c80764bd-821e-4b74-bbfe-7d03f483bef4" />
 </Solution>

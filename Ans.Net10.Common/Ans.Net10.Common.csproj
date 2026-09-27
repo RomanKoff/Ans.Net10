@@ -8,7 +8,7 @@
 		<NeutralLanguage>ru</NeutralLanguage>
 
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<DocumentationFile>LibDocs.xml</DocumentationFile>
+		<DocumentationFile>LibCommonDocs.xml</DocumentationFile>
 		<NoWarn>1591;1573</NoWarn>
 
 		<Version>10.2.0</Version>
