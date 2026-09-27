@@ -1,5 +1,7 @@
 <Solution>
   <Folder Name="/Ans.Net10/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
     <File Path="LICENSE" />
     <File Path="README.md" />
   </Folder>

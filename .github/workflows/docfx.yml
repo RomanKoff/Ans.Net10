@@ -1,0 +1,49 @@
+name: Deploy DocFX Site to GitHub Pages
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 10 SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.x
+
+    - name: Install DocFX Tool
+      run: dotnet tool update --global docfx
+
+    - name: Build DocFX Site
+      
+      run: |
+        cd _docs
+        docfx metadata
+        docfx build
+      
+    - name: Upload Generated Website Artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        
+        path: _docs/_site
+
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
