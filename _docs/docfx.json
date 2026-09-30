@@ -8,7 +8,8 @@
 					"files": [
 						"Ans.Net10.Common/Ans.Net10.Common.csproj",
 						"Ans.Net10.Images/Ans.Net10.Images.csproj",
-						"Ans.Net10.Psql/Ans.Net10.Psql.csproj"
+						"Ans.Net10.Psql/Ans.Net10.Psql.csproj",
+						"Ans.Net10.Web/Ans.Net10.Web.csproj"
 					]
 				}
 			],

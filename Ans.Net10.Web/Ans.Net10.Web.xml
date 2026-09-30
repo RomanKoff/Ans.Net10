@@ -1,0 +1,1964 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ans.Net10.Web</name>
+    </assembly>
+    <members>
+        <member name="T:Ans.Net10.Web.LibWebInfo">
+            <summary>
+            Предоставляет информацию о текущей вызывающей сборке библиотеки.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.LibWebOptions">
+            <summary>
+            Параметры конфигурации для библиотеки <c>Ans.Net10.Web</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.LibWebOptions.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.LibWebOptions"/> 
+            с системным именем секции по умолчанию.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.LibWebOptions.Test">
+            <inheritdoc />
+            <remarks>
+            Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Culture">
+            <summary>
+            Получает или задает культуру по умолчанию (например, "ru", "en").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.UseContentDrivenMode">
+            <summary>
+            Получает или задает флаг работы приложения в режиме Content-driven.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.UseRuntimeCompilation">
+            <summary>
+            Получает или задает флаг включения Runtime-компиляции для представлений Razor.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.UseDeveloperMode">
+            <summary>
+            Получает или задает флаг режима разработки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.SystemToken">
+            <summary>
+            Получает или задает системный токен безопасности приложения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.SystemLayout">
+            <summary>
+            Получает или задает имя глобального шаблона разметки (Layout) по умолчанию.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.CorsProfile">
+            <summary>
+            Получает или задает имя профиля CORS.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Mimetypes">
+            <summary>
+            Получает или задает список переопределений MIME-типов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Routes">
+            <summary>
+            Получает или задает список кастомных маршрутов роутинга.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.MailService">
+            <summary>
+            Получает или задает параметры службы отправки писем.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Errors">
+            <summary>
+            Получает или задает настройки отображения и обработки ошибок.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Subnets">
+            <summary>
+            Получает или задает списки подсетей для ограничения доступа.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.MailServiceOptions">
+            <summary>
+            Параметры конфигурации почтовой службы, реализующие интерфейс <see cref="T:Ans.Net10.Common.Services.IMailerServiceOptions"/> 
+            из инфраструктуры библиотеки <c>Ans.Net10.Common</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpServer">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpPort">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpUseSsl">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpUsername">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpPassword">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.DefaultFromAddress">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.DefaultFromTitle">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.DebugCc">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.ErrorsOptions">
+            <summary>
+            Параметры конфигурации страниц отображения ошибок и статусных кодов HTTP.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Layout">
+            <summary>
+            Получает или задает кастомный Layout для страниц ошибок.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.ServerErrorPath">
+            <summary>
+            Получает или задает путь к странице фатальной ошибки сервера (500).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.HttpErrorPath">
+            <summary>
+            Получает или задает путь к странице ошибок обработки HTTP-статусов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.ShowInfo">
+            <summary>
+            Получает или задает флаг вывода детальной технической информации об ошибке.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture400">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 400 Bad Request.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture403">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 403 Forbidden.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture404">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 404 Not Found.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture500">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 500 Internal Server Error.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.SubnetsOptions">
+            <summary>
+            Конфигурация списков IP-подсетей с ленивой инициализацией типизированных CIDR-структур.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.Admin">
+            <summary>
+            Получает или задает сырую CIDR-строку подсетей администраторов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.Safe">
+            <summary>
+            Получает или задает сырую CIDR-строку безопасных подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.Unsafe">
+            <summary>
+            Получает или задает сырую CIDR-строку небезопасных подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.Allow">
+            <summary>
+            Получает или задает сырую CIDR-строку разрешенных подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.Deny">
+            <summary>
+            Получает или задает сырую CIDR-строку запрещенных подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.AdminSubnets">
+            <summary>
+            Возвращает типизированный список подсетей администраторов с ленивой инициализацией.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.SafeSubnets">
+            <summary>
+            Возвращает типизированный список безопасных подсетей с ленивой инициализацией.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.UnsafeSubnets">
+            <summary>
+            Возвращает типизированный список небезопасных подсетей с ленивой инициализацией.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.AllowSubnets">
+            <summary>
+            Возвращает типизированный список разрешенных подсетей с ленивой инициализацией.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SubnetsOptions.DenySubnets">
+            <summary>
+            Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Middlewares.AnsHttpExceptionHandler">
+            <summary>
+            Компонент конвейера (Middleware), обеспечивающий перехват специализированных исключений 
+            <see cref="T:Ans.Net10.Web.AnsHttpException"/> и автоматическую установку соответствующих HTTP-статусов ответа.
+            </summary>
+            <remarks>
+            Регистрируется в методе запуска приложения:
+            <c>app.UseMiddleware&lt;AnsHttpExceptionHandler&gt;();</c>
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Middlewares.AnsHttpExceptionHandler.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            Компонент конвейера (Middleware), обеспечивающий перехват специализированных исключений 
+            <see cref="T:Ans.Net10.Web.AnsHttpException"/> и автоматическую установку соответствующих HTTP-статусов ответа.
+            </summary>
+            <remarks>
+            Регистрируется в методе запуска приложения:
+            <c>app.UseMiddleware&lt;AnsHttpExceptionHandler&gt;();</c>
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Middlewares.AnsHttpExceptionHandler.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Точка входа Middleware, перехватывающая управление обработкой текущего HTTP-запроса.
+            </summary>
+            <param name="context">Текущий контекст HTTP-запроса.</param>
+            <returns>Задача асинхронного выполнения операции.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="context"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.IViewRenderService">
+            <summary>
+            Интерфейс сервиса для изолированного рендеринга представлений (Views) 
+            и частичных представлений (Partials) движка Razor напрямую в строковые буферы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.IViewRenderService.GetActionContext">
+            <summary>
+            Создает и возвращает базовый автономный контекст действия MVC.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.IViewRenderService.GetViewEngineResult(Microsoft.AspNetCore.Mvc.ActionContext,System.String)">
+            <summary>
+            Ищет полное представление Razor в указанном контексте действия.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.IViewRenderService.GetViewEngineResult(System.String)">
+            <summary>
+            Ищет полное представление Razor, используя автономный контекст по умолчанию.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.IViewRenderService.GetPartialEngineResult(System.String)">
+            <summary>
+            Ищет частичное представление Razor (Partial View) по его имени.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.IViewRenderService.RenderViewToStringAsync(System.String,System.Object)">
+            <summary>
+            Асинхронно компилирует и рендерит полное представление Razor в строку с передачей модели данных.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.IViewRenderService.RenderPartialToStringAsync(System.String,System.Object)">
+            <summary>
+            Асинхронно компилирует и рендерит частичное представление Razor в строку с передачей модели данных.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.AnsViewRenderService">
+            <summary>
+            Реализация сервиса компиляции и рендеринга Razor-шаблонов в текстовые строки.
+            </summary>
+            <remarks>
+            Рекомендуется регистрировать в контейнере зависимостей как Scoped:
+            <c>builder.Services.AddScoped&lt;IViewRenderService, AnsViewRenderService&gt;();</c>
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.#ctor(Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine,Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider,System.IServiceProvider)">
+            <summary>
+            Реализация сервиса компиляции и рендеринга Razor-шаблонов в текстовые строки.
+            </summary>
+            <remarks>
+            Рекомендуется регистрировать в контейнере зависимостей как Scoped:
+            <c>builder.Services.AddScoped&lt;IViewRenderService, AnsViewRenderService&gt;();</c>
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetActionContext">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetViewEngineResult(Microsoft.AspNetCore.Mvc.ActionContext,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetViewEngineResult(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetPartialEngineResult(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.RenderViewToStringAsync(System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.RenderPartialToStringAsync(System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.ExecuteRenderAsync(Microsoft.AspNetCore.Mvc.ActionContext,Microsoft.AspNetCore.Mvc.ViewEngines.IView,System.Object)">
+            <summary>
+            Исполняет непосредственный запуск движка рендеринга Razor в выделенный текстовый поток StreamWriter.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.AnsHttpException">
+            <summary>
+            Исключение, генерируемое при возникновении специфических ошибок обработки HTTP-запросов,
+            содержащее ассоциированный статус-код ответа.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsHttpException.#ctor(System.Net.HttpStatusCode)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.AnsHttpException"/> с указанием HTTP статус-кода.
+            </summary>
+            <param name="statusCode">Статус-код HTTP-ответа, определяющий тип возникшей ошибки.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsHttpException.#ctor(System.Net.HttpStatusCode,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.AnsHttpException"/> с указанием HTTP статус-кода и детального сообщения об ошибке.
+            </summary>
+            <param name="statusCode">Статус-код HTTP-ответа, определяющий тип возникшей ошибки.</param>
+            <param name="message">Детальное текстовое описание причины возникновения ошибки.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsHttpException.#ctor(System.Net.HttpStatusCode,System.String,System.Exception)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.AnsHttpException"/> с указанием HTTP статус-кода, 
+            детального сообщения и ссылки на внутреннее исключение, ставшее причиной данной ошибки.
+            </summary>
+            <param name="statusCode">Статус-код HTTP-ответа, определяющий тип возникшей ошибки.</param>
+            <param name="message">Детальное текстовое описание причины возникновения ошибки.</param>
+            <param name="innerException">Внутреннее исключение, вызвавшее сбой в текущем конвейере.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsHttpException.StatusCode">
+            <summary>
+            Получает статус-код HTTP-ответа, ассоциированный с данным исключением.
+            </summary>
+            <value>
+            Значение перечисления <see cref="T:System.Net.HttpStatusCode"/>.
+            </value>
+        </member>
+        <member name="T:Ans.Net10.Web.AnsPageErrorModel">
+            <summary>
+            Базовая модель страницы для отображения и анализа системных или HTTP ошибок приложения.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsPageErrorModel.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Базовая модель страницы для отображения и анализа системных или HTTP ошибок приложения.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.Exception">
+            <summary>
+            Получает или задает пойманное системное исключение.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.RequestId">
+            <summary>
+            Получает или задает уникальный идентификатор текущего запроса для трассировки логов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.ExceptionMessage">
+            <summary>
+            Получает или задает текстовое сообщение об ошибке.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.OriginalPath">
+            <summary>
+            Получает или задает оригинальный URL-путь, на котором произошел сбой до перенаправления.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.RefererUri">
+            <summary>
+            Получает или задает адрес страницы (Referer), с которой пользователь перешел на текущий URL.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.HttpCode">
+            <summary>
+            Получает или задает результирующий HTTP статус-код ошибки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.ShowInfo">
+            <summary>
+            Получает или задает признак, разрешающий вывод детальной технической информации на экран.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.HasRequestId">
+            <summary>
+            Возвращает признак наличия идентификатора трассировки запроса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.HasExceptionMessage">
+            <summary>
+            Возвращает признак наличия текстового сообщения об ошибке.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.HasOriginalPath">
+            <summary>
+            Возвращает признак наличия оригинального пути запроса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsPageErrorModel.HasRefererUri">
+            <summary>
+            Возвращает признак наличия информации о странице-источнике перехода (Referer).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsPageErrorModel.Init">
+            <summary>
+            Выполняет низкоуровневое извлечение диагностических данных об ошибке из фич HTTP-контекста 
+            и параметров конфигурации библиотеки.
+            </summary>
+            <remarks>
+            Метод является виртуальным и может быть расширен в производных классах для логирования 
+            или специфичной обработки метаданных.
+            </remarks>
+        </member>
+        <member name="T:Ans.Net10.Web.AnsPageModel">
+            <summary>
+            Стандартная базовая модель страницы Razor, готовая к использованию в приложении 
+            и предоставляющая доступ к контексту без необходимости объявления кастомных конструкторов.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsPageModel.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Стандартная базовая модель страницы Razor, готовая к использованию в приложении 
+            и предоставляющая доступ к контексту без необходимости объявления кастомных конструкторов.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsPageModel.OnGet">
+            <summary>
+            Виртуальный метод обработки стандартного HTTP GET-запроса к странице.
+            </summary>
+            <remarks>
+            Может быть переопределен в производных классах для выполнения специфичной 
+            логики инициализации страницы или обработки входящих параметров.
+            </remarks>
+        </member>
+        <member name="T:Ans.Net10.Web.AnsPageSystemModel">
+            <summary>
+            Специализированная базовая модель для служебных и системных страниц Razor, 
+            требующих обязательной валидации секретного токена безопасности приложения.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsPageSystemModel.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Специализированная базовая модель для служебных и системных страниц Razor, 
+            требующих обязательной валидации секретного токена безопасности приложения.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsPageSystemModel.OnGet">
+            <summary>
+            Выполняет валидацию переданного токена безопасности в строке запроса 
+            перед рендерингом системной страницы.
+            </summary>
+            <remarks>
+            Если глобальный параметр <see cref="P:Ans.Net10.Web.LibWebOptions.SystemToken"/> не задан в конфигурации, 
+            метод генерирует исключение. Если токен в URL отсутствует или не совпадает — возвращает статус 404 (Not Found).
+            </remarks>
+            <returns>
+            Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>: <see cref="T:Microsoft.AspNetCore.Mvc.RazorPages.PageResult"/> в случае успешной валидации токена, 
+            либо <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundResult"/> при ошибке авторизации.
+            </returns>
+            <exception cref="T:System.Exception">
+            Вызывается, если в файле настроек <c>appsettings.json</c> не заполнен обязательный параметр <c>SystemToken</c>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.ApiResultModel">
+            <summary>
+            Унифицированная модель результата выполнения операции Web API (DTO).
+            </summary>
+            <remarks>
+            Используется для возврата стандартизированных ответов из контроллеров или конечных точек API,
+            содержащих статус операции, текстовое описание и связанные параметры.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.ApiResultModel.#ctor">
+            <summary>
+            Инициализирует новый пустой экземпляр класса <see cref="T:Ans.Net10.Web.ApiResultModel"/>.
+            </summary>
+            <remarks>
+            Данный конструктор необходим для работы встроенных механизмов десериализации JSON/XML.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.ApiResultModel.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.ApiResultModel"/> с указанием итогового результата.
+            </summary>
+            <param name="result">Строковое представление результата или статуса операции.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="result"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Web.ApiResultModel.Result">
+            <summary>
+            Получает или задает строковое значение результата или статуса выполненной операции.
+            </summary>
+            <value>
+            По умолчанию инициализируется как <see cref="F:System.String.Empty"/>. Не должно принимать значение <see langword="null"/>.
+            </value>
+            <example><c>"success"</c>, <c>"error"</c>, <c>"42"</c></example>
+        </member>
+        <member name="P:Ans.Net10.Web.ApiResultModel.Title">
+            <summary>
+            Получает или задает заголовок, краткое описание или сообщение, сопровождающее результат.
+            </summary>
+            <value>
+            Текст сообщения или <see langword="null"/>, если описание отсутствует.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.ApiResultModel.Params">
+            <summary>
+            Получает или задает дополнительные параметры, метаданные или контекст ответа в строковом виде.
+            </summary>
+            <value>
+            Сериализованная строка параметров или <see langword="null"/>, если дополнительные данные отсутствуют.
+            </value>
+        </member>
+        <member name="T:Ans.Net10.Web.IAppSettings">
+            <summary>
+            Интерфейс для строго типизированных параметров конфигурации приложения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.IAppSettings.SectionName">
+            <summary>
+            Получает системное имя секции в файле конфигурации.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.IAppSettings.Test">
+            <summary>
+            Выполняет валидацию параметров конфигурации после их загрузки.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web._AppSettings_Base">
+            <summary>
+            Базовый класс для реализации строго типизированных параметров конфигурации,
+            загружаемых из файла настроек <c>appsettings.json</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._AppSettings_Base.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web._AppSettings_Base"/> 
+            с указанием системного имени секции конфигурации.
+            </summary>
+            <param name="sectionName">Системное имя секции в файле настроек.</param>
+        </member>
+        <member name="M:Ans.Net10.Web._AppSettings_Base.Test">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web._AppSettings_Base.SectionName">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web._AppSettings_Base.GetExceptionParamRequired(System.String)">
+            <summary>
+            Формирует и возвращает исключение, информирующее об отсутствии обязательного параметра.
+            </summary>
+            <param name="paramName">Системное имя пропущенного параметра.</param>
+            <returns>Новый экземпляр исключения <see cref="T:System.Exception"/>.</returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если <paramref name="paramName"/> пуст.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.AppSettingsFactory">
+            <summary>
+            Предоставляет методы для потокобезопасной загрузки, валидации и кэширования 
+            параметров конфигурации из <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.AppSettingsFactory.GetOptions``1(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Атомарно загружает секцию конфигурации, приводит её к типу <typeparamref name="T"/>, 
+            выполняет встроенную валидацию и кэширует результат.
+            </summary>
+            <typeparam name="T">Тип класса параметров, реализующий <see cref="T:Ans.Net10.Web.IAppSettings"/> и имеющий конструктор по умолчанию.</typeparam>
+            <param name="configuration">Архитектурный интерфейс конфигурации .NET.</param>
+            <returns>Полностью инициализированный и проверенный экземпляр класса конфигурации.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="configuration"/> равен <see langword="null"/>.</exception>
+            <exception cref="T:System.Exception">Вызывается, если целевая секция отсутствует в файле настроек или не прошла валидацию.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.MvcAccessHelper">
+            <summary>
+            Помощник для парсинга и генерации разрешений (Claims) на основе компактного строкового описания 
+            структуры каталогов, контроллеров и действий MVC.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MvcAccessHelper.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.MvcAccessHelper"/> и выполняет разбор переданной строки.
+            </summary>
+            <param name="def">Строка определений каталогов, разделенная точкой с запятой (<c>;</c>). Пример: <c>"Catalog1;Catalog2"</c>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.MvcAccessHelper.Catalogs">
+            <summary>
+            Получает неизменяемый список распарсенных каталогов доступа.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MvcAccessHelper.GetResultClaimsValue">
+            <summary>
+            Генерирует плоский массив строковых значений разрешений (Claims) в формате <c>"Каталог.Контроллер.Действие"</c>.
+            </summary>
+            <returns>Массив строк с уникальными именами разрешений. Если структура пуста, возвращает пустой массив.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.MvcAccessCatalog">
+            <summary>
+            Описывает каталог (модуль) доступа, содержащий вложенную структуру MVC-контроллеров.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MvcAccessCatalog.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.MvcAccessCatalog"/> на основе строкового DSL.
+            </summary>
+            <param name="def">Строка определения каталога и контроллеров. Пример: <c>"Admin>Home,Users,Settings"</c>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.MvcAccessCatalog.Name">
+            <summary>
+            Получает системное имя каталога доступа.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MvcAccessCatalog.Controllers">
+            <summary>
+            Получает список распарсенных контроллеров, принадлежащих данному каталогу.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.MvcAccessController">
+            <summary>
+            Описывает MVC-контроллер доступа, содержащий атомарные списки разрешенных действий (Actions).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MvcAccessController.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.MvcAccessController"/> на основе строкового DSL.
+            </summary>
+            <param name="def">Строка определения контроллера и его экшенов. Пример: <c>"Users=Create+Update+Delete"</c>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.MvcAccessController.Name">
+            <summary>
+            Получает системное имя MVC-контроллера.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MvcAccessController.Actions">
+            <summary>
+            Получает список имен действий (Actions) текущего контроллера.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.QueryStringHelper">
+            <summary>
+            Вспомогательный класс для удобного парсинга, фильтрации, типизированного извлечения 
+            и динамического построения строк запроса (Query String) в веб-приложениях.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.#ctor(System.Collections.Generic.Dictionary{System.String,Microsoft.Extensions.Primitives.StringValues},System.String[])">
+            <summary>
+            Инициализирует экземпляр хелпера на основе готового словаря параметров с возможностью фильтрации игнорируемых ключей.
+            </summary>
+            <param name="queryParams">Исходный словарь параметров запроса.</param>
+            <param name="ignoreParams">Массив имен параметров, которые необходимо исключить из обработки.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.#ctor(Microsoft.AspNetCore.Http.IQueryCollection,System.String[])">
+            <summary>
+            Инициализирует экземпляр хелпера на основе коллекции параметров <see cref="T:Microsoft.AspNetCore.Http.IQueryCollection"/> текущего HTTP-запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.#ctor(System.String,System.String[])">
+            <summary>
+            Инициализирует экземпляр хелпера путем парсинга сырой строки запроса (URL Query String).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.#ctor">
+            <summary>
+            Инициализирует новый пустой экземпляр хелпера параметров строки запроса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.QueryStringHelper.Params">
+            <summary>
+            Возвращает внутренний рабочий словарь отфильтрованных параметров строки запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.MakeQueryString(System.String,System.String[])">
+            <summary>
+            Формирует итоговую строку запроса, объединяя указанный базовый URL с отфильтрованными параметрами.
+            </summary>
+            <param name="baseUrl">Базовый путь или URL веб-страницы.</param>
+            <param name="allowedParams">Опциональный белый список параметров. Если передан, в URL попадут только эти параметры.</param>
+            <returns>Полный URL-адрес со сформированной строкой параметров запроса.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.TestKey(System.String)">
+            <summary>
+            Проверяет наличие указанного ключа в коллекции параметров.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.TestValue(System.String,System.String)">
+            <summary>
+            Проверяет, совпадает ли строковое значение параметра с указанным.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetString(System.String,System.String)">
+            <summary>
+            Извлекает строковое значение параметра. При отсутствии возвращает значение по умолчанию.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetInt(System.String)">
+            <summary>
+            Извлекает целочисленное значение параметра со сбросом в nullable.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetInt(System.String,System.Int32)">
+            <summary>
+            Извлекает целочисленное значение параметра с поддержкой fallback-значения.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetBool(System.String)">
+            <summary>
+            Извлекает логическое значение флага. При отсутствии или ошибке возвращает <see langword="false"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetDateTime(System.String)">
+            <summary>
+            Извлекает дату и время из параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetDateTime(System.String,System.DateTime)">
+            <summary>
+            Извлекает дату и время из параметров с поддержкой fallback-значения.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetDateOnly(System.String)">
+            <summary>
+            Извлекает календарную дату из параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetDateOnly(System.String,System.DateOnly)">
+            <summary>
+            Извлекает календарную дату с поддержкой fallback-значения.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetTimeOnly(System.String)">
+            <summary>
+            Извлекает время суток из параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.GetTimeOnly(System.String,System.TimeOnly)">
+            <summary>
+            Извлекает время суток с поддержкой fallback-значения.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.Remove(System.String)">
+            <summary>
+            Удаляет указанный параметр из коллекции строки запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendString(System.String,System.String)">
+            <summary>
+            Записывает или перезаписывает строковое значение параметра в коллекции.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendString(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.String)">
+            <summary>
+            Переносит строковое значение из словаря ViewData в текущую строку запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendString(Ans.Net10.Web.QueryStringHelper,System.String,System.String)">
+            <summary>
+            Копирует строковое значение из другого хелпера параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendInt(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Записывает целочисленное значение параметра (значения равные 0 игнорируются).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendInt(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Int32)">
+            <summary>
+            Переносит целочисленное значение из словаря ViewData в параметры запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendInt(Ans.Net10.Web.QueryStringHelper,System.String,System.Int32)">
+            <summary>
+            Копирует целочисленное значение из другого хелпера параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendBool(System.String,System.Boolean)">
+            <summary>
+            Записывает логическое значение флага (записывается только состояние true).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendBool(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Переносит логическое значение из словаря ViewData в параметры запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendBool(Ans.Net10.Web.QueryStringHelper,System.String)">
+            <summary>
+            Копирует логическое значение из другого хелпера параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendDateTime(System.String,System.Nullable{System.DateTime})">
+            <summary>
+            Записывает дату и время в каноническом формате ISO 8601 (s).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendDateTime(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Nullable{System.DateTime})">
+            <summary>
+            Переносит дату и время из словаря ViewData в параметры запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendDateTime(Ans.Net10.Web.QueryStringHelper,System.String,System.Nullable{System.DateTime})">
+            <summary>
+            Копирует дату и время из другого хелпера параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendDateOnly(System.String,System.Nullable{System.DateOnly})">
+            <summary>
+            Записывает календарную дату в параметры запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendDateOnly(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Nullable{System.DateOnly})">
+            <summary>
+            Переносит календарную дату из словаря ViewData в параметры запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendDateOnly(Ans.Net10.Web.QueryStringHelper,System.String,System.Nullable{System.DateOnly})">
+            <summary>
+            Копирует календарную дату из другого хелпера параметров запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendTimeOnly(System.String,System.Nullable{System.TimeOnly})">
+            <summary>
+            Записывает время суток в параметры запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendTimeOnly(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Nullable{System.TimeOnly})">
+            <summary>
+            Переносит время суток из словаря ViewData в параметры запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringHelper.AppendTimeOnly(Ans.Net10.Web.QueryStringHelper,System.String,System.Nullable{System.TimeOnly})">
+            <summary>
+            Копирует время суток из другого хелпера параметров запроса.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.RssActionResult">
+            <summary>
+            Кастомный результат действия <see cref="T:Microsoft.AspNetCore.Mvc.ActionResult"/>, обеспечивающий 
+            асинхронную сериализацию и отправку новостной ленты в формате RSS 2.0.
+            </summary>
+            <remarks>
+            Данный компонент автоматически устанавливает заголовок ответа Content-Type 
+            в значение <c>application/rss+xml</c> и выполняет неблокирующую потоковую запись.
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.RssActionResult.Feed">
+            <summary>
+            Получает или задает объект синдикации новостной ленты.
+            </summary>
+            <value>
+            Экземпляр <see cref="T:System.ServiceModel.Syndication.SyndicationFeed"/>, содержащий метаданные ленты и её элементы.
+            </value>
+        </member>
+        <member name="M:Ans.Net10.Web.RssActionResult.ExecuteResultAsync(Microsoft.AspNetCore.Mvc.ActionContext)">
+            <summary>
+            Асинхронно выполняет обработку результата действия, записывая RSS-ленту в поток HTTP-ответа.
+            </summary>
+            <param name="context">
+            Контекст, в котором выполняется действие, включая HTTP-контекст запроса.
+            </param>
+            <returns>
+            Поток-задача <see cref="T:System.Threading.Tasks.Task"/>, представляющая асинхронную операцию выполнения результата.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.SmartModel">
+            <summary>
+            Универсальная составная модель данных (Smart Model), используемая для гибкого маппинга,
+            построения иерархических структур, хранения динамических параметров и автоматической типографики текста.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SmartModel.GetStyler(System.String)">
+            <summary>
+            Извлекает стилизатор тега по его уникальному имени.
+            </summary>
+            <param name="name">Имя запрашиваемого стилизатора.</param>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Common.TagStyler"/> или <see langword="null"/>, если стилизатор не найден.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SmartModel.ApplyBaseStylers(Ans.Net10.Common.DictTagStylers)">
+            <summary>
+            Каскадно объединяет и применяет базовый набор стилизаторов к текущей коллекции модели.
+            Если стилизатор с определенным ключом уже существует, к нему применяются базовые параметры, 
+            иначе он регистрируется как новый.
+            </summary>
+            <param name="stylers">Входящая коллекция базовых стилизаторов.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.TagBuilderExt">
+            <summary>
+            Расширенный построитель HTML-тегов, предоставляющий удобные методы пакетного применения 
+            классов, стилей, атрибутов и быстрой трансформации в безопасные HTML-строки.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagBuilderExt.#ctor(System.String,Microsoft.AspNetCore.Mvc.Rendering.TagRenderMode)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagBuilderExt"/> с указанием имени тега и режима его рендеринга.
+            </summary>
+            <param name="tagName">Имя HTML-тега (например, <c>"div"</c>, <c>"span"</c>).</param>
+            <param name="mode">Режим рендеринга тега (открытый, закрытый, самозакрывающийся).</param>
+        </member>
+        <member name="M:Ans.Net10.Web.TagBuilderExt.Apply(Ans.Net10.Common.TagClassesBuilder,Ans.Net10.Common.TagStylesBuilder,Ans.Net10.Common.TagAttributesBuilder)">
+            <summary>
+            Пакетно применяет к текущему тегу коллекции классов, инлайновых стилей и кастомных атрибутов, 
+            используя специализированные билдеры из инфраструктуры <c>Common</c>.
+            </summary>
+            <param name="classes">Билдер коллекции CSS-классов тега.</param>
+            <param name="styles">Билдер коллекции инлайновых CSS-стилей тега.</param>
+            <param name="attributes">Билдер коллекции произвольных HTML-атрибутов.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если <paramref name="classes"/>, <paramref name="styles"/> или <paramref name="attributes"/> равны <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.TagBuilderExt.Apply(System.String,System.String,System.String)">
+            <summary>
+            Пакетно инициализирует и применяет к текущему тегу коллекции классов, стилей и атрибутов 
+            на основе их сырых строковых определений.
+            </summary>
+            <param name="classes">Сырая строка CSS-классов (например, <c>"btn btn-primary"</c>). Допускает <see langword="null"/>.</param>
+            <param name="styles">Сырая строка инлайновых CSS-стилей (например, <c>"display:none;color:red"</c>). Допускает <see langword="null"/>.</param>
+            <param name="attributes">Сырая строка HTML-атрибутов (например, <c>"data-id=10;disabled"</c>). Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.TagBuilderExt.ToString">
+            <summary>
+            Рендерит HTML-тег со всеми его дочерними элементами и атрибутами в виде обычной строки.
+            </summary>
+            <returns>Строковое представление сгенерированного HTML-кода.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.TagBuilderExt.ToHtml">
+            <summary>
+            Преобразует текущий сгенерированный тег в безопасную для вывода в Razor-представлениях структуру <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.
+            </summary>
+            <returns>Экземпляр <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, готовый к рендерингу без принудительного экранирования.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.TagOptionModel">
+            <summary>
+            Модель данных, описывающая отдельный элемент (опцию) <c>&lt;option&gt;</c> в HTML-структуре выпадающего списка.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagOptionModel.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagOptionModel"/> со значениями по умолчанию.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagOptionModel.#ctor(System.String,System.String,System.Boolean,System.Int32)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagOptionModel"/> с базовым наполнением параметров.
+            </summary>
+            <param name="value">Техническое значение атрибута <c>value</c>.</param>
+            <param name="inner">Отображаемый текстовый контент элемента.</param>
+            <param name="isSelected">Флаг, определяющий, выбран ли элемент по умолчанию.</param>
+            <param name="level">Уровень вложенности элемента в иерархической структуре (по умолчанию 0).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.TagOptionModel.Value">
+            <summary>
+            Получает или задает техническое значение элемента, передаваемое на сервер (атрибут <c>value</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagOptionModel.Inner">
+            <summary>
+            Получает или задает видимый пользователю внутренний текст элемента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagOptionModel.IsSelected">
+            <summary>
+            Получает или задает флаг, указывающий на то, что данный элемент является выбранным (атрибут <c>selected</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagOptionModel.Level">
+            <summary>
+            Получает или задает уровень вложенности элемента, используемый для визуального смещения 
+            или группировки в иерархических списках.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.TagSelectModel">
+            <summary>
+            Композитная модель данных, инкапсулирующая полный список доступных опций и информацию 
+            о текущем выбранном элементе для HTML-компонента <c>&lt;select&gt;</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagSelectModel.Selected">
+            <summary>
+            Получает или задает текущий выбранный элемент списка. 
+            Может содержать <see langword="null"/>, если ни одна опция не выбрана.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagSelectModel.Options">
+            <summary>
+            Получает или задает перечисляемую коллекцию всех доступных элементов (опций) списка выбора.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web._AnsPageModel_Base">
+            <summary>
+            Базовый класс для моделей страниц Razor (<see cref="T:Microsoft.AspNetCore.Mvc.RazorPages.PageModel"/>), 
+            обеспечивающий автоматическое внедрение единого контекста приложения.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web._AnsPageModel_Base.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Базовый класс для моделей страниц Razor (<see cref="T:Microsoft.AspNetCore.Mvc.RazorPages.PageModel"/>), 
+            обеспечивающий автоматическое внедрение единого контекста приложения.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+        </member>
+        <member name="P:Ans.Net10.Web._AnsPageModel_Base.Current">
+            <summary>
+            Получает единый оркестровый контекст текущего HTTP-запроса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._AnsPageModel_Base.Options">
+            <summary>
+            Получает строго типизированные параметры конфигурации веб-библиотеки.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.CurrentContext">
+            <summary>
+            Единый оркестровый контекст текущего HTTP-запроса (Context Hub), инкапсулирующий 
+            базовые инфраструктурные службы платформы и встроенные прикладные сервисы библиотеки.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Caching.Hybrid.HybridCache,Ans.Net10.Web.Services.IViewRenderService,System.Net.Http.IHttpClientFactory,Ans.Net10.Common.Services.IMailerService,Microsoft.AspNetCore.Routing.LinkGenerator)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CurrentContext"/> с внедрением всех базовых зависимостей.
+            </summary>
+            <param name="env">Среда выполнения веб-приложения.</param>
+            <param name="configuration">Конфигурация приложения.</param>
+            <param name="httpContextAccessor">Служба доступа к текущему контексту HTTP-запроса.</param>
+            <param name="hybridCache">Служба двухслойного гибридного кэширования платформы.</param>
+            <param name="viewRender">Служба изолированного рендеринга представлений Razor в строковые буферы.</param>
+            <param name="httpClientFactory">Фабрика для создания экземпляров HTTP-клиентов.</param>
+            <param name="mailer">Служба асинхронной отправки электронных писем.</param>
+            <param name="linkGenerator">Компонент генерации URL-адресов на основе зарегистрированных маршрутов приложения.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если любой из входящих инфраструктурных сервисов равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Env">
+            <summary>
+            Получает объект среды выполнения веб-приложения (Development, Staging, Production).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Configuration">
+            <summary>
+            Получает конфигурацию текущего веб-приложения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.HttpContext">
+            <summary>
+            Получает контекст текущего HTTP-запроса.
+            </summary>
+            <value>
+            Объект <see cref="P:Ans.Net10.Web.CurrentContext.HttpContext"/> для текущего запроса, или <see langword="null"/>, 
+            если контекст недоступен (например, при вызове вне контекста веб-сервера).
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.HybridCache">
+            <summary>
+            Получает службу гибридного кэширования данных <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.ViewRender">
+            <summary>
+            Получает службу рендеринга Razor-представлений в строки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.HttpClientFactory">
+            <summary>
+            Получает фабрику для создания именованных и типизированных HTTP-клиентов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Mailer">
+            <summary>
+            Получает службу отправки электронной почты SMTP.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.LinkGenerator">
+            <summary>
+            Получает генератор URL-адресов на основе зарегистрированной системы маршрутов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Options">
+            <summary>
+            Получает строго типизированные параметры конфигурации веб-библиотеки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Culture">
+            <summary>
+            Получает информацию о текущей культуре и языковых стандартах потока.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.DateTimeHelper">
+            <summary>
+            Получает экземпляр помощника для работы с форматированием дат и времени.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Cache">
+            <summary>
+            Получает прикладную службу гибридного кэширования текущего контекста.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Cookies">
+            <summary>
+            Получает службу безопасного чтения и записи файлов Cookie.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.QueryString">
+            <summary>
+            Получает службу для работы со строкой запроса (Query String) и фильтрации URL параметров.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Send">
+            <summary>
+            Получает службу отправки уведомлений и HTML-писем на базе Razor-представлений.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.WebApi">
+            <summary>
+            Получает службу выполнения запросов к внешним Web API с поддержкой гибридного кэширования.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.CacheService">
+            <summary>
+            Служба кэширования, предоставляющая высокоуровневую обертку над 
+            системой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> для работы в контексте приложения.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CacheService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.CacheService.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Служба кэширования, предоставляющая высокоуровневую обертку над 
+            системой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> для работы в контексте приложения.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CacheService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.CacheService.GetAsync``1(System.String,System.Func{System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``0}},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно извлекает объект из кэша по указанному ключу. Если объект отсутствует, 
+            выполняет его получение через фабричный делегат, сохраняет в кэш и возвращает результат.
+            </summary>
+            <typeparam name="T">Тип кэшируемого объекта.</typeparam>
+            <param name="cacheKey">Уникальный строковый ключ записи кэша.</param>
+            <param name="getObject">Асинхронный делегат-фабрика, возвращающий объект при промахе кэша.</param>
+            <param name="options">Опциональные индивидуальные параметры времени жизни и политик текущей записи кэша.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>
+            Значение типа <typeparamref name="T"/>, содержащееся в кэше или созданное фабрикой.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="cacheKey"/> или <paramref name="getObject"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CacheService.RemoveAsync(System.String)">
+            <summary>
+            Асинхронно и немедленно удаляет запись из гибридного кэша по её уникальному строковому ключу.
+            </summary>
+            <param name="cacheKey">Уникальный строковый ключ удаляемой записи.</param>
+            <returns>
+            Структура <see cref="T:System.Threading.Tasks.ValueTask"/>, представляющая асинхронную операцию удаления.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="cacheKey"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.CookiesService">
+            <summary>
+            Служба для работы с файлами cookie в контексте текущего HTTP-запроса.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CookiesService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса, предоставляющий доступ к <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.CookiesService.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Служба для работы с файлами cookie в контексте текущего HTTP-запроса.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CookiesService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса, предоставляющий доступ к <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.CookiesService.Has(System.String)">
+            <summary>
+            Проверяет наличие файла cookie с указанным ключом в текущем HTTP-запросе.
+            </summary>
+            <param name="key">Уникальное имя (ключ) файла cookie.</param>
+            <returns>
+            Значение <see langword="true"/>, если файл cookie с таким именем существует; 
+            в противном случае, или если HTTP-контекст недоступен — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="key"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CookiesService.Get(System.String)">
+            <summary>
+            Извлекает строковое значение файла cookie по его ключу.
+            </summary>
+            <param name="key">Уникальное имя (ключ) файла cookie.</param>
+            <returns>
+            Строковое значение файла cookie, если оно найдено; в противном случае, 
+            а также при отсутствии HTTP-контекста — <see langword="null"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="key"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CookiesService.Append(System.String,System.String)">
+            <summary>
+            Добавляет новый файл cookie или перезаписывает существующий с указанным ключом и значением.
+            </summary>
+            <remarks>
+            Если текущий HTTP-контекст недоступен, операция не выполняет никаких действий.
+            </remarks>
+            <param name="key">Уникальное имя (ключ) создаваемого файла cookie.</param>
+            <param name="value">Строковое содержимое, сохраняемое в файл cookie.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="key"/> или <paramref name="value"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CookiesService.Delete(System.String)">
+            <summary>
+            Удаляет файл cookie с указанным ключом из клиента (браузера).
+            </summary>
+            <remarks>
+            Метод отправляет клиенту специальный заголовок удаления куки. 
+            Если текущий HTTP-контекст недоступен, операция не выполняет никаких действий.
+            </remarks>
+            <param name="key">Уникальное имя (ключ) удаляемого файла cookie.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="key"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.NetworkService">
+            <summary>
+            Служба сетевого анализа текущего подключения, обеспечивающая валидацию 
+            удаленного IP-адреса клиента на вхождение в сконфигурированные CIDR-подсети.
+            </summary>
+            <remarks>
+            Позволяет определять принадлежность клиента к административным, 
+            безопасным, разрешенным или заблокированным сетевым зонам.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.NetworkService.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NetworkService"/> на основе текущего контекста запроса.
+            </summary>
+            <param name="current">Текущий контекст обработки запроса, содержащий настройки подсетей и HTTP-контекст.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.RemoteIpAddress">
+            <summary>
+            Получает удаленный IP-адрес клиента, инициировавшего текущий HTTP-запрос.
+            </summary>
+            <value>
+            Объект <see cref="T:System.Net.IPAddress"/> или <see langword="null"/>, если контекст подключения недоступен.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.AdminSubnets">
+            <summary>
+            Получает список подсетей, выделенных для администраторов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.SafeSubnets">
+            <summary>
+            Получает список безопасных (доверенных) подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.UnsafeSubnets">
+            <summary>
+            Получает список небезопасных (скомпрометированных) подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.AllowSubnets">
+            <summary>
+            Получает белый список разрешенных подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.DenySubnets">
+            <summary>
+            Получает черный список принудительно запрещенных подсетей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.IsAdmin">
+            <summary>
+            Возвращает признак того, принадлежит ли текущий IP-адрес клиента к зоне администраторов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.IsSafe">
+            <summary>
+            Возвращает признак того, принадлежит ли текущий IP-адрес клиента к доверенной безопасной зоне.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.IsUnsafe">
+            <summary>
+            Возвращает признак того, принадлежит ли текущий IP-адрес клиента к небезопасной зоне.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.IsAllow">
+            <summary>
+            Возвращает признак того, разрешен ли доступ для текущего IP-адреса клиента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NetworkService.IsDeny">
+            <summary>
+            Возвращает признак того, заблокирован ли доступ для текущего IP-адреса клиента.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NetworkService.IsRelate(Ans.Net10.Common.IPSubnetsList)">
+            <summary>
+            Проверяет, входит ли текущий удаленный IP-адрес клиента в указанный список подсетей.
+            </summary>
+            <param name="subnets">Проверяемый список IP-подсетей.</param>
+            <returns>
+            Значение <see langword="true"/>, если удаленный IP-адрес входит хотя бы в одну подсеть из списка; 
+            в противном случае, а также если адрес не определен — <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="M:Ans.Net10.Web.NetworkService.IsNotRelate(Ans.Net10.Common.IPSubnetsList)">
+            <summary>
+            Проверяет, что текущий удаленный IP-адрес клиента ПОЛНОСТЬЮ ОТСУТСТВУЕТ в указанном списке подсетей.
+            </summary>
+            <param name="subnets">Проверяемый список IP-подсетей.</param>
+            <returns>
+            Значение <see langword="true"/>, если удаленный IP-адрес не входит ни в одну подсеть из списка; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="T:Ans.Net10.Web.QueryStringService">
+            <summary>
+            Служба для работы со строкой запроса (Query String) текущего HTTP-запроса, 
+            предоставляющая инструменты фильтрации, маппинга и генерации элементов управления интерфейса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringService.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.QueryStringService"/> на основе текущего контекста запроса.
+            </summary>
+            <param name="current">Текущий контекст обработки запроса.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringService.GetHelper(System.String[])">
+            <summary>
+            Создает изолированный независимый экземпляр <see cref="T:Ans.Net10.Web.QueryStringHelper"/> 
+            на основе текущего запроса с возможностью исключения определенных параметров.
+            </summary>
+            <param name="ignoreParams">Список имен параметров, которые необходимо исключить из обработки.</param>
+            <returns>Новый инициализированный объект хелпера строки запроса.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.QueryStringService.GetSortingButton(System.String,System.String,System.Boolean)">
+            <summary>
+            Генерирует HTML-разметку безопасной ссылки-кнопки сортировки для использования в шапках таблиц данных.
+            </summary>
+            <remarks>
+            Метод автоматически анализирует текущий параметр <c>order</c> в URL, инвертирует направление сортировки 
+            (добавляя или удаляя префикс дефиса <c>-</c>) и подставляет соответствующие CSS-классы и иконки стрелок Bootstrap Icons.
+            </remarks>
+            <param name="name">Системное имя поля/колонки для выполнения сортировки.</param>
+            <param name="innerHtml">Отображаемый текстовый контент или HTML-код внутри кнопки.</param>
+            <param name="useTypograf">Признак необходимости применения экранной типографики к содержимому кнопки.</param>
+            <returns>
+            Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий готовую к выводу валидную HTML-разметку ссылки.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="name"/> или <paramref name="innerHtml"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.SendService">
+            <summary>
+            Служба отправки уведомлений и системных сообщений, автоматизирующая рендеринг 
+            Razor-шаблонов и их последующую асинхронную доставку по электронной почте.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SendService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.SendService.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Служба отправки уведомлений и системных сообщений, автоматизирующая рендеринг 
+            Razor-шаблонов и их последующую асинхронную доставку по электронной почте.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SendService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.SendService.EmailAsync(System.String,System.String,System.String,System.String,System.Object,System.String)">
+            <summary>
+            Асинхронно формирует электронное письмо на основе Razor-представления и отправляет его адресату.
+            </summary>
+            <remarks>
+            Метод полностью асинхронный и не блокирует потоки ввода-вывода (I/O threads) веб-сервера.
+            </remarks>
+            <param name="name">Отображаемое имя главного получателя письма.</param>
+            <param name="address">Электронный почтовый адрес главного получателя.</param>
+            <param name="subject">Тема (заголовок) отправляемого письма.</param>
+            <param name="viewName">Имя или полный путь к Razor-представлению, используемому в качестве HTML-шаблона тела письма.</param>
+            <param name="model">Объект доменной модели данных, передаваемый внутрь Razor-шаблона для рендеринга.</param>
+            <param name="bcc">Опциональный список адресов скрытой копии (BCC), разделенных точкой с запятой (;).</param>
+            <returns>
+            Поток-задача <see cref="T:System.Threading.Tasks.Task"/>, представляющая асинхронную операцию подготовки и отправки письма.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если любой из обязательных строковых параметров или модель равны <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.WebApiService">
+            <summary>
+            Служба для выполнения интеграционных запросов к внешним Web API 
+            с поддержкой гибридного кэширования ответов .NET 10.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.WebApiService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.WebApiService.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Служба для выполнения интеграционных запросов к внешним Web API 
+            с поддержкой гибридного кэширования ответов .NET 10.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.WebApiService"/> с использованием первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.WebApiService.GetJsonAsync``1(System.String,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно выполняет GET-запрос к указанному URL, десериализует JSON-ответ в объект типа <typeparamref name="T"/> 
+            и сохраняет результат в распределенном гибридном кэше.
+            </summary>
+            <typeparam name="T">Тип модели данных, в которую десериализуется ответ.</typeparam>
+            <param name="url">Абсолютный или относительный URL-адрес целевого API эндпоинта.</param>
+            <param name="jsonOptions">Опциональные параметры настройки десериализации JSON.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и политик гибридного кэша.</param>
+            <param name="encoding">Опциональная кодировка текста (по умолчанию UTF-8).</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации заголовков или контента исходящего HTTP-запроса.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>
+            Задача, возвращающая объект <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с результатами запроса из кэша или напрямую от API.
+            </returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="url"/> пуст или равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.WebApiService.GetJsonGenAsync``1(System.String,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+            <summary>
+            (Source Gen) Асинхронно выполняет GET-запрос к указанному URL, десериализует JSON-ответ 
+            без использования рантайм-рефлексии на основе сгенерированных метаданных и кэширует результат.
+            </summary>
+            <typeparam name="T">Тип модели данных, в которую десериализуется ответ.</typeparam>
+            <param name="url">Абсолютный или относительный URL-адрес целевого API эндпоинта.</param>
+            <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и политик гибридного кэша.</param>
+            <param name="encoding">Опциональная кодировка текста (по умолчанию UTF-8).</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации заголовков или контента исходящего HTTP-запроса.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>
+            Задача, возвращающая объект <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с результатами запроса из кэша или напрямую от API.
+            </returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="url"/> пуст или равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="jsonTypeInfo"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.WebApiService.GetXmlAsync``1(System.String,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно выполняет GET-запрос к указанному URL, десериализует XML-ответ в объект типа <typeparamref name="T"/> 
+            и сохраняет результат в распределенном гибридном кэше.
+            </summary>
+            <typeparam name="T">Тип модели данных, в которую десериализуется ответ.</typeparam>
+            <param name="url">Абсолютный или относительный URL-адрес целевого API эндпоинта.</param>
+            <param name="defaultNamespace">Опциональное пространство имен XML, применяемое при разборе схемы.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и политик гибридного кэша.</param>
+            <param name="encoding">Опциональная кодировка текста.</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации заголовков или контента исходящего HTTP-запроса.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>
+            Задача, возвращающая объект <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с результатами запроса из кэша или напрямую от API.
+            </returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="url"/> пуст или равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.WebApiService.GetGridAsync``1(System.String,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно выполняет GET-запрос к указанному URL, безопасно парсит построчные текстовые данные 
+            в формате GRID, проецирует их в материализованную коллекцию объектов типа <typeparamref name="T"/> и кэширует результат.
+            </summary>
+            <typeparam name="T">Тип результирующего объекта маппинга строки.</typeparam>
+            <param name="url">Абсолютный или относительный URL-адрес целевого API эндпоинта.</param>
+            <param name="selector">Функция-предикат (лямбда) для пошагового маппинга полей строки в объект типа <typeparamref name="T"/>.</param>
+            <param name="provider">Опциональный провайдер культуры для парсинга чисел и дат внутри строки.</param>
+            <param name="encoding">Опциональная кодировка текста текстового файла.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и политик гибридного кэша.</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации объекта исходящего HTTP-запроса.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>
+            Задача, возвращающая объект <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с результатами запроса из кэша или напрямую от API.
+            </returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="url"/> пуст или равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если передана пустая ссылка на делегат <paramref name="selector"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_IConfiguration">
+            <summary>
+            Методы расширения для интерфейса <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>, обеспечивающие удобное 
+            извлечение параметров и метаданных конфигурации приложения.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IConfiguration.GetDatabaseName(Microsoft.Extensions.Configuration.IConfiguration,System.String)">
+            <summary>
+            Извлекает имя базы данных из указанной строки подключения по её системному имени.
+            </summary>
+            <remarks>
+            Метод поддерживает различные форматы и синонимы параметров строк подключения 
+            основных СУБД (<c>Database=...</c>, <c>Initial Catalog=...</c>, <c>Data Source=...</c>).
+            </remarks>
+            <param name="configuration">Текущая конфигурация приложения.</param>
+            <param name="connectionStringName">Системное имя строки подключения в секции <c>ConnectionStrings</c>.</param>
+            <returns>
+            Имя базы данных, извлеченное из параметров строки подключения, или <see langword="null"/>, 
+            если строка подключения не найдена, пуста или не содержит имя базы данных.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="configuration"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если параметр <paramref name="connectionStringName"/> является пустой строкой.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_TagBuilder">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.TagBuilder"/>, обеспечивающие удобную и безопасную 
+            манипуляцию HTML-атрибутами, CSS-классами и инлайновыми стилями тегов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_TagBuilder.ExpandAttribute(Microsoft.AspNetCore.Mvc.Rendering.TagBuilder,System.String,System.String,System.String)">
+            <summary>
+            Расширяет значение существующего HTML-атрибута тега, добавляя к нему новое значение через разделитель, 
+            либо создает атрибут, если он отсутствовал.
+            </summary>
+            <param name="tag">Текущий построитель тега.</param>
+            <param name="name">Системное имя HTML-атрибута (например, <c>"data-id"</c>).</param>
+            <param name="value">Добавляемое значение атрибута.</param>
+            <param name="separator">Строка-разделитель между старым и новым значением (например, пробел или точка с запятой).</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если <paramref name="tag"/>, <paramref name="name"/>, <paramref name="value"/> или <paramref name="separator"/> равны <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_TagBuilder.ExpandClassAttribute(Microsoft.AspNetCore.Mvc.Rendering.TagBuilder,System.String)">
+            <summary>
+            Добавляет CSS-класс к тегу. Если у тега уже есть классы, новый добавляется через пробел.
+            </summary>
+            <param name="tag">Текущий построитель тега.</param>
+            <param name="value">Имя добавляемого CSS-класса (или несколько классов через пробел).</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="tag"/> или <paramref name="value"/> равны <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_TagBuilder.ExpandStyleAttribute(Microsoft.AspNetCore.Mvc.Rendering.TagBuilder,System.String)">
+            <summary>
+            Добавляет инлайновый CSS-стиль к атрибуту <c>style</c> тега. Если стили уже заданы, новый добавляется через точку с запятой.
+            </summary>
+            <param name="tag">Текущий построитель тега.</param>
+            <param name="value">Строка добавляемого CSS-стиля (например, <c>"display:none"</c>).</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="tag"/> или <paramref name="value"/> равны <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_ViewDataDictionary">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary"/>, обеспечивающие строго типизированную 
+            запись и чтение динамических данных в представлениях и шаблонах Razor.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Exts_ViewDataDictionary.KEY_PAGINATED_DATA">
+            <summary>
+            Системный ключ в словаре ViewData для хранения и извлечения метаданных пагинации.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Exts_ViewDataDictionary.KEY_FIELD_INFO">
+            <summary>
+            Системный ключ в словаре ViewData для хранения и извлечения метаданных CRUD-поля.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.SetRegistryList(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,Ans.Net10.Common.RegistryList)">
+            <summary>
+            Записывает объект списка реестра <see cref="T:Ans.Net10.Common.RegistryList"/> в словарь ViewData со специализированным префиксом.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Системное имя (ключ) реестра.</param>
+            <param name="registry">Экземпляр записываемого реестра.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.SetRegistryList``1(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,Ans.Net10.Common.RegistryItem})">
+            <summary>
+            Преобразует коллекцию элементов в объект <see cref="T:Ans.Net10.Common.RegistryList"/> с помощью функции-селектора и записывает его в словарь ViewData.
+            </summary>
+            <typeparam name="T">Тип исходных объектов коллекции.</typeparam>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Системное имя (ключ) реестра.</param>
+            <param name="items">Исходная коллекция элементов.</param>
+            <param name="funcItem">Делегат функции преобразования объекта в элемент реестра <see cref="T:Ans.Net10.Common.RegistryItem"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.SetRegistryList``1(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.String},System.Func{``0,System.String})">
+            <summary>
+            Преобразует коллекцию элементов в плоский объект <see cref="T:Ans.Net10.Common.RegistryList"/> на основе функций извлечения ключа и значения, и записывает его в словарь ViewData.
+            </summary>
+            <typeparam name="T">Тип исходных объектов коллекции.</typeparam>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Системное имя (ключ) реестра.</param>
+            <param name="items">Исходная коллекция элементов.</param>
+            <param name="funcKey">Делегат функции извлечения уникального ключа элемента.</param>
+            <param name="funcValue">Делегат функции извлечения текстового контента элемента.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.SetPaginationData(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,Ans.Net10.Common.PaginatedDataModel)">
+            <summary>
+            Записывает модель параметров пагинации <see cref="T:Ans.Net10.Common.PaginatedDataModel"/> в словарь ViewData.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="pagination">Экземпляр модели пагинации.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetRegistryList(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает объект списка реестра <see cref="T:Ans.Net10.Common.RegistryList"/> из словаря ViewData по его имени.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Системное имя (ключ) реестра.</param>
+            <returns>Найденный объект реестра или <see langword="null"/>, если ключ отсутствует или тип не совпадает.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetPaginationData(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary)">
+            <summary>
+            Извлекает модель параметров пагинации <see cref="T:Ans.Net10.Common.PaginatedDataModel"/> из словаря ViewData.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <returns>Экземпляр модели пагинации или <see langword="null"/>, если данные отсутствуют.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetPaginationHelper(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary)">
+            <summary>
+            Извлекает данные пагинации и формирует на их основе вычислительный хелпер <see cref="T:Ans.Net10.Common.PaginationHelper"/>.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <returns>Новый инициализированный экземпляр хелпера постраничной навигации.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetFieldInfo(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary)">
+            <summary>
+            Извлекает метаданные отображения CRUD-поля <see cref="T:Ans.Net10.Common.CrudFace"/> из словаря ViewData.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <returns>Объект метаданных поля или <see langword="null"/>, если данные отсутствуют.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.Get``1(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает объект произвольного типа из словаря ViewData с помощью стандартного метода вычисления выражений Eval.
+            </summary>
+            <typeparam name="T">Целевой тип извлекаемого объекта.</typeparam>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Значение, приведенное к типу <typeparamref name="T"/>, или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetString(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.String)">
+            <summary>
+            Извлекает строковое значение из словаря ViewData. Если значение отсутствует, возвращает указанный fallback-вариант.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение, возвращаемое по умолчанию при отсутствии ключа.</param>
+            <returns>Строковое значение или значение по умолчанию.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetInt(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает целочисленное значение из словаря ViewData со сбросом в nullable-состояние.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Целое число со знаком или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetInt(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Int32)">
+            <summary>
+            Извлекает целочисленное значение из словаря ViewData с поддержкой кастомного значения по умолчанию.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Целое число.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetBool(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает логическое значение из словаря ViewData. При отсутствии ключа возвращает <see langword="false"/>.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Логическое значение флажка.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDateTime(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает структуру даты и времени из словаря ViewData.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Объект даты и времени или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDateTime(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.DateTime)">
+            <summary>
+            Извлекает структуру даты и времени из словаря ViewData с поддержкой fallback-значения.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Объект даты и времени.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDateOnly(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает календарную дату из словаря ViewData.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Календарная дата или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDateOnly(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.DateOnly)">
+            <summary>
+            Извлекает календарную дату из словаря ViewData с поддержкой fallback-значения.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Календарная дата.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetTimeOnly(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает значение времени суток из словаря ViewData.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Время суток или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetTimeOnly(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.TimeOnly)">
+            <summary>
+            Извлекает значение времени суток из словаря ViewData с поддержкой fallback-значения.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Время суток.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts__routes">
+            <summary>
+            Методы расширения для интерфейса <see cref="T:Microsoft.AspNetCore.Routing.IEndpointRouteBuilder"/>, обеспечивающие 
+            декларативную регистрацию контроллерных маршрутов (Routes) из строковых конфигураций.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__routes.AddRoute(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)">
+            <summary>
+            Добавляет и регистрирует маршрут контроллера из одной форматированной строки-определения.
+            </summary>
+            <param name="endpoints">Текущий строитель конечных точек приложения.</param>
+            <param name="routeDef">Строка определения маршрута в формате: <c>name|template|controller|action</c>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="endpoints"/> равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">Вызывается, если строка <paramref name="routeDef"/> пуста или равна <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentOutOfRangeException">Вызывается, если строка <paramref name="routeDef"/> не содержит ровно 4 сегмента, разделенных символом пайпа '|'.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__routes.AddRoutes(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String[])">
+            <summary>
+            Добавляет и регистрирует коллекцию маршрутов из массива строк.
+            </summary>
+            <param name="endpoints">Текущий строитель конечных точек приложения.</param>
+            <param name="routeDefs">Массив строк-определений маршрутов.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="endpoints"/> равен <see langword="null"/>, либо если массив <paramref name="routeDefs"/> пуст.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__routes.AddRoutes(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)">
+            <summary>
+            Добавляет и регистрирует коллекцию маршрутов из одной строки, где маршруты разделены точкой с запятой.
+            </summary>
+            <param name="endpoints">Текущий строитель конечных точек приложения.</param>
+            <param name="routeDefs">Строка с маршрутами, разделенными символом ';'. Например: <c>"r1|t1|c1|a1;r2|t2|c2|a2"</c>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, if <paramref name="endpoints"/> равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">Вызывается, если строка <paramref name="routeDefs"/> пуста или равна <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts__to">
+            <summary>
+            Методы расширения для трансформации и приведения базовых типов данных к веб-ориентированным объектам и HTML-сущностям.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__to.ToHtml(System.String)">
+            <summary>
+            Преобразует обычную строку в безопасную для рендеринга структуру <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.
+            </summary>
+            <param name="value">Исходная строка.</param>
+            <returns>Экземпляр <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий исходную строку, либо <see cref="F:Microsoft.AspNetCore.Html.HtmlString.Empty"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__to.ToHtml(System.String,System.Boolean)">
+            <summary>
+            Преобразует обычную строку в структуру <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> с опциональным предварительным наложением правил экранной типографики.
+            </summary>
+            <param name="value">Исходная строка.</param>
+            <param name="useTypograf">Признак необходимости применения типографа с изоляцией HTML-тегов.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> с оттипографленным контентом, либо <see cref="F:Microsoft.AspNetCore.Html.HtmlString.Empty"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__to.ToHtml(System.String,System.String,System.Boolean)">
+            <summary>
+            Форматирует строку по указанному шаблону с опциональной типографикой и преобразует результат в объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.
+            </summary>
+            <param name="value">Исходная строка.</param>
+            <param name="template">Строковый шаблон обертки результата (например, <c>"&lt;div&gt;{0}&lt;/div&gt;"</c>).</param>
+            <param name="useTypograf">Признак необходимости применения типографа к исходной строке.</param>
+            <returns>Отформатированный объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> или <see cref="F:Microsoft.AspNetCore.Html.HtmlString.Empty"/>, если исходная строка пуста или состоит из пробелов.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.SuppCors">
+            <summary>
+            Вспомогательный класс для обеспечения настройки и конфигурации политик CORS (Cross-Origin Resource Sharing).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_ALL">
+            <summary>
+            Системное имя CORS-профиля, разрешающего любые входящие междоменные запросы.
+            </summary>
+            <value>
+            Имеет фиксированное строковое значение <c>"ALLOW ALL"</c>.
+            </value>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_TRUSTED">
+            <summary>
+            Системное имя CORS-профиля, разрешающего доступ исключительно списку доверенных внутренних 
+            или корпоративных доменов (Origins), указанных в конфигурации приложения.
+            </summary>
+            <value>
+            Имеет фиксированное строковое значение <c>"ALLOW TRUSTED"</c>.
+            </value>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_LOCAL">
+            <summary>
+            Системное имя CORS-профиля, разрешающего запросы с локальных адресов разработчиков 
+            (например, <c>localhost</c> или <c>127.0.0.1</c>) для обеспечения отладки фронтенд-приложений.
+            </summary>
+            <value>
+            Имеет фиксированное строковое значение <c>"ALLOW LOCAL"</c>.
+            </value>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_CREDENTIALS">
+            <summary>
+            Системное имя CORS-профиля, активирующего поддержку передачи авторизационных данных 
+            (Cookies, заголовки Authorization клиента) между различными доверенными доменами.
+            </summary>
+            <value>
+            Имеет фиксированное строковое значение <c>"ALLOW CREDENTIALS"</c>.
+            </value>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_READ_ONLY">
+            <summary>
+            Системное имя CORS-профиля, разрешающего междоменные запросы исключительно 
+            для безопасных HTTP-методов чтения данных (<c>GET</c>, <c>HEAD</c>, <c>OPTIONS</c>).
+            </summary>
+            <value>
+            Имеет фиксированное строковое значение <c>"ALLOW READ ONLY"</c>.
+            </value>
+        </member>
+        <member name="T:Ans.Net10.Web.SuppWebCache">
+            <summary>
+            Вспомогательный класс для работы с HTTP-кэшем.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_NONE">
+            <summary>
+            Профиль, полностью запрещающий кэширование HTTP-ответа на стороне клиента и прокси-серверов.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_30SEC">
+            <summary>
+            Профиль кэширования HTTP-ответа на 30 секунд.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_1MIN">
+            <summary>
+            Профиль кэширования HTTP-ответа на 1 минуту.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_5MIN">
+            <summary>
+            Профиль кэширования HTTP-ответа на 5 минут.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_10MIN">
+            <summary>
+            Профиль кэширования HTTP-ответа на 10 минут.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_PROFILES">
+            <summary>
+            Коллекция профилей кэширование HTTP-ответа на стороне клиента и прокси-серверов.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
+        </member>
+    </members>
+</doc>

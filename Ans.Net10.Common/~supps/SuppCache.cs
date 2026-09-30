@@ -1,13 +1,12 @@
-﻿// rev 2026-09-26
+﻿// rev 2026-09-29
 
-using Microsoft.Extensions.Caching.Memory;
-using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Caching.Hybrid;
 
 namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Вспомогательный класс для работы с кэшем в памяти.
+	/// Вспомогательный класс для работы с гибридным кэшем.
 	/// </summary>
 	public static class SuppCache
 	{
@@ -16,50 +15,55 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Настройки кэширования по умолчанию (абсолютное время жизни — 10 секунд).
+		/// Пресет, полностью отключающий использование кэша (L1 и L2 уровни).
 		/// </summary>
-		/// <value>Экземпляр <see cref="MemoryCacheEntryOptions"/> с предустановленным 10-секундным интервалом абсолютного истечения срока.</value>
-		public static readonly MemoryCacheEntryOptions DEFAULT_CACHE_OPTIONS = new()
+		public static readonly HybridCacheEntryOptions HYBRID_CACHE_NONE = new()
 		{
-			AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
+			Flags = HybridCacheEntryFlags.DisableLocalCache
+				| HybridCacheEntryFlags.DisableLocalCacheWrite
+				| HybridCacheEntryFlags.DisableDistributedCache
+				| HybridCacheEntryFlags.DisableDistributedCacheWrite
 		};
 
 
 		/// <summary>
-		/// Настройки кэширования с минимальным временем жизни (фактически отключенное кэширование).
+		/// Пресет кэширования на 30 секунд с гарантированной очисткой.
 		/// </summary>
-		/// <value>Экземпляр <see cref="MemoryCacheEntryOptions"/> с интервалом абсолютного истечения в 1 миллисекунду.</value>
-		public static readonly MemoryCacheEntryOptions ZERO_CACHE_OPTIONS = new()
+		public static readonly HybridCacheEntryOptions HYBRID_CACHE_30SEC = new()
 		{
-			AbsoluteExpirationRelativeToNow = TimeSpan.FromMilliseconds(1)
+			Expiration = TimeSpan.FromSeconds(30),
+			LocalCacheExpiration = TimeSpan.FromSeconds(30)
 		};
 
 
-		/* functions */
+		/// <summary>
+		/// Пресет кэширования на 1 минуту с гарантированной очисткой.
+		/// </summary>
+		public static readonly HybridCacheEntryOptions HYBRID_CACHE_1MIN = new()
+		{
+			Expiration = TimeSpan.FromMinutes(1),
+			LocalCacheExpiration = TimeSpan.FromMinutes(1)
+		};
 
 
 		/// <summary>
-		/// Формирует параметры конфигурации записи кэша на основе переданных интервалов времени в секундах.
+		/// Пресет кэширования на 5 минут с гарантированной очисткой.
 		/// </summary>
-		/// <param name="slidingExpirationSeconds">Скользящее время жизни записи в секундах (интервал пролонгируется при каждом повторном обращении).</param>
-		/// <param name="absoluteExpirationRelativeToNowSeconds">Абсолютное время жизни записи в секундах относительно текущего рантайм-момента.</param>
-		/// <returns>Готовый сконфигурированный объект параметров записи кэша <see cref="MemoryCacheEntryOptions"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static MemoryCacheEntryOptions GetOptions(
-			int slidingExpirationSeconds,
-			int absoluteExpirationRelativeToNowSeconds)
+		public static readonly HybridCacheEntryOptions HYBRID_CACHE_5MIN = new()
 		{
-			if (slidingExpirationSeconds <= 0 && absoluteExpirationRelativeToNowSeconds <= 0)
-				return DEFAULT_CACHE_OPTIONS;
-			var options1 = new MemoryCacheEntryOptions();
-			if (slidingExpirationSeconds > 0)
-				options1.SlidingExpiration = TimeSpan.FromSeconds(
-					slidingExpirationSeconds);
-			if (absoluteExpirationRelativeToNowSeconds > 0)
-				options1.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(
-					absoluteExpirationRelativeToNowSeconds);
-			return options1;
-		}
+			Expiration = TimeSpan.FromMinutes(5),
+			LocalCacheExpiration = TimeSpan.FromMinutes(5)
+		};
+
+
+		/// <summary>
+		/// Пресет кэширования на 10 минут с гарантированной очисткой.
+		/// </summary>
+		public static readonly HybridCacheEntryOptions HYBRID_CACHE_10MIN = new()
+		{
+			Expiration = TimeSpan.FromMinutes(10),
+			LocalCacheExpiration = TimeSpan.FromMinutes(10)
+		};
 
 	}
 

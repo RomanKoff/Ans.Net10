@@ -1491,37 +1491,6 @@
             Выводит диагностическую, отладочную и статистическую информацию о результатах сравнения коллекций в стандартный поток вывода консоли.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Common.ConsoleMenuItem">
-            <summary>
-            Представляет отдельный пункт консольного меню, связывающий горячую клавишу, отображаемый заголовок и выполняемое действие.
-            </summary>
-            <param name="key">Клавиша клавиатуры (<see cref="T:System.ConsoleKey"/>), при нажатии на которую срабатывает данный пункт меню.</param>
-            <param name="title">Текстовый заголовок пункта меню, отображаемый на экране.</param>
-            <param name="action">Делегат действия (<see cref="P:Ans.Net10.Common.ConsoleMenuItem.Action"/>), выполняемый при активации пункта.</param>
-        </member>
-        <member name="M:Ans.Net10.Common.ConsoleMenuItem.#ctor(System.ConsoleKey,System.String,System.Action)">
-            <summary>
-            Представляет отдельный пункт консольного меню, связывающий горячую клавишу, отображаемый заголовок и выполняемое действие.
-            </summary>
-            <param name="key">Клавиша клавиатуры (<see cref="T:System.ConsoleKey"/>), при нажатии на которую срабатывает данный пункт меню.</param>
-            <param name="title">Текстовый заголовок пункта меню, отображаемый на экране.</param>
-            <param name="action">Делегат действия (<see cref="P:Ans.Net10.Common.ConsoleMenuItem.Action"/>), выполняемый при активации пункта.</param>
-        </member>
-        <member name="P:Ans.Net10.Common.ConsoleMenuItem.Key">
-            <summary>
-            Возвращает клавишу активации пункта меню.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Common.ConsoleMenuItem.Title">
-            <summary>
-            Возвращает текстовый заголовок пункта меню.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Common.ConsoleMenuItem.Action">
-            <summary>
-            Возвращает делегат действия, выполняемый при выборе этого пункта.
-            </summary>
-        </member>
         <member name="T:Ans.Net10.Common.ConsoleMenu">
             <summary>
             Предоставляет механизмы создания, наполнения и интерактивного отображения текстового меню в консольном интерфейсе.
@@ -1585,6 +1554,37 @@
             Цикл автоматически прерывается, если пользователь нажимает клавишу <c>Escape</c> или если внутри вызываемого действия <see cref="P:Ans.Net10.Common.ConsoleMenu.IsExitRequested"/> устанавливается в <see langword="true"/>.
             Ввод клавиш перехватывается без отображения символа на экране (интерцепция).
             </remarks>
+        </member>
+        <member name="T:Ans.Net10.Common.ConsoleMenuItem">
+            <summary>
+            Представляет отдельный пункт консольного меню, связывающий горячую клавишу, отображаемый заголовок и выполняемое действие.
+            </summary>
+            <param name="key">Клавиша клавиатуры (<see cref="T:System.ConsoleKey"/>), при нажатии на которую срабатывает данный пункт меню.</param>
+            <param name="title">Текстовый заголовок пункта меню, отображаемый на экране.</param>
+            <param name="action">Делегат действия (<see cref="P:Ans.Net10.Common.ConsoleMenuItem.Action"/>), выполняемый при активации пункта.</param>
+        </member>
+        <member name="M:Ans.Net10.Common.ConsoleMenuItem.#ctor(System.ConsoleKey,System.String,System.Action)">
+            <summary>
+            Представляет отдельный пункт консольного меню, связывающий горячую клавишу, отображаемый заголовок и выполняемое действие.
+            </summary>
+            <param name="key">Клавиша клавиатуры (<see cref="T:System.ConsoleKey"/>), при нажатии на которую срабатывает данный пункт меню.</param>
+            <param name="title">Текстовый заголовок пункта меню, отображаемый на экране.</param>
+            <param name="action">Делегат действия (<see cref="P:Ans.Net10.Common.ConsoleMenuItem.Action"/>), выполняемый при активации пункта.</param>
+        </member>
+        <member name="P:Ans.Net10.Common.ConsoleMenuItem.Key">
+            <summary>
+            Возвращает клавишу активации пункта меню.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Common.ConsoleMenuItem.Title">
+            <summary>
+            Возвращает текстовый заголовок пункта меню.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Common.ConsoleMenuItem.Action">
+            <summary>
+            Возвращает делегат действия, выполняемый при выборе этого пункта.
+            </summary>
         </member>
         <member name="T:Ans.Net10.Common.ContentGroupEnum">
             <summary>
@@ -2184,6 +2184,65 @@
             (без учета регистра и пробелов); во всех остальных случаях (включая выход индекса за границы) — <see langword="false"/>.
             </returns>
         </member>
+        <member name="T:Ans.Net10.Common.HybridCacheHelper">
+            <summary>
+            Вспомогательный класс для упрощения работы с гибридным кэшем второго поколения <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>.
+            Предоставляет потокобезопасные асинхронные методы извлечения данных с автоматической защитой от пробоя кэша (Cache Stampede).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Common.HybridCacheHelper.#ctor(Microsoft.Extensions.Caching.Hybrid.HybridCache,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.HybridCacheHelper"/> с внедрением зависимости гибридного кэша
+            и возможностью переопределения параметров кэширования по умолчанию.
+            </summary>
+            <param name="cache">Экземпляр службы гибридного кэширования платформы .NET 10.</param>
+            <param name="defaultCacheOptions">
+            Опциональные параметры времени жизни и политик вытеснения записей кэша по умолчанию.
+            Если передано значение <see langword="null"/> — применяется глобальная конфигурация системы.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="cache"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Common.HybridCacheHelper.DefaultCacheOptions">
+            <summary>
+            Возвращает параметры времени жизни и ограничений записей кэша, применяемые по умолчанию.
+            </summary>
+            <value>Объект конфигурации <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions"/> или <see langword="null"/>, если используются системные настройки.</value>
+        </member>
+        <member name="M:Ans.Net10.Common.HybridCacheHelper.GetAsync``1(System.String,System.Func{System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``0}},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно извлекает значение из гибридного кэша по указанному уникальному ключу. Если объект отсутствует, 
+            выполняет его атомарное получение через переданный делегат-фабрику, сохраняет в L1/L2 кэш и возвращает результат.
+            </summary>
+            <remarks>
+            Метод использует встроенные механизмы <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>, гарантирующие, что при одновременном промахе кэша 
+            из параллельных потоков фабричный метод <paramref name="getObject"/> выполнится только один раз.
+            </remarks>
+            <typeparam name="T">Тип кэшируемого объекта.</typeparam>
+            <param name="cacheKey">Уникальный строковый ключ записи кэша.</param>
+            <param name="getObject">Асинхронный делегат-фабрика, возвращающий объект для добавления в кэш при промахе.</param>
+            <param name="options">
+            Опциональные индивидуальные параметры времени жизни текущей записи кэша.
+            Если передано значение <see langword="null"/> — для этой записи применяются параметры по умолчанию из свойства <see cref="P:Ans.Net10.Common.HybridCacheHelper.DefaultCacheOptions"/>.
+            </param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Найденное в кэше значение или вновь созданный фабрикой объект типа <typeparamref name="T"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="cacheKey"/> или <paramref name="getObject"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Common.HybridCacheHelper.RemoveAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Принудительно и немедленно удаляет запись из L1 и L2 уровней гибридного кэша по её уникальному строкову ключу.
+            </summary>
+            <param name="cacheKey">Уникальный строковый ключ удаляемой записи.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Значение <see cref="T:System.Threading.Tasks.ValueTask"/>, представляющее асинхронную операцию удаления.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="cacheKey"/> равен <see langword="null"/>.
+            </exception>
+        </member>
         <member name="T:Ans.Net10.Common.ImageOrientationEnum">
             <summary>
             Перечень вариантов ориентации графического объекта (изображения) на основе соотношения его сторон.
@@ -2630,56 +2689,6 @@
             Строка, содержащая HTML-код тела сообщения. По умолчанию равна <see cref="F:System.String.Empty"/>. 
             Не должна принимать значение <see langword="null"/>.
             </value>
-        </member>
-        <member name="T:Ans.Net10.Common.MemoryCacheHelper">
-            <summary>
-            Вспомогательный класс для упрощения работы с кэшем в памяти <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/>.
-            Предоставляет потокобезопасные методы извлечения данных с автоматическим заполнением при их отсутствии.
-            </summary>
-        </member>
-        <member name="M:Ans.Net10.Common.MemoryCacheHelper.#ctor(Microsoft.Extensions.Caching.Memory.IMemoryCache,Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions)">
-            <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.MemoryCacheHelper"/> с внедрением зависимости кэша
-            и возможностью переопределения параметров кэширования по умолчанию.
-            </summary>
-            <param name="cache">Экземпляр службы кэширования в памяти, реализующий интерфейс <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/>.</param>
-            <param name="defaultCacheOptions">
-            Опциональные параметры времени жизни и политик вытеснения записей кэша по умолчанию.
-            Если передано значение <see langword="null"/> — принудительно применяется глобальная конфигурация <see cref="F:Ans.Net10.Common.SuppCache.DEFAULT_CACHE_OPTIONS"/>.
-            </param>
-        </member>
-        <member name="P:Ans.Net10.Common.MemoryCacheHelper.DefaultCacheOptions">
-            <summary>
-            Возвращает параметры времени жизни, приоритетов и ограничений записей кэша, применяемые по умолчанию.
-            </summary>
-            <value>Объект конфигурации <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/>.</value>
-        </member>
-        <member name="M:Ans.Net10.Common.MemoryCacheHelper.Get``1(System.String,System.Func{``0},Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions)">
-            <summary>
-            Возвращает значение из кэша по указанному уникальному ключу. Если объект отсутствует, 
-            выполняет его атомарное получение через переданный делегат-фабрику, сохраняет в кэш и возвращает результат.
-            </summary>
-            <remarks>
-            Метод использует системный метод расширения CacheExtensions.GetOrCreate{TItem}, гарантирующий потокобезопасность. 
-            Делегат <paramref name="getObject"/> будет выполнен только в том случае, если в кэше нет валидной записи с ключом <paramref name="cacheKey"/>.
-            </remarks>
-            <typeparam name="T">Тип кэшируемого объекта (может быть как ссылочным, так и значимым типом).</typeparam>
-            <param name="cacheKey">Уникальный строковый ключ записи кэша.</param>
-            <param name="getObject">Делегат-фабрика (<see cref="T:System.Func`1"/>), возвращающий объект для добавления в кэш при промахе (cache miss).</param>
-            <param name="options">
-            Опциональные индивидуальные параметры времени жизни текущей записи кэша.
-            Если передано значение <see langword="null"/> — для этой записи применяются параметры по умолчанию из свойства <see cref="P:Ans.Net10.Common.MemoryCacheHelper.DefaultCacheOptions"/>.
-            </param>
-            <returns>Найденное в кэше значение или вновь созданный фабрикой объект типа <typeparamref name="T"/>.</returns>
-        </member>
-        <member name="M:Ans.Net10.Common.MemoryCacheHelper.Remove(System.String)">
-            <summary>
-            Принудительно и немедленно удаляет запись из кэша по её уникальному строковому ключу.
-            </summary>
-            <remarks>
-            Если запись с указанным ключом отсутствует в кэше, метод не генерирует исключений.
-            </remarks>
-            <param name="cacheKey">Уникальный строковый ключ удаляемой записи.</param>
         </member>
         <member name="T:Ans.Net10.Common._ObjInfo_Base">
             <summary>
@@ -4273,7 +4282,7 @@
             Собирает все сгруппированные и добавленные CSS-классы в единую валидную строку, готовую для подстановки в атрибут <c>class</c>.
             </summary>
             <returns>
-            Полная строка классов, разделенная пробелами, или <see langword="null"/>, если коллекция строителя пуста.
+            Полная строка классов, разделенная пробелами, или <see cref="F:System.String.Empty" />, если коллекция строителя пуста.
             </returns>
         </member>
         <member name="T:Ans.Net10.Common.TagStyler">
@@ -4683,139 +4692,127 @@
             </summary>
             <value>Плоская последовательность элементов, упорядоченная методом рекурсивного обхода дерева сверху вниз (Pre-order traversal).</value>
         </member>
-        <member name="T:Ans.Net10.Common.WebApiResult`1">
+        <member name="T:Ans.Net10.Common.TypografHelper">
             <summary>
-            Представляет конечный результат выполнения запроса к Web API, расширяющий базовый результат.
+            Построитель-помощник для разбора текста и применения правил типографики к текстовым блокам, 
+            изолируя HTML/XML-теги от обработки.
             </summary>
-            <typeparam name="T">Тип ожидаемых полезных данных ответа.</typeparam>
+        </member>
+        <member name="M:Ans.Net10.Common.TypografHelper.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.TypografHelper"/> и запускает итеративный разбор текста.
+            </summary>
+            <param name="source">Исходный текст, содержащий HTML/XML разметку или чистый текст.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="source"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Common.TypografHelper.Source">
+            <summary>
+            Возвращает исходный текст.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Common.TypografHelper.Result">
+            <summary>
+            Возвращает результирующий оттипографленный текст.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Common.TypografHelper._parseText">
+            <summary>
+            Итеративно сканирует строку, разделяя ее на теги и контент для безопасной обработки.
+            </summary>
         </member>
         <member name="T:Ans.Net10.Common.WebApiHelper`1">
             <summary>
             Специализированный асинхронный REST-клиент для отправки GET, POST, PUT и DELETE запросов 
-            к Web API с автоматической поддержкой десериализации, кэширования результатов, кастомных кодировок и отмены.
+            к Web API с автоматической поддержкой десериализации, современного гибридного кэширования результатов .NET 10 и отмены.
             </summary>
             <typeparam name="T">Тип доменной модели данных, ожидаемой в ответе от API.</typeparam>
         </member>
-        <member name="M:Ans.Net10.Common.WebApiHelper`1.#ctor(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Memory.IMemoryCache,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions,System.Text.Json.Serialization.Metadata.JsonTypeInfo{`0})">
+        <member name="M:Ans.Net10.Common.WebApiHelper`1.#ctor(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Json.Serialization.Metadata.JsonTypeInfo{`0})">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.WebApiHelper`1"/> с поддержкой кэширования и REST-операций.
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.WebApiHelper`1"/> с поддержкой гибридного кэширования и REST-операций.
             </summary>
             <param name="httpClient">Экземпляр HTTP-клиента (рекомендуется использовать фабричный HttpClient).</param>
             <param name="baseUrl">Базовый URL-адрес целевого API шлюза.</param>
-            <param name="cache">Интерфейс службы нативного кэширования в памяти.</param>
-            <param name="jsonOptions">
-            Опциональные параметры конфигурации сериализации JSON.
-            Если передано значение <see langword="null"/> — используется <see cref="F:Ans.Net10.Common.SuppJson.DEFAULT_JSON_SERIALIZER_OPTIONS"/>.
-            </param>
-            <param name="cacheOptions">
-            Опциональные параметры времени жизни записей кэша по умолчанию. 
-            Если передано значение <see langword="null"/> — используется <see cref="F:Ans.Net10.Common.SuppCache.DEFAULT_CACHE_OPTIONS"/>.
-            </param>
-            <param name="jsonTypeInfo">
-            Опциональные метаданные типа Source Generation для высокопроизводительной десериализации без рефлексии.
-            </param>
+            <param name="cache">Экземпляр новой службы гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>.</param>
+            <param name="jsonOptions">Опциональные параметры конфигурации сериализации JSON.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни записей гибридного кэша по умолчанию.</param>
+            <param name="jsonTypeInfo">Опциональные метаданные типа Source Generation для высокопроизводительной десериализации.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если <paramref name="httpClient"/>, <paramref name="baseUrl"/> или <paramref name="cache"/> равны <see langword="null"/>.
+            </exception>
         </member>
         <member name="P:Ans.Net10.Common.WebApiHelper`1.BaseUrl">
             <summary>
             Возвращает базовый URL-адрес целевого API.
             </summary>
-            <value>Строковое представление базового адреса удаленного шлюза.</value>
         </member>
         <member name="P:Ans.Net10.Common.WebApiHelper`1.JsonOptions">
             <summary>
             Возвращает настройки сериализатора JSON, используемые при обработке запросов и ответов.
             </summary>
-            <value>Объект <see cref="T:System.Text.Json.JsonSerializerOptions"/> конфигурации парсера.</value>
         </member>
         <member name="P:Ans.Net10.Common.WebApiHelper`1.JsonTypeInfo">
             <summary>
             Возвращает метаданные типа компиляции Source Generation.
             </summary>
-            <value>Экземпляр <see cref="T:System.Text.Json.Serialization.Metadata.JsonTypeInfo`1"/> или значение <see langword="null"/>, если используется классическая рефлексия.</value>
         </member>
         <member name="P:Ans.Net10.Common.WebApiHelper`1.CacheOptions">
             <summary>
-            Возвращает или задает параметры времени жизни и ограничений записей кэша по умолчанию для текущего хелпера.
+            Возвращает или задает параметры времени жизни записей кэша по умолчанию для текущего хелпера.
             </summary>
-            <value>Объект <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/> конфигурации времени удержания данных в памяти.</value>
         </member>
         <member name="P:Ans.Net10.Common.WebApiHelper`1.Params">
             <summary>
             Построитель параметров строки URL-запроса.
             </summary>
-            <value>Объект-строитель <see cref="T:Ans.Net10.Common.ParamsBuilder"/> параметров адресной строки.</value>
         </member>
         <member name="M:Ans.Net10.Common.WebApiHelper`1.SendGetAsync(System.String,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный GET-запрос к API с автоматической проверкой и наполнением нативного кэша.
+            Выполняет асинхронный GET-запрос к API с автоматической проверкой, блокировкой сквозных запросов (stampede protection) и наполнением гибридного кэша.
             </summary>
             <param name="queryString">Часть URL-строки запроса с параметрами (например, <c>"?id=10"</c>).</param>
             <param name="encoding">Кастомная кодировка текста ответа. Если <see langword="null"/> — используется UTF-8.</param>
             <param name="configureRequest">Делегат для кастомизации заголовков запроса перед отправкой.</param>
             <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток-задача, возвращающая объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> из памяти кэша или напрямую от удаленного API.
-            </returns>
+            <returns>Поток-задача, возвращающая объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="queryString"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.WebApiHelper`1.SendGetAsync(System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный GET-запрос с автоматической проверкой кэша,
+            Выполняет асинхронный GET-запрос с автоматической проверкой гибридного кэша,
             используя параметры, накопленные в свойстве <see cref="P:Ans.Net10.Common.WebApiHelper`1.Params"/>.
             </summary>
-            <param name="encoding">Кастомная кодировка текста ответа. Если <see langword="null"/> — используется UTF-8.</param>
-            <param name="configureRequest">Делегат для кастомизации заголовков запроса перед отправкой.</param>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток-задача, возвращающая объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> из памяти кэша или напрямую от удаленного API.
-            </returns>		
         </member>
         <member name="M:Ans.Net10.Common.WebApiHelper`1.SendPostAsync(System.String,System.Object,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный POST-запрос (создание ресурса) к API, передавая payload объект в формате JSON.
-            Результаты операции POST не подвергаются кэшированию.
+            Выполняет асинхронный POST-запрос к API, передавая payload объект в формате JSON. Результаты операции не кэшируются.
             </summary>
-            <param name="queryString">Относительный URI путь или параметры запроса.</param>
-            <param name="payload">Объект данных, сериализуемый и отправляемый в теле запроса (Body).</param>
-            <param name="encoding">Кодировка исходящего и входящего текста ответа. Если <see langword="null"/> — используется UTF-8.</param>
-            <param name="configureRequest">Делегат для кастомизации заголовков запроса перед отправкой.</param>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток-задача, возвращающая объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с результатами выполнения со стороны сервера.
-            </returns>
         </member>
         <member name="M:Ans.Net10.Common.WebApiHelper`1.SendPutAsync(System.String,System.Object,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный PUT-запрос (полное обновление ресурса) к API, передавая payload объект в формате JSON.
+            Выполняет асинхронный PUT-запрос к API, передавая payload объект в формате JSON.
             </summary>
-            <param name="queryString">Относительный URI путь или параметры запроса.</param>
-            <param name="payload">Объект данных, отправляемый в теле запроса (Body) для обновления.</param>
-            <param name="encoding">Кодировка исходящего и входящего текста. Если <see langword="null"/> — используется UTF-8.</param>
-            <param name="configureRequest">Делегат для кастомизации заголовков запроса перед отправкой.</param>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток-задача, возвращающая объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с результатами выполнения.
-            </returns>
         </member>
         <member name="M:Ans.Net10.Common.WebApiHelper`1.SendDeleteAsync(System.String,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный DELETE-запрос (удаление ресурса) к API.
+            Выполняет асинхронный DELETE-запрос к API.
             </summary>
-            <param name="queryString">Относительный URI путь или параметры идентификации удаляемого ресурса.</param>
-            <param name="encoding">Кодировка входящего текста ответа. Если <see langword="null"/> — используется UTF-8.</param>
-            <param name="configureRequest">Делегат для кастомизации заголовков запроса перед отправкой.</param>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>Поток-задача, возвращающая объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.WebApiHelper`1.InvalidateHelperCache(System.String)">
+        <member name="M:Ans.Net10.Common.WebApiHelper`1.InvalidateHelperCacheAsync(System.String,System.Threading.CancellationToken)">
             <summary>
-            Принудительно аннулирует (удаляет) из нативного кэша запись GET-запроса для конкретной строки параметров.
+            Асинхронно аннулирует (удаляет) из гибридного кэша (L1/L2) запись GET-запроса для конкретной строки параметров.
             </summary>
-            <param name="queryString">Часть URL-строки запроса с параметрами.</param>
         </member>
-        <member name="M:Ans.Net10.Common.WebApiHelper`1.InvalidateHelperCache">
+        <member name="M:Ans.Net10.Common.WebApiHelper`1.InvalidateHelperCacheAsync(System.Threading.CancellationToken)">
             <summary>
-            Принудительно аннулирует из нативного кэша запись GET-запроса для текущего состояния параметров в <see cref="P:Ans.Net10.Common.WebApiHelper`1.Params"/>.
+            Асинхронно аннулирует из гибридного кэша запись GET-запроса для текущего состояния параметров в <see cref="P:Ans.Net10.Common.WebApiHelper`1.Params"/>.
             </summary>
+        </member>
+        <member name="T:Ans.Net10.Common.WebApiResult`1">
+            <summary>
+            Представляет конечный результат выполнения запроса к Web API, расширяющий базовый результат.
+            </summary>
+            <typeparam name="T">Тип ожидаемых полезных данных ответа.</typeparam>
         </member>
         <member name="T:Ans.Net10.Common.WidthsEnum">
             <summary>
@@ -5224,7 +5221,7 @@
         </member>
         <member name="T:Ans.Net10.Common._Consts">
             <summary>
-            Общие константы библиотеки.
+            Общие константы и статические конфигурационные реестры библиотеки <c>Ans.Net10.Common</c>.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common._Consts.ENCODING_UTF8">
@@ -5295,7 +5292,7 @@
             Дефолтный объект информации о контенте для неопознанных бинарных данных.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Common._Consts.CONTENTINFOS">
+        <member name="F:Ans.Net10.Common._Consts.CONTENTINFOS">
             <summary>
             Замороженный (Frozen) оптимизированный словарь сопоставления расширений файлов и метаданных типов контента.
             </summary>
@@ -5976,90 +5973,50 @@
         </member>
         <member name="T:Ans.Net10.Common.Exts_HttpClient">
             <summary>
-            Методы расширения для <see cref="T:System.Net.Http.HttpClient"/>, обеспечивающие асинхронное получение и автоматическую десериализацию данных в форматах JSON, XML и GRID.
+            Методы расширения для <see cref="T:System.Net.Http.HttpClient"/>, обеспечивающие асинхронное получение 
+            и автоматическую десериализацию данных в форматах JSON, XML и GRID с поддержкой гибридного кэширования .NET 10.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetJsonResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Memory.IMemoryCache,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetJsonResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный GET-запрос с поддержкой нативного кэширования <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/> 
+            Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
             и десериализует JSON-ответ в объект типа T. Безопасно обрабатывает сетевые сбои и ошибки парсинга.
             </summary>
             <typeparam name="T">Тип модели данных, в которую десериализуется ответ.</typeparam>
             <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
             <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
-            <param name="cache">Интерфейс службы нативного кэширования в памяти.</param>
-            <param name="options">Опциональные параметры конфигурации десериализации JSON. Если <see langword="null"/> — используются параметры по умолчанию.</param>
-            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи кэша. Если <see langword="null"/> — применяются дефолтные опции кэша.</param>
-            <param name="encoding">Кастомная кодировка текста (например, Windows-1251). Если <see langword="null"/> — используется стандартный UTF-8.</param>
-            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> (например, добавления заголовков авторизации Bearer).</param>
+            <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+            <param name="jsonOptions">Опциональные параметры конфигурации десериализации JSON.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи гибридного кэша.</param>
+            <param name="encoding">Кастомная кодировка текста. Если <see langword="null"/> — используется стандартный UTF-8.</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> перед отправкой.</param>
             <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток, содержащий объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными данными из кэша или напрямую от API, либо метаданные возникшей ошибки.
-            </returns>
+            <returns>Объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными данными из кэша или напрямую от API.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="client"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равны <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetJsonGenResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Memory.IMemoryCache,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetJsonGenResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            (Source Gen) Выполняет асинхронный GET-запрос с поддержкой нативного кэширования <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/> 
+            (Source Gen) Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
             и десериализует JSON-ответ без использования рантайм-рефлексии. Безопасно обрабатывает сетевые сбои.
             </summary>
             <typeparam name="T">Тип модели данных, в которую десериализуется ответ.</typeparam>
-            <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
-            <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
-            <param name="cache">Интерфейс службы нативного кэширования в памяти.</param>
-            <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
-            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи кэша. Если <see langword="null"/> — применяются дефолтные опции кэша.</param>
-            <param name="encoding">Кастомная кодировка текста (например, Windows-1251). Если <see langword="null"/> — используется стандартный UTF-8.</param>
-            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> (например, добавления заголовков авторизации Bearer).</param>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток, содержащий объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> со сгенерированными на этапе сборки десериализованными данными, либо метаданные ошибки.
-            </returns>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetXmlResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Memory.IMemoryCache,System.String,Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetXmlResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный GET-запрос с поддержкой нативного кэширования <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/> 
+            Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
             и десериализует XML-ответ в объект типа T. Безопасно перехватывает ошибки валидации схемы.
             </summary>
-            <typeparam name="T">Тип модели данных, в которую десериализуется XML-документ.</typeparam>
-            <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
-            <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
-            <param name="cache">Интерфейс службы нативного кэширования в памяти.</param>
-            <param name="defaultNamespace">Пространство имен XML по умолчанию, используемое при десериализации.</param>
-            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи кэша. Если <see langword="null"/> — применяются дефолтные опции кэша.</param>
-            <param name="encoding">Кастомная кодировка текста (например, Windows-1251). Если <see langword="null"/> — используется стандартный UTF-8.</param>
-            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> (например, добавления заголовков авторизации Bearer).</param>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток, содержащий объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными из XML-схемы данными, либо метаданные возникшей ошибки.
-            </returns>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetGridResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Memory.IMemoryCache,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetGridResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный GET-запрос с поддержкой нативного кэширования <see cref="T:Microsoft.Extensions.Caching.Memory.IMemoryCache"/>, 
+            Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>, 
             безопасно парсит построчные текстовые данные в формате GRID и проецирует их в материализованную коллекцию объектов.
             </summary>
-            <typeparam name="T">Тип результирующих объектов, из которых состоит выходная коллекция.</typeparam>
-            <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
-            <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
-            <param name="cache">Интерфейс службы нативного кэширования в памяти.</param>
-            <param name="selector">Делегат-селектор для построчного маппинга сырых полей <see cref="T:Ans.Net10.Common.GridRowParser"/> в целевой объект типа T.</param>
-            <param name="provider">Опциональный провайдер культуры для парсинга чисел и дат внутри строк.</param>
-            <param name="encoding">Кастомная кодировка текста (например, Windows-1251). Если <see langword="null"/> — используется стандартный UTF-8.</param>
-            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи кэша. Если <see langword="null"/> — применяются дефолтные опции кэша.</param>
-            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> (например, добавления заголовков авторизации Bearer).</param>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>
-            Поток, содержащий объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с материализованной коллекцией структурированных строк, либо метаданные ошибки.
-            </returns>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.InvalidateHttpCache(System.Net.Http.HttpClient,System.String,System.String,Microsoft.Extensions.Caching.Memory.IMemoryCache)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.InvalidateHttpCacheAsync(System.Net.Http.HttpClient,System.String,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Threading.CancellationToken)">
             <summary>
-            Принудительно удаляет (инвалидирует) ранее сохраненную запись HTTP-ответа из нативного кэша по заданному формату и URI ресурса.
+            Принудительно асинхронно удаляет (инвалидирует) ранее сохраненную запись HTTP-ответа из гибридного кэша по заданному формату и URI ресурса.
             </summary>
-            <param name="client">Экземпляр HTTP-клиента, для адреса которого очищается кэш.</param>
-            <param name="format">Строковый идентификатор формата данных, использованный при кэшировании (например, <c>"json"</c>, <c>"xml"</c>, <c>"grid"</c>).</param>
-            <param name="requestUri">Относительный или абсолютный URI запроса, для которого требуется аннулировать кэш.</param>
-            <param name="cache">Интерфейс службы нативного кэширования, из которой удаляется запись.</param>
         </member>
         <member name="T:Ans.Net10.Common.Exts_IPAddress">
             <summary>
@@ -6165,6 +6122,21 @@
             <param name="instance">Исходная строка для обработки.</param>
             <param name="dict">Словарь соответствий, где ключом является заменяемый фрагмент, а значением — новая подстрока.</param>
             <returns>Строка со всеми выполненными пакетными заменами.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.Exts_String.ReplaceFromDict(System.String,System.Collections.Frozen.FrozenDictionary{System.String,System.String})">
+            <summary>
+            Производит высокопроизводительную массовую замену подстрок на основе переданного замороженного словаря соответствий.
+            </summary>
+            <remarks>
+            Рекомендуется использовать в критичных к производительности участках кода (например, в типографике) 
+            совместно со статическими реестрами <see cref="T:System.Collections.Frozen.FrozenDictionary`2"/>.
+            </remarks>
+            <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
+            <param name="dict">Замороженный словарь соответствий, оптимизированный компилятором для быстрого поиска ключей.</param>
+            <returns>
+            Строка со всеми выполненными пакетными заменами. Если исходная строка пуста или словарь равен <see langword="null"/>, 
+            возвращается исходное значение.
+            </returns>
         </member>
         <member name="M:Ans.Net10.Common.Exts_String.ReplaceIfEqual(System.String,System.String,System.String)">
             <summary>
@@ -7791,28 +7763,33 @@
         </member>
         <member name="T:Ans.Net10.Common.SuppCache">
             <summary>
-            Вспомогательный класс для работы с кэшем в памяти.
+            Вспомогательный класс для работы с гибридным кэшем.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Common.SuppCache.DEFAULT_CACHE_OPTIONS">
+        <member name="F:Ans.Net10.Common.SuppCache.HYBRID_CACHE_NONE">
             <summary>
-            Настройки кэширования по умолчанию (абсолютное время жизни — 10 секунд).
+            Пресет, полностью отключающий использование кэша (L1 и L2 уровни).
             </summary>
-            <value>Экземпляр <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/> с предустановленным 10-секундным интервалом абсолютного истечения срока.</value>
         </member>
-        <member name="F:Ans.Net10.Common.SuppCache.ZERO_CACHE_OPTIONS">
+        <member name="F:Ans.Net10.Common.SuppCache.HYBRID_CACHE_30SEC">
             <summary>
-            Настройки кэширования с минимальным временем жизни (фактически отключенное кэширование).
+            Пресет кэширования на 30 секунд с гарантированной очисткой.
             </summary>
-            <value>Экземпляр <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/> с интервалом абсолютного истечения в 1 миллисекунду.</value>
         </member>
-        <member name="M:Ans.Net10.Common.SuppCache.GetOptions(System.Int32,System.Int32)">
+        <member name="F:Ans.Net10.Common.SuppCache.HYBRID_CACHE_1MIN">
             <summary>
-            Формирует параметры конфигурации записи кэша на основе переданных интервалов времени в секундах.
+            Пресет кэширования на 1 минуту с гарантированной очисткой.
             </summary>
-            <param name="slidingExpirationSeconds">Скользящее время жизни записи в секундах (интервал пролонгируется при каждом повторном обращении).</param>
-            <param name="absoluteExpirationRelativeToNowSeconds">Абсолютное время жизни записи в секундах относительно текущего рантайм-момента.</param>
-            <returns>Готовый сконфигурированный объект параметров записи кэша <see cref="T:Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions"/>.</returns>
+        </member>
+        <member name="F:Ans.Net10.Common.SuppCache.HYBRID_CACHE_5MIN">
+            <summary>
+            Пресет кэширования на 5 минут с гарантированной очисткой.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Common.SuppCache.HYBRID_CACHE_10MIN">
+            <summary>
+            Пресет кэширования на 10 минут с гарантированной очисткой.
+            </summary>
         </member>
         <member name="T:Ans.Net10.Common.SuppConsole">
             <summary>
@@ -9644,6 +9621,85 @@
             </remarks>
             <param name="sb">Модифицируемый экземпляр <see cref="T:System.Text.StringBuilder"/>.</param>
             <exception cref="T:System.ArgumentNullException">Выбрасывается, если параметр <paramref name="sb"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Common.SuppTypograph">
+            <summary>
+            Вспомогательный класс, реализующий функции экранной типографики, нормализации пробелов,
+            экранирования HTML-тегов и маскирования текста для русского языка.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.FixTextLine(System.Text.StringBuilder)">
+            <summary>
+            Выполняет нормализацию текста в рамках одной строки: схлопывает пробелы и обрезает края.
+            </summary>
+            <param name="sb">Модифицируемый экземпляр <see cref="T:System.Text.StringBuilder"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="sb"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.FixTextBox(System.Text.StringBuilder)">
+            <summary>
+            Выполняет глубокую очистку многострочного текстового блока: нормализует пробелы,
+            знаки табуляции, переносы строк и удаляет лишние пустые абзацы.
+            </summary>
+            <param name="sb">Модифицируемый экземпляр <see cref="T:System.Text.StringBuilder"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="sb"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetHtml2Text(System.String)">
+            <summary>
+            Заменяет спецсимволы разметки их безопасными HTML-сущностями.
+            </summary>
+            <param name="value">Исходная строка.</param>
+            <returns>Строка с экранированными символами или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetText2Html(System.String)">
+            <summary>
+            Восстанавливает экранированные HTML-сущности в их исходные символы.
+            </summary>
+            <param name="value">Строка с HTML-сущностями.</param>
+            <returns>Декодированная строка или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetHtml2TextAndSaveStruct(System.String)">
+            <summary>
+            Экранирует HTML-теги в тексте с сохранением исходной структуры абзацев и отступов, 
+            заменяя ведущие пробелы табуляцией.
+            </summary>
+            <param name="value">Исходный текст.</param>
+            <returns>Форматированная строка или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetTypografFix(System.String)">
+            <summary>
+            Выполняет первичное наложение правил автотипографики на строку (замена дефисов на тире, привязка союзов).
+            </summary>
+            <param name="value">Исходная строка.</param>
+            <returns>Строка с примененными заменами или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetTypografElem(System.String)">
+            <summary>
+            Анализирует длину слов в строке и интеллектуально связывает короткие слова (менее 4 символов) 
+            с последующими через неразрывный пробел (&amp;nbsp;).
+            </summary>
+            <param name="value">Исходное текстовое поле.</param>
+            <returns>Текст с расставленными неразрывными пробелами или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetTypografMin(System.String)">
+            <summary>
+            Запускает полный цикл экранной типографики текста с изоляцией разметки HTML.
+            </summary>
+            <param name="value">Исходный HTML или простой текст.</param>
+            <returns>Обработанный текст или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetFixTextLine(System.String)">
+            <summary>
+            Преобразует строку, нормализуя пробелы и удаляя управляющие символы.
+            </summary>
+            <param name="value">Исходная строка.</param>
+            <returns>Нормализованная строка.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppTypograph.GetFixTextBox(System.String)">
+            <summary>
+            Преобразует многострочный текстовый блок, нормализуя абзацы и пробельные разделители.
+            </summary>
+            <param name="value">Исходный текстовый блок.</param>
+            <returns>Очищенная многострочная строка.</returns>
         </member>
         <member name="T:Ans.Net10.Common.GenderEnum">
             <summary>

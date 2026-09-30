@@ -1,5 +1,6 @@
 ﻿// rev 2026-09-26
 
+using System.Collections.Frozen;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -51,9 +52,36 @@ namespace Ans.Net10.Common
 			if (string.IsNullOrEmpty(instance) || dict == null || dict.Count == 0)
 				return instance;
 			var sb1 = new StringBuilder(instance);
-			foreach (var item1 in dict)
-				if (!string.IsNullOrEmpty(item1.Key))
-					sb1.Replace(item1.Key, item1.Value);
+			foreach (var (key1, value1) in dict)
+				if (!string.IsNullOrEmpty(key1))
+					sb1.Replace(key1, value1);
+			return sb1.ToString();
+		}
+
+
+		/// <summary>
+		/// Производит высокопроизводительную массовую замену подстрок на основе переданного замороженного словаря соответствий.
+		/// </summary>
+		/// <remarks>
+		/// Рекомендуется использовать в критичных к производительности участках кода (например, в типографике) 
+		/// совместно со статическими реестрами <see cref="FrozenDictionary{TKey, TValue}"/>.
+		/// </remarks>
+		/// <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
+		/// <param name="dict">Замороженный словарь соответствий, оптимизированный компилятором для быстрого поиска ключей.</param>
+		/// <returns>
+		/// Строка со всеми выполненными пакетными заменами. Если исходная строка пуста или словарь равен <see langword="null"/>, 
+		/// возвращается исходное значение.
+		/// </returns>
+		public static string ReplaceFromDict(
+			this string instance,
+			FrozenDictionary<string, string> dict)
+		{
+			if (string.IsNullOrEmpty(instance) || dict == null || dict.Count == 0)
+				return instance;
+			var sb1 = new StringBuilder(instance);
+			foreach (var (key1, value1) in dict)
+				if (!string.IsNullOrEmpty(key1))
+					sb1.Replace(key1, value1);
 			return sb1.ToString();
 		}
 

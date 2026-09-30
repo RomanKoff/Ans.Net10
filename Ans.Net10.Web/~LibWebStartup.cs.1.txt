@@ -1,0 +1,177 @@
+﻿// rev 2026-09-29
+
+using Ans.Net10.Common;
+using Ans.Net10.Common.Services;
+using Ans.Net10.Web.Middlewares;
+using Ans.Net10.Web.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Globalization;
+using System.Text.Json.Serialization;
+
+namespace Ans.Net10.Web
+{
+
+	/// <summary>
+	/// Статический класс инициализации, предоставляющий методы расширения 
+	/// для регистрации служб и настройки конвейера промежуточного ПО библиотеки <c>Ans.Net10.Web</c>.
+	/// </summary>
+	public static class LibWebStartup
+	{
+
+		/* functions */
+
+
+		public static IMvcBuilder Add_AnsNet10Web(
+			this WebApplicationBuilder builder)
+		{
+			ArgumentNullException.ThrowIfNull(builder);
+
+			SuppCulture.AddCodePagesSupport();
+
+			var options1 = builder.Configuration.GetLibWebOptions();
+
+			builder.Services.Configure<LibWebOptions>(builder.Configuration.GetSection("Ans.Net10.Web"));
+
+			var culture1 = new CultureInfo(options1.Culture ?? "ru");
+			CultureInfo.DefaultThreadCurrentCulture = culture1;
+			CultureInfo.DefaultThreadCurrentUICulture = culture1;
+
+			builder.Services.AddResponseCaching();
+			builder.Services.AddHttpContextAccessor();
+			builder.Services.AddHttpClient();
+
+			builder.Services.AddHybridCache(o =>
+			{
+				o.DefaultEntryOptions = SuppCache.HYBRID_CACHE_5MIN;
+			});
+
+			builder.Services.AddCors(o =>
+			{
+				o.AddPolicy(_Consts.CORS_ALLOW_ALL, p =>
+				{
+					p.AllowAnyOrigin();
+					p.AllowAnyHeader();
+					p.AllowAnyMethod();
+				});
+			});
+
+			if (!options1.UseContentDrivenMode)
+			{
+				builder.Services.AddDistributedMemoryCache();
+				builder.Services.AddSession();
+			}
+
+			if (options1.MailService == null)
+				builder.Services.AddSingleton<IMailerService, FakeMailerService>();
+			else
+				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
+					_ => new AnsMailerService(options1.MailService));
+
+			builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
+			builder.Services.AddScoped<CurrentContext>();
+
+			var mvc1 = builder.Services.AddMvc(o =>
+			{
+				o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
+					_ => Common.Resources.Form.Text_ValueIsRequired);
+
+				foreach (var (key1, profile1) in SuppWebCache.HTTP_CACHE_PROFILES)
+					o.CacheProfiles.Add(key1, profile1);
+
+				if (!options1.UseContentDrivenMode)
+					o.Filters.Add(new ResponseCacheAttribute { CacheProfileName = "NONE" });
+			});
+
+			mvc1.AddJsonOptions(o =>
+			{
+				o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+			});
+
+			if (options1.UseRuntimeCompilation)
+				mvc1.AddRazorRuntimeCompilation();
+
+			return mvc1;
+		}
+
+
+		/* methods */
+
+
+		/// <summary>
+		/// Настраивает конвейер обработки HTTP-запросов (Middleware pipeline) 
+		/// для развернутого веб-приложения в соответствии с параметрами библиотеки.
+		/// </summary>
+		/// <param name="app">Текущий экземпляр запущенного веб-приложения.</param>
+		/// <param name="configuration">Архитектура конфигурации приложения.</param>
+		/// <exception cref="ArgumentNullException">
+		/// Вызывается, если параметр <paramref name="app"/> или <paramref name="configuration"/> равен <see langword="null"/>.
+		/// </exception>
+		public static void Use_AnsNet10Web(
+			this WebApplication app,
+			IConfiguration configuration)
+		{
+			ArgumentNullException.ThrowIfNull(app);
+			ArgumentNullException.ThrowIfNull(configuration);
+
+			var options1 = configuration.GetLibWebOptions();
+
+			app.UseHttpsRedirection();
+			app.UseResponseCaching();
+			app.UseRouting();
+			app.MapRazorPages();
+			app.MapControllers();
+
+			if (!app.Environment.IsDevelopment())
+			{
+				app.UseHsts();
+			}
+
+			if (options1.UseDeveloperMode)
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseStatusCodePages();
+			}
+			else
+			{
+				var serverErrorPath1 = options1.Errors?.ServerErrorPath ?? "/Ans/Errors/ServerError";
+				var httpErrorPath1 = options1.Errors?.HttpErrorPath ?? "/Ans/Errors/HttpErrors";
+				app.UseExceptionHandler(serverErrorPath1);
+				app.UseStatusCodePagesWithReExecute(httpErrorPath1, "?code={0}");
+				app.UseMiddleware<AnsHttpExceptionHandler>();
+			}
+
+			if (options1.Mimetypes?.Length > 0)
+			{
+				var contentTypeProvider1 = new FileExtensionContentTypeProvider();
+				foreach (var mimeDefinition1 in options1.Mimetypes)
+				{
+					if (string.IsNullOrWhiteSpace(mimeDefinition1))
+						continue;
+					var mappedPair1 = mimeDefinition1.SplitFix("|", 2);
+					contentTypeProvider1.Mappings[mappedPair1[0]] = mappedPair1[1];
+				}
+				app.UseStaticFiles(new StaticFileOptions
+				{
+					ContentTypeProvider = contentTypeProvider1
+				});
+			}
+			else
+				app.UseStaticFiles();
+
+			if (!options1.UseContentDrivenMode)
+				app.UseSession();
+
+			app.UseCors(options1.CorsProfile ?? _Consts.CORS_ALLOW_ALL);
+
+			if (options1.Routes?.Length > 0)
+				app.AddRoutes(options1.Routes);
+		}
+
+	}
+
+}

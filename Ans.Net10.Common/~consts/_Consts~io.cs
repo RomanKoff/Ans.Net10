@@ -43,7 +43,7 @@ namespace Ans.Net10.Common
 		/// Оптимизированный для чтения словарь <see cref="FrozenDictionary{TKey, TValue}"/>, сопоставляющий 
 		/// строковые расширения с объектами <see cref="ContentInfo"/>.
 		/// </value>
-		public static FrozenDictionary<string, ContentInfo> CONTENTINFOS => field ??= new ContentInfo[]
+		public static readonly FrozenDictionary<string, ContentInfo> CONTENTINFOS = new ContentInfo[]
 		{
 			// Archive
 			new(".apk", "application/vnd.android.package-archive", ContentGroupEnum.Archive),

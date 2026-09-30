@@ -134,12 +134,12 @@ namespace Ans.Net10.Common
 		/// Собирает все сгруппированные и добавленные CSS-классы в единую валидную строку, готовую для подстановки в атрибут <c>class</c>.
 		/// </summary>
 		/// <returns>
-		/// Полная строка классов, разделенная пробелами, или <see langword="null"/>, если коллекция строителя пуста.
+		/// Полная строка классов, разделенная пробелами, или <see cref="string.Empty" />, если коллекция строителя пуста.
 		/// </returns>
-		public override string? ToString()
+		public override string ToString()
 		{
 			if (Items.Count == 0)
-				return null;
+				return string.Empty;
 			var sb1 = new StringBuilder();
 			foreach (var item1 in Items)
 				foreach (var value1 in item1.Value)

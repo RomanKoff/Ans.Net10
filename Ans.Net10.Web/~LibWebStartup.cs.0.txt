@@ -1,0 +1,84 @@
+﻿using Ans.Net10.Common.Services;
+using Ans.Net10.Web.Middlewares;
+using Ans.Net10.Web.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi;
+using System.Globalization;
+using System.Reflection;
+using System.Text;
+using System.Text.Json.Serialization;
+
+namespace Ans.Net10.Web
+{
+
+	public static class LibWebStartup
+	{
+
+		/* functions */
+
+
+		public static IMvcBuilder Add_AnsNet10Web(
+			this WebApplicationBuilder builder,
+			IConfiguration configuration)
+		{
+			// swagger
+
+			if (options1.Swagger?.Length > 0)
+			{
+				// если при запросе SwaggerUI отображается ошибка, необходимо обновить кеш браузера
+				builder.Services.AddEndpointsApiExplorer();
+				builder.Services.AddSwaggerGen(o =>
+				{
+					foreach (var item1 in options1.Swagger)
+					{
+						var a1 = item1.Split('|');
+						o.SwaggerDoc(a1[0], new OpenApiInfo { Title = a1[1] });
+					}
+					o.EnableAnnotations();
+					o.IncludeXmlComments(Path.Combine(
+						AppContext.BaseDirectory,
+						$"{Assembly.GetEntryAssembly().GetName().Name}.xml"));
+				});
+			}
+		}
+
+
+		/* methods */
+
+
+		public static void Use_AnsNet10Web(
+			this WebApplication app,
+			IConfiguration configuration)
+		{
+			// swagger
+
+			if (options1.Swagger?.Length > 0)
+			{
+				// если при запросе SwaggerUI отображается ошибка, необходимо обновить кеш браузера
+				app.UseSwagger();
+				app.UseSwaggerUI(o =>
+				{
+					var s1 = app.Environment.IsDevelopment()
+						? "/swagger/" : null;
+					foreach (var item1 in options1.Swagger)
+					{
+						var a1 = item1.Split('|');
+						o.SwaggerEndpoint($"{s1}{a1[0]}/swagger.json", a1[1]);
+					}
+					o.DefaultModelRendering(
+						Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Model);
+					o.DefaultModelsExpandDepth(5);
+					o.DefaultModelExpandDepth(5);
+				});
+			}
+		}
+
+	}
+
+}
