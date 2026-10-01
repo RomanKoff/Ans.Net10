@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -156,7 +154,6 @@ namespace Ans.Net10.Common
 		/// <value>Рассчитанный заголовок для отображения.</value>
 		public string Title
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => HasTitle
 				? TitleRaw : Name;
 		}
@@ -172,7 +169,6 @@ namespace Ans.Net10.Common
 		/// <value>Рассчитанный короткий заголовок для компактных представлений.</value>
 		public string ShortTitle
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => HasShortTitle
 				? ShortTitleRaw : Title;
 		}
@@ -184,7 +180,6 @@ namespace Ans.Net10.Common
 		/// <value>Значение <see langword="true"/>, если <see cref="TitleRaw"/> не содержит пустую строку; иначе — <see langword="false"/>.</value>
 		public bool HasTitle
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => !string.IsNullOrEmpty(TitleRaw);
 		}
 
@@ -195,7 +190,6 @@ namespace Ans.Net10.Common
 		/// <value>Значение <see langword="true"/>, если <see cref="ShortTitleRaw"/> не содержит пустую строку; иначе — <see langword="false"/>.</value>
 		public bool HasShortTitle
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => !string.IsNullOrEmpty(ShortTitleRaw);
 		}
 
@@ -206,7 +200,6 @@ namespace Ans.Net10.Common
 		/// <value>Значение <see langword="true"/>, если <see cref="Description"/> не содержит пустую строку; иначе — <see langword="false"/>.</value>
 		public bool HasDescription
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => !string.IsNullOrEmpty(Description);
 		}
 
@@ -217,7 +210,6 @@ namespace Ans.Net10.Common
 		/// <value>Значение <see langword="true"/>, если <see cref="Sample"/> не содержит пустую строку; иначе — <see langword="false"/>.</value>
 		public bool HasSample
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => !string.IsNullOrEmpty(Sample);
 		}
 
@@ -228,7 +220,6 @@ namespace Ans.Net10.Common
 		/// <value>Значение <see langword="true"/>, если <see cref="HelpLink"/> не содержит пустую строку; иначе — <see langword="false"/>.</value>
 		public bool HasHelpLink
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => !string.IsNullOrEmpty(HelpLink);
 		}
 
@@ -243,7 +234,6 @@ namespace Ans.Net10.Common
 		/// </value>
 		public bool HasFace
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
 			get => HasTitle
 				|| HasShortTitle
 				|| HasDescription
@@ -259,7 +249,6 @@ namespace Ans.Net10.Common
 		/// Формирует сериализованную текстовую строку на основе текущих сырых параметров отображения поля.
 		/// </summary>
 		/// <returns>Строка параметров, объединенная разделителем <c>'|'</c> в формате <c>"title|shortTitle|description|sample|helpLink"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string ToString()
 		{
 			return $"{TitleRaw}|{ShortTitleRaw}|{Description}|{Sample}|{HelpLink}";

@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -19,7 +18,6 @@ namespace Ans.Net10.Common.Json
 
 
 		/// <inheritdoc />
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override bool CanConvert(
 			Type typeToConvert)
 		{
@@ -52,7 +50,6 @@ namespace Ans.Net10.Common.Json
 
 
 		/// <inheritdoc />
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override void Write(
 			Utf8JsonWriter writer,
 			string value,

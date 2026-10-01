@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -95,8 +94,7 @@ namespace Ans.Net10.Common
 		/* privates */
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string? _getRepl(
+				private static string? _getRepl(
 			char ch)
 		{
 			return ch switch

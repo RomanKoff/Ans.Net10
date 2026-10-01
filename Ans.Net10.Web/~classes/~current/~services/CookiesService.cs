@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-29
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Web
 {
 
@@ -77,7 +75,6 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="key"/> или <paramref name="value"/> равен <see langword="null"/>.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string key,
 			string value)
@@ -99,7 +96,6 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="key"/> равен <see langword="null"/>.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Delete(
 			string key)
 		{

@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Buffers;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -18,7 +17,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Исходный символ для проверки.</param>
 		/// <returns>Символ 'е' или 'Е', если на входе была буква с умлаутом; в противном случае — исходный символ <paramref name="value"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static char GetFixUmlautRu(
 			char value)
 		{
@@ -57,7 +55,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходный экземпляр <see cref="StringBuilder"/> для модификации. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Тот же экземпляр <see cref="StringBuilder"/> с выполненными заменами, либо <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static StringBuilder? FixUmlautRu(
 			StringBuilder? source)
 		{

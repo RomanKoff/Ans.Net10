@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -8,7 +7,7 @@ namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Перечень кодировок текстовых файлов поддерживаемых инфраструктурой библиотеки.
+	/// Перечисление кодировок текстовых файлов поддерживаемых инфраструктурой библиотеки.
 	/// </summary>
 	public enum EncodingsEnum
 	{
@@ -67,7 +66,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="encoding">Вариант кодировки из перечисления.</param>
 		/// <returns>Экземпляр класса <see cref="Encoding"/>, соответствующий выбранному типу.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Encoding GetEncoding(
 			EncodingsEnum encoding)
 		{
@@ -88,10 +86,14 @@ namespace Ans.Net10.Common
 		/// <param name="file">Информационный объект исходного файла, используемый для определения целевой директории.</param>
 		/// <param name="newName">Желаемое новое имя файла с расширением.</param>
 		/// <returns>Строка, содержащая уникальный полный путь к файлу.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="file"/> равен <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Вызывается, если <paramref name="newName"/> пустая строка.</exception>
 		public static string GetNewName(
 			FileInfo file,
 			string newName)
 		{
+			ArgumentNullException.ThrowIfNull(file);
+			ArgumentException.ThrowIfNullOrEmpty(newName);
 			var path1 = Path.Combine(file.DirectoryName ?? string.Empty, newName);
 			if (!File.Exists(path1))
 				return path1;
@@ -107,15 +109,17 @@ namespace Ans.Net10.Common
 		/// <param name="path">Путь к файлу или имя файла.</param>
 		/// <param name="hasDot">Признак необходимости сохранения точки перед расширением (например, <c>".txt"</c> вместо <c>"txt"</c>).</param>
 		/// <returns>Строка расширения в нижнем регистре. Если расширение отсутствует, возвращает пустую строку.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		/// <exception cref="ArgumentException">Вызывается, если <paramref name="path"/> пустая строка.</exception>
 		public static string GetFileExtension(
 			string path,
 			bool hasDot)
 		{
+			ArgumentException.ThrowIfNullOrEmpty(path);
 			var s1 = Path.GetExtension(path).ToLowerInvariant();
 			if (string.IsNullOrEmpty(s1))
 				return string.Empty;
-			return hasDot ? s1 : s1[1..];
+			return hasDot
+				? s1 : s1[1..];
 		}
 
 
@@ -127,7 +131,7 @@ namespace Ans.Net10.Common
 		public static string[] GetFilenameHalfs(
 			string filename)
 		{
-			if (filename == null)
+			if (string.IsNullOrEmpty(filename))
 				return [];
 			int i1 = filename.LastIndexOf('.');
 			return i1 == -1
@@ -160,7 +164,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="path">Путь к файлу или его имя.</param>
 		/// <returns>Объект метаданных контента.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ContentInfo GetContentInfoFromPath(
 			string path)
 		{
@@ -170,37 +173,46 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Считывает весь текстовый контент из файла по указанному пути, используя выбранную кодировку.
+		/// Асинхронно считывает весь текстовый контент из файла по указанному пути, используя выбранную кодировку.
 		/// </summary>
 		/// <param name="path">Путь к файлу для чтения.</param>
 		/// <param name="encoding">Кодировка текста (по умолчанию <see cref="EncodingsEnum.UTF8"/>).</param>
-		/// <returns>Строка, содержащая весь текст из файла.</returns>
-		public static string FileRead(
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Поток-задача, возвращающая текстовое содержимое файла.</returns>
+		/// <exception cref="ArgumentException">Вызывается, если <paramref name="path"/> пустая строка.</exception>
+		public static async Task<string> FileReadAsync(
 			string path,
-			EncodingsEnum encoding = EncodingsEnum.UTF8)
+			EncodingsEnum encoding = EncodingsEnum.UTF8,
+			CancellationToken cancellationToken = default)
 		{
+			ArgumentException.ThrowIfNullOrEmpty(path);
 			using var fs1 = new FileStream(
-				path, FileMode.Open, FileAccess.Read, FileShare.Read);
+				path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
 			using var sr1 = new StreamReader(
 				fs1, GetEncoding(encoding));
-			return sr1.ReadToEnd();
+			return await sr1.ReadToEndAsync(cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Считывает начало файла из открытого потока до указанного размера и возвращает его в виде Base64-строки для быстрого анализа сигнатур (Magic Numbers).
+		/// Асинхронно считывает начало файла из открытого потока до указанного размера и возвращает его в виде Base64-строки для быстрого анализа сигнатур.
 		/// </summary>
 		/// <param name="stream">Открытый поток файла.</param>
 		/// <param name="size">Максимальное количество байт для чтения. По умолчанию равно 255.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Строка в формате Base64, представляющая начало файла.</returns>
-		public static string GetFileBegin(
-			FileStream stream,
-			int size = 255)
+		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="stream"/> равен <see langword="null"/>.</exception>
+		public static async Task<string> GetFileBeginAsync(
+			Stream stream,
+			int size = 255,
+			CancellationToken cancellationToken = default)
 		{
+			ArgumentNullException.ThrowIfNull(stream);
 			if (size <= 0)
 				return string.Empty;
 			byte[] buffer1 = new byte[size];
-			int i1 = stream.Read(buffer1, 0, size);
+			int i1 = await stream.ReadAsync(
+				buffer1.AsMemory(0, size), cancellationToken);
 			if (i1 <= 0)
 				return string.Empty;
 			return Convert.ToBase64String(buffer1, 0, i1);
@@ -208,145 +220,170 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Считывает начало файла по указанному пути на диске до указанного размера и возвращает его в виде Base64-строки.
+		/// Асинхронно считывает начало файла по указанному пути на диске до указанного размера и возвращает его в виде Base64-строки.
 		/// </summary>
 		/// <param name="path">Путь к файлу.</param>
 		/// <param name="size">Максимальное количество байт для чтения. По умолчанию равно 255.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Строка в формате Base64, представляющая начало файла.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string GetFileBegin(
+		/// <exception cref="ArgumentException">Вызывается, если <paramref name="path"/> пустая строка.</exception>
+		public static async Task<string> GetFileBeginAsync(
 			string path,
-			int size = 255)
+			int size = 255,
+			CancellationToken cancellationToken = default)
 		{
+			ArgumentException.ThrowIfNullOrEmpty(path);
 			using var stream1 = new FileStream(
-				path, FileMode.Open, FileAccess.Read, FileShare.Read);
-			return GetFileBegin(stream1, size);
+				path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
+			return await GetFileBeginAsync(stream1, size, cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием байтовой соли.
+		/// Асинхронно вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием байтовой соли без рантайм-аллокаций.
 		/// </summary>
 		/// <param name="stream">Открытый поток файла.</param>
 		/// <param name="salt">Байтовый массив соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		public static string GetFileSHA1(
-			FileStream stream,
-			byte[] salt)
+		public static async Task<string> GetFileSHA1Async(
+			Stream stream,
+			byte[] salt,
+			CancellationToken cancellationToken = default)
 		{
-			using var alg1 = new HMACSHA1(salt);
-			byte[] hash1 = alg1.ComputeHash(stream);
+			ArgumentNullException.ThrowIfNull(stream);
+			ArgumentNullException.ThrowIfNull(salt);
+			byte[] hash1 = await HMACSHA1.HashDataAsync(salt, stream, cancellationToken);
 			return Convert.ToHexString(hash1).ToLowerInvariant();
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием строковой соли (переводится в Unicode-байты).
+		/// Асинхронно вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием строковой соли.
 		/// </summary>
 		/// <param name="stream">Открытый поток файла.</param>
 		/// <param name="salt">Строковое значение соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string GetFileSHA1(
-			FileStream stream,
-			string salt)
+		public static Task<string> GetFileSHA1Async(
+			Stream stream,
+			string salt,
+			CancellationToken cancellationToken = default)
 		{
-			return GetFileSHA1(stream, Encoding.Unicode.GetBytes(salt));
+			ArgumentNullException.ThrowIfNull(salt);
+			return GetFileSHA1Async(
+				stream, Encoding.Unicode.GetBytes(salt), cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием байтовой соли.
+		/// Асинхронно вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием байтовой соли.
 		/// </summary>
 		/// <param name="path">Путь к хэшируемому файлу.</param>
 		/// <param name="salt">Байтовый массив соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string GetFileSHA1(
+		public static async Task<string> GetFileSHA1Async(
 			string path,
-			byte[] salt)
+			byte[] salt,
+			CancellationToken cancellationToken = default)
 		{
+			ArgumentException.ThrowIfNullOrEmpty(path);
 			using var stream1 = new FileStream(
-				path, FileMode.Open, FileAccess.Read, FileShare.Read);
-			return GetFileSHA1(stream1, salt);
+				path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
+			return await GetFileSHA1Async(stream1, salt, cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием строковой соли.
+		/// Асинхронно вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием строковой соли.
 		/// </summary>
 		/// <param name="path">Путь к хэшируемому файлу.</param>
 		/// <param name="salt">Строковое значение соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string GetFileSHA1(
+		public static Task<string> GetFileSHA1Async(
 			string path,
-			string salt)
+			string salt,
+			CancellationToken cancellationToken = default)
 		{
-			return GetFileSHA1(path, Encoding.Unicode.GetBytes(salt));
+			ArgumentNullException.ThrowIfNull(salt);
+			return GetFileSHA1Async(
+				path, Encoding.Unicode.GetBytes(salt), cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием байтовой соли.
+		/// Асинхронно вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием байтовой соли без рантайм-аллокаций.
 		/// </summary>
 		/// <param name="stream">Открытый поток файла.</param>
 		/// <param name="salt">Байтовый массив соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		public static string GetFileSHA256(
-			FileStream stream,
-			byte[] salt)
+		public static async Task<string> GetFileSHA256Async(
+			Stream stream,
+			byte[] salt,
+			CancellationToken cancellationToken = default)
 		{
-			using var alg1 = new HMACSHA256(salt);
-			byte[] hash1 = alg1.ComputeHash(stream);
+			ArgumentNullException.ThrowIfNull(stream);
+			ArgumentNullException.ThrowIfNull(salt);
+			byte[] hash1 = await HMACSHA256.HashDataAsync(salt, stream, cancellationToken);
 			return Convert.ToHexString(hash1).ToLowerInvariant();
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием строковой соли (переводится в Unicode-байты).
+		/// Асинхронно вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием строковой соли.
 		/// </summary>
 		/// <param name="stream">Открытый поток файла.</param>
 		/// <param name="salt">Строковое значение соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string GetFileSHA256(
-			FileStream stream,
-			string salt)
+		public static Task<string> GetFileSHA256Async(
+			Stream stream,
+			string salt,
+			CancellationToken cancellationToken = default)
 		{
-			return GetFileSHA256(stream, Encoding.Unicode.GetBytes(salt));
+			ArgumentNullException.ThrowIfNull(salt);
+			return GetFileSHA256Async(
+				stream, Encoding.Unicode.GetBytes(salt), cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием байтовой соли.
+		/// Асинхронно вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием байтовой соли.
 		/// </summary>
 		/// <param name="path">Путь к хэшируемому файлу.</param>
 		/// <param name="salt">Байтовый массив соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string GetFileSHA256(
+		public static async Task<string> GetFileSHA256Async(
 			string path,
-			byte[] salt)
+			byte[] salt,
+			CancellationToken cancellationToken = default)
 		{
+			ArgumentException.ThrowIfNullOrEmpty(path);
 			using var stream1 = new FileStream(
-				path, FileMode.Open, FileAccess.Read, FileShare.Read);
-			return GetFileSHA256(stream1, salt);
+				path, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: true);
+			return await GetFileSHA256Async(stream1, salt, cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием строковой соли.
+		/// Асинхронно вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием строковой соли.
 		/// </summary>
 		/// <param name="path">Путь к хэшируемому файлу.</param>
 		/// <param name="salt">Строковое значение соли.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static string GetFileSHA256(
+		public static Task<string> GetFileSHA256Async(
 			string path,
-			string salt)
+			string salt,
+			CancellationToken cancellationToken = default)
 		{
-			return GetFileSHA256(path, Encoding.Unicode.GetBytes(salt));
+			ArgumentNullException.ThrowIfNull(salt);
+			return GetFileSHA256Async(
+				path, Encoding.Unicode.GetBytes(salt), cancellationToken);
 		}
 
 
@@ -355,12 +392,11 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="filename">Полный или относительный путь к файлу.</param>
 		/// <returns>Объект структуры <see cref="DateTimeOffset"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTimeOffset GetFileLastModified(
 			string filename)
 		{
-			var time1 = File.GetLastWriteTimeUtc(filename);
-			return new DateTimeOffset(time1);
+			return new DateTimeOffset(
+				File.GetLastWriteTimeUtc(filename));
 		}
 
 
@@ -372,6 +408,7 @@ namespace Ans.Net10.Common
 		public static DateTime GetLastWriteTimeFiles(
 			DirectoryInfo directory)
 		{
+			ArgumentNullException.ThrowIfNull(directory);
 			var date1 = directory.LastWriteTime;
 			foreach (var item1 in directory.GetFiles())
 				if (item1.LastWriteTime > date1)
@@ -400,7 +437,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="length">Размер контента в байтах.</param>
 		/// <returns>Строка отформатированного размера с суффиксом КБ.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetLengthOfKB(
 			int length)
 		{
@@ -416,7 +452,7 @@ namespace Ans.Net10.Common
 		public static string FixForbiddenFileName(
 			string name)
 		{
-			return (name.Length < 5 && _Consts.FORBIDDEN_FILE_NAMES.Contains(name))
+			return name.Length < 5 && _Consts.FORBIDDEN_FILE_NAMES.Contains(name)
 				? $"_{name}_" : name;
 		}
 
@@ -481,7 +517,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="path">Проверяемый путь.</param>
 		/// <returns><see langword="true"/>, если в пути обнаружены невалидные знаки; в противном случае — <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool HasInvalidPathChars(
 			string path)
 		{
@@ -494,7 +529,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="filename">Проверяемое имя файла.</param>
 		/// <returns><see langword="true"/>, если имя содержит запрещенные символы; в противном случае — <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool HasInvalidFileNameChars(
 			string filename)
 		{
@@ -542,7 +576,6 @@ namespace Ans.Net10.Common
 		/// <param name="file1">Первый сравниваемый файл.</param>
 		/// <param name="file2">Второй сравниваемый файл.</param>
 		/// <returns><see langword="true"/>, если файлы идентичны; иначе — <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsFilesEqualLazy(
 			FileInfo file1,
 			FileInfo file2)
@@ -561,7 +594,6 @@ namespace Ans.Net10.Common
 		/// Создает директорию по указанному пути, если она еще отсутствует в системе.
 		/// </summary>
 		/// <param name="path">Путь к создаваемой директории.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void CreateDirectoryIfNotExists(
 			string path)
 		{
@@ -574,7 +606,6 @@ namespace Ans.Net10.Common
 		/// Удаляет директорию и все ее внутреннее содержимое (рекурсивно) по указанному пути, если она существует.
 		/// </summary>
 		/// <param name="path">Путь к удаляемой директории.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void DeleteDirectoryIfExists(
 			string path)
 		{
@@ -587,7 +618,6 @@ namespace Ans.Net10.Common
 		/// Удаляет файл по указанному пути на диске, если он существует.
 		/// </summary>
 		/// <param name="path">Путь к удаляемому файлу.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void DeleteFileIfExists(
 			string path)
 		{
@@ -601,7 +631,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="file">Переименовываемый информационный объект файла.</param>
 		/// <param name="newName">Новое желаемое имя файла.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void Rename(
 			FileInfo file,
 			string newName)
@@ -612,37 +641,45 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Записывает строковый контент в файл по указанному пути, используя выбранную кодировку <see cref="EncodingsEnum"/> и режим открытия файлового потока.
+		/// Асинхронно записывает строковый контент в файл по указанному пути, используя выбранную кодировку <see cref="EncodingsEnum"/> и режим открытия файлового потока.
 		/// </summary>
 		/// <param name="path">Путь к целевому файлу для записи.</param>
 		/// <param name="content">Строковое содержимое, подлежащее сохранению.</param>
 		/// <param name="encoding">Кодировка текста. По умолчанию используется <see cref="EncodingsEnum.UTF8"/>.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <param name="mode">Режим работы файлового потока. По умолчанию используется <see cref="FileMode.Create"/> (перезапись/создание нового).</param>
-		public static void FileWrite(
+		public static async Task FileWriteAsync(
 			string path,
 			string content,
 			EncodingsEnum encoding = EncodingsEnum.UTF8,
-			FileMode mode = FileMode.Create)
+			FileMode mode = FileMode.Create,
+			CancellationToken cancellationToken = default)
 		{
-			using var fs1 = new FileStream(path, mode);
+			ArgumentException.ThrowIfNullOrEmpty(path);
+			using var fs1 = new FileStream(
+				path, mode, FileAccess.Write, FileShare.None, 4096, useAsync: true);
 			using var sw1 = new StreamWriter(fs1, GetEncoding(encoding));
-			sw1.Write(content);
+			await sw1.WriteAsync(content.AsMemory(), cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Записывает сырой массив байт в файл по указанному пути, используя выбранный режим открытия файлового потока.
+		/// Асинхронно записывает сырой массив байт в файл по указанному пути, используя выбранный режим открытия файлового потока.
 		/// </summary>
 		/// <param name="path">Путь к файлу для записи.</param>
 		/// <param name="content">Массив байт, который необходимо записать в файл.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <param name="mode">Режим работы файлового потока. По умолчанию используется <see cref="FileMode.Create"/>.</param>
-		public static void FileWrite(
+		public static async Task FileWriteAsync(
 			string path,
 			byte[] content,
-			FileMode mode = FileMode.Create)
+			FileMode mode = FileMode.Create,
+			CancellationToken cancellationToken = default)
 		{
-			using var fs1 = new FileStream(path, mode);
-			fs1.Write(content);
+			ArgumentException.ThrowIfNullOrEmpty(path);
+			using var fs1 = new FileStream(
+				path, mode, FileAccess.Write, FileShare.None, 4096, useAsync: true);
+			await fs1.WriteAsync(content.AsMemory(), cancellationToken);
 		}
 
 	}

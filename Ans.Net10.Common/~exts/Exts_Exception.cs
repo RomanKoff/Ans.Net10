@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -19,7 +17,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="exception">Исходное исключение, выступающее началом дерева поиска.</param>
 		/// <returns>Текст сообщения об ошибке <see cref="Exception.Message"/> корневого исключения.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetExceptionMessage(
 			this Exception exception)
 		{
@@ -39,7 +36,6 @@ namespace Ans.Net10.Common
 		/// <see langword="true"/>, если искомая подстрока найдена в свойстве <see cref="Exception.Message"/> 
 		/// текущего или любого дочернего исключения; в противном случае — <see langword="false"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool TestContains(
 			this Exception exception,
 			string value)
@@ -63,7 +59,6 @@ namespace Ans.Net10.Common
 		/// <see langword="true"/>, если свойство <see cref="Exception.Message"/> хотя бы одного исключения в цепочке 
 		/// начинается с указанного текста; в противном случае — <see langword="false"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool TestStartsWith(
 			this Exception exception,
 			string value)

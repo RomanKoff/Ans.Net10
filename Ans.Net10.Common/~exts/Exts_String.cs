@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -49,7 +47,6 @@ namespace Ans.Net10.Common
 		/// <param name="trimString">Целевая подстрока в начале, которую необходимо удалить или заменить.</param>
 		/// <param name="replacement">Опциональная строка замены. Если равен <see langword="null"/>, подстрока удаляется.</param>
 		/// <returns>Результирующая модифицированная строка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetTrimStart(
 			this string instance,
 			string trimString,
@@ -66,7 +63,6 @@ namespace Ans.Net10.Common
 		/// <param name="trimString">Целевая подстрока в конце, которую необходимо удалить или заменить.</param>
 		/// <param name="replacement">Опциональная строка замены. Если равен <see langword="null"/>, подстрока удаляется.</param>
 		/// <returns>Результирующая модифицированная строка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetTrimEnd(
 			this string instance,
 			string trimString,

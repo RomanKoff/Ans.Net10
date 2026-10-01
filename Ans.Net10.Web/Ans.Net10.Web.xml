@@ -4,6 +4,671 @@
         <name>Ans.Net10.Web</name>
     </assembly>
     <members>
+        <member name="T:Ans.Net10.Web.Attributes.ActionAccessAttribute">
+            <summary>
+            Декларативный атрибут для ограничения доступа к действиям контроллера 
+            на основе заданного строкового пути разрешения.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.ActionAccessAttribute.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Attributes.ActionAccessAttribute"/> с указанием пути доступа.
+            </summary>
+            <param name="path">Строковый путь или идентификатор системного разрешения (например, "Admin.Users.Create").</param>
+            <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="path"/> пуст или равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Attributes.ActionAccessFilter">
+            <summary>
+            Асинхронный фильтр авторизации, выполняющий валидацию прав текущего пользователя 
+            на доступ к конкретному действию MVC без блокировки потоков.
+            </summary>
+            <param name="path">Строковый путь проверяемого системного разрешения.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.ActionAccessFilter.#ctor(System.String)">
+            <summary>
+            Асинхронный фильтр авторизации, выполняющий валидацию прав текущего пользователя 
+            на доступ к конкретному действию MVC без блокировки потоков.
+            </summary>
+            <param name="path">Строковый путь проверяемого системного разрешения.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.ActionAccessFilter.OnAuthorizationAsync(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Attributes.ClaimRequirementFilter">
+            <summary>
+            Асинхронный фильтр авторизации, выполняющий гибкую валидацию структуры утверждений (Claims) 
+            через внешнюю функцию фильтрации.
+            </summary>
+            <param name="type">Тип проверяемого клейма.</param>
+            <param name="funcValue">Делегат проверки текстового значения клейма.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.ClaimRequirementFilter.#ctor(System.String,System.Func{System.String,System.Boolean})">
+            <summary>
+            Асинхронный фильтр авторизации, выполняющий гибкую валидацию структуры утверждений (Claims) 
+            через внешнюю функцию фильтрации.
+            </summary>
+            <param name="type">Тип проверяемого клейма.</param>
+            <param name="funcValue">Делегат проверки текстового значения клейма.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.ClaimRequirementFilter.OnAuthorizationAsync(Microsoft.AspNetCore.Mvc.Filters.AuthorizationFilterContext)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Attributes.ClaimRequirementAttribute">
+            <summary>
+            Декларативный атрибут авторизации, требующий наличия определенного Claim-партишена 
+            и соответствия его значения пользовательскому предикату.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.ClaimRequirementAttribute.#ctor(System.String,System.Func{System.String,System.Boolean})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Attributes.ClaimRequirementAttribute"/>.
+            </summary>
+            <param name="type">Тип проверяемого клейма (Claim Type).</param>
+            <param name="funcValue">Функция-предикат (лямбда) для валидации текстового значения клейма.</param>
+            <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="type"/> пуст или равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="funcValue"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Crud.ICrudMasterController`1">
+            <summary>
+            Интерфейс асинхронного CRUD-контроллера для управления жизненным циклом главных (Master) сущностей.
+            </summary>
+            <typeparam name="T">Тип обрабатываемой главной сущности. Должен реализовывать <see cref="T:Ans.Net10.Common.Crud.IMasterEntity"/>.</typeparam>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudMasterController`1.List(System.String,System.Int32,System.Int32)">
+            <summary>Асинхронно формирует постраничную выборку и отображает табличный список сущностей.</summary>
+            <param name="order">Строка определения полей и направлений многокритериальной сортировки.</param>
+            <param name="page">Номер запрашиваемой страницы (индексация с 1).</param>
+            <param name="itemsOnPage">Количество отображаемых элементов на одной странице.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudMasterController`1.Add">
+            <summary>Отображает пустую форму создания новой главной сущности.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudMasterController`1.AddPost(`0)">
+            <summary>Асинхронно обрабатывает отправку формы создания новой главной сущности.</summary>
+            <param name="model">Заполненный экземпляр сущности, полученный из контекста связывания модели.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Crud._CrudMasterController_Proto`1">
+            <summary>
+            Абстрактный прототип класса для реализации асинхронных CRUD-контроллеров 
+            над главными (Master) сущностями с поддержкой встроенной пагинации.
+            </summary>
+            <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.IMasterEntity"/>.</typeparam>
+            <remarks>
+            [Authorize()]
+            [Route("/")]
+            [ApiExplorerSettings(IgnoreApi = true)]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.#ctor(Ans.Net10.Common.Crud.ICrudMasterRepository{`0})">
+            <summary>
+            Абстрактный прототип класса для реализации асинхронных CRUD-контроллеров 
+            над главными (Master) сущностями с поддержкой встроенной пагинации.
+            </summary>
+            <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.IMasterEntity"/>.</typeparam>
+            <remarks>
+            [Authorize()]
+            [Route("/")]
+            [ApiExplorerSettings(IgnoreApi = true)]
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.Repository">
+            <summary>
+            Возвращает строго типизированный экземпляр репозитория для работы с главными сущностями.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.InitView(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.InitView">
+            <summary>
+            Виртуальный метод инициализации контекста представления (например, списков ViewBag), не привязанный к конкретной модели.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.RedirectToAdd">
+            <summary>
+            Генерирует перенаправление пользователя на пустую форму добавления записи.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.RedirectToEdit(`0)">
+            <summary>
+            Генерирует перенаправление пользователя на форму редактирования указанной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.RedirectToDetails(`0)">
+            <summary>
+            Генерирует перенаправление пользователя на карточку детальных сведений указанной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.List(System.String,System.Int32,System.Int32)">
+            <summary>
+            Асинхронно формирует постраничную выборку главных сущностей с учетом фильтрации и сортировки, 
+            наполняет метаданные пагинации во <see cref="P:Microsoft.AspNetCore.Mvc.Controller.ViewData"/> и возвращает табличное представление.
+            </summary>
+            <param name="order">Строка определения полей и направлений многокритериальной сортировки. Если пуста, используется <see cref="P:Ans.Net10.Web.Crud.__CrudController_Base`1.DefaultOrder"/>.</param>
+            <param name="page">Номер запрашиваемой страницы (индексация начинается с 1).</param>
+            <param name="itemsOnPage">Запрашиваемое количество элементов на одной странице.</param>
+            <returns>Задача, результатом выполнения которой является <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с Razor-представлением списка сущностей текущей страницы.</returns>
+            <remarks>
+            [HttpGet("")]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.Add">
+            <summary>
+            Возвращает пустую форму создания новой главной сущности с инициализированными дефолтными значениями.
+            </summary>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с Razor-представлением формы добавления объекта.</returns>
+            <remarks>
+            [HttpGet("add")]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.AddPost(`0)">
+            <summary>
+            Асинхронно обрабатывает отправку формы создания новой главной сущности, выполняет валидацию, 
+            фиксацию в репозитории и осуществляет ветвление редиректа согласно правилу <see cref="P:Ans.Net10.Web.Crud.__CrudController_Base`1.ViewAfterAdd"/>.
+            </summary>
+            <param name="model">Заполненный экземпляр сущности, полученный из контекста связывания модели.</param>
+            <returns>Задача, результатом которой является редирект на целевую страницу при успехе, либо текущая форма с ошибками валидации.</returns>
+            <remarks>
+            [HttpPost("add")]
+            [ActionName("Add")]
+            [ValidateAntiForgeryToken]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudMasterController_Proto`1.GetListQuery">
+            <summary>
+            Формирует базовый запрос <see cref="T:System.Linq.IQueryable`1"/> для извлечения списочных данных с учетом глобального фильтра.
+            </summary>
+            <returns>Запрос <see cref="T:System.Linq.IQueryable`1"/> без отслеживания изменений, готовый к дальнейшему секционированию.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Crud.ICrudSlaveController`1">
+            <summary>
+            Интерфейс асинхронного CRUD-контроллера для управления жизненным циклом подчиненных (Slave) сущностей.
+            </summary>
+            <typeparam name="T">Тип обрабатываемой подчиненной сущности. Должен реализовывать <see cref="T:Ans.Net10.Common.Crud.ISlaveEntity"/>.</typeparam>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudSlaveController`1.List(System.Int32,System.String,System.Int32,System.Int32)">
+            <summary>Асинхронно формирует постраничную выборку подчиненных сущностей для конкретного владельца.</summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <param name="order">Строка определения полей и направлений многокритериальной сортировки.</param>
+            <param name="page">Номер запрашиваемой страницы (индексация с 1).</param>
+            <param name="itemsOnPage">Количество отображаемых элементов на одной странице.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudSlaveController`1.Add(System.Int32)">
+            <summary>Отображает пустую форму создания новой подчиненной сущности для указанного владельца.</summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudSlaveController`1.AddPost(System.Int32,`0)">
+            <summary>Асинхронно обрабатывает отправку формы создания новой подчиненной сущности.</summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <param name="model">Заполненный экземпляр сущности, полученный из контекста связывания модели.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1">
+            <summary>
+            Абстрактный прототип класса для реализации асинхронных CRUD-контроллеров 
+            над подчиненными (Slave) сущностями с жесткой привязкой к владельцу.
+            </summary>
+            <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.ISlaveEntity"/>.</typeparam>
+            <remarks>
+            [Authorize()]
+            [Route("/")]
+            [ApiExplorerSettings(IgnoreApi = true)]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.#ctor(Ans.Net10.Common.Crud.ICrudSlaveRepository{`0})">
+            <summary>
+            Абстрактный прототип класса для реализации асинхронных CRUD-контроллеров 
+            над подчиненными (Slave) сущностями с жесткой привязкой к владельцу.
+            </summary>
+            <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.ISlaveEntity"/>.</typeparam>
+            <remarks>
+            [Authorize()]
+            [Route("/")]
+            [ApiExplorerSettings(IgnoreApi = true)]
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.Repository">
+            <summary>
+            Возвращает строго типизированный экземпляр репозитория для работы с подчиненными сущностями.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.InitView(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.PrepareRedirectToList(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.InitView(System.Int32)">
+            <summary>
+            Виртуальный метод инициализации контекста представления, привязанный к идентификатору владельца.
+            </summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.RedirectToAdd(System.Int32)">
+            <summary>
+            Генерирует перенаправление пользователя на пустую форму добавления подчиненной записи.
+            </summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.RedirectToEdit(`0)">
+            <summary>
+            Генерирует перенаправление пользователя на форму редактирования указанной подчиненной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.RedirectToDetails(`0)">
+            <summary>
+            Генерирует перенаправление пользователя на карточку подробных сведений подчиненной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.List(System.Int32,System.String,System.Int32,System.Int32)">
+            <summary>
+            Асинхронно формирует постраничную выборку подчиненных сущностей, жестко ограниченную рамками 
+            указанного владельца, наполняет метаданные пагинации и возвращает табличное представление.
+            </summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <param name="order">Строка определения полей и направлений многокритериальной сортировки. Если пуста, используется сортировка по умолчанию.</param>
+            <param name="page">Номер запрашиваемой страницы (индексация начинается с 1).</param>
+            <param name="itemsOnPage">Запрашиваемое количество элементов на одной странице.</param>
+            <returns>Задача, результатом выполнения которой является <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с Razor-представлением списка подчиненных сущностей.</returns>
+            <remarks>
+            [HttpGet("{masterPtr:int}")]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.Add(System.Int32)">
+            <summary>
+            Возвращает пустую форму создания новой подчиненной сущности, жестко связанной с указанным владельцем.
+            </summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с Razor-представлением формы добавления.</returns>
+            <remarks>
+            [HttpGet("{masterPtr:int}/add")]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.AddPost(System.Int32,`0)">
+            <summary>
+            Асинхронно обрабатывает отправку формы создания новой подчиненной сущности, гарантируя простановку 
+            внешнего ключа владельца, валидацию и фиксацию изменений в базе данных.
+            </summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <param name="model">Заполненный экземпляр сущности, полученный из контекста связывания модели.</param>
+            <returns>Задача, результатом которой является редирект на целевую страницу при успехе, либо текущая форма с ошибками.</returns>
+            <remarks>
+            [HttpPost("{masterPtr:int}/add")]
+            [ActionName("Add")]
+            [ValidateAntiForgeryToken]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.GetListQuery(System.Int32)">
+            <summary>
+            Формирует базовый запрос <see cref="T:System.Linq.IQueryable`1"/> для извлечения подчиненных сущностей 
+            с объединением глобального фильтра списков и фильтра по конкретному владельцу.
+            </summary>
+            <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <returns>Запрос <see cref="T:System.Linq.IQueryable`1"/> без отслеживания изменений, готовый к материализации.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud._CrudSlaveController_Proto`1.GetListView(Microsoft.AspNetCore.Mvc.IActionResult,System.Int32)">
+            <summary>
+            Выполняет инициализацию окружения и генерирует Razor-представление для табличного списка подчиненных сущностей.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Crud.CrudViewEnum">
+            <summary>
+            Перечисление стандартных Razor-представлений (страниц), используемых в рамках CRUD-сценариев.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Crud.CrudViewEnum.List">
+            <summary>
+            Представление таблицы со списком записей.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Crud.CrudViewEnum.Add">
+            <summary>
+            Представление формы создания новой записи.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Crud.CrudViewEnum.Edit">
+            <summary>
+            Представление формы редактирования существующей записи.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Crud.CrudViewEnum.Details">
+            <summary>
+            Представление подробных сведений об объекте.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Crud.CrudViewEnum.Delete">
+            <summary>
+            Представление формы удаления существующей записи.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Crud.ICrudController`1">
+            <summary>
+            Интерфейс асинхронного CRUD-контроллера для управления жизненным циклом доменной сущности.
+            </summary>
+            <typeparam name="T">Тип обрабатываемой сущности базы данных. Должен быть ссылочным типом.</typeparam>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudController`1.Details(System.Int32)">
+            <summary>
+            Асинхронно отображает карточку деталей объекта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudController`1.Edit(System.Int32)">
+            <summary>
+            Асинхронно отображает форму редактирования объекта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudController`1.EditPost(System.Int32,`0)">
+            <summary>
+            Асинхронно обрабатывает отправку формы изменения объекта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudController`1.Delete(System.Int32)">
+            <summary>
+            Асинхронно отображает форму подтверждения удаления объекта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.ICrudController`1.DeletePost(System.Int32)">
+            <summary>
+            Асинхронно обрабатывает подтверждение удаления объекта.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Crud.__CrudController_Base`1">
+            <summary>
+            Абстрактный базовый MVC-контроллер, реализующий унифицированную асинхронную логику CRUD-операций.
+            </summary>
+            <typeparam name="T">Тип доменной сущности. Должен быть ссылочным типом.</typeparam>
+            <remarks>
+            [Authorize()]
+            [Route("/")]
+            [ApiExplorerSettings(IgnoreApi = true)]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.#ctor(Ans.Net10.Common.Crud.ICrudRepository{`0})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Crud.__CrudController_Base`1"/> с внедрением зависимости репозитория.
+            </summary>
+            <param name="repository">Экземпляр репозитория данных для выполнения низкоуровневых операций с БД.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="repository"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.InitView(`0)">
+            <summary>
+            Абстрактный метод инициализации вспомогательных данных представления (например, списков ViewBag) перед рендерингом формы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.InitController">
+            <summary>
+            Виртуальный метод для первичной настройки контроллера на этапе выполнения конструктора.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AllowDetails(`0)">
+            <summary>
+            Проверяет, разрешен ли просмотр детальной информации для указанной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AllowChange(`0)">
+            <summary>
+            Базовый признак возможности изменения или удаления указанной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AllowEdit(`0)">
+            <summary>
+            Проверяет, разрешено ли редактирование указанной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AllowDelete(`0)">
+            <summary>
+            Проверяет, разрешено ли удаление указанной сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.Prepare(`0)">
+            <summary>
+            Базовый метод подготовки модели перед выводом в любое представление.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.PrepareForAdd(`0)">
+            <summary>
+            Подготовка модели перед открытием формы добавления.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.PrepareForDetails(`0)">
+            <summary>
+            Подготовка модели перед открытием карточки деталей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.PrepareForEdit(`0)">
+            <summary>
+            Подготовка модели перед открытием формы редактирования.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.PrepareForDelete(`0)">
+            <summary>
+            Подготовка модели перед открытием формы удаления.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.PrepareForList(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Пакетная подготовка и декодирование коллекции моделей перед выводом в списочное представление.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.FixModelAfterInput(`0)">
+            <summary>
+            Корректировка и нормализация полей модели сразу после обработки входящего пользовательского ввода.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.EncodeModelBeforeSave(`0)">
+            <summary>
+            Шифрование или трансформация данных модели непосредственно перед сохранением в базу данных.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.DecodeModelBeforeEdit(`0)">
+            <summary>
+            Декодирование специфических полей модели перед передачей в форму редактирования.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.DecodeModelBeforeView(`0)">
+            <summary>
+            Декодирование специфических полей модели перед передачей в read-only представления (детали, удаление).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.ValidationModel(`0)">
+            <summary>
+            Метод для выполнения кастомной сложной бизнес-валидации модели на уровне контроллера.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.BeforeChange(`0)">
+            <summary>
+            Общий хук жизненного цикла, выполняемый перед любым изменением данных (добавление/обновление).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.BeforeAdd(`0)">
+            <summary>
+            Хук жизненного цикла, выполняемый перед сохранением новой записи.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.BeforeUpdate(`0)">
+            <summary>
+            Хук жизненного цикла, выполняемый перед сохранением изменений существующей записи.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.BeforeDelete(`0)">
+            <summary>
+            Хук жизненного цикла, выполняемый перед удалением записи из БД.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AfterChange(`0)">
+            <summary>
+            Общий хук жизненного цикла, выполняемый после успешного изменения данных (добавление/обновление).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AfterAdd(`0)">
+            <summary>
+            Хук жизненного цикла, выполняемый после успешного добавления записи.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AfterUpdate(`0)">
+            <summary>
+            Хук жизненного цикла, выполняемый после успешного обновления записи.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.AfterDelete">
+            <summary>
+            Хук жизненного цикла, выполняемый после успешного удаления записи.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.PrepareRedirectToList(`0)">
+            <summary>
+            Позволяет наполнить <see cref="P:Ans.Net10.Web.Crud.__CrudController_Base`1.ListRouteValues"/> перед выполнением редиректа на таблицу.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.RedirectToList(`0)">
+            <summary>
+            Выполняет перенаправление пользователя на списочное (табличное) действие контроллера.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.ParseException(System.Exception)">
+            <summary>
+            Выполняет безопасный разбор исключений СУБД, регистрируя понятные ошибки в <see cref="P:Microsoft.AspNetCore.Mvc.ControllerBase.ModelState"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.Repository">
+            <summary>
+            Возвращает экземпляр CRUD-репозитория.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.DefaultOrder">
+            <summary>
+            Направление сортировки по умолчанию для списков.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.DefaultItemsOnPage">
+            <summary>
+            Количество записей на странице списка по умолчанию. По умолчанию: 50.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.MaxItemsOnPage">
+            <summary>
+            Максимально допустимый лимит записей на странице. По умолчанию: 600.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.ViewAfterAdd">
+            <summary>
+            Определяет целевую страницу перехода после успешного добавления сущности
+            .</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.CustomListViewName">
+            <summary>
+            Альтернативное имя Razor-представления для табличного списка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.CustomAddViewName">
+            <summary>
+            Альтернативное имя Razor-представления для формы добавления.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.CustomDetailsViewName">
+            <summary>
+            Альтернативное имя Razor-представления для карточки деталей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.CustomEditViewName">
+            <summary>
+            Альтернативное имя Razor-представления для формы редактирования.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.CustomDeleteViewName">
+            <summary>
+            Альтернативное имя Razor-представления для страницы удаления.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.ListRouteValues">
+            <summary>
+            Словарь параметров маршрутизации, применяемый при автоматических редиректах на списки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Crud.__CrudController_Base`1.ListFilter">
+            <summary>
+            Выражение фильтрации, применяемое по умолчанию при выборке списков сущностей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.Details(System.Int32)">
+            <summary>
+            Асинхронно извлекает сущность по идентификатору, выполняет её декодирование и отображает карточку деталей.
+            </summary>
+            <param name="id">Уникальный числовой идентификатор сущности.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с Razor-представлением деталей или <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundResult"/>.</returns>
+            <remarks>
+            [HttpGet("details/{id:int}")]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.Edit(System.Int32)">
+            <summary>
+            Асинхронно извлекает сущность по идентификатору, выполняет декодирование и отображает форму редактирования.
+            </summary>
+            <param name="id">Уникальный числовой идентификатор сущности.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с Razor-представлением формы редактирования или <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundResult"/>.</returns>
+            <remarks>
+            [HttpGet("edit/{id:int}")]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.EditPost(System.Int32,`0)">
+            <summary>
+            Асинхронно обрабатывает отправку формы изменения объекта, выполняя валидацию и фиксацию данных в БД.
+            </summary>
+            <param name="id">Уникальный числовой идентификатор изменяемой сущности.</param>
+            <param name="model">Заполненный экземпляр сущности, полученный из контекста связывания модели.</param>
+            <returns>Редирект на список при успешном обновлении, либо текущая форма редактирования с отображением ошибок валидации.</returns>
+            <remarks>
+            [HttpPost("edit/{id:int}")]
+            [ActionName("Edit")]
+            [ValidateAntiForgeryToken]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.Delete(System.Int32)">
+            <summary>
+            Асинхронно извлекает сущность по идентификатору, выполняет декодирование и отображает страницу подтверждения удаления.
+            </summary>
+            <param name="id">Уникальный числовой идентификатор удаляемой сущности.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с Razor-представлением удаления или <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundResult"/>.</returns>
+            <remarks>
+            [HttpGet("delete/{id:int}")]
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.DeletePost(System.Int32)">
+            <summary>
+            Асинхронно обрабатывает подтверждение удаления сущности из базы данных по её идентификатору.
+            </summary>
+            <param name="id">Уникальный числовой идентификатор удаляемой сущности.</param>
+            <returns>
+            Задача, результатом которой является <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с перенаправлением на список при успехе,
+            либо текущая страница подтверждения удаления с отображением перехваченных ошибок СУБД.
+            </returns>
+            <remarks>
+            [HttpPost("delete/{id:int}")]
+            [ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            Метод сначала асинхронно извлекает сущность для проверки прав доступа и выполнения хуков жизненного цикла,
+            после чего производит неблокирующее удаление и фиксацию изменений в репозитории.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.GetAddView(`0)">
+            <summary>
+            Выполняет инициализацию окружения и генерирует Razor-представление для формы создания новой сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.GetDetailView(`0)">
+            <summary>
+            Выполняет проверку прав доступа, инициализацию окружения и генерирует Razor-представление деталей сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.GetEditView(`0)">
+            <summary>
+            Выполняет проверку прав доступа, инициализацию окружения и генерирует Razor-представление формы редактирования сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Crud.__CrudController_Base`1.GetDeleteView(`0)">
+            <summary>
+            Выполняет проверку прав доступа, инициализацию окружения и генерирует Razor-представление страницы подтверждения удаления.
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.LibWebInfo">
             <summary>
             Предоставляет информацию о текущей вызывающей сборке библиотеки.
@@ -84,6 +749,11 @@
         <member name="P:Ans.Net10.Web.LibWebOptions.Subnets">
             <summary>
             Получает или задает списки подсетей для ограничения доступа.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Proxy">
+            <summary>
+            Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
             </summary>
         </member>
         <member name="T:Ans.Net10.Web.MailServiceOptions">
@@ -216,6 +886,22 @@
             Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.ProxyOptions">
+            <summary>
+            Параметры конфигурации обработки прокси-заголовков.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ProxyOptions.UseForwardedHeaders">
+            <summary>
+            Флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ProxyOptions.KnownProxies">
+            <summary>
+            Список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
+            Если пустой — по умолчанию доверяется локальной петле (Loopback).
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.Middlewares.AnsHttpExceptionHandler">
             <summary>
             Компонент конвейера (Middleware), обеспечивающий перехват специализированных исключений 
@@ -243,6 +929,118 @@
             <param name="context">Текущий контекст HTTP-запроса.</param>
             <returns>Задача асинхронного выполнения операции.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="context"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Resources.Common">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Html_CellFalse">
+            <summary>
+              Looks up a localized string similar to &lt;span title=&quot;Нет&quot;&gt;&amp;nbsp;&lt;/span&gt;.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Html_CellTrue">
+            <summary>
+              Looks up a localized string similar to &lt;span class=&quot;text-success text-nowrap&quot;&gt;&lt;i class=&quot;bi-check-lg&quot;&gt;&lt;/i&gt;да&lt;/span&gt;.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Html_EditChecked">
+            <summary>
+              Looks up a localized string similar to Да.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Html_EditFalse">
+            <summary>
+              Looks up a localized string similar to нет.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Html_EditTrue">
+            <summary>
+              Looks up a localized string similar to да.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Html_ViewFalse">
+            <summary>
+              Looks up a localized string similar to Нет.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Html_ViewTrue">
+            <summary>
+              Looks up a localized string similar to Да.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Common.Template_PhoneAddon">
+            <summary>
+              Looks up a localized string similar to {0}, доб. {1}.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Resources.Errors">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_AccessIsDenied">
+            <summary>
+              Looks up a localized string similar to Доступ запрещен!.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_AddressOfTheRequestedResource">
+            <summary>
+              Looks up a localized string similar to Адрес запрашиваемого ресурса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_Error">
+            <summary>
+              Looks up a localized string similar to Ошибка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_ErrorID">
+            <summary>
+              Looks up a localized string similar to Идентификатор ошибки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_GoBack">
+            <summary>
+              Looks up a localized string similar to Вернуться назад.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_PageNotFound">
+            <summary>
+              Looks up a localized string similar to Страница не найдена!.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_ServerError">
+            <summary>
+              Looks up a localized string similar to Серверная ошибка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_TheTextOfTheErrorMessage">
+            <summary>
+              Looks up a localized string similar to Текст сообщения об ошибке.
+            </summary>
         </member>
         <member name="T:Ans.Net10.Web.Services.IViewRenderService">
             <summary>
@@ -320,6 +1118,49 @@
             <summary>
             Исполняет непосредственный запуск движка рендеринга Razor в выделенный текстовый поток StreamWriter.
             </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.ActionClaimsHelper">
+            <summary>
+            Вспомогательный класс для иерархической проверки утверждений (Claims) текущего пользователя 
+            на соответствие уровням доступа: Каталог, Контроллер и Конкретное Действие (Action).
+            </summary>
+            <remarks>
+            Упрощает декларативную проверку прав в формате <c>Каталог.Контроллер.Действие</c> на основе утверждений действий.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.ActionClaimsHelper.#ctor(System.Security.Claims.ClaimsPrincipal)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.ActionClaimsHelper"/> для указанного пользователя.
+            </summary>
+            <param name="principal">Объект текущего авторизованного пользователя <see cref="T:System.Security.Claims.ClaimsPrincipal"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="principal"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.ActionClaimsHelper.AllowCatalog(System.String)">
+            <summary>
+            Проверяет, разрешен ли доступ к указанному разделу (каталогу) в целом.
+            </summary>
+            <param name="catalog">Имя целевого каталога или программного модуля.</param>
+            <returns>Значение <see langword="true"/>, если доступ к каталогу разрешен; в противном случае — <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="catalog"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.ActionClaimsHelper.AllowController(System.String,System.String)">
+            <summary>
+            Проверяет, разрешен ли доступ к конкретному контроллеру внутри указанного каталога.
+            </summary>
+            <param name="catalog">Имя целевого каталога или программного модуля.</param>
+            <param name="controller">Имя целевого контроллера.</param>
+            <returns>Значение <see langword="true"/>, если доступ к контроллеру в рамках каталога разрешен; в противном случае — <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="catalog"/> или <paramref name="controller"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.ActionClaimsHelper.AllowAction(System.String,System.String,System.String)">
+            <summary>
+            Проверяет, разрешен ли доступ к конкретному действию (Action) указанного контроллера и каталога.
+            </summary>
+            <param name="catalog">Имя целевого каталога или программного модуля.</param>
+            <param name="controller">Имя целевого контроллера.</param>
+            <param name="action">Имя целевого действия (метода).</param>
+            <returns>Значение <see langword="true"/>, если доступ к конкретному действию разрешен; в противном случае — <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если любой из параметров равен <see langword="null"/>.</exception>
         </member>
         <member name="T:Ans.Net10.Web.AnsHttpException">
             <summary>
@@ -597,6 +1438,141 @@
             <returns>Полностью инициализированный и проверенный экземпляр класса конфигурации.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="configuration"/> равен <see langword="null"/>.</exception>
             <exception cref="T:System.Exception">Вызывается, если целевая секция отсутствует в файле настроек или не прошла валидацию.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.AuthorizeDataModel">
+            <summary>
+            Реализация интерфейса данных авторизации платформы для динамической сборки политик безопасности.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AuthorizeDataModel.Policy">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.AuthorizeDataModel.Roles">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.AuthorizeDataModel.AuthenticationSchemes">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.DictHtml">
+            <summary>
+            Специализированный словарь, поддерживающий механизм строковой сериализации и десериализации,
+            где ключами являются строки, а значениями — безопасные HTML-строки <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.
+            </summary>
+            <remarks>
+            Позволяет хранить предопределенные фрагменты разметки с опциональной встроенной типографикой.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.#ctor">
+            <summary>
+            Инициализирует новый пустой экземпляр класса <see cref="T:Ans.Net10.Web.DictHtml"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.#ctor(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Инициализирует экземпляр класса <see cref="T:Ans.Net10.Web.DictHtml"/> на основе перечисляемой коллекции строк сериализации.
+            </summary>
+            <param name="serialization">Коллекция строк в формате сериализации словаря.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="serialization"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.#ctor(System.String[])">
+            <summary>
+            Инициализирует экземпляр класса <see cref="T:Ans.Net10.Web.DictHtml"/> на основе массива строк сериализации.
+            </summary>
+            <param name="serialization">Массив строк в формате сериализации словаря.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="serialization"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.#ctor(System.String)">
+            <summary>
+            Инициализирует экземпляр класса <see cref="T:Ans.Net10.Web.DictHtml"/> на основе одной плоской строки сериализации.
+            </summary>
+            <param name="serialization">Строка в формате сериализации словаря.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="serialization"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.StringToKey(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.StringToValue(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.KeyToString(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.DictHtml.ValueToString(Microsoft.AspNetCore.Html.HtmlString)">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.DictHtml.UseTypograf">
+            <summary>
+            Определяет, требуется ли применять правила типографики при преобразовании входящих строк в объекты <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.
+            </summary>
+            <value>
+            Значение <see langword="true"/>, если автоматическое форматирование текста включено; в противном случае — <see langword="false"/>. По умолчанию: <see langword="true"/>.
+            </value>
+        </member>
+        <member name="T:Ans.Net10.Web.LinkBuilder">
+            <summary>
+            Построитель гиперссылок (<c>&lt;a&gt;</c>) и заглушек (<c>&lt;span&gt;</c>), инкапсулирующий логику 
+            управления состояниями активности, блокировки, внешних переходов и применения базовой типографики.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.LinkBuilder.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.LinkBuilder"/> с автоматическим применением базовой типографики к тексту ссылки.
+            </summary>
+            <param name="href">Целевой URL-адрес гиперссылки.</param>
+            <param name="title">Отображаемый текст (заголовок) ссылки.</param>
+            <param name="isDisabled">Признак принудительной блокировки ссылки. По умолчанию: <see langword="false"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="title"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.Id">
+            <summary>
+            Уникальный идентификатор HTML-элемента (атрибут <c>id</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.CssClass">
+            <summary>
+            Список CSS-классов, добавляемых к итоговому HTML-тегу (атрибут <c>class</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.Href">
+            <summary>
+            Целевой URL-адрес гиперссылки (атрибут <c>href</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.InnerHtml">
+            <summary>
+            Материализованное строковое содержимое (HTML/текст) внутри тега ссылки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.IsExternal">
+            <summary>
+            Определяет, ведет ли ссылка на внешний ресурс. Если <see langword="true"/>, добавляется атрибут <c>target="_blank"</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.IsActive">
+            <summary>
+            Определяет, является ли ссылка активной (соответствующей текущей странице). Если <see langword="true"/>, добавляется атрибут <c>aria-current="page"</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.IsSubActive">
+            <summary>
+            Вспомогательный признак активности родительского или смежного элемента навигации.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LinkBuilder.IsDisabled">
+            <summary>
+            Определяет, заблокирована ли ссылка. Если <see langword="true"/> или <see cref="P:Ans.Net10.Web.LinkBuilder.Href"/> пуста, тег рендерится как <c>&lt;span&gt;</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.LinkBuilder.GetTag(System.String)">
+            <summary>
+            Формирует и возвращает настроенный экземпляр HTML-компонента <see cref="T:Ans.Net10.Web.TagBuilderExt"/> на основе текущего состояния свойств.
+            </summary>
+            <remarks>
+            Если ссылка заблокирована (<see cref="P:Ans.Net10.Web.LinkBuilder.IsDisabled"/> или <see cref="P:Ans.Net10.Web.LinkBuilder.Href"/> пуста), генерируется тег <c>&lt;span&gt;</c> с атрибутами доступности 
+            <c>aria-disabled="true"</c> и <c>tabindex="-1"</c>. В противном случае генерируется стандартный тег <c>&lt;a&gt;</c>.
+            </remarks>
+            <param name="innerHtml">Опциональное кастомное HTML-содержимое для переопределения значения <see cref="P:Ans.Net10.Web.LinkBuilder.InnerHtml"/>.</param>
+            <returns>Полностью инициализированный и готовый к рендерингу объект расширенного тега <see cref="T:Ans.Net10.Web.TagBuilderExt"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.MvcAccessHelper">
             <summary>
@@ -1038,6 +2014,96 @@
             <summary>
             Получает строго типизированные параметры конфигурации веб-библиотеки.
             </summary>
+        </member>
+        <member name="T:Ans.Net10.Web._AnsTagHelper_Base">
+            <summary>
+            Базовый класс для специализированных компонентов Razor Tag Helper в экосистеме Ans,
+            обеспечивающий автоматическое внедрение и доступ к текущему контексту приложения.
+            </summary>
+            <param name="current">Экземпляр текущего контекста приложения <see cref="T:Ans.Net10.Web.CurrentContext"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web._AnsTagHelper_Base.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Базовый класс для специализированных компонентов Razor Tag Helper в экосистеме Ans,
+            обеспечивающий автоматическое внедрение и доступ к текущему контексту приложения.
+            </summary>
+            <param name="current">Экземпляр текущего контекста приложения <see cref="T:Ans.Net10.Web.CurrentContext"/>.</param>
+        </member>
+        <member name="F:Ans.Net10.Web._AnsTagHelper_Base.Current">
+            <summary>
+            Предоставляет доступ к текущему контексту выполнения HTTP-запроса, сессии и служб приложения.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web._TagHelper_Base">
+            <summary>
+            Базовый класс для создания кастомных высокопроизводительных асинхронных компонентов Razor Tag Helper.
+            </summary>
+            <remarks>
+            Инкапсулирует логику управления сквозными атрибутами стиля, классов, заголовков и асинхронного дочернего содержимого.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web._TagHelper_Base.MakeBeforeAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Виртуальный метод для асинхронного внедрения разметки или атрибутов непосредственно перед выводом основного тела тега.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._TagHelper_Base.MakeAfterAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Виртуальный метод для асинхронного внедрения разметки или атрибутов сразу после вывода основного тела тега.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.UseAutoContent">
+            <summary>
+            Определяет, требуется ли полностью подавлять вывод тега, если дочернее содержимое пусто.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.ClassBefore">
+            <summary>
+            CSS-классы, принудительно внедряемые в начало списка атрибута <c>class</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.Class">
+            <summary>
+            Основной список CSS-классов компонента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.ClassAfter">
+            <summary>
+            CSS-классы, принудительно внедряемые в конец списка атрибута <c>class</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.Style">
+            <summary>
+            Инлайновые стили элемента (атрибут <c>style</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.Title">
+            <summary>
+            Всплывающая подсказка элемента (атрибут <c>title</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.DefaultContent">
+            <summary>
+            Строковое HTML-содержимое по умолчанию, используемое если тело тега в разметке пусто.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web._TagHelper_Base.CustomContent">
+            <summary>
+            Принудительное HTML-содержимое, полностью перекрывающее внутреннее тело тега.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._TagHelper_Base.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает логику работы компонента, собирает атрибуты и управляет рендерингом содержимого.
+            </summary>
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web._TagHelper_Base.GetContentAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно извлекает результирующее строковое HTML-содержимое тега на основе кастомных перекрытий или тела разметки.
+            </summary>
+            <param name="output">Выходной контекст формирования тега.</param>
+            <returns>Задача, результатом которой является итоговая строка HTML-контента, либо <see langword="null"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.CurrentContext">
             <summary>
@@ -1533,6 +2599,771 @@
             <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="url"/> пуст или равен <see langword="null"/>.</exception>
             <exception cref="T:System.ArgumentNullException">Вызывается, если передана пустая ссылка на делегат <paramref name="selector"/>.</exception>
         </member>
+        <member name="T:Ans.Net10.Web.CheckboxHtml">
+            <summary>
+            Высокоуровневый HTML-компонент, генерирующий законченный Bootstrap-блок флажка ввода (<c>&lt;div class="form-check"&gt;</c>).
+            </summary>
+            <remarks>
+            Автоматически объединяет в себе элемент управления <see cref="T:Ans.Net10.Web.InputCheckboxTag"/> 
+            и связанную подпись <c>&lt;label&gt;</c> с поддержкой инлайнового размещения.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.CheckboxHtml.#ctor(System.String,System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CheckboxHtml"/>, собирая контейнер, чекбокс и текстовую метку.
+            </summary>
+            <param name="name">Системное имя HTML-элемента для группировки данных формы (атрибут <c>name</c>).</param>
+            <param name="id">Уникальный идентификатор HTML-элемента (атрибут <c>id</c>), связывающий инпут и подпись.</param>
+            <param name="value">Передаваемое на сервер значение чекбокса при его активации (атрибут <c>value</c>).</param>
+            <param name="title">Отображаемый текст подписи. Если равен <see langword="null"/>, используется значение из параметра <paramref name="value"/>.</param>
+            <param name="isInline">Признак инлайнового (горизонтального) размещения элемента в ряд. Добавляет класс <c>form-check-inline</c>.</param>
+            <param name="isChecked">Признак начальной отмеченности флажка.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> или <paramref name="id"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.CheckboxHtml.Name">
+            <summary>
+            Возвращает системное имя поля ввода флажка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CheckboxHtml.Id">
+            <summary>
+            Возвращает уникальный идентификатор HTML-элемента флажка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CheckboxHtml.Value">
+            <summary>
+            Возвращает строковое значение, передаваемое при отмеченном флажке.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CheckboxHtml.Title">
+            <summary>
+            Возвращает отображаемый текст подписи флажка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CheckboxHtml.IsInline">
+            <summary>
+            Возвращает признак инлайнового (горизонтального) размещения элемента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CheckboxHtml.IsChecked">
+            <summary>
+            Возвращает признак того, отмечен ли данный флажок.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.DivTag">
+            <summary>
+            Специализированный HTML-компонент для генерации блочного элемента <c>&lt;div&gt;</c> 
+            с поддержкой автоматического заполнения пустых блоков.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.DivTag.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.DivTag"/> с заданным внутренним содержимым.
+            </summary>
+            <remarks>
+            Если переданное содержимое <paramref name="inner"/> равно <see langword="null"/> или является пустым, 
+            блок автоматически заполняется HTML-сущностью неразрывного пробела (<c>&amp;nbsp;</c>) для предотвращения визуального схлопывания элемента.
+            </remarks>
+            <param name="inner">Внутреннее HTML или текстовое содержимое блока.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.DivTag.Inner">
+            <summary>
+            Возвращает исходное внутреннее содержимое блочного элемента.
+            </summary>
+            <value>Строка с контентом, переданным при инициализации.</value>
+        </member>
+        <member name="T:Ans.Net10.Web.HiddenInputsHtml">
+            <summary>
+            Компонент для автоматической генерации группы скрытых полей ввода <c>&lt;input type="hidden" /&gt;</c> 
+            на основе массива строковых значений для передачи коллекций через HTML-формы.
+            </summary>
+            <remarks>
+            Каждому элементу массива сопоставляется отдельный HTML-тег с именем в формате <c>имя[]</c>.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.HiddenInputsHtml.#ctor(System.String,System.String[])">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.HiddenInputsHtml"/> с указанием имени группы полей и массива их значений.
+            </summary>
+            <param name="name">Общее системное имя для группы скрытых полей ввода (атрибут <c>name</c>).</param>
+            <param name="value">Массив строковых значений, для каждого из которых будет сгенерирован отдельный инпут.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.HiddenInputsHtml.Name">
+            <summary>
+            Возвращает базовое имя группы скрытых полей ввода.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.HiddenInputsHtml.Value">
+            <summary>
+            Возвращает массив значений, преобразуемых в скрытые поля ввода.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.HiddenInputsHtml.ToString">
+            <summary>
+            Сериализует текущий объект в плоскую HTML-строку, содержащую последовательность тегов скрытых полей ввода.
+            </summary>
+            <returns>Строка, содержащая сгенерированную HTML-разметку скрытых полей. Если значений нет, возвращает <see cref="F:System.String.Empty"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.HiddenInputsHtml.ToHtml">
+            <summary>
+            Преобразует сгенерированную разметку в безопасный объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, готовый к прямому выводу в Razor-представлениях.
+            </summary>
+            <returns>Экземпляр <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, инкапсулирующий сгенерированные скрытые поля ввода.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.InputCheckboxTag">
+            <summary>
+            Специализированный HTML-компонент для генерации поля ввода флажка 
+            <c>&lt;input type="checkbox" /&gt;</c> со встроенным самозакрывающимся режимом рендеринга.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.InputCheckboxTag.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.InputCheckboxTag"/>, формируя атрибуты имени, идентификатора, значения и состояния выбора.
+            </summary>
+            <param name="name">Системное имя HTML-элемента для группировки данных формы (アтрибут <c>name</c>).</param>
+            <param name="id">Уникальный идентификатор HTML-элемента (атрибут <c>id</c>).</param>
+            <param name="value">Передаваемое на сервер значение чекбокса при его активации (атрибут <c>value</c>).</param>
+            <param name="isChecked">Признак начальной отмеченности флажка. Если <see langword="true"/>, добавляется атрибут <c>checked="checked"</c>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> или <paramref name="id"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.InputCheckboxTag.Name">
+            <summary>
+            Возвращает системное имя поля ввода флажка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputCheckboxTag.Id">
+            <summary>
+            Возвращает уникальный идентификатор HTML-элемента флажка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputCheckboxTag.Value">
+            <summary>
+            Возвращает строковое значение, передаваемое при отмеченном флажке.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputCheckboxTag.IsChecked">
+            <summary>
+            Возвращает признак того, отмечен ли данный флажок в текущий момент.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.InputFileTag">
+            <summary>
+            Специализированный HTML-компонент для генерации поля выбора файла 
+            <c>&lt;input type="file" /&gt;</c> со встроенным самозакрывающимся режимом рендеринга.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.InputFileTag.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.InputFileTag"/>, формируя атрибуты идентификатора, имени и типа поля выбора файла.
+            </summary>
+            <param name="name">Системное имя и уникальный идентификатор HTML-элемента (атрибуты <c>id</c> и <c>name</c>).</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.InputFileTag.Name">
+            <summary>
+            Возвращает системное имя и идентификатор поля выбора файла.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.InputHiddenTag">
+            <summary>
+            Специализированный HTML-компонент для генерации скрытого поля ввода 
+            <c>&lt;input type="hidden" /&gt;</c> со встроенным самозакрывающимся режимом рендеринга.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.InputHiddenTag.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.InputHiddenTag"/>, формируя атрибуты имени и типа скрытого поля ввода.
+            </summary>
+            <param name="name">Системное имя HTML-элемента (атрибут <c>name</c>).</param>
+            <param name="value">Опциональное начальное строковое значение скрытого поля ввода (атрибут <c>value</c>).</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.InputHiddenTag.Name">
+            <summary>
+            Возвращает системное имя скрытого поля ввода.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputHiddenTag.Value">
+            <summary>
+            Возвращает начальное строковое значение скрытого поля ввода.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.InputRadioTag">
+            <summary>
+            Специализированный HTML-компонент для генерации поля ввода радиокнопки (переключателя) 
+            <c>&lt;input type="radio" /&gt;</c> со встроенным самозакрывающимся режимом рендеринга.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.InputRadioTag.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.InputRadioTag"/>, формируя атрибуты имени группы, идентификатора, значения и состояния выбора.
+            </summary>
+            <param name="name">Системное имя группы радиокнопок для обеспечения взаимоисключающего выбора (атрибут <c>name</c>).</param>
+            <param name="id">Уникальный идентификатор HTML-элемента переключателя (атрибут <c>id</c>).</param>
+            <param name="value">Передаваемое на сервер значение радиокнопки при её активации (атрибут <c>value</c>).</param>
+            <param name="isChecked">Признак начальной выбранности радиокнопки. Если <see langword="true"/>, добавляется атрибут <c>checked="checked"</c>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> или <paramref name="id"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.InputRadioTag.Name">
+            <summary>
+            Возвращает системное имя группы переключателей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputRadioTag.Id">
+            <summary>
+            Возвращает уникальный идентификатор HTML-элемента радиокнопки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputRadioTag.Value">
+            <summary>
+            Возвращает строковое значение, передаваемое при активном переключателе.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputRadioTag.IsChecked">
+            <summary>
+            Возвращает признак того, выбрана ли данная радиокнопка в текущий момент.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.InputTextTag">
+            <summary>
+            Специализированный HTML-компонент для генерации стандартного текстового поля ввода 
+            <c>&lt;input type="text" /&gt;</c> со встроенным самозакрывающимся режимом рендеринга.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.InputTextTag.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.InputTextTag"/>, формируя атрибуты идентификатора, имени и типа поля ввода.
+            </summary>
+            <param name="name">Системное имя и уникальный идентификатор HTML-элемента (атрибуты <c>id</c> и <c>name</c>).</param>
+            <param name="value">Опциональное начальное текстовое значение поля ввода (атрибут <c>value</c>).</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.InputTextTag.Name">
+            <summary>
+            Возвращает системное имя и идентификатор текстового поля ввода.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.InputTextTag.Value">
+            <summary>
+            Возвращает начальное строковое значение текстового поля ввода.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.LabelFieldTag">
+            <summary>
+            Специализированный HTML-компонент для генерации интеллектуального элемента подписи поля <c>&lt;label&gt;</c>.
+            </summary>
+            <remarks>
+            Автоматически рендерит иконку обязательности заполнения поля, интерактивную ссылку на справочную документацию 
+            и точечные блоки сообщений об ошибках валидации на основе переданной мета-модели.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.LabelFieldTag.#ctor(System.String,System.Boolean,Ans.Net10.Common.CrudFace,System.String[])">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.LabelFieldTag"/>, динамически формируя внутреннюю HTML-разметку подписи.
+            </summary>
+            <param name="target">Идентификатор целевого HTML-элемента ввода (атрибут <c>id</c>), к которому привязывается метка.</param>
+            <param name="isRequired">Признак обязательности заполнения поля. Если <see langword="true"/>, выводится маркер восклицательного знака.</param>
+            <param name="face">Объект метаданных отображения поля ввода формы.</param>
+            <param name="errors">Опциональный массив текстовых сообщений об ошибках валидации, относящихся к данному полю.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="target"/> или <paramref name="face"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.LabelFieldTag.ViewContext">
+            <summary>
+            Контекст текущего выполняемого Razor-представления.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.OptionTag">
+            <summary>
+            Специализированный HTML-компонент для генерации элемента выбора <c>&lt;option&gt;</c> 
+            в составе выпадающих списков, поддерживающий визуальные иерархические отступы.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.OptionTag.OPTION_TABS">
+            <summary>
+            Строковая HTML-сущность, используемая в качестве одного шага отступа для отображения иерархии (вложенности) элементов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.OptionTag.#ctor(System.String,System.String,System.Int32,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.OptionTag"/>, формируя значение, текст, уровень вложенности и состояние выбора элемента.
+            </summary>
+            <param name="value">Передаваемое на сервер значение элемента списка (атрибут <c>value</c>).</param>
+            <param name="inner">Отображаемый пользовательский текст элемента.</param>
+            <param name="level">Уровень вложенности (иерархии) элемента. Определяет количество повторений отступов <see cref="F:Ans.Net10.Web.OptionTag.OPTION_TABS"/>.</param>
+            <param name="selected">Признак начальной выбранности элемента. Если <see langword="true"/>, добавляется атрибут <c>selected="selected"</c>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.OptionTag.Value">
+            <summary>
+            Возвращает передаваемое системное значение элемента списка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.OptionTag.Inner">
+            <summary>
+            Возвращает исходный отображаемый текст элемента без учета иерархических отступов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.OptionTag.Level">
+            <summary>
+            Возвращает уровень вложенности текущего элемента в иерархии списка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.OptionTag.IsSelected">
+            <summary>
+            Возвращает признак того, выбран ли данный элемент в текущий момент.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.RadioHtml">
+            <summary>
+            Высокоуровневый HTML-компонент, генерирующий законченный Bootstrap-блок радиокнопки переключателя (<c>&lt;div class="form-check"&gt;</c>).
+            </summary>
+            <remarks>
+            Автоматически объединяет в себе элемент управления <see cref="T:Ans.Net10.Web.InputRadioTag"/> 
+            и связанную подпись <c>&lt;label&gt;</c> с поддержкой инлайнового размещения и автогенерацией уникальных ID.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.RadioHtml.#ctor(System.String,System.String,System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.RadioHtml"/>, собирая контейнер, радиокнопку и текстовую метку.
+            </summary>
+            <param name="name">Системное имя группы радиокнопок для обеспечения взаимоисключающего выбора (атрибут <c>name</c>).</param>
+            <param name="value">Передаваемое на сервер значение радиокнопки при её активации (атрибут <c>value</c>).</param>
+            <param name="title">Отображаемый текст подписи. Если равен <see langword="null"/>, используется значение из параметра <paramref name="value"/>.</param>
+            <param name="key">Уникальный суффикс ключа элемента для генерации составного ID. Если равен <see langword="null"/>, используется значение из параметра <paramref name="value"/>.</param>
+            <param name="isInline">Признак инлайнового (горизонтального) размещения элемента в ряд. Добавляет класс <c>form-check-inline</c>.</param>
+            <param name="isChecked">Признак начальной выбранности радиокнопки.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.RadioHtml.Name">
+            <summary>
+            Возвращает системное имя группы радиокнопок.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RadioHtml.Value">
+            <summary>
+            Возвращает строковое значение, передаваемое при активном переключателе.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RadioHtml.Title">
+            <summary>
+            Возвращает отображаемый текст подписи переключателя.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RadioHtml.Key">
+            <summary>
+            Возвращает суффикс ключа элемента, используемый в генерации ID.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RadioHtml.Id">
+            <summary>
+            Возвращает автоматически сгенерированный уникальный идентификатор HTML-элемента флажка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RadioHtml.IsInline">
+            <summary>
+            Возвращает признак инлайнового (горизонтального) размещения элемента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RadioHtml.IsChecked">
+            <summary>
+            Возвращает признак того, выбран ли переключатель.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.SelectInputsHtml">
+            <summary>
+            Высокоуровневый HTML-компонент, отображающий элементы реестра в виде группы инлайновых 
+            Bootstrap-флажков (<see cref="T:Ans.Net10.Web.CheckboxHtml"/>) или переключателей (<see cref="T:Ans.Net10.Web.RadioHtml"/>).
+            </summary>
+            <remarks>
+            Применяется в веб-формах в качестве альтернативы стандартным элементам <c>&lt;select&gt;</c>. 
+            Поддерживает автоматический вывод заголовков групп элементов через теги <c>&lt;p&gt;</c>.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.SelectInputsHtml.#ctor(System.String,System.String[],Ans.Net10.Common.RegistryList,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SelectInputsHtml"/>, формируя контейнер и коллекцию дочерних элементов управления.
+            </summary>
+            <param name="name">Системное имя группы элементов управления для привязки данных формы (атрибут <c>name</c>).</param>
+            <param name="value">Массив предварительно выбранных строковых значений (ключей).</param>
+            <param name="registry">Реестр данных (справочник), содержащий элементы для генерации списка.</param>
+            <param name="isMultiple">Признак множественного выбора. Если <see langword="true"/>, генерируются чекбоксы; иначе — радиокнопки.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectInputsHtml.Name">
+            <summary>
+            Возвращает системное имя группы элементов управления.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectInputsHtml.Value">
+            <summary>
+            Возвращает массив предварительно выбранных значений.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectInputsHtml.Registry">
+            <summary>
+            Возвращает реестр данных, используемый для построения группы переключателей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectInputsHtml.IsMultiple">
+            <summary>
+            Возвращает признак поддержки множественного выбора (вывода чекбоксов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SelectInputsHtml.GetItems">
+            <summary>
+            Генерирует и возвращает строковую HTML-разметку внутренних переключателей и заголовков групп.
+            </summary>
+            <remarks>
+            Если включен режим множественного выбора (<see cref="P:Ans.Net10.Web.SelectInputsHtml.IsMultiple"/>), элементы дополнительно сортируются по алфавиту.
+            </remarks>
+            <returns>Строка с HTML-разметкой внутренних элементов. Если реестр пуст, возвращает <see cref="F:System.String.Empty"/>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.SelectTag">
+            <summary>
+            Специализированный HTML-компонент для генерации элемента выбора <c>&lt;select&gt;</c>.
+            </summary>
+            <remarks>
+            Автоматически поддерживает одиночный и множественный выбор, динамическое построение 
+            опций на основе <see cref="T:Ans.Net10.Common.RegistryList"/> и иерархическую группировку через теги <c>&lt;optgroup&gt;</c>.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.SelectTag.#ctor(System.String,System.String[],Ans.Net10.Common.RegistryList,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SelectTag"/>, формируя структуру выпадающего списка и его опций.
+            </summary>
+            <param name="name">Системное имя и уникальный идентификатор HTML-элемента (атрибуты <c>id</c> и <c>name</c>).</param>
+            <param name="value">Массив предварительно выбранных строковых значений (ключей) элементов.</param>
+            <param name="registry">Реестр данных (справочник), содержащий элементы для наполнения списка.</param>
+            <param name="isMultiple">Признак поддержки множественного выбора элементов (атрибут <c>multiple</c>).</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectTag.Name">
+            <summary>
+            Возвращает системное имя и идентификатор элемента выбора.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectTag.Value">
+            <summary>
+            Возвращает массив предварительно выбранных значений.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectTag.Registry">
+            <summary>
+            Возвращает реестр данных, используемый для построения списка опций.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SelectTag.IsMultiple">
+            <summary>
+            Возвращает признак поддержки множественного выбора элементов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SelectTag.GetSelectOptions">
+            <summary>
+            Генерирует и возвращает строковую HTML-разметку всех внутренних элементов списка (<c>&lt;option&gt;</c> и <c>&lt;optgroup&gt;</c>).
+            </summary>
+            <remarks>
+            Если элемент реестра имеет флаг <c>IsLabel</c>, открывается группа <c>&lt;optgroup&gt;</c>. 
+            Все неразрывные пробелы в текстах опций автоматически нормализуются.
+            </remarks>
+            <returns>Строка с HTML-разметкой внутренних элементов списка. Если реестр пуст, возвращает <see cref="F:System.String.Empty"/>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.TextareaTag">
+            <summary>
+            Специализированный HTML-компонент для генерации многострочного поля ввода текста 
+            <c>&lt;textarea&gt;&lt;/textarea&gt;</c> с парным режимом рендеринга.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TextareaTag.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TextareaTag"/>, формируя атрибуты идентификатора, имени и внутреннего содержимого.
+            </summary>
+            <param name="name">Системное имя и уникальный идентификатор HTML-элемента (атрибуты <c>id</c> и <c>name</c>).</param>
+            <param name="value">Опциональное начальное текстовое значение многострочного поля ввода.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="name"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.TextareaTag.Name">
+            <summary>
+            Возвращает системное имя и идентификатор многострочного поля ввода.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TextareaTag.Value">
+            <summary>
+            Возвращает начальное текстовое значение многострочного поля ввода.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_ClaimsPrincipal">
+            <summary>
+            Методы расширения для <see cref="T:System.Security.Claims.ClaimsPrincipal"/>, обеспечивающие удобную и высокопроизводительную 
+            проверку иерархических прав доступа (Actions) в системе авторизации.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ClaimsPrincipal.HasActionClaim(System.Security.Claims.ClaimsPrincipal,System.String)">
+            <summary>
+            Проверяет наличие у пользователя конкретного утверждения (Claim) действия с указанным значением.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ClaimsPrincipal.HasActionClaim(System.Security.Claims.ClaimsPrincipal,System.Func{System.String,System.Boolean})">
+            <summary>
+            Проверяет наличие у пользователя утверждения (Claim) действия, значение которого удовлетворяет заданному предикату.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ClaimsPrincipal.AllowAccessAction(System.Security.Claims.ClaimsPrincipal,System.String)">
+            <summary>
+            Выполняет иерархическую проверку доступа текущего пользователя к указанному пути действия (Action Path).
+            </summary>
+            <remarks>
+            Разрешает доступ, если у пользователя есть точное совпадение пути, совпадение по маске родительского каталога 
+            или права на любой из вышестоящих узлов иерархии (например, доступ к <c>"Admin"</c> открывает доступ к <c>"Admin.Users.Edit"</c>).
+            </remarks>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_Controller">
+            <summary>
+            Методы расширения для контроллеров <see cref="T:Microsoft.AspNetCore.Mvc.ControllerBase"/> и <see cref="T:Microsoft.AspNetCore.Mvc.Controller"/>, 
+            упрощающие формирование унифицированных ответов API и постраничных выборок данных.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Controller.GetOkApiResult(Microsoft.AspNetCore.Mvc.ControllerBase,System.String)">
+            <summary>
+            Формирует унифицированный успешный ответ HTTP 200 OK, содержащий модель результата API.
+            </summary>
+            <param name="controller">Текущий экземпляр контроллера API.</param>
+            <param name="title">Заголовок или сообщение об успешном выполнении операции.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> с успешным статусом ответа и телом <see cref="T:Ans.Net10.Web.ApiResultModel"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="controller"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Controller.GetErrorApiResult(Microsoft.AspNetCore.Mvc.ControllerBase,System.String)">
+            <summary>
+            Формирует унифицированный ответ ошибки HTTP 400 Bad Request, содержащий модель результата API.
+            </summary>
+            <param name="controller">Текущий экземпляр контроллера API.</param>
+            <param name="title">Заголовок или описание произошедшей ошибки.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/> со статусом ошибки и телом <see cref="T:Ans.Net10.Web.ApiResultModel"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="controller"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Controller.GetPaginatedListAsync``1(Microsoft.AspNetCore.Mvc.Controller,Microsoft.EntityFrameworkCore.DbSet{``0},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            Асинхронно формирует постраничную выборку из набора данных <see cref="T:Microsoft.EntityFrameworkCore.DbSet`1"/>, 
+            внедряет вычисленные метаданные пагинации во <see cref="P:Microsoft.AspNetCore.Mvc.Controller.ViewData"/> 
+            и возвращает соответствующее Razor-представление.
+            </summary>
+            <remarks>
+            Метод использует высокопроизводительный асинхронный хелпер <see cref="T:Ans.Net10.Common.PaginatedQueryableHelper`1"/>,
+            исключая блокировку потоков сервера при вычислении общего количества записей и извлечении среза данных.
+            </remarks>
+            <typeparam name="TEntity">Тип доменной сущности, обрабатываемой в наборе данных. Должен быть ссылочным типом.</typeparam>
+            <param name="controller">Текущий экземпляр MVC-контроллера страниц.</param>
+            <param name="dbSet">Набор сущностей Entity Framework для построения запроса.</param>
+            <param name="filter">Опциональное предикатное выражение для предварительной фильтрации данных перед пагинацией.</param>
+            <param name="order">Строка определения полей и направлений многокритериальной сортировки (например, "LastName,-Age").</param>
+            <param name="page">Номер запрашиваемой страницы (индексация начинается с 1).</param>
+            <param name="itemsOnPage">Запрашиваемое количество элементов на одной странице. Если меньше 1, сбрасывается в 1.</param>
+            <param name="defaultItemsOnPage">Количество элементов на странице по умолчанию, используемое в качестве fallback-значения.</param>
+            <param name="maxItemsOnPages">Максимально допустимый лимит элементов на одной странице для защиты от DoS-аллокаций.</param>
+            <param name="viewName">Опциональное имя или полный виртуальный путь к Razor-представлению. Если равен <see langword="null"/>, используется дефолтное представление экшена.</param>
+            <returns>Задача, результатом выполнения которой является <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>, содержащий материализованный список элементов страницы.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="controller"/> или <paramref name="dbSet"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_Exception">
+            <summary>
+            Методы расширения для класса <see cref="T:System.Exception"/>, обеспечивающие перехват 
+            и обработку специфических исключений баз данных (MSSQL, PostgreSQL) на уровне валидации MVC.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Exception.TestUpdateUniqueMSSQL(System.Exception,Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary,System.String)">
+            <summary>
+            Проверяет исключение на наличие ограничений уникальности MSSQL (UNIQUE KEY). 
+            В случае совпадения добавляет соответствующую ошибку в контекст валидации.
+            </summary>
+            <param name="exception">Текущий экземпляр анализируемого исключения.</param>
+            <param name="modelState">Словарь состояния модели MVC для записи ошибок валидации.</param>
+            <param name="fieldName">Системное имя свойства (поля формы), для которого проверяется уникальность.</param>
+            <returns>
+            Значение <see langword="true"/>, если исключение вызвано нарушением уникальности ключа; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="modelState"/> или <paramref name="fieldName"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Exception.TestUpdateUniquePSQL(System.Exception,Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary,System.String)">
+            <summary>
+            Проверяет исключение на наличие ошибки дублирования ключа в PostgreSQL (код psql 23505) 
+            для конкретного поля формы.
+            </summary>
+            <remarks>
+            Метод анализирует имя уникального индекса базы данных. Если имя индекса содержит 
+            суффикс поля в формате <c>_fieldName"</c>, ошибка привязывается к конкретному инпуту.
+            </remarks>
+            <param name="exception">Текущий экземпляр анализируемого исключения.</param>
+            <param name="modelState">Словарь состояния модели MVC для записи ошибок валидации.</param>
+            <param name="fieldName">Системное имя свойства (поля формы), для которого проверяется уникальность.</param>
+            <returns>
+            Значение <see langword="true"/>, если исключение вызвано нарушением уникальности psql; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="modelState"/> или <paramref name="fieldName"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Exception.TestDuplicateKeyPSQL(System.Exception,Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            Проверяет исключение на наличие ошибки дублирования ключа в PostgreSQL (код psql 23505).
+            </summary>
+            <remarks>
+            Обрабатывает кейсы вида: IX_TableName_MasterPtr_Ptr нарушает уникальное ограничение.
+            </remarks>
+            <param name="exception">Текущий экземпляр анализируемого исключения.</param>
+            <param name="modelState">Словарь состояния модели MVC для записи ошибок валидации.</param>
+            <returns>
+            Значение <see langword="true"/>, если зафиксирована ошибка дублирования ключа psql; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="modelState"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Exception.TestDeleteReferencePSQL(System.Exception,Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            Проверяет исключение на ограничение удаления внешней зависимости (код нарушений внешнего ключа psql 23503).
+            </summary>
+            <remarks>
+            Используется для предотвращения удаления записей, на которые всё еще ссылаются другие объекты в БД.
+            </remarks>
+            <param name="exception">Текущий экземпляр анализируемого исключения.</param>
+            <param name="modelState">Словарь состояния модели MVC для записи ошибок валидации.</param>
+            <returns>
+            Значение <see langword="true"/>, если зафиксирована ошибка нарушения внешнего ключа при удалении/обновлении; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="modelState"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Exception.TestCheckConstraintPSQL(System.Exception,Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary,System.String)">
+            <summary>
+            Проверяет исключение на нарушение ограничений проверки PostgreSQL (CHECK constraint, код psql 23514).
+            </summary>
+            <remarks>
+            Если имя ограничения содержит имя поля в формате <c>_fieldName</c>, ошибка привязывается к конкретному инпуту.
+            </remarks>
+            <param name="exception">Текущий экземпляр анализируемого исключения.</param>
+            <param name="modelState">Словарь состояния модели MVC для записи ошибок валидации.</param>
+            <param name="fieldName">Системное имя свойства (поля формы), для которого проверяется ограничение.</param>
+            <returns>
+            Значение <see langword="true"/>, если зафиксирована ошибка нарушения CHECK constraint; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="modelState"/> или <paramref name="fieldName"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Exception.TestDataFormatErrorPSQL(System.Exception,Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            Проверяет исключение на наличие ошибок превышения длины строк (код psql 22001) 
+            или неверного формата данных (код psql 22P02).
+            </summary>
+            <param name="exception">Текущий экземпляр анализируемого исключения.</param>
+            <param name="modelState">Словарь состояния модели MVC для записи ошибок валидации.</param>
+            <returns>
+            Значение <see langword="true"/>, если зафиксирована ошибка формата данных или переполнения; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="modelState"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_Exception.TestNotNullViolationPSQL(System.Exception,Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary,System.String)">
+            <summary>
+            Проверяет исключение на нарушение ограничения NOT NULL в PostgreSQL (код psql 23502) 
+            для конкретного поля формы.
+            </summary>
+            <param name="exception">Текущий экземпляр анализируемого исключения.</param>
+            <param name="modelState">Словарь состояния модели MVC для записи ошибок валидации.</param>
+            <param name="fieldName">Системное имя свойства (поля формы), для которого проверяется заполненность.</param>
+            <returns>
+            Значение <see langword="true"/>, если зафиксирована ошибка пустого значения в NOT NULL колонке; 
+            в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="modelState"/> или <paramref name="fieldName"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_HttpContext">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>, обеспечивающие удобную работу с параметрами запроса, 
+            рендерингом и программной проверкой политик авторизации.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.GetBaseUrl(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Возвращает базовый URL-адрес веб-приложения (протокол, хост и порт, если он нестандартный) 
+            на основе данных текущего HTTP-запроса.
+            </summary>
+            <remarks>
+            Если приложение работает за прокси-сервером (Nginx/IIS), в приложении должен быть 
+            включен компонент <c>UseForwardedHeaders</c> для корректного определения внешнего хоста и порта.
+            </remarks>
+            <param name="context">Текущий контекст HTTP-запроса.</param>
+            <returns>Строка вида <c>"https://mysite.com"</c> или <c>"http://localhost:5173"</c>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="context"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.GetVirtualPath(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Возвращает базовый виртуальный путь (PathBase) подстраиваемого приложения, если оно развернуто в подкаталоге IIS/Nginx.
+            </summary>
+            <param name="context">Текущий контекст HTTP-запроса.</param>
+            <returns>Строковая строка пути или пустая строка, если приложение запущено в корне домена.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.GetApplicationUrl(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Возвращает полный абсолютный URL-адрес корня веб-приложения, включая виртуальный путь подкаталога.
+            </summary>
+            <param name="context">Текущий контекст HTTP-запроса.</param>
+            <returns>Строка вида <c>"https://mysite.com"</c>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.GetStringFromRazor(Microsoft.AspNetCore.Http.HttpContext,System.Func{System.Object,Microsoft.AspNetCore.Html.IHtmlContent})">
+            <summary>
+            Материализует изолированный HTML-контент Razor (лямбда-выражение) в стандартную строку C#.
+            </summary>
+            <param name="context">Текущий контекст HTTP-запроса.</param>
+            <param name="html">Делегат, представляющий Razor-разметку или HTML-компонент.</param>
+            <returns>Строка, содержащая отрендеренный HTML-код.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если передан пустой делегат разметки.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.IsClaimsAdminAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Проверяет, обладает ли текущий пользователь правами глобального администратора системы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.IsClaimsModeratorAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Проверяет, обладает ли текущий пользователь правами модератора системы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.IsClaimsWriterAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Проверяет, обладает ли текущий пользователь правами редактора/автора (Writer).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.IsClaimsReaderAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Проверяет, обладает ли текущий пользователь правами читателя (Reader).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.IsClaimsUserAsync(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Проверяет, является ли текущий пользователь авторизованным стандартным пользователем системы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.TestClaimsPolicyAsync(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            Выполняет асинхронную программную проверку соответствия текущего пользователя указанной политике безопасности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.TestClaimsRolesAsync(Microsoft.AspNetCore.Http.HttpContext,System.String)">
+            <summary>
+            Выполняет асинхронную программную проверку принадлежности текущего пользователя к указанному списку ролей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_HttpContext.TestClaimsAsync(Microsoft.AspNetCore.Http.HttpContext,System.String,System.String)">
+            <summary>
+            Низкоуровневое ядро подсистемы авторизации, выполняющее агрегацию и программное вычисление политик 
+            и ролей платформы через системные службы оценки политик ASP.NET Core.
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.Exts_IConfiguration">
             <summary>
             Методы расширения для интерфейса <see cref="T:Microsoft.Extensions.Configuration.IConfiguration"/>, обеспечивающие удобное 
@@ -1559,6 +3390,108 @@
             <exception cref="T:System.ArgumentException">
             Вызывается, если параметр <paramref name="connectionStringName"/> является пустой строкой.
             </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_IFormFile">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Http.IFormFile"/>, обеспечивающие асинхронную загрузку файлов на диск, 
+            в том числе с поддержкой поблочной (чанковой) передачи данных.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IFormFile.UploadSmallFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно загружает содержимое файла или его текущего блока (чанка) в целевую директорию на диске посредством ядра <see cref="T:Ans.Net10.Common.SuppIO"/>.
+            </summary>
+            <param name="file">Объект загружаемого файла <see cref="T:Microsoft.AspNetCore.Http.IFormFile"/>.</param>
+            <param name="filename">Имя, под которым файл будет сохранен на диске.</param>
+            <param name="chunk">Порядковый номер текущего блока (индексация с 0). Если равен 0, файл перезаписывается; если больше 0 — данные дописываются в конец.</param>
+            <param name="path">Абсолютный или относительный путь к целевой директории сохранения.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Поток-задача, представляющая асинхронную операцию записи файла на диск.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="file"/> равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">Вызывается, если параметры <paramref name="filename"/> или <paramref name="path"/> пусты.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IFormFile.UploadLargeFileAsync(Microsoft.AspNetCore.Http.IFormFile,System.String,System.Int32,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно и безопасно стримит содержимое крупного файла напрямую на диск без выделения памяти в куче под весь объем данных.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IFormFile.GetContentInBytesAsync(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            Асинхронно считывает входящий поток файла посредством буферизации в памяти и возвращает его содержимое в виде массива байт.
+            </summary>
+            <param name="file">Объект загружаемого файла <see cref="T:Microsoft.AspNetCore.Http.IFormFile"/>.</param>
+            <returns>Поток-задача, возвращающая массив байт, который представляет полное содержимое файла.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="file"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_IHtmlHelper">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper"/>, упрощающие программное извлечение, 
+            материализацию и форматирование динамического контента Razor-представлений в строки и HTML-сущности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IHtmlHelper.GetStringFromRazor(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper,System.Func{System.Object,Microsoft.AspNetCore.Html.IHtmlContent})">
+            <summary>
+            Преобразует изолированный HTML-контент Razor (лямбда-выражение) в стандартную строку.
+            </summary>
+            <param name="helper">Текущий экземпляр помощника <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper"/>.</param>
+            <param name="html">Делегат, представляющий Razor-разметку или HTML-компонент.</param>
+            <returns>Строка, содержащая отрендеренный HTML-код.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="helper"/> или <paramref name="html"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IHtmlHelper.GetStringFromRazor(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper,System.String,System.Func{System.Object,Microsoft.AspNetCore.Html.IHtmlContent}[])">
+            <summary>
+            Материализует массив Razor-делегатов в строки и подставляет их в указанный текстовый шаблон по правилам составного форматирования.
+            </summary>
+            <param name="helper">Текущий экземпляр помощника <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper"/>.</param>
+            <param name="template">Строка составного формата (шаблон) с маркерами подстановки вида {0}, {1} и т.д.</param>
+            <param name="args">Массив Razor-делегатов, результаты рендеринга которых подставляются в шаблон.</param>
+            <returns>Результирующая отформатированная текстовая строка.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="helper"/>, <paramref name="template"/> или <paramref name="args"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IHtmlHelper.GetHtmlFromRazor(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper,System.Func{System.Object,Microsoft.AspNetCore.Html.IHtmlContent})">
+            <summary>
+            Рендерит HTML-контент Razor и оборачивает его в безопасную структуру <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, готовую к выводу без повторного экранирования.
+            </summary>
+            <param name="helper">Текущий экземпляр помощника <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper"/>.</param>
+            <param name="html">Делегат, представляющий Razor-разметку или HTML-компонент.</param>
+            <returns>Объект класса <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> с отрендеренным контентом.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="helper"/> или <paramref name="html"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_IHtmlHelper.GetHtmlFromRazor(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper,System.String,System.Func{System.Object,Microsoft.AspNetCore.Html.IHtmlContent}[])">
+            <summary>
+            Формирует строку по шаблону на основе отрендеренных Razor-компонентов и возвращает результат в виде безопасного объекта <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.
+            </summary>
+            <param name="helper">Текущий экземпляр помощника <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper"/>.</param>
+            <param name="template">Строка составного формата (шаблон) с маркерами подстановки.</param>
+            <param name="args">Массив Razor-делегатов для подстановки в шаблон.</param>
+            <returns>Объект класса <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий безопасный отформатированный HTML-код.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="helper"/>, <paramref name="template"/> или <paramref name="args"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web._e_ISession">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Http.ISession"/>, обеспечивающие строго типизированное 
+            сохранение и извлечение произвольных объектов посредством JSON-сериализации.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._e_ISession.Set``1(Microsoft.AspNetCore.Http.ISession,System.String,``0)">
+            <summary>
+            Сериализует переданный объект в строку формата JSON и сохраняет его в сессии по указанному ключу.
+            </summary>
+            <typeparam name="T">Тип сохраняемого объекта.</typeparam>
+            <param name="session">Текущий контекст сессии <see cref="T:Microsoft.AspNetCore.Http.ISession"/>.</param>
+            <param name="key">Уникальный строковый ключ для записи в сессию.</param>
+            <param name="value">Объект для сериализации и сохранения.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="session"/> или <paramref name="key"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web._e_ISession.Get``1(Microsoft.AspNetCore.Http.ISession,System.String)">
+            <summary>
+            Извлекает из сессии строковое значение по указанному ключу и десериализует его в объект заданного типа.
+            </summary>
+            <typeparam name="T">Тип, в который преобразуются данные из JSON.</typeparam>
+            <param name="session">Текущий контекст сессии <see cref="T:Microsoft.AspNetCore.Http.ISession"/>.</param>
+            <param name="key">Уникальный строковый ключ для поиска в сессии.</param>
+            <returns>Десериализованный объект типа <typeparamref name="T"/>, либо <see langword="null"/>, если ключ отсутствует, сессия пуста или значение содержит некорректный формат.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="session"/> или <paramref name="key"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="T:Ans.Net10.Web.Exts_TagBuilder">
             <summary>
@@ -1594,6 +3527,283 @@
             <param name="tag">Текущий построитель тега.</param>
             <param name="value">Строка добавляемого CSS-стиля (например, <c>"display:none"</c>).</param>
             <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="tag"/> или <paramref name="value"/> равны <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_TagHelperOutput">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput"/>, упрощающие манипуляцию HTML-атрибутами 
+            и содержимым внутри компонентов Tag Helper.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_TagHelperOutput.AddValueToAttribute(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput,System.String,System.String,System.String)">
+            <summary>
+            Безопасно добавляет значение к существующему HTML-атрибуту через разделитель, либо создает его, если он отсутствует.
+            </summary>
+            <param name="output">Контекст вывода текущего Tag Helper'а.</param>
+            <param name="name">Имя HTML-атрибута (например, "class" или "style").</param>
+            <param name="value">Добавляемое строковое значение.</param>
+            <param name="separator">Строка-разделитель, используемая при конкатенации (например, пробел или точка с запятой).</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_TagHelperOutput.AddAttributeIfPresent(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput,System.String,System.String[])">
+            <summary>
+            Безопасно добавляет HTML-атрибут в коллекцию, если результирующее строковое значение, 
+            собранное из переданного массива элементов, не является пустым.
+            </summary>
+            <remarks>
+            Метод автоматически игнорирует и отбрасывает элементы массива, которые равны <see langword="null"/>, 
+            пустые или состоят исключительно из пробелов, исключая появление лишних разделительных пробелов в разметке.
+            </remarks>
+            <param name="output">Текущий экземпляр контекста формирования тега.</param>
+            <param name="name">Системное имя добавляемого HTML-атрибута (например, <c>"class"</c> или <c>"style"</c>).</param>
+            <param name="values">Массив строк, составляющих значение атрибута. Пустые элементы отбрасываются.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="output"/> равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">Вызывается, если имя атрибута <paramref name="name"/> равно <see langword="null"/> или является пустой строкой.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_TagHelperOutput.AppendHtml(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput,System.String)">
+            <summary>
+            Записывает готовую HTML-строку напрямую во внутренний контент вывода Tag Helper'а без повторного экранирования.
+            </summary>
+            <param name="output">Контекст вывода текущего Tag Helper'а.</param>
+            <param name="encoded">Форматированная HTML-строка.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_TagHelperOutput.GetChildContentAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно извлекает и материализует полное строковое содержимое дочерних элементов (внутренний HTML) текущего Tag Helper'а.
+            </summary>
+            <param name="output">Контекст вывода текущего Tag Helper'а.</param>
+            <returns>Поток-задача, возвращающая текстовое содержимое дочернего контента.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_View">
+            <summary>
+            Методы расширения для компонентов представления Razor (<see cref="T:Microsoft.AspNetCore.Mvc.ViewEngines.IView"/>, 
+            <see cref="T:Microsoft.AspNetCore.Mvc.Razor.IRazorPage"/>, <see cref="T:Microsoft.AspNetCore.Mvc.Razor.RazorPage"/>), упрощающие извлечение метаданных и управление рендерингом.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_View.GetViewName(Microsoft.AspNetCore.Mvc.ViewEngines.IView)">
+            <summary>
+            Возвращает чистое имя файла представления (без пути и расширения) для указанного <see cref="T:Microsoft.AspNetCore.Mvc.ViewEngines.IView"/>.
+            </summary>
+            <param name="view">Текущий экземпляр движка представления.</param>
+            <returns>Строка с именем представления. Если путь пуст или равен <see langword="null"/>, возвращает пустую строку.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="view"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_View.GetViewName(Microsoft.AspNetCore.Mvc.Razor.IRazorPage)">
+            <summary>
+            Возвращает чистое имя файла страницы Razor (без пути и расширения) для указанной <see cref="T:Microsoft.AspNetCore.Mvc.Razor.IRazorPage"/>.
+            </summary>
+            <param name="view">Текущий экземпляр страницы Razor.</param>
+            <returns>Строка с именем страницы. Если путь пуст или равен <see langword="null"/>, возвращает пустую строку.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="view"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_View.TrySectionAsync(Microsoft.AspNetCore.Mvc.Razor.RazorPage,System.String)">
+            <summary>
+            Выполняет безопасную асинхронную попытку рендеринга именованной секции Razor-страницы.
+            </summary>
+            <remarks>
+            Проверяет, определена ли секция в дочернем представлении перед запуском её рендеринга. 
+            Позволяет избежать генерации системных исключений при отсутствии необязательных блоков разметки.
+            </remarks>
+            <param name="page">Текущий рабочий контекст страницы Razor.</param>
+            <param name="sectionName">Системное уникальное имя проверяемой секции.</param>
+            <returns>
+            Задача, результатом выполнения которой является <see langword="true"/>, если секция успешно найдена и отрендерена; 
+            в противном случае (если секция не определена) — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="page"/> или <paramref name="sectionName"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_ViewContext">
+            <summary>
+            Методы расширения для <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>, упрощающие изоляцию параметров маршрутизации 
+            и обеспечивающие высокопроизводительный рендеринг Razor-представлений.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.RenderViewAsync(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.Object)">
+            <summary>
+            Асинхронно рендерит Razor-представление в текстовую строку с использованием внедренной службы <see cref="T:Ans.Net10.Web.Services.IViewRenderService"/>.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="viewName">Имя или полный виртуальный путь к представлению Razor.</param>
+            <param name="model">Объект доменной модели данных, передаваемый внутрь Razor-шаблона.</param>
+            <returns>Поток-задача, возвращающая отрендеренный HTML-код в виде строки.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsString(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и возвращает его строковое представление.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Строковое значение параметра маршрута или <see langword="null"/>, если параметр не найден.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsString(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия параметра.</param>
+            <returns>Строковое значение параметра маршрута либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsInt(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в 32-битное целое число со знаком.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Преобразованное целое число, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsInt(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.Int32)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде целого числа или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Целочисленное значение параметра маршрута либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsUInt(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в 32-битное целое число без знака.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Преобразованное число без знака, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsUInt(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.UInt32)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде числа без знака или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.UInt32"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsLong(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в 64-битное целое число со знаком.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Преобразованное число типа <see cref="T:System.Int64"/>, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsLong(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.Int64)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде 64-битного целого числа или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.Int64"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDouble(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в число с плавающей запятой двойной точности.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Преобразованное число типа <see cref="T:System.Double"/>, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDouble(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.Double)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде числа двойной точности или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.Double"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsFloat(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в число с плавающей запятой одинарной точности.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Преобразованное число типа <see cref="T:System.Single"/>, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsFloat(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.Single)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде числа одинарной точности или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.Single"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDecimal(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в высокоточное десятичное число.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Преобразованное число типа <see cref="T:System.Decimal"/>, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDecimal(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.Decimal)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде высокоточного десятичного числа или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.Decimal"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDateTime(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в объект даты и времени.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Объект структуры <see cref="T:System.DateTime"/>, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDateTime(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.DateTime)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде объекта даты и времени или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.DateTime"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDateOnly(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в календарную дату без времени.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Объект структуры <see cref="T:System.DateOnly"/>, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsDateOnly(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.DateOnly)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде календарной даты без времени или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.DateOnly"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsTimeOnly(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в время суток без привязки к дате.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns>Объект структуры <see cref="T:System.TimeOnly"/>, либо <see langword="null"/>, если параметр не найден или имеет некорректный формат.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsTimeOnly(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String,System.TimeOnly)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу в виде времени суток или возвращает заданное значение по умолчанию.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <param name="defaultValue">Значение, возвращаемое в случае отсутствия или некорректного формата параметра.</param>
+            <returns>Значение параметра маршрута типа <see cref="T:System.TimeOnly"/> либо <paramref name="defaultValue"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewContext.GetRouteValueAsBool(Microsoft.AspNetCore.Mvc.Rendering.ViewContext,System.String)">
+            <summary>
+            Извлекает значение параметра маршрутизации по указанному ключу и преобразует его в логическое значение.
+            </summary>
+            <param name="context">Текущий контекст представления <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.ViewContext"/>.</param>
+            <param name="key">Системный ключ параметра маршрута.</param>
+            <returns><see langword="true"/>, если значение эквивалентно маркерам "1", "+" или "true"; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Exts_ViewDataDictionary">
             <summary>
@@ -1711,13 +3921,90 @@
             <param name="defaultValue">Значение по умолчанию.</param>
             <returns>Целое число.</returns>
         </member>
-        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetBool(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetUInt(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
             <summary>
-            Извлекает логическое значение из словаря ViewData. При отсутствии ключа возвращает <see langword="false"/>.
+            Извлекает из словаря ViewData значение по его имени со сбросом в nullable-состояние 32-битного целого числа без знака.
             </summary>
             <param name="viewData">Текущий словарь ViewData.</param>
             <param name="name">Имя выражения или ключа словаря.</param>
-            <returns>Логическое значение флажка.</returns>
+            <returns>Целое число без знака или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetUInt(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.UInt32)">
+            <summary>
+            Извлекает из словаря ViewData значение по его имени с поддержкой кастомного значения по умолчанию типа uint.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Целое число без знака.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetLong(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает из словаря ViewData значение по его имени со сбросом в nullable-состояние 64-битного целого числа со знаком.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Большое целое число со знаком или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetLong(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Int64)">
+            <summary>
+            Извлекает из словаря ViewData значение по его имени с поддержкой кастомного значения по умолчанию типа long.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Большое целое число со знаком.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDouble(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает из словаря ViewData структуру числа с плавающей запятой двойной точности.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Число с плавающей запятой двойной точности или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDouble(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Double)">
+            <summary>
+            Извлекает из словаря ViewData структуру числа двойной точности с поддержкой fallback-значения.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Число с плавающей запятой двойной точности.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetFloat(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает из словаря ViewData структуру числа с плавающей запятой одинарной точности.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Число с плавающей запятой одинарной точности или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetFloat(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Single)">
+            <summary>
+            Извлекает из словаря ViewData структуру числа одинарной точности с поддержкой fallback-значения.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Число с плавающей запятой одинарной точности.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDecimal(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает из словаря ViewData высокоточное десятичное число.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Высокоточное десятичное число или <see langword="null"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDecimal(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String,System.Decimal)">
+            <summary>
+            Извлекает из словаря ViewData высокоточное десятичное число с поддержкой fallback-значения.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <param name="defaultValue">Значение по умолчанию.</param>
+            <returns>Высокоточное десятичное число.</returns>
         </member>
         <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetDateTime(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
             <summary>
@@ -1769,6 +4056,104 @@
             <param name="name">Имя выражения или ключа словаря.</param>
             <param name="defaultValue">Значение по умолчанию.</param>
             <returns>Время суток.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_ViewDataDictionary.GetBool(Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary,System.String)">
+            <summary>
+            Извлекает логическое значение из словаря ViewData. При отсутствии ключа возвращает <see langword="false"/>.
+            </summary>
+            <param name="viewData">Текущий словарь ViewData.</param>
+            <param name="name">Имя выражения или ключа словаря.</param>
+            <returns>Логическое значение флажка.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts__auth">
+            <summary>
+            Методы расширения для настройки подсистемы авторизации <see cref="T:Microsoft.AspNetCore.Authorization.AuthorizationOptions"/> платформы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__auth.AddAnsPolicies(Microsoft.AspNetCore.Authorization.AuthorizationOptions)">
+            <summary>
+            Декларативно регистрирует стандартный иерархический набор политик безопасности приложения 
+            на основе предопределенных системных утверждений (Claims).
+            </summary>
+            <remarks>
+            Метод формирует следующие политики авторизации:
+            <list type="bullet">
+            <item><description><c>Admins</c> — требует уровень доступа Администратора.</description></item>
+            <item><description><c>Moderators</c> — разрешает доступ Администраторам и Модераторам.</description></item>
+            <item><description><c>Writers</c> — разрешает доступ Администраторам, Модераторам и Редакторам.</description></item>
+            <item><description><c>Readers</c> — разрешает доступ любым сотрудникам с правами на чтение и выше.</description></item>
+            <item><description><c>Users</c> — требует наличия любого валидного утверждения типа политики авторизации.</description></item>
+            </list>
+            </remarks>
+            <param name="options">Объект конфигурации параметров авторизации ASP.NET Core.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="options"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts__model">
+            <summary>
+            Методы расширения для работы с метаданными моделей (<see cref="T:Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression"/>, <see cref="T:Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata"/>) 
+            и словарями состояния валидации (<see cref="T:Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary"/>).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__model.GetModelValueString(Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression)">
+            <summary>
+            Извлекает строковое значение из выражения модели, адаптированное и безопасное для вывода в веб-интерфейсах.
+            </summary>
+            <param name="expression">Текущий экземпляр выражения модели.</param>
+            <returns>Строковое веб-представление значения модели, либо <see langword="null"/>, если модель не инициализирована.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="expression"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__model.GetMaxLengthAttribute(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata)">
+            <summary>
+            Возвращает кастомный атрибут ограничения максимальной длины <see cref="T:System.ComponentModel.DataAnnotations.MaxLengthAttribute"/>, 
+            примененный к свойству модели.
+            </summary>
+            <param name="data">Метаданные исследуемого свойства модели.</param>
+            <returns>Экземпляр атрибута <see cref="T:System.ComponentModel.DataAnnotations.MaxLengthAttribute"/> или <see langword="null"/>, если ограничение отсутствует.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="data"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__model.GetRegularExpressionAttribute(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata)">
+            <summary>
+            Возвращает кастомный атрибут проверки регулярного выражения <see cref="T:System.ComponentModel.DataAnnotations.RegularExpressionAttribute"/>, 
+            примененный к свойству модели.
+            </summary>
+            <param name="data">Метаданные исследуемого свойства модели.</param>
+            <returns>Экземпляр атрибута <see cref="T:System.ComponentModel.DataAnnotations.RegularExpressionAttribute"/> или <see langword="null"/>, если атрибут отсутствует.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="data"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__model.GetRangeAttribute(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata)">
+            <summary>
+            Возвращает кастомный атрибут валидации числового или строкового диапазона <see cref="T:System.ComponentModel.DataAnnotations.RangeAttribute"/>, 
+            примененный к свойству модели.
+            </summary>
+            <param name="data">Метаданные исследуемого свойства модели.</param>
+            <returns>Экземпляр атрибута <see cref="T:System.ComponentModel.DataAnnotations.RangeAttribute"/> или <see langword="null"/>, если ограничение диапазона отсутствует.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="data"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__model.GetRequiredAttribute(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata)">
+            <summary>
+            Возвращает кастомный атрибут обязательности заполнения поля <see cref="T:System.ComponentModel.DataAnnotations.RequiredAttribute"/>, 
+            примененный к свойству модели.
+            </summary>
+            <param name="data">Метаданные исследуемого свойства модели.</param>
+            <returns>Экземпляр атрибута <see cref="T:System.ComponentModel.DataAnnotations.RequiredAttribute"/> или <see langword="null"/>, если поле не является обязательным.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="data"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__model.GetModelErrors(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary)">
+            <summary>
+            Возвращает плоский массив строк со списком глобальных ошибок валидации модели (ошибок, не привязанных к конкретным инпутам формы).
+            </summary>
+            <param name="modelState">Словарь состояния текущей валидации MVC.</param>
+            <returns>Массив текстовых сообщений об ошибках. Если ошибки отсутствуют, возвращает пустой массив.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="modelState"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__model.GetFieldErrors(Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary,System.String)">
+            <summary>
+            Возвращает плоский массив строк со списком ошибок валидации для конкретного именованного поля формы.
+            </summary>
+            <param name="modelState">Словарь состояния текущей валидации MVC.</param>
+            <param name="name">Системное имя проверяемого свойства (поля модели).</param>
+            <returns>Массив текстовых сообщений об ошибках для указанного поля. Если ошибки отсутствуют, возвращает пустой массив.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="modelState"/> или <paramref name="name"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="T:Ans.Net10.Web.Exts__routes">
             <summary>
@@ -1832,6 +4217,77 @@
             <param name="useTypograf">Признак необходимости применения типографа к исходной строке.</param>
             <returns>Отформатированный объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> или <see cref="F:Microsoft.AspNetCore.Html.HtmlString.Empty"/>, если исходная строка пуста или состоит из пробелов.</returns>
         </member>
+        <member name="T:Ans.Net10.Web.SuppClaims">
+            <summary>
+            Вспомогательный класс-реестр, содержащий стандартизированные имена типов утверждений (Claims) 
+            и строковые константы для настройки глобальных политик авторизации в приложении.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.CLAIMS_AUTH_POLICY_NAME">
+            <summary>
+            Системное имя типа утверждения (Claim Type) для определения базовой политики авторизации пользователя.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.CLAIMS_ACTIONS_NAME">
+            <summary>
+            Системное имя типа утверждения (Claim Type) для хранения списка разрешенных пользователю действий (Actions).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.CLAIMS_RESOURCES_NAME">
+            <summary>
+            Системное имя типа утверждения (Claim Type) для хранения списка доступных пользователю ресурсов (Resources).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_ADMINS">
+            <summary>
+            Имя политики авторизации для группы "Администраторы".
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_ADMINS_VALUE">
+            <summary>
+            Маркер уровня доступа для политики администраторов. Соответствует значению <c>"4"</c>.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_MODERATORS">
+            <summary>
+            Имя политики авторизации для группы "Модераторы".
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_MODERATORS_VALUE">
+            <summary>
+            Маркер уровня доступа для политики модераторов. Соответствует значению <c>"3"</c>.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_WRITERS">
+            <summary>
+            Имя политики авторизации для группы "Редакторы/Авторы" (Writers).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_WRITERS_VALUE">
+            <summary>
+            Маркер уровня доступа для политики редакторов. Соответствует значению <c>"2"</c>.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_READERS">
+            <summary>
+            Имя политики авторизации для группы "Читатели" (Readers).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_READERS_VALUE">
+            <summary>
+            Маркер уровня доступа для политики читателей. Соответствует значению <c>"1"</c>.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_USERS">
+            <summary>
+            Имя политики авторизации для стандартных зарегистрированных пользователей.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_USERS_VALUE">
+            <summary>
+            Маркер уровня доступа для стандартных пользователей. Соответствует значению <c>"0"</c>.
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.SuppCors">
             <summary>
             Вспомогательный класс для обеспечения настройки и конфигурации политик CORS (Cross-Origin Resource Sharing).
@@ -1880,6 +4336,22 @@
             <value>
             Имеет фиксированное строковое значение <c>"ALLOW READ ONLY"</c>.
             </value>
+        </member>
+        <member name="T:Ans.Net10.Web.SuppForwardedHeaders">
+            <summary>
+            Вспомогательный класс для настройки интеграции веб-приложения с обратными прокси-серверами (Nginx, Apache, IIS).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppForwardedHeaders.Configure(Microsoft.AspNetCore.Builder.ForwardedHeadersOptions,Ans.Net10.Web.LibWebOptions)">
+            <summary>
+            Настраивает параметры обработки прокси-заголовков на основе конфигурации библиотеки, 
+            используя современные типы данных платформы .NET 10.
+            </summary>
+            <param name="options">Системные опции ForwardedHeaders платформы.</param>
+            <param name="webOptions">Загруженные параметры конфигурации библиотеки.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметры <paramref name="options"/> или <paramref name="webOptions"/> равны <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:Ans.Net10.Web.SuppWebCache">
             <summary>

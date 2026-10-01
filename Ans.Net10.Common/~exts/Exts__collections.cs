@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -18,7 +16,6 @@ namespace Ans.Net10.Common
 		/// <param name="source">Исходный экземпляр массива, к которому добавляется элемент. Допускает значение <see langword="null"/>.</param>
 		/// <param name="item">Объект, вставляемый в конец целевого массива.</param>
 		/// <returns>Новый массив, содержащий все элементы исходного набора и добавленный элемент на последней позиции.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] GetArrayAdd<T>(
 			this T[]? source,
 			T item)
@@ -40,7 +37,6 @@ namespace Ans.Net10.Common
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Выбрасывается, если значение <paramref name="index"/> меньше нуля или строго больше фактической длины исходного массива.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] GetArrayInsert<T>(
 			this T[]? source,
 			int index,
@@ -66,7 +62,6 @@ namespace Ans.Net10.Common
 		/// <exception cref="ArgumentOutOfRangeException">
 		/// Выбрасывается, если исходный массив равен <see langword="null"/>, пуст, или если <paramref name="index"/> выходит за фактические границы массива.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] GetArrayRemoveAt<T>(
 			this T[]? source,
 			int index)
@@ -91,7 +86,6 @@ namespace Ans.Net10.Common
 		/// <param name="source">Исходный экземпляр массива. Допускает значение <see langword="null"/>.</param>
 		/// <param name="item">Целевой объект, первое вхождение которого необходимо исключить из массива.</param>
 		/// <returns>Новый уменьшенный массив без первого вхождения указанного элемента или оригинальный массив, если совпадений не найдено.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T[] GetArrayRemove<T>(
 			this T[]? source,
 			T item)
@@ -186,7 +180,6 @@ namespace Ans.Net10.Common
 		/// <param name="newest">Целевая (новая) последовательность для проверки присутствия.</param>
 		/// <param name="keySelector">Делегат функции извлечения уникального ключа.</param>
 		/// <returns>Ленивый поток элементов из старой коллекции, чьи ключи присутствуют в новой коллекции.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> GetActual<T, TKey>(
 			this IEnumerable<T> current,
 			IEnumerable<T> newest,
@@ -207,7 +200,6 @@ namespace Ans.Net10.Common
 		/// <param name="newest">Целевая (новая) последовательность, из которой извлекаются актуальные элементы.</param>
 		/// <param name="keySelector">Делегат функции извлечения уникального ключа.</param>
 		/// <returns>Ленивый поток элементов из новой коллекции, чьи ключи присутствуют в текущей коллекции.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> GetUpdated<T, TKey>(
 			this IEnumerable<T> current,
 			IEnumerable<T> newest,
@@ -228,7 +220,6 @@ namespace Ans.Net10.Common
 		/// <param name="newest">Целевая (новая) последовательность элементов для поиска новинок.</param>
 		/// <param name="keySelector">Делегат функции извлечения уникального ключа.</param>
 		/// <returns>Ленивый поток добавленных элементов, присутствующих исключительно в новой коллекции.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> GetAdded<T, TKey>(
 			this IEnumerable<T> current,
 			IEnumerable<T> newest,
@@ -249,7 +240,6 @@ namespace Ans.Net10.Common
 		/// <param name="newest">Целевая (новая) последовательность, определяющая исключаемые ключи.</param>
 		/// <param name="keySelector">Делегат функции извлечения уникального ключа.</param>
 		/// <returns>Ленивый поток удаленных элементов, которые были утеряны в новой коллекции.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T> GetRemoved<T, TKey>(
 			this IEnumerable<T> current,
 			IEnumerable<T> newest,
@@ -285,7 +275,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходная последовательность строк, допускающих значение <see langword="null"/>.</param>
 		/// <returns>Последовательность строк с обрезанными пробелами, где позиции элементов со значением <see langword="null"/> не изменяются.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<string?> GetItemsTrim(
 			this IEnumerable<string?> source)
 		{
@@ -299,7 +288,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходная последовательность строк, допускающих значение <see langword="null"/>.</param>
 		/// <returns>Последовательность строк, гарантированно не содержащая пустых значений или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<string> GetItemsWithoutEmpty(
 			this IEnumerable<string?> source)
 		{
@@ -314,7 +302,6 @@ namespace Ans.Net10.Common
 		/// <param name="source">Исходная последовательность строк, допускающих значение <see langword="null"/>.</param>
 		/// <param name="comparer">Кастомный компаратор для определения уникальности строк. Если не задан, используется <see cref="StringComparer.Ordinal"/>.</param>
 		/// <returns>Последовательность уникальных строк, отфильтрованная в соответствии с правилами сравнения.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<string?> GetItemsUnique(
 			this IEnumerable<string?> source,
 			StringComparer? comparer = null)

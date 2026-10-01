@@ -1,6 +1,7 @@
-﻿using Ans.Net10.Common;
+﻿// rev 2026-010-01
+
+using Ans.Net10.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Psql
 {
@@ -106,7 +107,6 @@ SELECT setval(pg_get_serial_sequence('public.""{table}""', 'Id'), 1, 'f');
 		/// <typeparam name="T">Тип доменной сущности.</typeparam>
 		/// <param name="dbSet">Текущий экземпляр набора данных.</param>
 		/// <returns>Результат выполнения операции очистки контекста, либо <c>-1</c>, если метаданные таблицы не найдены.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int SqlClearTable<T>(
 			this DbSet<T> dbSet)
 			where T : class
@@ -125,7 +125,6 @@ SELECT setval(pg_get_serial_sequence('public.""{table}""', 'Id'), 1, 'f');
 		/// <typeparam name="T">Тип доменной сущности.</typeparam>
 		/// <param name="dbSet">Текущий экземпляр набора данных.</param>
 		/// <returns>Количество затронутых строк СУБД, либо <c>-1</c>, если контекст или имя таблицы равны <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int SerialSequenceSetMax<T>(
 			this DbSet<T> dbSet)
 			where T : class
@@ -247,7 +246,6 @@ SELECT setval(pg_get_serial_sequence('public.""{table}""', 'Id'), 1, 'f');
 		/// <param name="context">Текущий контекст базы данных Entity Framework Core.</param>
 		/// <param name="sql">Строка сырого SQL-запроса.</param>
 		/// <returns>Количество обработанных строк СУБД либо <c>0</c>, если запрос был пуст.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int ExecuteSqlRawIfPresent(
 			this DbContext context,
 			string sql)
@@ -264,7 +262,6 @@ SELECT setval(pg_get_serial_sequence('public.""{table}""', 'Id'), 1, 'f');
 		/// <param name="context">Текущий контекст базы данных Entity Framework Core.</param>
 		/// <param name="table">Имя целевой таблицы.</param>
 		/// <returns>Количество затронутых строк СУБД.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int SerialSequenceSetMax(
 			this DbContext context,
 			string table)
@@ -302,7 +299,6 @@ $$ language 'plpgsql';";
 		/// <param name="context">Текущий контекст базы данных Entity Framework Core.</param>
 		/// <param name="table">Имя таблицы, для которой создается триггер.</param>
 		/// <returns>Результат выполнения команды СУБД.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int CreateTrigger_DateUpdate(
 			this DbContext context,
 			string table)

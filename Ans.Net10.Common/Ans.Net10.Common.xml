@@ -25,30 +25,32 @@
             <summary>
             Возвращает новый, инициализированный по умолчанию экземпляр сущности.
             </summary>
+            <returns>Новый экземпляр сущности типа <typeparamref name="T"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudMasterRepository`1.GetItemsCount">
+        <member name="M:Ans.Net10.Common.Crud.ICrudMasterRepository`1.GetItemsCountAsync">
             <summary>
-            Возвращает общее количество всех сущностей данного типа в базе данных.
+            Асинхронно возвращает общее количество всех сущностей данного типа в базе данных.
             </summary>
+            <returns>Задача, результатом выполнения которой является общее количество записей в таблице.</returns>
         </member>
         <member name="T:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1">
             <summary>
             Абстрактный прототип класса для реализации репозиториев CRUD-операций
-            над главными сущностями с использованием Entity Framework.
+            над главными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.IMasterEntity"/>.</typeparam>
         </member>
         <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.#ctor(Microsoft.EntityFrameworkCore.DbContext)">
             <summary>
             Абстрактный прототип класса для реализации репозиториев CRUD-операций
-            над главными сущностями с использованием Entity Framework.
+            над главными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.IMasterEntity"/>.</typeparam>
         </member>
         <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.GetNew">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.GetItemsCount">
+        <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.GetItemsCountAsync">
             <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Common.Crud.ISlaveEntity">
@@ -72,35 +74,41 @@
             Возвращает новый, инициализированный по умолчанию экземпляр подчиненной сущности для указанного владельца.
             </summary>
             <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <returns>Новый экземпляр подчиненной сущности типа <typeparamref name="T"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudSlaveRepository`1.GetItemsAsQueryable(System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
             Формирует запрос <see cref="T:System.Linq.IQueryable`1"/> без отслеживания изменений,
             жестко ограниченный рамками одного владельца.
             </summary>
+            <remarks>
+            Метод возвращает ленивый запрос, к которому в дальнейшем можно асинхронно применить методы материализации.
+            </remarks>
             <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
             <param name="filter">
             Дополнительное выражение фильтрации. Если <see langword="null"/>,
             выборка ограничивается только по <paramref name="masterPtr"/>.
             </param>
+            <returns>Запрос <see cref="T:System.Linq.IQueryable`1"/> для извлечения подчиненных сущностей.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudSlaveRepository`1.GetItemsCount(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud.ICrudSlaveRepository`1.GetItemsCountAsync(System.Int32)">
             <summary>
-            Возвращает общее количество всех подчиненных сущностей, принадлежащих указанному владельцу.
+            Асинхронно возвращает общее количество всех подчиненных сущностей, принадлежащих указанному владельцу.
             </summary>
             <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <returns>Задача, результатом выполнения которой является количество записей, связанных с указанным владельцем.</returns>
         </member>
         <member name="T:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1">
             <summary>
             Абстрактный прототип класса для реализации репозиториев CRUD-операций
-            над подчиненными сущностями с использованием Entity Framework.
+            над подчиненными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.ISlaveEntity"/>.</typeparam>
         </member>
         <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.#ctor(Microsoft.EntityFrameworkCore.DbContext)">
             <summary>
             Абстрактный прототип класса для реализации репозиториев CRUD-операций
-            над подчиненными сущностями с использованием Entity Framework.
+            над подчиненными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.ISlaveEntity"/>.</typeparam>
         </member>
@@ -110,13 +118,13 @@
         <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.GetItemsAsQueryable(System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.GetItemsCount(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.GetItemsCountAsync(System.Int32)">
             <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Common.Crud.ICrudRepository`1">
             <summary>
-            Интерфейс универсального репозитория для выполнения базовых
-            CRUD-операций над сущностями типа <typeparamref name="T"/>.
+            Интерфейс универсального репозитория для выполнения базовых асинхронных операций
+            чтения и синхронного управления состояниями сущностей типа <typeparamref name="T"/>.
             </summary>
             <typeparam name="T">Тип доменной сущности, управляемой репозиторием. Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
         </member>
@@ -139,76 +147,76 @@
             <param name="filter">Предикатное выражение для фильтрации сущностей. Если равен <see langword="null"/>, фильтрация не применяется.</param>
             <returns>Запрос <see cref="T:System.Linq.IQueryable`1"/> для извлечения сущностей.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItem(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItemAsync(System.Int32)">
             <summary>
-            Возвращает сущность по её уникальному целочисленному идентификатору.
+            Асинхронно возвращает сущность по её уникальному целочисленному идентификатору.
             </summary>
             <param name="id">Идентификатор искомой сущности.</param>
-            <returns>Найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если запись не найдена.</returns>
+            <returns>Задача, результатом которой является найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если запись не найдена.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItem(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItemAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
-            Возвращает первую сущность, удовлетворяющую условию фильтра, без отслеживания изменений.
+            Асинхронно возвращает первую сущность, удовлетворяющую условию фильтра, без отслеживания изменений.
             </summary>
             <param name="filter">Выражение-фильтр для поиска сущности.</param>
-            <returns>Первая найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если совпадений не найдено.</returns>
+            <returns>Задача, результатом которой является первая найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если совпадений не найдено.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItemsCount(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItemsCountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <summary>
-            Возвращает общее количество сущностей, удовлетворяющих заданному фильтру.
+            Асинхронно возвращает общее количество сущностей, удовлетворяющих заданному фильтру.
             </summary>
             <param name="filter">Выражение-фильтр для подсчета. Если равен <see langword="null"/>, подсчитываются все записи в наборе.</param>
-            <returns>Общее количество записей, соответствующих условию.</returns>
+            <returns>Задача, результатом которой является общее количество записей, соответствующих условию.</returns>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.Add(`0)">
             <summary>
-            Добавляет новую сущность в контекст со статусом <see cref="F:Microsoft.EntityFrameworkCore.EntityState.Added"/>.
+            Синхронно добавляет новую сущность в контекст со статусом <see cref="F:Microsoft.EntityFrameworkCore.EntityState.Added"/>.
             </summary>
             <param name="entity">Добавляемая сущность.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.UpdateEvery(`0)">
             <summary>
-            Прикрепляет сущность к контексту и помечает все её свойства
-            как измененные (<see cref="F:Microsoft.EntityFrameworkCore.EntityState.Modified"/>).
+            Синхронно прикрепляет сущность к контексту и помечает все её свойства как измененные (<see cref="F:Microsoft.EntityFrameworkCore.EntityState.Modified"/>).
             </summary>
             <param name="entity">Обновляемая сущность.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.UpdateSelective(`0,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            Прикрепляет сущность к контексту и помечает как измененные только указанные свойства.
+            Синхронно прикрепляет сущность к контексту и помечает как измененные только указанные свойства.
             </summary>
             <param name="entity">Обновляемая сущность.</param>
             <param name="properties">Коллекция системных имен свойств, которые подлежат обновлению.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.Remove(`0)">
             <summary>
-            Помечает указанную сущность для удаления из базы данных.
+            Синхронно помечает указанную сущность для удаления из базы данных.
             </summary>
             <param name="entity">Удаляемая сущность.</param>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.Remove(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.RemoveAsync(System.Int32)">
             <summary>
-            Находит сущность по идентификатору и помечает её для удаления.
+            Асинхронно находит сущность по идентификатору в БД и помечает её для удаления.
             </summary>
             <param name="id">Идентификатор удаляемой сущности.</param>
+            <returns>Задача, представляющая асинхронную операцию поиска перед удалением.</returns>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.AddManyrefs(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
             <summary>
-            Добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+            Синхронно добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
             </summary>
             <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
             <param name="keys">Коллекция идентификаторов связываемых объектов.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.RemoveManyrefs(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
             <summary>
-            Удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+            Синхронно удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
             </summary>
             <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
             <param name="keys">Коллекция идентификаторов отвязываемых объектов.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.ManyrefUpdate(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32})">
             <summary>
-            Синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
+            Синхронно синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
             </summary>
             <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
             <param name="oldKeys">Старый (текущий) набор связанных ключей.</param>
@@ -216,13 +224,13 @@
         </member>
         <member name="T:Ans.Net10.Common.Crud.__CrudRepository_Base`1">
             <summary>
-            Абстрактный прототип класса для реализации репозиториев CRUD-операций с использованием Entity Framework Core.
+            Абстрактный прототип базового класса репозиториев CRUD-операций с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, управляемой репозиторием. Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
         </member>
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.#ctor(Microsoft.EntityFrameworkCore.DbContext)">
             <summary>
-            Абстрактный прототип класса для реализации репозиториев CRUD-операций с использованием Entity Framework Core.
+            Абстрактный прототип базового класса репозиториев CRUD-операций с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, управляемой репозиторием. Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
         </member>
@@ -235,13 +243,13 @@
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemsAsQueryable(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItem(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemAsync(System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItem(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemsCount(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemsCountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <inheritdoc />
         </member>
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.Add(`0)">
@@ -256,7 +264,7 @@
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.Remove(`0)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.Remove(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.RemoveAsync(System.Int32)">
             <inheritdoc />
         </member>
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.AddManyrefs(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
@@ -270,7 +278,7 @@
         </member>
         <member name="T:Ans.Net10.Common.Crud.CrudEntityTypeEnum">
             <summary>
-            Перечень типов организации сущностей в рамках CRUD-интерфейса.
+            Перечисление типов организации сущностей в рамках CRUD-интерфейса.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.Crud.CrudEntityTypeEnum.Normal">
@@ -290,7 +298,7 @@
         </member>
         <member name="T:Ans.Net10.Common.Crud.CrudEntityAfterAddEnum">
             <summary>
-            Перечень вариантов перенаправления пользователя в интерфейсе после успешного добавления записи.
+            Перечисление вариантов перенаправления пользователя в интерфейсе после успешного добавления записи.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.Crud.CrudEntityAfterAddEnum.List">
@@ -305,7 +313,7 @@
         </member>
         <member name="T:Ans.Net10.Common.Crud.CrudManyrefViewEnum">
             <summary>
-            Перечень режимов отображения и фильтрации связей «многие ко многим» в пользовательском интерфейсе.
+            Перечисление режимов отображения и фильтрации связей «многие ко многим» в пользовательском интерфейсе.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.Crud.CrudManyrefViewEnum.OnlyThis">
@@ -325,7 +333,7 @@
         </member>
         <member name="T:Ans.Net10.Common.Crud.CrudFieldTypeEnum">
             <summary>
-            Перечень типов данных и форматов валидации для полей CRUD-форм.
+            Перечисление типов данных и форматов валидации для полей CRUD-форм.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.Crud.CrudFieldTypeEnum.Text50">
@@ -430,7 +438,7 @@
         </member>
         <member name="T:Ans.Net10.Common.Crud.CrudFieldModeEnum">
             <summary>
-            Перечень режимов работы, ограничения и правила уникальности для полей CRUD-форм.
+            Перечисление режимов работы, ограничения и правила уникальности для полей CRUD-форм.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.Crud.CrudFieldModeEnum.Normal">
@@ -455,7 +463,7 @@
         </member>
         <member name="T:Ans.Net10.Common.Crud.CrudFieldRegistryModeEnum">
             <summary>
-            Перечень режимов визуального рендеринга элементов выбора реестра для CRUD-полей.
+            Перечисление режимов визуального рендеринга элементов выбора реестра для CRUD-полей.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.Crud.CrudFieldRegistryModeEnum.Auto">
@@ -1588,7 +1596,7 @@
         </member>
         <member name="T:Ans.Net10.Common.ContentGroupEnum">
             <summary>
-            Перечень категорий (групп) типов контента.
+            Перечисление категорий (групп) типов контента.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.ContentGroupEnum.Archive">
@@ -2245,7 +2253,7 @@
         </member>
         <member name="T:Ans.Net10.Common.ImageOrientationEnum">
             <summary>
-            Перечень вариантов ориентации графического объекта (изображения) на основе соотношения его сторон.
+            Перечисление вариантов ориентации графического объекта (изображения) на основе соотношения его сторон.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.ImageOrientationEnum.Unknown">
@@ -2270,7 +2278,7 @@
         </member>
         <member name="T:Ans.Net10.Common.ImageShiftEnum">
             <summary>
-            Перечень вариантов фиксированного смещения рамки кадрирования (обрезки) относительно сторон изображения.
+            Перечисление вариантов фиксированного смещения рамки кадрирования (обрезки) относительно сторон изображения.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.ImageShiftEnum.Center">
@@ -3010,24 +3018,33 @@
         </member>
         <member name="T:Ans.Net10.Common.PaginatedQueryableHelper`1">
             <summary>
-            Вспомогательный класс для одновременного расчета метаданных пагинации 
+            Вспомогательный класс для одновременного асинхронного расчета метаданных пагинации 
             и формирования безопасного постраничного LINQ-запроса на основе исходной выборки.
             </summary>
             <typeparam name="TEntity">Тип доменной сущности или DTO в обрабатываемом запросе. Должен относиться к ссылочным типам (<see langword="class"/>).</typeparam>
         </member>
-        <member name="M:Ans.Net10.Common.PaginatedQueryableHelper`1.#ctor(System.Linq.IQueryable{`0},System.Int32,System.Int32)">
+        <member name="M:Ans.Net10.Common.PaginatedQueryableHelper`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.PaginatedQueryableHelper`1"/>, 
-            выполняя синхронный расчет общего количества элементов в базе данных и подготавливая постраничный подзапрос.
+            Асинхронно создает и инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.PaginatedQueryableHelper`1"/>, 
+            выполняя неблокирующий расчет общего количества элементов в базе данных и подготавливая постраничный подзапрос.
             </summary>
             <remarks>
-            Метод производит первичную материализацию общего количества записей через стандартный вызов <c>.Count()</c>. 
+            Метод производит первичную материализацию общего количества записей через асинхронный вызов <see cref="M:Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.CountAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)"/>. 
             Если параметры <paramref name="page"/> или <paramref name="itemsOnPage"/> переданы со значением меньше 1, 
             они принудительно корректируются и устанавливаются в значение 1 для обеспечения стабильности вычислений.
             </remarks>
             <param name="query">Исходный запрос <see cref="T:System.Linq.IQueryable`1"/> до применения операторов пагинации.</param>
             <param name="page">Порядковый номер запрашиваемой страницы. Индексация начинается с 1.</param>
             <param name="itemsOnPage">Максимально допустимое количество отображаемых элементов на одной странице. Должно быть больше 0.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, результатом выполнения которой является полностью инициализированный хелпер пагинации запроса.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="query"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Common.PaginatedQueryableHelper`1.#ctor(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.PaginatedQueryableHelper`1"/>.
+            Конструктор закрыт, для асинхронного создания экземпляра используйте метод <see cref="M:Ans.Net10.Common.PaginatedQueryableHelper`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)"/>.
+            </summary>
         </member>
         <member name="P:Ans.Net10.Common.PaginatedQueryableHelper`1.PaginationHelper">
             <summary>
@@ -3637,7 +3654,7 @@
         </member>
         <member name="T:Ans.Net10.Common.RegistryModeEnum">
             <summary>
-            Перечень режимов визуального отображения элементов реестра в пользовательском интерфейсе.
+            Перечисление режимов визуального отображения элементов реестра в пользовательском интерфейсе.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.RegistryModeEnum.Auto">
@@ -4458,7 +4475,8 @@
         </member>
         <member name="T:Ans.Net10.Common.TinyLogWriterHelper">
             <summary>
-            Хелпер буферизированной записи логов в файл порциями для минимизации дисковых операций ввода-вывода.
+            Хелпер буферизированной записи логов в файл порциями для минимизации и автоматизации 
+            асинхронных дисковых операций ввода-вывода.
             </summary>
         </member>
         <member name="M:Ans.Net10.Common.TinyLogWriterHelper.#ctor(System.String,System.Boolean,System.Int32)">
@@ -4468,13 +4486,14 @@
             <param name="filename">Полный путь к файлу лога.</param>
             <param name="rewrite">Если установлено значение <see langword="true"/>, целевой файл лога будет предварительно очищен.</param>
             <param name="length">Максимальное количество записей (порций) в буфере до автоматического сброса на диск.</param>
+            <exception cref="T:System.ArgumentException">Вызывается, если путь <paramref name="filename"/> пуст.</exception>
         </member>
         <member name="P:Ans.Net10.Common.TinyLogWriterHelper.Length">
             <summary>
             Возвращает или задает лимит количества порций записей в буфере до автосохранения.
             </summary>
             <value>
-            Числовое значение лимита операций добавления, после превышения которого автоматически вызывается метод <see cref="M:Ans.Net10.Common.TinyLogWriterHelper.Save"/>.
+            Числовое значение лимита операций добавления, после превышения которого автоматически вызывается асинхронный метод сброса на диск.
             </value>
         </member>
         <member name="P:Ans.Net10.Common.TinyLogWriterHelper.Filename">
@@ -4487,7 +4506,7 @@
         </member>
         <member name="M:Ans.Net10.Common.TinyLogWriterHelper.Append(System.String)">
             <summary>
-            Добавляет текст в буфер лога.
+            Добавляет текст в буфер лога. Синхронная операция для обеспечения максимального быстродействия и потокобезопасности буфера.
             </summary>
             <param name="text">Добавляемая текстовая строка. Если передано значение <see langword="null"/>, буфер не изменяется.</param>
         </member>
@@ -4508,7 +4527,7 @@
             <summary>
             Форматирует и добавляет строку с переносом строки в буфер лога.
             </summary>
-            <param name="template">Шаблон строки форматирования (содержит маркеры вида {0}, {1} и т.д.).</param>
+            <param name="template">Шаблон строки форматирования.</param>
             <param name="templateArgs">Массив аргументов для подстановки в шаблон строки.</param>
         </member>
         <member name="M:Ans.Net10.Common.TinyLogWriterHelper.AppendLog(System.String,System.Object[])">
@@ -4525,13 +4544,12 @@
             <param name="template">Шаблон строки форматирования.</param>
             <param name="args">Массив аргументов для подстановки в шаблон строки.</param>
         </member>
-        <member name="M:Ans.Net10.Common.TinyLogWriterHelper.Save">
+        <member name="M:Ans.Net10.Common.TinyLogWriterHelper.SaveAsync(System.Threading.CancellationToken)">
             <summary>
-            Принудительно сбрасывает все накопленные в буфере логи на диск (в конец файла) и очищает буфер.
+            Принудительно и асинхронно сбросить все накопленные в буфере логи на диск (в конец файла) и очистить буфер без блокировки вызывающего потока.
             </summary>
-            <remarks>
-            Запись осуществляется в режиме <see cref="F:System.IO.FileMode.Append"/>. Если на момент вызова буфер пуст, обращение к диску не производится.
-            </remarks>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Временная задача <see cref="T:System.Threading.Tasks.ValueTask"/>, представляющая асинхронную операцию записи.</returns>
         </member>
         <member name="T:Ans.Net10.Common.TinyTimerHelper">
             <summary>
@@ -4816,7 +4834,7 @@
         </member>
         <member name="T:Ans.Net10.Common.WidthsEnum">
             <summary>
-            Перечень вариантов стандартной ширины для контентных блоков и элементов интерфейса.
+            Перечисление вариантов стандартной ширины для контентных блоков и элементов интерфейса.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.WidthsEnum.Full">
@@ -4997,25 +5015,40 @@
         </member>
         <member name="T:Ans.Net10.Common._ListPaginatedModel_Base`2">
             <summary>
-            Базовый класс для формирования постраничных моделей данных
-            (DTO/Read-моделей) с автоматическим маппингом элементов.
+            Базовый класс для формирования постраничных моделей данных (DTO/Read-моделей) 
+            с автоматическим асинхронным маппингом элементов.
             </summary>
-            <typeparam name="TEntity">Тип исходной доменной сущности базы данных. Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
-            <typeparam name="TModel">Тип результирующей UI-модели или объекта переноса данных (DTO). Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
+            <typeparam name="TEntity">Тип исходной доменной сущности базы данных. Должен относиться к ссылочным типам (<see langword="class"/>).</typeparam>
+            <typeparam name="TModel">Тип результирующей UI-модели или объекта переноса данных (DTO). Должен относиться к ссылочным типам (<see langword="class"/>).</typeparam>
         </member>
-        <member name="M:Ans.Net10.Common._ListPaginatedModel_Base`2.#ctor(System.Linq.IQueryable{`0},System.Func{`0,`1},System.Int32,System.Int32)">
+        <member name="M:Ans.Net10.Common._ListPaginatedModel_Base`2.#ctor(Ans.Net10.Common.PaginationModel,System.Collections.Generic.IReadOnlyCollection{`1})">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common._ListPaginatedModel_Base`2"/>, 
-            выполняя пагинацию исходного LINQ-запроса и безопасную однократную материализацию элементов текущей страницы.
+            Инициализирует свойства базового класса <see cref="T:Ans.Net10.Common._ListPaginatedModel_Base`2"/> 
+            на основе предварительно вычисленных и материализованных данных.
+            </summary>
+            <param name="pagination">Вычисленная неизменяемая модель состояния постраничной навигации.</param>
+            <param name="items">Материализованная коллекция спроецированных выходных моделей текущей страницы.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="items"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Common._ListPaginatedModel_Base`2.LoadDataAsync(System.Linq.IQueryable{`0},System.Func{`0,`1},System.Int32,System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Вспомогательный метод для внешней асинхронной инициализации данных. Выполняет асинхронную пагинацию 
+            исходного LINQ-запроса, извлекает срез данных из БД и формирует готовую коллекцию DTO-моделей.
             </summary>
             <remarks>
-            Внутри конструктора используется хелпер <see cref="T:Ans.Net10.Common.PaginatedQueryableHelper`1"/> для применения 
-            операторов секционирования (Skip/Take) и вычисления общего состояния постраничной навигации.
+            Метод полностью берет на себя неблокирующие дисковые операции ввода-вывода, используя 
+            возможности <see cref="M:Ans.Net10.Common.PaginatedQueryableHelper`1.CreateAsync(System.Linq.IQueryable{`0},System.Int32,System.Int32,System.Threading.CancellationToken)"/> и <see cref="M:Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync``1(System.Linq.IQueryable{``0},System.Threading.CancellationToken)"/>.
             </remarks>
             <param name="query">Исходный запрос <see cref="T:System.Linq.IQueryable`1"/> до применения ограничений пагинации.</param>
             <param name="func">Делегат функции маппинга (проекции) из доменной сущности <typeparamref name="TEntity"/> в выходную модель <typeparamref name="TModel"/>.</param>
             <param name="page">Номер запрашиваемой страницы. Индексация начинается с 1.</param>
             <param name="itemsOnPage">Максимальное количество отображаемых элементов на одной странице. Должно быть больше 0.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>
+            Задача, результатом которой является кортеж, содержащий вычисленную структуру 
+            <see cref="T:Ans.Net10.Common.PaginationModel"/> и материализованный массив готовых моделей <see cref="T:System.Collections.Generic.IReadOnlyCollection`1"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="query"/> или <paramref name="func"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="P:Ans.Net10.Common._ListPaginatedModel_Base`2.Pagination">
             <summary>
@@ -8133,7 +8166,7 @@
         </member>
         <member name="T:Ans.Net10.Common.TensesEnum">
             <summary>
-            Перечень временных эпох (прошлое, настоящее, будущее).
+            Перечисление временных эпох (прошлое, настоящее, будущее).
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.TensesEnum.Past">
@@ -8454,7 +8487,7 @@
         </member>
         <member name="T:Ans.Net10.Common.EncodingsEnum">
             <summary>
-            Перечень кодировок текстовых файлов поддерживаемых инфраструктурой библиотеки.
+            Перечисление кодировок текстовых файлов поддерживаемых инфраструктурой библиотеки.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.EncodingsEnum.UTF8">
@@ -8501,6 +8534,8 @@
             <param name="file">Информационный объект исходного файла, используемый для определения целевой директории.</param>
             <param name="newName">Желаемое новое имя файла с расширением.</param>
             <returns>Строка, содержащая уникальный полный путь к файлу.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="file"/> равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">Вызывается, если <paramref name="newName"/> пустая строка.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppIO.GetFileExtension(System.String,System.Boolean)">
             <summary>
@@ -8509,6 +8544,7 @@
             <param name="path">Путь к файлу или имя файла.</param>
             <param name="hasDot">Признак необходимости сохранения точки перед расширением (например, <c>".txt"</c> вместо <c>"txt"</c>).</param>
             <returns>Строка расширения в нижнем регистре. Если расширение отсутствует, возвращает пустую строку.</returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если <paramref name="path"/> пустая строка.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppIO.GetFilenameHalfs(System.String)">
             <summary>
@@ -8531,92 +8567,106 @@
             <param name="path">Путь к файлу или его имя.</param>
             <returns>Объект метаданных контента.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.FileRead(System.String,Ans.Net10.Common.EncodingsEnum)">
+        <member name="M:Ans.Net10.Common.SuppIO.FileReadAsync(System.String,Ans.Net10.Common.EncodingsEnum,System.Threading.CancellationToken)">
             <summary>
-            Считывает весь текстовый контент из файла по указанному пути, используя выбранную кодировку.
+            Асинхронно считывает весь текстовый контент из файла по указанному пути, используя выбранную кодировку.
             </summary>
             <param name="path">Путь к файлу для чтения.</param>
             <param name="encoding">Кодировка текста (по умолчанию <see cref="F:Ans.Net10.Common.EncodingsEnum.UTF8"/>).</param>
-            <returns>Строка, содержащая весь текст из файла.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Поток-задача, возвращающая текстовое содержимое файла.</returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если <paramref name="path"/> пустая строка.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileBegin(System.IO.FileStream,System.Int32)">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileBeginAsync(System.IO.Stream,System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Считывает начало файла из открытого потока до указанного размера и возвращает его в виде Base64-строки для быстрого анализа сигнатур (Magic Numbers).
+            Асинхронно считывает начало файла из открытого потока до указанного размера и возвращает его в виде Base64-строки для быстрого анализа сигнатур.
             </summary>
             <param name="stream">Открытый поток файла.</param>
             <param name="size">Максимальное количество байт для чтения. По умолчанию равно 255.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Строка в формате Base64, представляющая начало файла.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="stream"/> равен <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileBegin(System.String,System.Int32)">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileBeginAsync(System.String,System.Int32,System.Threading.CancellationToken)">
             <summary>
-            Считывает начало файла по указанному пути на диске до указанного размера и возвращает его в виде Base64-строки.
+            Асинхронно считывает начало файла по указанному пути на диске до указанного размера и возвращает его в виде Base64-строки.
             </summary>
             <param name="path">Путь к файлу.</param>
             <param name="size">Максимальное количество байт для чтения. По умолчанию равно 255.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Строка в формате Base64, представляющая начало файла.</returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если <paramref name="path"/> пустая строка.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1(System.IO.FileStream,System.Byte[])">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1Async(System.IO.Stream,System.Byte[],System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием байтовой соли.
+            Асинхронно вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием байтовой соли без рантайм-аллокаций.
             </summary>
             <param name="stream">Открытый поток файла.</param>
             <param name="salt">Байтовый массив соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1(System.IO.FileStream,System.String)">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1Async(System.IO.Stream,System.String,System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием строковой соли (переводится в Unicode-байты).
+            Асинхронно вычисляет HMAC-SHA1 хэш для указанного потока файла с использованием строковой соли.
             </summary>
             <param name="stream">Открытый поток файла.</param>
             <param name="salt">Строковое значение соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1(System.String,System.Byte[])">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1Async(System.String,System.Byte[],System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием байтовой соли.
+            Асинхронно вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием байтовой соли.
             </summary>
             <param name="path">Путь к хэшируемому файлу.</param>
             <param name="salt">Байтовый массив соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1(System.String,System.String)">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA1Async(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием строковой соли.
+            Асинхронно вычисляет HMAC-SHA1 хэш для файла по указанному пути с использованием строковой соли.
             </summary>
             <param name="path">Путь к хэшируемому файлу.</param>
             <param name="salt">Строковое значение соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256(System.IO.FileStream,System.Byte[])">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256Async(System.IO.Stream,System.Byte[],System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием байтовой соли.
+            Асинхронно вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием байтовой соли без рантайм-аллокаций.
             </summary>
             <param name="stream">Открытый поток файла.</param>
             <param name="salt">Байтовый массив соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256(System.IO.FileStream,System.String)">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256Async(System.IO.Stream,System.String,System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием строковой соли (переводится в Unicode-байты).
+            Асинхронно вычисляет HMAC-SHA256 хэш для указанного потока файла с использованием строковой соли.
             </summary>
             <param name="stream">Открытый поток файла.</param>
             <param name="salt">Строковое значение соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256(System.String,System.Byte[])">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256Async(System.String,System.Byte[],System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием байтовой соли.
+            Асинхронно вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием байтовой соли.
             </summary>
             <param name="path">Путь к хэшируемому файлу.</param>
             <param name="salt">Байтовый массив соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256(System.String,System.String)">
+        <member name="M:Ans.Net10.Common.SuppIO.GetFileSHA256Async(System.String,System.String,System.Threading.CancellationToken)">
             <summary>
-            Вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием строковой соли.
+            Асинхронно вычисляет HMAC-SHA256 хэш для файла по указанному пути с использованием строковой соли.
             </summary>
             <param name="path">Путь к хэшируемому файлу.</param>
             <param name="salt">Строковое значение соли.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Шестнадцатеричная строка хэша в нижнем регистре.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppIO.GetFileLastModified(System.String)">
@@ -8730,21 +8780,23 @@
             <param name="file">Переименовываемый информационный объект файла.</param>
             <param name="newName">Новое желаемое имя файла.</param>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.FileWrite(System.String,System.String,Ans.Net10.Common.EncodingsEnum,System.IO.FileMode)">
+        <member name="M:Ans.Net10.Common.SuppIO.FileWriteAsync(System.String,System.String,Ans.Net10.Common.EncodingsEnum,System.IO.FileMode,System.Threading.CancellationToken)">
             <summary>
-            Записывает строковый контент в файл по указанному пути, используя выбранную кодировку <see cref="T:Ans.Net10.Common.EncodingsEnum"/> и режим открытия файлового потока.
+            Асинхронно записывает строковый контент в файл по указанному пути, используя выбранную кодировку <see cref="T:Ans.Net10.Common.EncodingsEnum"/> и режим открытия файлового потока.
             </summary>
             <param name="path">Путь к целевому файлу для записи.</param>
             <param name="content">Строковое содержимое, подлежащее сохранению.</param>
             <param name="encoding">Кодировка текста. По умолчанию используется <see cref="F:Ans.Net10.Common.EncodingsEnum.UTF8"/>.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <param name="mode">Режим работы файлового потока. По умолчанию используется <see cref="F:System.IO.FileMode.Create"/> (перезапись/создание нового).</param>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.FileWrite(System.String,System.Byte[],System.IO.FileMode)">
+        <member name="M:Ans.Net10.Common.SuppIO.FileWriteAsync(System.String,System.Byte[],System.IO.FileMode,System.Threading.CancellationToken)">
             <summary>
-            Записывает сырой массив байт в файл по указанному пути, используя выбранный режим открытия файлового потока.
+            Асинхронно записывает сырой массив байт в файл по указанному пути, используя выбранный режим открытия файлового потока.
             </summary>
             <param name="path">Путь к файлу для записи.</param>
             <param name="content">Массив байт, который необходимо записать в файл.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <param name="mode">Режим работы файлового потока. По умолчанию используется <see cref="F:System.IO.FileMode.Create"/>.</param>
         </member>
         <member name="T:Ans.Net10.Common.SuppJson">
@@ -9010,7 +9062,7 @@
         </member>
         <member name="T:Ans.Net10.Common.WordCasesRuEnum">
             <summary>
-            Перечень основных грамматических падежей русского языка.
+            Перечисление основных грамматических падежей русского языка.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.WordCasesRuEnum.Nominative">
@@ -9459,7 +9511,7 @@
         </member>
         <member name="T:Ans.Net10.Common.LetterCasesEnum">
             <summary>
-            Перечень вариантов преобразования и форматирования регистра символов текстовых строк.
+            Перечисление вариантов преобразования и форматирования регистра символов текстовых строк.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.LetterCasesEnum.Original">
@@ -9703,7 +9755,7 @@
         </member>
         <member name="T:Ans.Net10.Common.GenderEnum">
             <summary>
-            Перечень вариантов биологического пола человека.
+            Перечисление вариантов биологического пола человека.
             </summary>
         </member>
         <member name="F:Ans.Net10.Common.GenderEnum.NotSpecified">

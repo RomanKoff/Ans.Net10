@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Collections.Frozen;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -93,7 +92,6 @@ namespace Ans.Net10.Common
 		/// <param name="compared">Строка, с которой производится проверка на точное равенство.</param>
 		/// <param name="newest">Новая строка, возвращаемая в случае успешного совпадения.</param>
 		/// <returns>Результат условной эквивалентной замены строки.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string ReplaceIfEqual(
 			this string instance,
 			string compared,
@@ -136,7 +134,6 @@ namespace Ans.Net10.Common
 		/// <param name="mask">Строка-маска, вставляемая вместо каждого обнаруженного целевого символа.</param>
 		/// <param name="chars">Массив заменяемых символов.</param>
 		/// <returns>Строка, в которой целевые символы из массива заменены маской.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string ReplaceByChars(
 			this string instance,
 			string mask,

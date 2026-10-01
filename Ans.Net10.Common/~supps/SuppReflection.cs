@@ -2,7 +2,6 @@
 
 using System.Collections;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -21,7 +20,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Исходное системное имя типа (например, <c>"Int32"</c> или <c>"Boolean"</c>).</param>
 		/// <returns>Строковый алиас типа, принятый в синтаксисе языка C# (например, <c>"int"</c>, <c>"bool"</c>).</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string FixCSharpName(
 			string name)
 		{
@@ -84,7 +82,6 @@ namespace Ans.Net10.Common
 		/// <param name="assembly">Исследуемая сборка объектов <see cref="Assembly"/>.</param>
 		/// <param name="ns">Целевое строгое пространство имен (Namespace) для фильтрации типов.</param>
 		/// <returns>Массив отфильтрованных и отсортированных объектов <see cref="Type"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Type[] GetNamespaceTypes(
 			Assembly assembly,
 			string ns)

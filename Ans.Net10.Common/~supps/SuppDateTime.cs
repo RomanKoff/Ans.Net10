@@ -1,12 +1,10 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Перечень временных эпох (прошлое, настоящее, будущее).
+	/// Перечисление временных эпох (прошлое, настоящее, будущее).
 	/// </summary>
 	public enum TensesEnum
 	{
@@ -75,8 +73,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="DateTime"/>, соответствующий текущему моменту времени на сервере/компьютере.</value>
 		public static DateTime Current
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => DateTime.Now;
+						get => DateTime.Now;
 		}
 
 
@@ -86,8 +83,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="DateTime"/>, представляющий сегодняшний день.</value>
 		public static DateTime Today
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Current.Date;
+						get => Current.Date;
 		}
 
 
@@ -97,8 +93,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="DateTime"/> начала текущего года.</value>
 		public static DateTime CurrentYearBegin
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => new(Current.Year, 1, 1);
+						get => new(Current.Year, 1, 1);
 		}
 
 
@@ -108,8 +103,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="DateTime"/> начала следующего года.</value>
 		public static DateTime NextYearBegin
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => CurrentYearBegin.AddYears(1);
+						get => CurrentYearBegin.AddYears(1);
 		}
 
 
@@ -119,8 +113,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="DateTime"/>, соответствующий вчерашнему числу.</value>
 		public static DateTime Yesterday
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Today.AddDays(-1);
+						get => Today.AddDays(-1);
 		}
 
 
@@ -130,8 +123,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="DateTime"/>, соответствующий завтрашнему числу.</value>
 		public static DateTime Tomorrow
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Today.AddDays(1);
+						get => Today.AddDays(1);
 		}
 
 
@@ -141,8 +133,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="DateTime"/>, соответствующий дню после завтрашнего.</value>
 		public static DateTime TomorrowAfter
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Today.AddDays(2);
+						get => Today.AddDays(2);
 		}
 
 	}

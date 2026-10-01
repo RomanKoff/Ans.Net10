@@ -3,7 +3,6 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -21,7 +20,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для форматирования. Допускает значение <see langword="null"/>.</param>
 		/// <param name="template">Шаблон форматирования, совместимый с <see cref="string.Format(string, object)"/>. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Отформатированная строка; <see cref="string.Empty"/>, если параметр <paramref name="value"/> равен <see langword="null"/> или пуст.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Make(
 			this string? value,
 			string? template)
@@ -41,7 +39,6 @@ namespace Ans.Net10.Common
 		/// <param name="template">Шаблон форматирования, совместимый с <see cref="string.Format(string, object)"/>. Допускает значение <see langword="null"/>.</param>
 		/// <param name="nullValue">Строковое значение, при совпадении с которым результат принудительно сбрасывается в пустую строку.</param>
 		/// <returns>Отформатированная строка или <see cref="string.Empty"/>, если значение эквивалентно <paramref name="nullValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Make(
 			this string? value,
 			string? template,
@@ -62,7 +59,6 @@ namespace Ans.Net10.Common
 		/// <param name="template">Шаблон форматирования, поддерживающий несколько индексов аргументов. Допускает значение <see langword="null"/>.</param>
 		/// <param name="args">Дополнительные аргументы, которые будут подставлены в шаблон начиная с индекса <c>{1}</c>.</param>
 		/// <returns>Результат комплексного форматирования строки или <see cref="string.Empty"/>, если <paramref name="value"/> пуст.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string MakeMore(
 			this string? value,
 			string? template,
@@ -142,7 +138,6 @@ namespace Ans.Net10.Common
 		/// <param name="format">Спецификатор формата объекта. По умолчанию равен <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик форматирования. По умолчанию равен <see langword="null"/>.</param>
 		/// <returns>Строковый результат форматирования или <see cref="string.Empty"/>, если свойство <see cref="Nullable{T}.HasValue"/> возвращает <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Make<T>(
 			this T? value,
 			string? template,
@@ -186,7 +181,6 @@ namespace Ans.Net10.Common
 		/// <param name="template">Строковый шаблон обертки результата.</param>
 		/// <param name="nullValue">Значение перечисления, при равенстве которому возвращается пустая строка.</param>
 		/// <returns>Строковый результат форматирования перечисления или пустая строка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Make<T>(
 			this T value,
 			string? template,
@@ -206,7 +200,6 @@ namespace Ans.Net10.Common
 		/// <param name="trueText">Строка, возвращаемая, если флаг равен <see langword="true"/>.</param>
 		/// <param name="falseText">Строка, возвращаемая, если флаг равен <see langword="false"/>. По умолчанию равен <see langword="null"/> (возвращается <see cref="string.Empty"/>).</param>
 		/// <returns>Один из двух строковых вариантов в зависимости от состояния флага.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Make(
 			this bool value,
 			string trueText,
@@ -225,7 +218,6 @@ namespace Ans.Net10.Common
 		/// <param name="template">Шаблон форматирования строки.</param>
 		/// <param name="args">Параметры, подставляемые в шаблон.</param>
 		/// <returns>Результат выполнения <see cref="string.Format(string, object?[])"/>, если флаг равен <see langword="true"/>; иначе — <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string MakeMore(
 			this bool value,
 			string template,
@@ -383,7 +375,6 @@ namespace Ans.Net10.Common
 		/// <param name="dictionary">Словарь строковых данных. Допускает значение <see langword="null"/>.</param>
 		/// <param name="template">Шаблон форматирования итоговой строки.</param>
 		/// <returns>Результат применения шаблона к значению из словаря или к оригинальному ключу.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string MakeOverDict(
 			this string? key,
 			IDictionary<string, string?>? dictionary,

@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -74,7 +72,6 @@ namespace Ans.Net10.Common
 		/// Добавляет готовый объект пункта меню в общую коллекцию.
 		/// </summary>
 		/// <param name="item">Экземпляр класса <see cref="ConsoleMenuItem"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Add(
 			ConsoleMenuItem item)
 		{
@@ -88,7 +85,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Клавиша активации (<see cref="ConsoleKey"/>).</param>
 		/// <param name="title">Отображаемый заголовок пункта.</param>
 		/// <param name="action">Выполняемый делегат действия (<see cref="Action"/>).</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Add(
 			ConsoleKey key,
 			string title,

@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -14,7 +13,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Значение таймстампа в секундах.</param>
 		/// <returns>Объект <see cref="DateTime"/> в локальном часовом поясе.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTimeFromUnixTimeStamp(
 			double value)
 		{
@@ -27,7 +25,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Значение таймстампа в секундах или <see langword="null"/>.</param>
 		/// <returns>Объект <see cref="DateTime"/> в локальном часовом поясе или <see langword="null"/>, если входное значение отсутствовало.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime? GetDateTimeFromUnixTimeStamp(
 			double? value)
 		{
@@ -41,7 +38,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Значение таймстампа в миллисекундах.</param>
 		/// <returns>Объект <see cref="DateTime"/> в локальном часовом поясе.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTimeFromJavaTimeStamp(
 			double value)
 		{
@@ -54,7 +50,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Значение таймстампа в миллисекундах или <see langword="null"/>.</param>
 		/// <returns>Объект <see cref="DateTime"/> в локальном часовом поясе или <see langword="null"/>, если входное значение отсутствовало.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime? GetDateTimeFromJavaTimeStamp(
 			double? value)
 		{
@@ -68,7 +63,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Строка с датой универсального формата.</param>
 		/// <returns>Объект <see cref="DateTime"/> или <see langword="null"/>, если строка пуста, имеет некорректную длину или не соответствует формату.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime? GetDateFromUniDate(
 			string value)
 		{
@@ -85,7 +79,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Строка с датой формата AnsDate.</param>
 		/// <returns>Объект <see cref="DateTime"/> или <see langword="null"/>, если строка пуста, имеет некорректную длину или не соответствует формату <see cref="ANS_DATE_FORMAT"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime? GetDateFromAnsDate(
 			string value)
 		{

@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -108,7 +106,6 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип доменной сущности или DTO в обрабатываемом запросе.</typeparam>
 		/// <param name="query">Исходный запрос <see cref="IQueryable{T}"/> до трансформации.</param>
 		/// <returns>Измененный запрос <see cref="IQueryable{T}"/> с последовательно примененной сортировкой и операторами <c>Skip/Take</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public IQueryable<T> GetQueryTransform<T>(
 			IQueryable<T> query)
 		{
@@ -125,7 +122,6 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип доменной сущности или DTO в обрабатываемом запросе.</typeparam>
 		/// <param name="query">Исходный запрос <see cref="IQueryable{T}"/>.</param>
 		/// <returns>Запрос <see cref="IQueryable{T}"/> с примененными выражениями сортировки, либо оригинальный запрос без изменений, если <see cref="HasOrder"/> равен <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public IQueryable<T> GetQueryOrdered<T>(
 			IQueryable<T> query)
 		{
@@ -143,7 +139,6 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип доменной сущности или DTO в обрабатываемом запросе.</typeparam>
 		/// <param name="query">Исходный запрос <see cref="IQueryable{T}"/>.</param>
 		/// <returns>Запрос <see cref="IQueryable{T}"/> с примененными ограничениями выборки диапазона данных, либо оригинальный запрос, если <see cref="HasPage"/> равен <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public IQueryable<T> GetQueryPaging<T>(
 			IQueryable<T> query)
 		{

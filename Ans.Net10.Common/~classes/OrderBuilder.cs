@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -63,7 +62,6 @@ namespace Ans.Net10.Common
 		/// При убывающем направлении к началу строки автоматически добавляется префикс дефиса с помощью метода расширения <c>Make("-")</c>.
 		/// </remarks>
 		/// <returns>Строка формата <c>"ИмяПоля"</c> для возрастания или <c>"-ИмяПоля"</c> для убывания.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string ToString()
 		{
 			return $"{IsDescending.Make("-")}{Column}";

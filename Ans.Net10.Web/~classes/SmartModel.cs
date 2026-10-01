@@ -2,7 +2,6 @@
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -123,7 +122,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="name">Имя запрашиваемого стилизатора.</param>
 		/// <returns>Экземпляр <see cref="TagStyler"/> или <see langword="null"/>, если стилизатор не найден.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public TagStyler? GetStyler(
 			string name)
 		{

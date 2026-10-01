@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web.Services
 {
@@ -86,7 +85,6 @@ namespace Ans.Net10.Web.Services
 
 
 		/// <inheritdoc />
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ViewEngineResult GetViewEngineResult(
 			ActionContext actionContext,
 			string viewName)
@@ -98,7 +96,6 @@ namespace Ans.Net10.Web.Services
 
 
 		/// <inheritdoc />
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ViewEngineResult GetViewEngineResult(
 			string viewName)
 		{
@@ -107,7 +104,6 @@ namespace Ans.Net10.Web.Services
 
 
 		/// <inheritdoc />
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ViewEngineResult GetPartialEngineResult(
 			string viewName)
 		{

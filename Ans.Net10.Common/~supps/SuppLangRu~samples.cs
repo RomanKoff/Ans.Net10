@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -12,7 +10,6 @@ namespace Ans.Net10.Common
 		/// Возвращает случайную полноценную текстовую панграмму на русском языке, покрывающую все буквы алфавита.
 		/// </summary>
 		/// <returns>Строка, содержащая случайный полный текстовый семпл.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetSample()
 			=> _Consts.GetRandomSampleRu();
 
@@ -21,7 +18,6 @@ namespace Ans.Net10.Common
 		/// Возвращает случайную укороченную фразу (средний семпл) на русском языке.
 		/// </summary>
 		/// <returns>Строка, содержащая случайный средний текстовый семпл.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetSampleSmall()
 			=> _Consts.GetRandomSampleSmallRu();
 
@@ -30,7 +26,6 @@ namespace Ans.Net10.Common
 		/// Возвращает случайное короткое словосочетание (минимальный текстовый семпл) на русском языке.
 		/// </summary>
 		/// <returns>Строка, содержащая случайный минимальный текстовый семпл.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetSampleSmaller()
 			=> _Consts.GetRandomSampleSmallerRu();
 

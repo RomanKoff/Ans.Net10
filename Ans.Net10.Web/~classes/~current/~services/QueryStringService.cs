@@ -3,7 +3,6 @@
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -47,7 +46,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="ignoreParams">Список имен параметров, которые необходимо исключить из обработки.</param>
 		/// <returns>Новый инициализированный объект хелпера строки запроса.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public QueryStringHelper GetHelper(
 			params string[] ignoreParams)
 		{

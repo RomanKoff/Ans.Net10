@@ -1,13 +1,12 @@
 ﻿// rev 2026-09-25
 
 using System.Resources;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Перечень режимов визуального отображения элементов реестра в пользовательском интерфейсе.
+	/// Перечисление режимов визуального отображения элементов реестра в пользовательском интерфейсе.
 	/// </summary>
 	public enum RegistryModeEnum
 	{
@@ -43,8 +42,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект класса <see cref="RegistryItem"/>.</value>
 		public RegistryItem Item
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get;
+						get;
 		} = item;
 	}
 
@@ -77,7 +75,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Инициализирует новый пустой экземпляр класса <see cref="RegistryList"/>.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public RegistryList()
 		{
 		}
@@ -155,8 +152,7 @@ namespace Ans.Net10.Common
 		/// <value>Интерфейс <see cref="IEnumerable{RegistryItem}"/> для последовательного обхода записей.</value>
 		public IEnumerable<RegistryItem> Items
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => _items;
+						get => _items;
 		}
 
 
@@ -166,8 +162,7 @@ namespace Ans.Net10.Common
 		/// <value>Значение <see langword="true"/>, если список не пуст; в противном случае — <see langword="false"/>.</value>
 		public bool HasItems
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => _items.Count > 0;
+						get => _items.Count > 0;
 		}
 
 
@@ -221,7 +216,6 @@ namespace Ans.Net10.Common
 		/// Выполняет десериализацию и наполнение реестра из массива строк.
 		/// </summary>
 		/// <param name="items">Массив строк элементов для разбора. При передаче <see langword="null"/> список просто очищается.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void FillFromString(
 			params string[] items)
 		{
@@ -255,7 +249,6 @@ namespace Ans.Net10.Common
 		/// Безопасно вызывает событие <see cref="AddedItem"/>, извещая подписчиков о добавлении элемента.
 		/// </summary>
 		/// <param name="e">Заполненные аргументы события <see cref="RegistryItemEventArgs"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		protected void OnAddedItem(
 			RegistryItemEventArgs e)
 		{
@@ -315,7 +308,6 @@ namespace Ans.Net10.Common
 		/// Быстро добавляет в реестр элемент-метку, служащую визуальным текстовым заголовком для последующих подразделов.
 		/// </summary>
 		/// <param name="title">Текст отображаемого заголовка метки.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AddLabel(
 			string title)
 		{
@@ -330,7 +322,6 @@ namespace Ans.Net10.Common
 		/// Текст элемента извлекается из глобальных ресурсов локализации библиотеки (<c>Resources.Common.Text_EmptyItem</c>).
 		/// </remarks>
 		/// <param name="key">Опциональный кастомный ключ элемента. Если не задан, подставляется <see cref="string.Empty"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AddNullItem(
 			string? key = null)
 		{
@@ -348,7 +339,6 @@ namespace Ans.Net10.Common
 		/// Текст элемента извлекается из глобальных ресурсов локализации библиотеки (<c>Resources.Common.Text_AllItems</c>).
 		/// </remarks>
 		/// <param name="key">Опциональный кастомный ключ элемента. Если не задан, подставляется <see cref="string.Empty"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AddAllItems(
 			string? key = null)
 		{
@@ -402,7 +392,6 @@ namespace Ans.Net10.Common
 		/// Сериализует весь текущий список реестра в единую текстовую строку, объединяя элементы через точку с запятой.
 		/// </summary>
 		/// <returns>Итоговая строка сериализованных элементов реестра.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string ToString()
 		{
 			return string.Join(";", _items);
@@ -429,7 +418,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Целочисленный идентификатор ключа.</param>
 		/// <returns>Найденный объект или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public RegistryItem? GetItem(
 			int key)
 		{
@@ -442,7 +430,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Идентификатор ключа, допускающий значение <see langword="null"/>.</param>
 		/// <returns>Найденный объект или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public RegistryItem? GetItem(
 			int? key)
 		{
@@ -490,7 +477,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Строковый ключ элемента.</param>
 		/// <returns>Значение контента или <see langword="null"/>, если ключ отсутствует в списке.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string? GetValue(
 			string key)
 		{
@@ -504,7 +490,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Целочисленный ключ элемента.</param>
 		/// <returns>Значение контента или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string? GetValue(
 			int key)
 		{
@@ -517,7 +502,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Идентификатор ключа, допускающий значение <see langword="null"/>.</param>
 		/// <returns>Значение контента или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string? GetValue(
 			int? key)
 		{
@@ -543,7 +527,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <returns>Значение или декорированный ключ.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string GetValueOrKey(
 			int key)
 		{
@@ -556,7 +539,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Строковый ключ элемента.</param>
 		/// <returns>Уровень вложенности в диапазоне от 0 до 9, либо <c>0</c>, если элемент не зарегистрирован.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int GetLevel(
 			string key)
 		{
@@ -570,7 +552,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Целочисленный ключ элемента.</param>
 		/// <returns>Уровень вложенности в диапазоне от 0 до 9, либо <c>0</c>, если элемент не зарегистрирован.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int GetLevel(
 			int key)
 		{
@@ -583,7 +564,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="key">Целочисленный ключ элемента, допускающий значение <see langword="null"/>.</param>
 		/// <returns>Уровень вложенности в диапазоне от 0 до 9, либо <c>0</c>, если элемент не зарегистрирован.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int GetLevel(
 			int? key)
 		{
@@ -648,7 +628,6 @@ namespace Ans.Net10.Common
 		/// Возвращает интеллектуально рекомендуемый режим отображения реестра в веб-интерфейсе на основе корреляции его расчетной ширины и плотности элементов.
 		/// </summary>
 		/// <returns>Одно из значений перечисления <see cref="RegistryModeEnum"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public RegistryModeEnum GetProposeMode()
 		{
 			return GetProposeWidth() switch
@@ -674,7 +653,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="width">Числовое значение максимальной ширины поля.</param>
 		/// <returns>Одно из значений перечисления <see cref="WidthsEnum"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static WidthsEnum GetProposeWidth(
 			int width)
 		{
@@ -692,7 +670,6 @@ namespace Ans.Net10.Common
 		/// Возвращает рекомендуемую ширину элемента ввода в интерфейсе на основе автоматического анализа максимальной длины значений текущего списка реестра.
 		/// </summary>
 		/// <returns>Одно из значений перечисления <see cref="WidthsEnum"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public WidthsEnum GetProposeWidth()
 		{
 			return GetProposeWidth(GetMaxWidth());

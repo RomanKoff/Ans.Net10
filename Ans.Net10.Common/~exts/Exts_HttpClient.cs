@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using Microsoft.Extensions.Caching.Hybrid;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
@@ -259,7 +258,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Принудительно асинхронно удаляет (инвалидирует) ранее сохраненную запись HTTP-ответа из гибридного кэша по заданному формату и URI ресурса.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ValueTask InvalidateHttpCacheAsync(
 			this HttpClient client,
 			string format,
@@ -315,8 +313,7 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string _getCacheKey(
+				private static string _getCacheKey(
 			string format,
 			string? baseAddress,
 			string requestUri)

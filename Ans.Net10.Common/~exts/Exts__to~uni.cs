@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -18,7 +17,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="int"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int? ToInt(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -32,7 +30,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="int"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int ToInt(
 			this string? value,
 			int defaultValue,
@@ -46,7 +43,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="uint"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static uint? ToUInt(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -60,7 +56,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="uint"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static uint ToUInt(
 			this string? value,
 			uint defaultValue,
@@ -74,7 +69,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="long"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long? ToLong(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -88,7 +82,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="long"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long ToLong(
 			this string? value,
 			long defaultValue,
@@ -105,7 +98,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="double"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static double? ToDouble(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -119,7 +111,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="double"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static double ToDouble(
 			this string? value,
 			double defaultValue,
@@ -133,7 +124,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="float"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float? ToFloat(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -147,7 +137,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="float"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float ToFloat(
 			this string? value,
 			float defaultValue,
@@ -161,7 +150,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="decimal"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static decimal? ToDecimal(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -175,7 +163,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Число типа <see cref="decimal"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static decimal ToDecimal(
 			this string? value,
 			decimal defaultValue,
@@ -192,7 +179,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Объект <see cref="DateTime"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime? ToDateTime(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -206,7 +192,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Объект <see cref="DateTime"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime ToDateTime(
 			this string? value,
 			DateTime defaultValue,
@@ -220,7 +205,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Объект <see cref="DateOnly"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly? ToDateOnly(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -234,7 +218,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Объект <see cref="DateOnly"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly ToDateOnly(
 			this string? value,
 			DateOnly defaultValue,
@@ -248,7 +231,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходная строка для парсинга. Допускает значение <see langword="null"/>.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Объект <see cref="TimeOnly"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly? ToTimeOnly(
 			this string? value,
 			IFormatProvider? provider = null)
@@ -262,7 +244,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение на случай ошибки парсинга.</param>
 		/// <param name="provider">Поставщик региональных настроек. Если равен <see langword="null"/>, применяется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Объект <see cref="TimeOnly"/> или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly ToTimeOnly(
 			this string? value,
 			TimeOnly defaultValue,
@@ -280,7 +261,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Исходная строка для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Логическое значение <see cref="bool"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool ToBool(
 			this string? value)
 		{
@@ -300,7 +280,6 @@ namespace Ans.Net10.Common
 		/* privates */
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static T? _parse<T>(
 			string? value,
 			IFormatProvider provider)
@@ -316,8 +295,7 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static T _parse<T>(
+				private static T _parse<T>(
 			string? value,
 			T defaultValue,
 			IFormatProvider provider)

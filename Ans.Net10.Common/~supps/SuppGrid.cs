@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -163,8 +162,7 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Инкапсулирует логику валидации строки, фильтрации комментариев и создания парсера строки.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static GridRowParser? _getRowParser(
+				private static GridRowParser? _getRowParser(
 			string line,
 			IFormatProvider? provider)
 		{

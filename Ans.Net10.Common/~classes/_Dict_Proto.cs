@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -192,7 +191,6 @@ namespace Ans.Net10.Common
 		/// Найденное значение типа <typeparamref name="TValue"/>, либо результат применения метода <see cref="StringToValue"/> к строковому представлению ключа. 
 		/// Если переданный ключ равен <see langword="null"/>, возвращается значение по умолчанию <see langword="default"/> для типа <typeparamref name="TValue"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public TValue? GetValueOrKey(
 			TKey key)
 		{

@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -63,7 +62,6 @@ namespace Ans.Net10.Common
 		/// Значение <see langword="true"/>, если текущий интервал шагов пройден и достигнут лимит; 
 		/// в противном случае — <see langword="false"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool Next()
 		{
 			Current++;

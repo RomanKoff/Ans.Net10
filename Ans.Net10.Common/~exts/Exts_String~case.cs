@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -80,7 +79,6 @@ namespace Ans.Net10.Common
 		/// <param name="forcedToLower">Принудительно перевести всю строку в нижний регистр перед применением форматирования заголовков.</param>
 		/// <param name="cultureInfo">Информация о культуре и языковых стандартах. Если равен <see langword="null"/>, используется <see cref="CultureInfo.InvariantCulture"/>.</param>
 		/// <returns>Строка в регистре Title Case, либо <see cref="string.Empty"/>, если исходная строка пуста.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetAsTitleCase(
 			this string? instance,
 			bool forcedToLower = false,

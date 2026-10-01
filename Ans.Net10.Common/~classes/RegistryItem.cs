@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -42,7 +40,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Инициализирует новый пустой экземпляр класса <see cref="RegistryItem"/> с параметрами по умолчанию.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public RegistryItem()
 		{
 		}
@@ -55,7 +52,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Текстовое значение элемента.</param>
 		/// <param name="level">Уровень вложенности элемента в иерархической структуре реестра (строго в диапазоне от 0 до 9).</param>
 		/// <param name="isLabel">Флаг, указывающий, является ли данный элемент чисто текстовой меткой (заголовком группы).</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public RegistryItem(
 			string key,
 			string value,
@@ -74,7 +70,6 @@ namespace Ans.Net10.Common
 		/// Инициализирует новый экземпляр класса <see cref="RegistryItem"/>, выполняя немедленную десериализацию из строки специального формата.
 		/// </summary>
 		/// <param name="serialization">Строка сериализованных данных элемента формата <c>"key=[#][:level]value"</c>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public RegistryItem(
 			string serialization)
 			: this()
@@ -120,10 +115,8 @@ namespace Ans.Net10.Common
 		/// <value>Строковое значение контента элемента.</value>
 		public string Value
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get;
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			set => field = string.IsNullOrEmpty(value)
+						get;
+						set => field = string.IsNullOrEmpty(value)
 				? $"{{{Key}}}" : value;
 		} = string.Empty;
 
@@ -136,7 +129,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="data">Исходное необработанное строковое значение данных.</param>
 		/// <returns>Строка данных с экранированными служебными символами. Если входная строка пуста, возвращается <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetDataEscapes(
 			string data)
 		{
@@ -155,7 +147,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="data">Строка данных, прошедшая этап предварительного экранирования.</param>
 		/// <returns>Замаскированная строка данных, готовая к безопасному поиску разделителей в парсере.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetDataMasking(
 			string data)
 		{
@@ -174,7 +165,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="data">Замаскированная строка данных после этапа синтаксического разбора.</param>
 		/// <returns>Восстановленная строка с оригинальными неэкранированными служебными символами.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetDataRestores(
 			string data)
 		{

@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-25
 
 using Microsoft.Extensions.Caching.Hybrid;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
@@ -125,7 +124,6 @@ namespace Ans.Net10.Common
 		/// Выполняет асинхронный GET-запрос с автоматической проверкой гибридного кэша,
 		/// используя параметры, накопленные в свойстве <see cref="Params"/>.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public Task<WebApiResult<T>> SendGetAsync(
 			Encoding? encoding = null,
 			Action<HttpRequestMessage>? configureRequest = null,
@@ -188,7 +186,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Асинхронно аннулирует (удаляет) из гибридного кэша (L1/L2) запись GET-запроса для конкретной строки параметров.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ValueTask InvalidateHelperCacheAsync(
 			string queryString,
 			CancellationToken cancellationToken = default)
@@ -202,7 +199,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Асинхронно аннулирует из гибридного кэша запись GET-запроса для текущего состояния параметров в <see cref="Params"/>.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ValueTask InvalidateHelperCacheAsync(
 			CancellationToken cancellationToken = default)
 		{
@@ -289,8 +285,7 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private string _getCacheKey(
+				private string _getCacheKey(
 			string queryString)
 		{
 			return $"api_helper_cache:{BaseUrl}{queryString}";

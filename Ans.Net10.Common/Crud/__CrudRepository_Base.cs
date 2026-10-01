@@ -1,4 +1,4 @@
-﻿// rev 2026-09-26
+﻿// rev 2026-10-01
 
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -7,14 +7,13 @@ namespace Ans.Net10.Common.Crud
 {
 
 	/// <summary>
-	/// Интерфейс универсального репозитория для выполнения базовых
-	/// CRUD-операций над сущностями типа <typeparamref name="T"/>.
+	/// Интерфейс универсального репозитория для выполнения базовых асинхронных операций
+	/// чтения и синхронного управления состояниями сущностей типа <typeparamref name="T"/>.
 	/// </summary>
 	/// <typeparam name="T">Тип доменной сущности, управляемой репозиторием. Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
 	public interface ICrudRepository<T>
 		where T : class
 	{
-
 		/* readonly properties */
 
 		/// <summary>
@@ -39,88 +38,87 @@ namespace Ans.Net10.Common.Crud
 		IQueryable<T> GetItemsAsQueryable(Expression<Func<T, bool>>? filter);
 
 		/// <summary>
-		/// Возвращает сущность по её уникальному целочисленному идентификатору.
+		/// Асинхронно возвращает сущность по её уникальному целочисленному идентификатору.
 		/// </summary>
 		/// <param name="id">Идентификатор искомой сущности.</param>
-		/// <returns>Найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если запись не найдена.</returns>
-		T? GetItem(int id);
+		/// <returns>Задача, результатом которой является найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если запись не найдена.</returns>
+		Task<T?> GetItemAsync(int id);
 
 		/// <summary>
-		/// Возвращает первую сущность, удовлетворяющую условию фильтра, без отслеживания изменений.
+		/// Асинхронно возвращает первую сущность, удовлетворяющую условию фильтра, без отслеживания изменений.
 		/// </summary>
 		/// <param name="filter">Выражение-фильтр для поиска сущности.</param>
-		/// <returns>Первая найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если совпадений не найдено.</returns>
-		T? GetItem(Expression<Func<T, bool>> filter);
+		/// <returns>Задача, результатом которой является первая найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если совпадений не найдено.</returns>
+		Task<T?> GetItemAsync(Expression<Func<T, bool>> filter);
 
 		/// <summary>
-		/// Возвращает общее количество сущностей, удовлетворяющих заданному фильтру.
+		/// Асинхронно возвращает общее количество сущностей, удовлетворяющих заданному фильтру.
 		/// </summary>
 		/// <param name="filter">Выражение-фильтр для подсчета. Если равен <see langword="null"/>, подсчитываются все записи в наборе.</param>
-		/// <returns>Общее количество записей, соответствующих условию.</returns>
-		int GetItemsCount(Expression<Func<T, bool>>? filter);
+		/// <returns>Задача, результатом которой является общее количество записей, соответствующих условию.</returns>
+		Task<int> GetItemsCountAsync(Expression<Func<T, bool>>? filter);
 
 		/* methods */
 
 		/// <summary>
-		/// Добавляет новую сущность в контекст со статусом <see cref="EntityState.Added"/>.
+		/// Синхронно добавляет новую сущность в контекст со статусом <see cref="EntityState.Added"/>.
 		/// </summary>
 		/// <param name="entity">Добавляемая сущность.</param>
 		void Add(T entity);
 
 		/// <summary>
-		/// Прикрепляет сущность к контексту и помечает все её свойства
-		/// как измененные (<see cref="EntityState.Modified"/>).
+		/// Синхронно прикрепляет сущность к контексту и помечает все её свойства как измененные (<see cref="EntityState.Modified"/>).
 		/// </summary>
 		/// <param name="entity">Обновляемая сущность.</param>
 		void UpdateEvery(T entity);
 
 		/// <summary>
-		/// Прикрепляет сущность к контексту и помечает как измененные только указанные свойства.
+		/// Синхронно прикрепляет сущность к контексту и помечает как измененные только указанные свойства.
 		/// </summary>
 		/// <param name="entity">Обновляемая сущность.</param>
 		/// <param name="properties">Коллекция системных имен свойств, которые подлежат обновлению.</param>
 		void UpdateSelective(T entity, IEnumerable<string> properties);
 
 		/// <summary>
-		/// Помечает указанную сущность для удаления из базы данных.
+		/// Синхронно помечает указанную сущность для удаления из базы данных.
 		/// </summary>
 		/// <param name="entity">Удаляемая сущность.</param>
 		void Remove(T entity);
 
 		/// <summary>
-		/// Находит сущность по идентификатору и помечает её для удаления.
+		/// Асинхронно находит сущность по идентификатору в БД и помечает её для удаления.
 		/// </summary>
 		/// <param name="id">Идентификатор удаляемой сущности.</param>
-		void Remove(int id);
+		/// <returns>Задача, представляющая асинхронную операцию поиска перед удалением.</returns>
+		Task RemoveAsync(int id);
 
 		/// <summary>
-		/// Добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+		/// Синхронно добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
 		/// <param name="keys">Коллекция идентификаторов связываемых объектов.</param>
 		void AddManyrefs(int masterPtr, IEnumerable<int> keys);
 
 		/// <summary>
-		/// Удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+		/// Синхронно удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
 		/// <param name="keys">Коллекция идентификаторов отвязываемых объектов.</param>
 		void RemoveManyrefs(int masterPtr, IEnumerable<int> keys);
 
 		/// <summary>
-		/// Синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
+		/// Синхронно синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
 		/// <param name="oldKeys">Старый (текущий) набор связанных ключей.</param>
 		/// <param name="newKeys">Новый (целевой) набор связанных ключей.</param>
 		void ManyrefUpdate(int masterPtr, IEnumerable<int> oldKeys, IEnumerable<int> newKeys);
-
 	}
 
 
 
 	/// <summary>
-	/// Абстрактный прототип класса для реализации репозиториев CRUD-операций с использованием Entity Framework Core.
+	/// Абстрактный прототип базового класса репозиториев CRUD-операций с использованием Entity Framework Core.
 	/// </summary>
 	/// <typeparam name="T">Тип доменной сущности, управляемой репозиторием. Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
 	public abstract class __CrudRepository_Base<T>(
@@ -140,7 +138,7 @@ namespace Ans.Net10.Common.Crud
 		public DbSet<T> DbSet { get; } = db.Set<T>();
 
 
-		/* functions */
+		/* virtual functions */
 
 
 		/// <inheritdoc />
@@ -154,40 +152,42 @@ namespace Ans.Net10.Common.Crud
 
 
 		/// <inheritdoc />
-		public virtual T? GetItem(
+		public virtual async Task<T?> GetItemAsync(
 			int id)
 		{
-			return DbSet.Find(id);
+			return await DbSet.FindAsync(id);
 		}
 
 
 		/// <inheritdoc />
-		public virtual T? GetItem(
+		public virtual async Task<T?> GetItemAsync(
 			Expression<Func<T, bool>> filter)
 		{
-			return DbSet
+			ArgumentNullException.ThrowIfNull(filter);
+			return await DbSet
 				.AsNoTracking()
-				.FirstOrDefault(filter);
+				.FirstOrDefaultAsync(filter);
 		}
 
 
 		/// <inheritdoc />
-		public virtual int GetItemsCount(
+		public virtual async Task<int> GetItemsCountAsync(
 			Expression<Func<T, bool>>? filter)
 		{
 			return filter == null
-				? DbSet.Count()
-				: DbSet.Where(filter).Count();
+				? await DbSet.CountAsync()
+				: await DbSet.Where(filter).CountAsync();
 		}
 
 
-		/* methods */
+		/* virtual methods */
 
 
 		/// <inheritdoc />
 		public virtual void Add(
 			T entity)
 		{
+			ArgumentNullException.ThrowIfNull(entity);
 			DbSet.Add(entity);
 		}
 
@@ -196,6 +196,7 @@ namespace Ans.Net10.Common.Crud
 		public virtual void UpdateEvery(
 			T entity)
 		{
+			ArgumentNullException.ThrowIfNull(entity);
 			DbSet.Attach(entity);
 			DbContext.Entry(entity).State = EntityState.Modified;
 		}
@@ -206,6 +207,8 @@ namespace Ans.Net10.Common.Crud
 			T entity,
 			IEnumerable<string> properties)
 		{
+			ArgumentNullException.ThrowIfNull(entity);
+			ArgumentNullException.ThrowIfNull(properties);
 			DbSet.Attach(entity);
 			foreach (var property1 in properties)
 				DbContext.Entry(entity).Property(property1).IsModified = true;
@@ -216,6 +219,7 @@ namespace Ans.Net10.Common.Crud
 		public virtual void Remove(
 			T entity)
 		{
+			ArgumentNullException.ThrowIfNull(entity);
 			if (DbContext.Entry(entity).State == EntityState.Detached)
 				DbSet.Attach(entity);
 			DbSet.Remove(entity);
@@ -223,10 +227,10 @@ namespace Ans.Net10.Common.Crud
 
 
 		/// <inheritdoc />
-		public virtual void Remove(
+		public virtual async Task RemoveAsync(
 			int id)
 		{
-			var entity1 = DbSet.Find(id);
+			var entity1 = await DbSet.FindAsync(id);
 			if (entity1 != null)
 				Remove(entity1);
 		}
@@ -256,6 +260,8 @@ namespace Ans.Net10.Common.Crud
 			IEnumerable<int> oldKeys,
 			IEnumerable<int> newKeys)
 		{
+			ArgumentNullException.ThrowIfNull(oldKeys);
+			ArgumentNullException.ThrowIfNull(newKeys);
 			var comparer1 = new KeysComparer(oldKeys, newKeys);
 			if (comparer1.HasAdded)
 				AddManyrefs(masterPtr, comparer1.Added);

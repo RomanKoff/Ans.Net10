@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -69,7 +68,6 @@ namespace Ans.Net10.Common
 		/// <param name="json">Исходная строка JSON-документа.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы (<see langword="null"/>), применяются настройки по умолчанию <see cref="DEFAULT_JSON_SERIALIZER_OPTIONS"/>.</param>
 		/// <returns>Десериализованный объект типа <typeparamref name="T"/> или системное значение <see langword="default"/>, если строка пуста или равна <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetObjectFromJsonString<T>(
 			string json,
 			JsonSerializerOptions? options = null)
@@ -88,7 +86,6 @@ namespace Ans.Net10.Common
 		/// <param name="utf8Json">Исходный байтовый массив в кодировке UTF-8.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
 		/// <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetObjectFromJsonBytes<T>(
 			byte[] utf8Json,
 			JsonSerializerOptions? options = null)
@@ -105,7 +102,6 @@ namespace Ans.Net10.Common
 		/// <param name="utf8Json">Входящий высокопроизводительный срез байт памяти <see cref="ReadOnlySpan{Byte}"/>.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
 		/// <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetObjectFromJsonSpan<T>(
 			ReadOnlySpan<byte> utf8Json,
 			JsonSerializerOptions? options = null)
@@ -122,7 +118,6 @@ namespace Ans.Net10.Common
 		/// <param name="stream">Входящий бинарный поток данных.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
 		/// <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetObjectFromJsonStream<T>(
 			Stream stream,
 			JsonSerializerOptions? options = null)
@@ -139,7 +134,6 @@ namespace Ans.Net10.Common
 		/// <param name="stream">Входящий асинхронный поток данных.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
 		/// <returns>Структура <see cref="ValueTask{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ValueTask<T?> GetObjectFromJsonStreamAsync<T>(
 			Stream stream,
 			JsonSerializerOptions? options = null)
@@ -191,7 +185,6 @@ namespace Ans.Net10.Common
 		/// <param name="obj">Экземпляр объекта любой структуры для сериализации.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
 		/// <returns>Текстовая строка, содержащая JSON-представление переданного объекта.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetJsonStringFromObject(
 			object obj,
 			JsonSerializerOptions? options = null)
@@ -207,7 +200,6 @@ namespace Ans.Net10.Common
 		/// <param name="obj">Экземпляр объекта для сериализации.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
 		/// <returns>Массив байт в кодировке UTF-8, готовый для передачи по сети или записи.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] GetJsonBytesFromObject(
 			object obj,
 			JsonSerializerOptions? options = null)
@@ -224,7 +216,6 @@ namespace Ans.Net10.Common
 		/// <param name="json">Исходная строка JSON-документа.</param>
 		/// <param name="jsonTypeInfo">Инфраструктурные метаданные типа со сценарием Source Generation, сгенерированные компилятором на этапе сборки проекта.</param>
 		/// <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetObjectFromJsonStringGen<T>(
 			string json,
 			JsonTypeInfo<T> jsonTypeInfo)
@@ -241,7 +232,6 @@ namespace Ans.Net10.Common
 		/// <param name="utf8Json">Исходный массив байт в кодировке UTF-8.</param>
 		/// <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
 		/// <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetObjectFromJsonBytesGen<T>(
 			byte[] utf8Json,
 			JsonTypeInfo<T> jsonTypeInfo)
@@ -258,7 +248,6 @@ namespace Ans.Net10.Common
 		/// <param name="utf8Json">Входящий срез байт памяти <see cref="ReadOnlySpan{Byte}"/> в кодировке UTF-8.</param>
 		/// <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
 		/// <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetObjectFromJsonSpanGen<T>(
 			ReadOnlySpan<byte> utf8Json,
 			JsonTypeInfo<T> jsonTypeInfo)
@@ -275,7 +264,6 @@ namespace Ans.Net10.Common
 		/// <param name="stream">Входящий асинхронный поток данных.</param>
 		/// <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
 		/// <returns>Структура-задача <see cref="ValueTask{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ValueTask<T?> GetObjectFromJsonStreamGenAsync<T>(
 			Stream stream,
 			JsonTypeInfo<T> jsonTypeInfo)
@@ -310,7 +298,6 @@ namespace Ans.Net10.Common
 		/// <param name="obj">Экземпляр объекта для сериализации.</param>
 		/// <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
 		/// <returns>Текстовая строка, содержащая быстро скомпилированное JSON-представление объекта.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetJsonStringFromObjectGen<T>(
 			T obj,
 			JsonTypeInfo<T> jsonTypeInfo)
@@ -327,7 +314,6 @@ namespace Ans.Net10.Common
 		/// <param name="obj">Экземпляр объекта для сериализации.</param>
 		/// <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
 		/// <returns>Массив байт в кодировке UTF-8, сгенерированный без аллокаций на анализ метаданных.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] GetJsonBytesFromObjectGen<T>(
 			T obj,
 			JsonTypeInfo<T> jsonTypeInfo)

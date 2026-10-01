@@ -3,7 +3,6 @@
 using System.ComponentModel;
 using System.Dynamic;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -40,7 +39,6 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип искомого атрибута, унаследованный от <see cref="Attribute"/>.</typeparam>
 		/// <param name="type">Исследуемый тип данных.</param>
 		/// <returns>Экземпляр найденного атрибута типа <typeparamref name="T"/> или <see langword="null"/>, если атрибут отсутствует.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetAttribute<T>(
 			this Type type)
 			where T : Attribute
@@ -107,7 +105,6 @@ namespace Ans.Net10.Common
 		/// <param name="types">Массив исследуемых типов данных.</param>
 		/// <param name="isDropNullable">Признак принудительного удаления знака <c>'?'</c> для Nullable типов.</param>
 		/// <returns>Перечисление <see cref="IEnumerable{String}"/> строковых имён типов.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<string> GetCSharpTypeNames(
 			this Type[] types,
 			bool isDropNullable = false)
@@ -194,7 +191,6 @@ namespace Ans.Net10.Common
 		/// <param name="obj">Экземпляр исследуемого объекта.</param>
 		/// <param name="name">Строковое имя свойства.</param>
 		/// <returns>Объект, содержащий значение указанного свойства.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static object? GetPropertyValue(
 			this object obj,
 			string name)
@@ -211,7 +207,6 @@ namespace Ans.Net10.Common
 		/// <param name="name">Строковое имя свойства.</param>
 		/// <param name="type">Тип данных для сканирования метаданных свойства.</param>
 		/// <returns>Значение свойства, приведенное к типу <typeparamref name="T"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T GetPropertyValue<T>(
 			this object obj,
 			string name,
@@ -228,7 +223,6 @@ namespace Ans.Net10.Common
 		/// <param name="obj">Экземпляр исследуемого объекта.</param>
 		/// <param name="name">Строковое имя свойства.</param>
 		/// <returns>Значение свойства, приведенное к типу <typeparamref name="T"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T GetPropertyValue<T>(
 			this object obj,
 			string name)
@@ -244,7 +238,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Проверяемый сырой объект. Допускает значение <see langword="null"/>.</param>
 		/// <param name="defaultValue">Альтернативное возвращаемое значение по умолчанию.</param>
 		/// <returns>Объект, приведенный к типу <typeparamref name="T"/>, или значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T DefaultObject<T>(
 			this object? value,
 			T defaultValue)
@@ -261,7 +254,6 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Целевой тип результирующего объекта.</typeparam>
 		/// <param name="value">Проверяемый сырой объект. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Объект типа <typeparamref name="T"/> или системное дефолтное значение.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? DefaultObject<T>(
 			this object? value)
 		{

@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -20,7 +19,6 @@ namespace Ans.Net10.Common
 		/// <param name="filter">Текущее составное выражение-фильтр. Допускает значение <see langword="null"/>.</param>
 		/// <param name="expression">Новое добавляемое предикатное выражение.</param>
 		/// <returns>Новое объединенное дерево выражений типа <see cref="Expression{TDelegate}"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Expression<Func<T, bool>> ApplyFilter_Add<T>(
 			Expression<Func<T, bool>>? filter,
 			Expression<Func<T, bool>> expression)

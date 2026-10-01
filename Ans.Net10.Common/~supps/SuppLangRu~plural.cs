@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -19,7 +17,6 @@ namespace Ans.Net10.Common
 		/// <param name="form2to4">Форма слова в родительном падеже единственного числа для числительных, оканчивающихся на 2–4, кроме 12–14 (например, <c>"дня"</c>, <c>"яблока"</c>) [10].</param>
 		/// <param name="form0and5to9and11to14">Форма слова в родительном падеже множественного числа для числительных, оканчивающихся на 0, 5–9, а также от 11 до 14 включительно (например, <c>"дней"</c>, <c>"яблок"</c>) [10].</param>
 		/// <returns>Строка, содержащая существительное в правильной грамматической форме, соответствующей числу [10].</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetPlural(
 			long value,
 			string form1,
@@ -51,7 +48,6 @@ namespace Ans.Net10.Common
 		/// <param name="form2to4">Форма слова для числительных, оканчивающихся на 2–4 (кроме 12–14) [10].</param>
 		/// <param name="form0and5to9and11to14">Форма слова для числительных, оканчивающихся на 0, 5–9 и диапазона 11–14 [10].</param>
 		/// <returns>Форматированная по шаблону строка, либо <see cref="string.Empty"/>, если строка шаблона пуста или состоит только из пробелов [10].</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetPlural(
 			string? template,
 			long value,
@@ -71,7 +67,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="year">Количество полных лет [10].</param>
 		/// <returns>Форматированная строка с числовым значением возраста и правильным существительным [10].</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetPluralAge(
 			int year)
 		{

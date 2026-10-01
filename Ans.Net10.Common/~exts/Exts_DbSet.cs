@@ -2,7 +2,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -21,7 +20,6 @@ namespace Ans.Net10.Common
 		/// <returns>
 		/// Связанный экземпляр <see cref="DbContext"/> или <see langword="null"/>, если контекст не удалось извлечь из внутренней инфраструктуры EF Core.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DbContext? GetDbContext<TEntity>(
 			this DbSet<TEntity> dbSet)
 			where TEntity : class

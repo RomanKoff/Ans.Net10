@@ -1,6 +1,5 @@
 ﻿using Ans.Net10.Common;
 using ImageMagick;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Images
 {
@@ -28,7 +27,6 @@ namespace Ans.Net10.Images
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ImageResizeHelper GetResizer(
 			this MagickImage image)
 		{

@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -20,7 +19,6 @@ namespace Ans.Net10.Common
 		/// <param name="minLimit">Минимально допустимая граница числового диапазона.</param>
 		/// <param name="maxLimit">Максимально допустимая граница числового диапазона.</param>
 		/// <returns>Ограниченное значение, гарантированно не выходящее за рамки указанных лимитов.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T GetRestrict<T>(
 			T value,
 			T minLimit,
@@ -42,7 +40,6 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип числа, реализующий интерфейс <see cref="IFloatingPoint{T}"/>.</typeparam>
 		/// <param name="value">Исходное значение для округления.</param>
 		/// <returns>Округленное значение, приведенное к типу <see cref="int"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int RoundToInt<T>(
 			T value)
 			where T : IFloatingPoint<T>
@@ -61,7 +58,6 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип числа, реализующий интерфейс <see cref="IFloatingPoint{T}"/>.</typeparam>
 		/// <param name="value">Исходное значение для округления.</param>
 		/// <returns>Округленное значение, приведенное к типу <see cref="uint"/>, либо <c>0</c>, если число было отрицательным.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static uint RoundToUInt<T>(
 			T value)
 			where T : IFloatingPoint<T>
@@ -118,7 +114,6 @@ namespace Ans.Net10.Common
 		/// <param name="toMax">Верхняя граница целевого диапазона.</param>
 		/// <param name="useCrop">Если передано значение <see langword="true"/>, результат будет жестко ограничен рамками целевого диапазона.</param>
 		/// <returns>Преобразованное и округленное целое число в целевом диапазоне.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int Map(
 			int value,
 			int fromMin,
@@ -139,7 +134,6 @@ namespace Ans.Net10.Common
 		/// <param name="value">Исходное число для проверки.</param>
 		/// <param name="div">Делитель. Если равен нулю (<c>T.Zero</c>), метод вернет исходное значение <paramref name="value"/>.</param>
 		/// <returns>Ближайшее число, кратное параметру <paramref name="div"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T GetNextDivisible<T>(
 			T value,
 			T div)

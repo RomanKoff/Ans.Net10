@@ -1,8 +1,7 @@
-﻿// rev 2026-09-21
+﻿// rev 2026-10-01
 
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common.Crud
 {
@@ -33,31 +32,37 @@ namespace Ans.Net10.Common.Crud
 		/// Возвращает новый, инициализированный по умолчанию экземпляр подчиненной сущности для указанного владельца.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+		/// <returns>Новый экземпляр подчиненной сущности типа <typeparamref name="T"/>.</returns>
 		T GetNew(int masterPtr);
 
 		/// <summary>
 		/// Формирует запрос <see cref="IQueryable{T}"/> без отслеживания изменений,
 		/// жестко ограниченный рамками одного владельца.
 		/// </summary>
+		/// <remarks>
+		/// Метод возвращает ленивый запрос, к которому в дальнейшем можно асинхронно применить методы материализации.
+		/// </remarks>
 		/// <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
 		/// <param name="filter">
 		/// Дополнительное выражение фильтрации. Если <see langword="null"/>,
 		/// выборка ограничивается только по <paramref name="masterPtr"/>.
 		/// </param>
+		/// <returns>Запрос <see cref="IQueryable{T}"/> для извлечения подчиненных сущностей.</returns>
 		IQueryable<T> GetItemsAsQueryable(int masterPtr, Expression<Func<T, bool>>? filter);
 
 		/// <summary>
-		/// Возвращает общее количество всех подчиненных сущностей, принадлежащих указанному владельцу.
+		/// Асинхронно возвращает общее количество всех подчиненных сущностей, принадлежащих указанному владельцу.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
-		int GetItemsCount(int masterPtr);
+		/// <returns>Задача, результатом выполнения которой является количество записей, связанных с указанным владельцем.</returns>
+		Task<int> GetItemsCountAsync(int masterPtr);
 	}
 
 
 
 	/// <summary>
 	/// Абстрактный прототип класса для реализации репозиториев CRUD-операций
-	/// над подчиненными сущностями с использованием Entity Framework.
+	/// над подчиненными сущностями с использованием Entity Framework Core.
 	/// </summary>
 	/// <typeparam name="T">Тип доменной сущности, реализующей <see cref="ISlaveEntity"/>.</typeparam>
 	public abstract class _CrudSlaveRepository_Proto<T>(
@@ -85,11 +90,11 @@ namespace Ans.Net10.Common.Crud
 
 
 		/// <inheritdoc />
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public virtual int GetItemsCount(
+		public virtual async Task<int> GetItemsCountAsync(
 			int masterPtr)
 		{
-			return base.GetItemsCount(x => x.MasterPtr == masterPtr);
+			return await base.GetItemsCountAsync(
+				x => x.MasterPtr == masterPtr);
 		}
 
 	}

@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -70,7 +68,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обрезки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="count">Максимально требуемое количество символов слева.</param>
 		/// <returns>Строка, содержащая символы из начала исходной строки, или <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetLeft(
 			this string? instance,
 			int count)
@@ -143,7 +140,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обрезки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="count">Максимально требуемое количество символов с конца строки.</param>
 		/// <returns>Строка, содержащая символы из конца исходной строки, или <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetRight(
 			this string? instance,
 			int count)
@@ -160,7 +156,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="find">Символ-разделитель, до которого отсекается левый край текста.</param>
 		/// <returns>Оставшаяся правая часть строки после первого совпадения или <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetRightSide(
 			this string? instance,
 			char find)
@@ -178,7 +173,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="find">Подстрока-разделитель, до которой отсекается левый край текста.</param>
 		/// <returns>Оставшаяся правая часть строки после первого совпадения подстроки или <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetRightSide(
 			this string? instance,
 			string find)
@@ -196,7 +190,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="count">Количество символов, которое необходимо гарантированно отсечь с левого края.</param>
 		/// <returns>Оставшаяся часть строки или <see cref="string.Empty"/>, если длина строки меньше или равна <paramref name="count"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetRightSide(
 			this string? instance,
 			int count)
@@ -213,7 +206,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="find">Символ-разделитель, после которого отсекается правый край текста.</param>
 		/// <returns>Оставшаяся левая часть строки до крайнего правого совпадения или <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetLeftSide(
 			this string? instance,
 			char find)
@@ -231,7 +223,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="find">Подстрока-разделитель, после которой отсекается правый край текста.</param>
 		/// <returns>Оставшаяся левая часть строки до крайнего правого совпадения подстроки или <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetLeftSide(
 			this string? instance,
 			string find)
@@ -249,7 +240,6 @@ namespace Ans.Net10.Common
 		/// <param name="instance">Исходная строка для обработки. Допускает значение <see langword="null"/>.</param>
 		/// <param name="count">Количество символов, которое необходимо отсечь с правого края.</param>
 		/// <returns>Оставшаяся часть строки или <see cref="string.Empty"/>, если длина строки меньше или равна <paramref name="count"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetLeftSide(
 			this string? instance,
 			int count)

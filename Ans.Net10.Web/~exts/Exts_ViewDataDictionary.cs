@@ -1,8 +1,7 @@
-﻿// rev 2026-09-28
+﻿// rev 2026-09-30
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -38,7 +37,6 @@ namespace Ans.Net10.Web
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="name">Системное имя (ключ) реестра.</param>
 		/// <param name="registry">Экземпляр записываемого реестра.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetRegistryList(
 			this ViewDataDictionary viewData,
 			string name,
@@ -102,7 +100,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="pagination">Экземпляр модели пагинации.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetPaginationData(
 			this ViewDataDictionary viewData,
 			PaginatedDataModel pagination)
@@ -121,7 +118,6 @@ namespace Ans.Net10.Web
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="name">Системное имя (ключ) реестра.</param>
 		/// <returns>Найденный объект реестра или <see langword="null"/>, если ключ отсутствует или тип не совпадает.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static RegistryList? GetRegistryList(
 			this ViewDataDictionary viewData,
 			string name)
@@ -137,7 +133,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <returns>Экземпляр модели пагинации или <see langword="null"/>, если данные отсутствуют.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static PaginatedDataModel? GetPaginationData(
 			this ViewDataDictionary viewData)
 		{
@@ -167,7 +162,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <returns>Объект метаданных поля или <see langword="null"/>, если данные отсутствуют.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static CrudFace? GetFieldInfo(
 			this ViewDataDictionary viewData)
 		{
@@ -205,7 +199,6 @@ namespace Ans.Net10.Web
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <param name="defaultValue">Значение, возвращаемое по умолчанию при отсутствии ключа.</param>
 		/// <returns>Строковое значение или значение по умолчанию.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetString(
 			this ViewDataDictionary viewData,
 			string name,
@@ -226,7 +219,6 @@ namespace Ans.Net10.Web
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <returns>Целое число со знаком или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int? GetInt(
 			this ViewDataDictionary viewData,
 			string name)
@@ -246,7 +238,6 @@ namespace Ans.Net10.Web
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <param name="defaultValue">Значение по умолчанию.</param>
 		/// <returns>Целое число.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetInt(
 			this ViewDataDictionary viewData,
 			string name,
@@ -256,24 +247,188 @@ namespace Ans.Net10.Web
 		}
 
 
-		/*--- bool ---*/
+		/*--- uint ---*/
 
 
 		/// <summary>
-		/// Извлекает логическое значение из словаря ViewData. При отсутствии ключа возвращает <see langword="false"/>.
+		/// Извлекает из словаря ViewData значение по его имени со сбросом в nullable-состояние 32-битного целого числа без знака.
 		/// </summary>
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="name">Имя выражения или ключа словаря.</param>
-		/// <returns>Логическое значение флажка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public static bool GetBool(
+		/// <returns>Целое число без знака или <see langword="null"/>.</returns>
+		public static uint? GetUInt(
 			this ViewDataDictionary viewData,
 			string name)
 		{
 			ArgumentNullException.ThrowIfNull(viewData);
 			ArgumentException.ThrowIfNullOrEmpty(name);
 			var value1 = viewData.Eval(name);
-			return value1 is bool value2 && value2;
+			return value1 is uint value2
+				? value2 : null;
+		}
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData значение по его имени с поддержкой кастомного значения по умолчанию типа uint.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <param name="defaultValue">Значение по умолчанию.</param>
+		/// <returns>Целое число без знака.</returns>
+		public static uint GetUInt(
+			this ViewDataDictionary viewData,
+			string name,
+			uint defaultValue)
+		{
+			return viewData.GetUInt(name) ?? defaultValue;
+		}
+
+
+		/*--- long ---*/
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData значение по его имени со сбросом в nullable-состояние 64-битного целого числа со знаком.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <returns>Большое целое число со знаком или <see langword="null"/>.</returns>
+		public static long? GetLong(
+			this ViewDataDictionary viewData,
+			string name)
+		{
+			ArgumentNullException.ThrowIfNull(viewData);
+			ArgumentException.ThrowIfNullOrEmpty(name);
+			var value1 = viewData.Eval(name);
+			return value1 is long value2
+				? value2 : null;
+		}
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData значение по его имени с поддержкой кастомного значения по умолчанию типа long.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <param name="defaultValue">Значение по умолчанию.</param>
+		/// <returns>Большое целое число со знаком.</returns>
+		public static long GetLong(
+			this ViewDataDictionary viewData,
+			string name,
+			long defaultValue)
+		{
+			return viewData.GetLong(name) ?? defaultValue;
+		}
+
+
+		/*--- double ---*/
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData структуру числа с плавающей запятой двойной точности.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <returns>Число с плавающей запятой двойной точности или <see langword="null"/>.</returns>
+		public static double? GetDouble(
+			this ViewDataDictionary viewData,
+			string name)
+		{
+			ArgumentNullException.ThrowIfNull(viewData);
+			ArgumentException.ThrowIfNullOrEmpty(name);
+			var value1 = viewData.Eval(name);
+			return value1 is double value2
+				? value2 : null;
+		}
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData структуру числа двойной точности с поддержкой fallback-значения.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <param name="defaultValue">Значение по умолчанию.</param>
+		/// <returns>Число с плавающей запятой двойной точности.</returns>
+		public static double GetDouble(
+			this ViewDataDictionary viewData,
+			string name,
+			double defaultValue)
+		{
+			return viewData.GetDouble(name) ?? defaultValue;
+		}
+
+
+		/*--- float ---*/
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData структуру числа с плавающей запятой одинарной точности.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <returns>Число с плавающей запятой одинарной точности или <see langword="null"/>.</returns>
+		public static float? GetFloat(
+			this ViewDataDictionary viewData,
+			string name)
+		{
+			ArgumentNullException.ThrowIfNull(viewData);
+			ArgumentException.ThrowIfNullOrEmpty(name);
+			var value1 = viewData.Eval(name);
+			return value1 is float value2
+				? value2 : null;
+		}
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData структуру числа одинарной точности с поддержкой fallback-значения.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <param name="defaultValue">Значение по умолчанию.</param>
+		/// <returns>Число с плавающей запятой одинарной точности.</returns>
+		public static float GetFloat(
+			this ViewDataDictionary viewData,
+			string name,
+			float defaultValue)
+		{
+			return viewData.GetFloat(name) ?? defaultValue;
+		}
+
+
+		/*--- decimal ---*/
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData высокоточное десятичное число.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <returns>Высокоточное десятичное число или <see langword="null"/>.</returns>
+		public static decimal? GetDecimal(
+			this ViewDataDictionary viewData,
+			string name)
+		{
+			ArgumentNullException.ThrowIfNull(viewData);
+			ArgumentException.ThrowIfNullOrEmpty(name);
+			var value1 = viewData.Eval(name);
+			return value1 is decimal value2
+				? value2 : null;
+		}
+
+
+		/// <summary>
+		/// Извлекает из словаря ViewData высокоточное десятичное число с поддержкой fallback-значения.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <param name="defaultValue">Значение по умолчанию.</param>
+		/// <returns>Высокоточное десятичное число.</returns>
+		public static decimal GetDecimal(
+			this ViewDataDictionary viewData,
+			string name,
+			decimal defaultValue)
+		{
+			return viewData.GetDecimal(name) ?? defaultValue;
 		}
 
 
@@ -286,7 +441,6 @@ namespace Ans.Net10.Web
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <returns>Объект даты и времени или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime? GetDateTime(
 			this ViewDataDictionary viewData,
 			string name)
@@ -306,7 +460,6 @@ namespace Ans.Net10.Web
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <param name="defaultValue">Значение по умолчанию.</param>
 		/// <returns>Объект даты и времени.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTime(
 			this ViewDataDictionary viewData,
 			string name,
@@ -325,7 +478,6 @@ namespace Ans.Net10.Web
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <returns>Календарная дата или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly? GetDateOnly(
 			this ViewDataDictionary viewData,
 			string name)
@@ -345,7 +497,6 @@ namespace Ans.Net10.Web
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <param name="defaultValue">Значение по умолчанию.</param>
 		/// <returns>Календарная дата.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly GetDateOnly(
 			this ViewDataDictionary viewData,
 			string name,
@@ -364,7 +515,6 @@ namespace Ans.Net10.Web
 		/// <param name="viewData">Текущий словарь ViewData.</param>
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <returns>Время суток или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly? GetTimeOnly(
 			this ViewDataDictionary viewData,
 			string name)
@@ -384,13 +534,32 @@ namespace Ans.Net10.Web
 		/// <param name="name">Имя выражения или ключа словаря.</param>
 		/// <param name="defaultValue">Значение по умолчанию.</param>
 		/// <returns>Время суток.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly GetTimeOnly(
 			this ViewDataDictionary viewData,
 			string name,
 			TimeOnly defaultValue)
 		{
 			return viewData.GetTimeOnly(name) ?? defaultValue;
+		}
+
+
+		/*--- bool ---*/
+
+
+		/// <summary>
+		/// Извлекает логическое значение из словаря ViewData. При отсутствии ключа возвращает <see langword="false"/>.
+		/// </summary>
+		/// <param name="viewData">Текущий словарь ViewData.</param>
+		/// <param name="name">Имя выражения или ключа словаря.</param>
+		/// <returns>Логическое значение флажка.</returns>
+		public static bool GetBool(
+			this ViewDataDictionary viewData,
+			string name)
+		{
+			ArgumentNullException.ThrowIfNull(viewData);
+			ArgumentException.ThrowIfNullOrEmpty(name);
+			var value1 = viewData.Eval(name);
+			return value1 is bool value2 && value2;
 		}
 
 	}

@@ -2,7 +2,6 @@
 
 using Ans.Net10.Common.Resources;
 using System.Resources;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -54,7 +53,6 @@ namespace Ans.Net10.Common
 		/// <returns>
 		/// Объединенный массив <see cref="ResourceManager"/>, готовый для каскадного поиска метаданных.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static ResourceManager[] GetFormResourceManagers(
 			params ResourceManager[] resources)
 		{

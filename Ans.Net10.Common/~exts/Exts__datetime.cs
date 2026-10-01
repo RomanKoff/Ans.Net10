@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -19,7 +17,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты и времени.</param>
 		/// <returns>Объект <see cref="TimeOnly"/>, представляющий временную составляющую указанного объекта.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly GetTimeOnly(
 			this DateTime instance)
 		{
@@ -32,7 +29,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты и времени.</param>
 		/// <returns>Объект <see cref="DateOnly"/>, представляющий календарную дату указанного объекта.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly GetDateOnly(
 			this DateTime instance)
 		{
@@ -77,7 +73,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты.</param>
 		/// <returns>Новый экземпляр <see cref="DateTime"/>, установленный на первое число текущего месяца и года.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetStartOfMonth(
 			this DateTime instance)
 		{
@@ -92,7 +87,6 @@ namespace Ans.Net10.Common
 		/// <param name="value2">Целевой экземпляр даты и времени, с которым производится сверка.</param>
 		/// <param name="minutesDiff">Максимально допустимая разница в минутах включительно.</param>
 		/// <returns><see langword="true"/>, если абсолютная разница между датами не превышает <paramref name="minutesDiff"/> минут; иначе — <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool IsEqual(
 			this DateTime instance,
 			DateTime value2,
@@ -107,7 +101,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты и времени.</param>
 		/// <returns><see langword="true"/>, если у объекта установлено время, отличное от <see cref="TimeSpan.Zero"/>; иначе — <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool HasTimeOfDay(
 			this DateTime instance)
 		{
@@ -120,7 +113,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты.</param>
 		/// <returns>Строка, отформатированная по правилам специализированного формата AnsDate.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetAnsDate(
 			this DateTime instance)
 		{
@@ -133,7 +125,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты и времени.</param>
 		/// <returns>Строка, отформатированная по правилам специализированного формата AnsDateTime.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetAnsDateTime(
 			this DateTime instance)
 		{
@@ -146,7 +137,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты и времени.</param>
 		/// <returns>Безопасная строка даты и времени, не содержащая запрещенных символов путей файловой системы.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetAnsDateTimeForFile(
 			this DateTime instance)
 		{
@@ -162,7 +152,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр даты.</param>
 		/// <returns>Объект <see cref="DateTime"/>, соответствующий указанной дате со временем, установленным на полночь.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTime(
 			this DateOnly instance)
 		{
@@ -175,7 +164,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный экземпляр календарной даты.</param>
 		/// <returns>Значение из перечисления <see cref="TensesEnum"/> (прошлое, настоящее или будущее).</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TensesEnum GetTenses(
 			this DateOnly instance)
 		{
@@ -191,7 +179,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="instance">Исходный временной интервал.</param>
 		/// <returns>Округленное до целого значения количество минут, содержащихся в интервале.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetTotalMinutes(
 			this TimeSpan instance)
 		{

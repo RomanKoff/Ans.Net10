@@ -2,7 +2,6 @@
 
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -56,7 +55,6 @@ namespace Ans.Net10.Common
 		/// <param name="property">Имя свойства для сортировки (например, <c>"Name"</c> или со вложенностью — <c>"Category.Title"</c>).</param>
 		/// <returns>Отсортированный запрос <see cref="IOrderedQueryable{T}"/>.</returns>
 		/// <exception cref="InvalidOperationException">Выбрасывается, если указанное свойство или вложенный путь не найдены в типе сущности.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IOrderedQueryable<T> ApplyOrderBy<T>(
 			this IQueryable<T> query,
 			string property)
@@ -73,7 +71,6 @@ namespace Ans.Net10.Common
 		/// <param name="property">Имя свойства для сортировки (например, <c>"Id"</c> или <c>"User.Profile.LastName"</c>).</param>
 		/// <returns>Отсортированный запрос <see cref="IOrderedQueryable{T}"/>.</returns>
 		/// <exception cref="InvalidOperationException">Выбрасывается, если указанное свойство или вложенный путь не найдены в типе сущности.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IOrderedQueryable<T> ApplyOrderByDescending<T>(
 			this IQueryable<T> query,
 			string property)
@@ -90,7 +87,6 @@ namespace Ans.Net10.Common
 		/// <param name="property">Имя свойства для последующей сортировки (например, <c>"CreatedAt"</c>).</param>
 		/// <returns>Запрос <see cref="IOrderedQueryable{T}"/> с добавленной вторичной сортировкой.</returns>
 		/// <exception cref="InvalidOperationException">Выбрасывается, если указанное свойство или вложенный путь не найдены в типе сущности.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IOrderedQueryable<T> ApplyThenBy<T>(
 			this IOrderedQueryable<T> query,
 			string property)
@@ -107,7 +103,6 @@ namespace Ans.Net10.Common
 		/// <param name="property">Имя свойства для последующей сортировки по убыванию (например, <c>"Rating"</c>).</param>
 		/// <returns>Запрос <see cref="IOrderedQueryable{T}"/> с добавленной вторичной сортировкой по убыванию.</returns>
 		/// <exception cref="InvalidOperationException">Выбрасывается, если указанное свойство или вложенный путь не найдены в типе сущности.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IOrderedQueryable<T> ApplyThenByDescending<T>(
 			this IOrderedQueryable<T> query,
 			string property)
@@ -127,7 +122,6 @@ namespace Ans.Net10.Common
 		/// <param name="expr2">Второе выражение-предикат, объединяемое со структурой первого.</param>
 		/// <returns>Новое комбинированное дерево выражений типа <see cref="Expression{TDelegate}"/> с логическим условием <c>OR</c>.</returns>
 		/// <exception cref="ArgumentNullException">Выбрасывается, если параметр <paramref name="expr1"/> или <paramref name="expr2"/> равен <see langword="null"/>.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Expression<Func<T, bool>> Or<T>(
 			this Expression<Func<T, bool>> expr1,
 			Expression<Func<T, bool>> expr2)
@@ -147,7 +141,6 @@ namespace Ans.Net10.Common
 		/// <param name="expr2">Второе выражение-предикат, объединяемое со структурой первого.</param>
 		/// <returns>Новое комбинированное дерево выражений типа <see cref="Expression{TDelegate}"/> с логическим условием <c>AND</c>.</returns>
 		/// <exception cref="ArgumentNullException">Выбрасывается, если параметр <paramref name="expr1"/> или <paramref name="expr2"/> равен <see langword="null"/>.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static Expression<Func<T, bool>> And<T>(
 			this Expression<Func<T, bool>> expr1,
 			Expression<Func<T, bool>> expr2)

@@ -1,12 +1,10 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Перечень вариантов ориентации графического объекта (изображения) на основе соотношения его сторон.
+	/// Перечисление вариантов ориентации графического объекта (изображения) на основе соотношения его сторон.
 	/// </summary>
 	public enum ImageOrientationEnum
 		: int
@@ -35,7 +33,7 @@ namespace Ans.Net10.Common
 
 
 	/// <summary>
-	/// Перечень вариантов фиксированного смещения рамки кадрирования (обрезки) относительно сторон изображения.
+	/// Перечисление вариантов фиксированного смещения рамки кадрирования (обрезки) относительно сторон изображения.
 	/// </summary>
 	public enum ImageShiftEnum
 		: int
@@ -174,7 +172,6 @@ namespace Ans.Net10.Common
 		/// Результаты округляются до целого числа с помощью хелпера <c>SuppMath.RoundToUInt</c> и сохраняются в <see cref="NewWidth"/> и <see cref="NewHeight"/>.
 		/// </remarks>
 		/// <param name="ratio">Коэффициент масштабирования (например, <c>0.5f</c> для уменьшения размеров вдвое).</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Scale(
 			float ratio)
 		{
@@ -195,7 +192,6 @@ namespace Ans.Net10.Common
 		/// Если установлено значение <see langword="true"/>, то исходно маленькое изображение не будет увеличиваться (апскейлиться), 
 		/// если размеры целевой рамки больше размеров самого изображения.
 		/// </param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ScaleInside(
 			float width,
 			float height,
@@ -215,7 +211,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="width">Целевая ширина рамки кадрирования.</param>
 		/// <param name="height">Целевая высота рамки кадрирования.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ScaleAround(
 			float width,
 			float height)
@@ -229,7 +224,6 @@ namespace Ans.Net10.Common
 		/// Масштабирует изображение нелинейным методом усреднения пропорций вокруг заданной стороны квадрата.
 		/// </summary>
 		/// <param name="side">Размер целевой стороны условного квадрата в пикселях.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ScaleAverage(
 			uint side)
 		{
@@ -247,7 +241,6 @@ namespace Ans.Net10.Common
 		/// <param name="noIncrease">
 		/// Если установлено значение <see langword="true"/>, изображение не будет увеличиваться, если целевая ширина больше исходной <see cref="Width"/>.
 		/// </param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ScaleToWidth(
 			uint width,
 			bool noIncrease)
@@ -266,7 +259,6 @@ namespace Ans.Net10.Common
 		/// <param name="noIncrease">
 		/// Если установлено значение <see langword="true"/>, изображение не будет увеличиваться, если целевая высота больше исходной <see cref="Height"/>.
 		/// </param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ScaleToHeight(
 			uint height,
 			bool noIncrease)
@@ -291,7 +283,6 @@ namespace Ans.Net10.Common
 		/// <param name="crop">Требуемый целевой размер рамки обрезки для данной стороны.</param>
 		/// <param name="percentageOfDisplacement">Процентное смещение рамки: <c>0</c> — от левого/верхнего края, <c>50</c> — по центру, <c>100</c> — от правого/нижнего края.</param>
 		/// <returns>Беззнаковое целое число (<see cref="uint"/>), представляющее пиксель начала обрезки. Если <paramref name="length"/> меньше или равен <paramref name="crop"/>, возвращается <c>0</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static uint GetCropStart(
 			uint length,
 			uint crop,
@@ -312,7 +303,6 @@ namespace Ans.Net10.Common
 		/// <param name="crop">Требуемый целевой размер рамки обрезки для данной стороны.</param>
 		/// <param name="shift">Вариант смещения рамки, выбранный из перечисления <see cref="ImageShiftEnum"/>.</param>
 		/// <returns>Беззнаковое целое число (<see cref="uint"/>), представляющее пиксель начала обрезки. Если <paramref name="length"/> меньше или равен <paramref name="crop"/>, возвращается <c>0</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static uint GetCropStart(
 			uint length,
 			uint crop,
@@ -337,7 +327,6 @@ namespace Ans.Net10.Common
 		/// Формирует строку состояния геометрических размеров графического объекта.
 		/// </summary>
 		/// <returns>Строка формата <c>"[ИсходнаяШирина:ИсходнаяВысота]->[НоваяШирина:НоваяВысота]"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string ToString()
 		{
 			return $"[{Width}:{Height}]->[{NewWidth}:{NewHeight}]";

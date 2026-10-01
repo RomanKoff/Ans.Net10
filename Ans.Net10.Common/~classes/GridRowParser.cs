@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-25
 
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -48,7 +47,6 @@ namespace Ans.Net10.Common
 		/// Очищенная от пробелов строка ячейки. Если индекс находится вне границ массива или поле содержит 
 		/// пустое значение, возвращается <see cref="string.Empty"/>. Метод никогда не возвращает <see langword="null"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string GetText(
 			int index)
 		{
@@ -73,7 +71,6 @@ namespace Ans.Net10.Common
 		/// Преобразованное 32-битное целое число со знаком (<see cref="int"/>). Если индекс находится вне границ, 
 		/// поле пусто или конвертация завершилась ошибкой формата, возвращается значение <c>0</c>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int GetInt(
 			int index)
 		{
@@ -95,7 +92,6 @@ namespace Ans.Net10.Common
 		/// Преобразованное число типа <see cref="double"/>. Если индекс находится вне границ, 
 		/// поле пусто или конвертация завершилась ошибкой формата, возвращается значение <c>0.0</c>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public double GetReal(
 			int index)
 		{
@@ -117,7 +113,6 @@ namespace Ans.Net10.Common
 		/// Объект <see cref="DateTime"/>, если преобразование прошло успешно; в противном случае — <see langword="null"/> 
 		/// (если значение отсутствует, некорректно или индекс находится вне границ диапазона).
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateTime? GetDate(
 			int index)
 		{
@@ -139,7 +134,6 @@ namespace Ans.Net10.Common
 		/// Значение <see langword="true"/>, если строковое содержимое ячейки эквивалентно <c>"1"</c> или <c>"true"</c> 
 		/// (без учета регистра и пробелов); во всех остальных случаях (включая выход индекса за границы) — <see langword="false"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool GetBool(
 			int index)
 		{

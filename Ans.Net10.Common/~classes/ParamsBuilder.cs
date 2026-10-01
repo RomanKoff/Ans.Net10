@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -30,7 +28,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Строковое значение параметра. Если передана пустая строка или <see langword="null"/>, параметр будет обработан согласно правилам фильтрации коллекции.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			string value)
@@ -44,7 +41,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Логическое значение типа <see cref="bool"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			bool value)
@@ -58,7 +54,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">32-битное целое число со знаком типа <see cref="int"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			int value)
@@ -72,7 +67,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">64-битное целое число со знаком типа <see cref="long"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			long value)
@@ -86,7 +80,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Число с плавающей запятой двойной точности типа <see cref="double"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			double value)
@@ -100,7 +93,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Число с плавающей запятой одинарной точности типа <see cref="float"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			float value)
@@ -114,7 +106,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Десятичное число с высокой точностью типа <see cref="decimal"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			decimal value)
@@ -128,7 +119,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Значение структуры <see cref="DateTime"/>, допускающее значение <see langword="null"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			DateTime? value)
@@ -142,7 +132,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Значение структуры <see cref="DateOnly"/>, допускающее значение <see langword="null"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			DateOnly? value)
@@ -156,7 +145,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Значение структуры <see cref="TimeOnly"/>, допускающее значение <see langword="null"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			TimeOnly? value)
@@ -202,7 +190,6 @@ namespace Ans.Net10.Common
 		/// <param name="additionName">Имя временного целочисленного параметра (например, <c>"page"</c>).</param>
 		/// <param name="additionValue">Числовое значение временного параметра (номер страницы).</param>
 		/// <returns>Результирующая форматированная строка URL-запроса.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string GetString(
 			string additionName,
 			int additionValue)

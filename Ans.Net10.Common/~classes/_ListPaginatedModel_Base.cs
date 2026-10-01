@@ -1,15 +1,43 @@
 ﻿// rev 2026-09-25
 
+using Microsoft.EntityFrameworkCore;
+
 namespace Ans.Net10.Common
 {
 
+	/*
+		Пример использования:
+		 
+		public class UserCatalogViewModel
+			: _ListPaginatedModel_Base<UserEntity, UserModel>
+		{
+			private UserCatalogViewModel(
+				PaginationModel pagination,
+				IReadOnlyCollection<UserModel> items) 
+				: base(pagination, items)
+			{
+			}
+	
+			public static async Task<UserCatalogViewModel> CreateAsync(
+				IQueryable<UserEntity> query,
+				int page,
+				int size)
+			{
+				var data1 = await LoadDataAsync(query, x => new UserModel(x.Name), page, size);
+				return new UserCatalogViewModel(data1.Pagination, data1.Items);
+			}
+		}
+
+	 */
+
+
 	/// <summary>
-	/// Базовый класс для формирования постраничных моделей данных
-	/// (DTO/Read-моделей) с автоматическим маппингом элементов.
+	/// Базовый класс для формирования постраничных моделей данных (DTO/Read-моделей) 
+	/// с автоматическим асинхронным маппингом элементов.
 	/// </summary>
-	/// <typeparam name="TEntity">Тип исходной доменной сущности базы данных. Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
-	/// <typeparam name="TModel">Тип результирующей UI-модели или объекта переноса данных (DTO). Должен быть ссылочным типом (<see langword="class"/>).</typeparam>
-	public class _ListPaginatedModel_Base<TEntity, TModel>
+	/// <typeparam name="TEntity">Тип исходной доменной сущности базы данных. Должен относиться к ссылочным типам (<see langword="class"/>).</typeparam>
+	/// <typeparam name="TModel">Тип результирующей UI-модели или объекта переноса данных (DTO). Должен относиться к ссылочным типам (<see langword="class"/>).</typeparam>
+	public abstract class _ListPaginatedModel_Base<TEntity, TModel>
 		where TEntity : class
 		where TModel : class
 	{
@@ -18,28 +46,57 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="_ListPaginatedModel_Base{TEntity, TModel}"/>, 
-		/// выполняя пагинацию исходного LINQ-запроса и безопасную однократную материализацию элементов текущей страницы.
+		/// Инициализирует свойства базового класса <see cref="_ListPaginatedModel_Base{TEntity, TModel}"/> 
+		/// на основе предварительно вычисленных и материализованных данных.
+		/// </summary>
+		/// <param name="pagination">Вычисленная неизменяемая модель состояния постраничной навигации.</param>
+		/// <param name="items">Материализованная коллекция спроецированных выходных моделей текущей страницы.</param>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="items"/> равен <see langword="null"/>.</exception>
+		protected _ListPaginatedModel_Base(
+			PaginationModel pagination,
+			IReadOnlyCollection<TModel> items)
+		{
+			ArgumentNullException.ThrowIfNull(items);
+			Pagination = pagination;
+			Items = items;
+			ItemsCount = items.Count;
+			HasItems = ItemsCount > 0;
+		}
+
+
+		/// <summary>
+		/// Вспомогательный метод для внешней асинхронной инициализации данных. Выполняет асинхронную пагинацию 
+		/// исходного LINQ-запроса, извлекает срез данных из БД и формирует готовую коллекцию DTO-моделей.
 		/// </summary>
 		/// <remarks>
-		/// Внутри конструктора используется хелпер <see cref="PaginatedQueryableHelper{TEntity}"/> для применения 
-		/// операторов секционирования (Skip/Take) и вычисления общего состояния постраничной навигации.
+		/// Метод полностью берет на себя неблокирующие дисковые операции ввода-вывода, используя 
+		/// возможности <see cref="PaginatedQueryableHelper{TEntity}.CreateAsync"/> и <see cref="EntityFrameworkQueryableExtensions.ToListAsync"/>.
 		/// </remarks>
 		/// <param name="query">Исходный запрос <see cref="IQueryable{TEntity}"/> до применения ограничений пагинации.</param>
 		/// <param name="func">Делегат функции маппинга (проекции) из доменной сущности <typeparamref name="TEntity"/> в выходную модель <typeparamref name="TModel"/>.</param>
 		/// <param name="page">Номер запрашиваемой страницы. Индексация начинается с 1.</param>
 		/// <param name="itemsOnPage">Максимальное количество отображаемых элементов на одной странице. Должно быть больше 0.</param>
-		protected _ListPaginatedModel_Base(
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>
+		/// Задача, результатом которой является кортеж, содержащий вычисленную структуру 
+		/// <see cref="PaginationModel"/> и материализованный массив готовых моделей <see cref="IReadOnlyCollection{TModel}"/>.
+		/// </returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="query"/> или <paramref name="func"/> равен <see langword="null"/>.</exception>
+		public static async Task<(PaginationModel Pagination, IReadOnlyCollection<TModel> Items)> LoadDataAsync(
 			IQueryable<TEntity> query,
 			Func<TEntity, TModel> func,
 			int page,
-			int itemsOnPage)
+			int itemsOnPage,
+			CancellationToken cancellationToken = default)
 		{
-			var helper1 = new PaginatedQueryableHelper<TEntity>(query, page, itemsOnPage);
-			Pagination = new PaginationModel(helper1.PaginationHelper);
-			Items = [.. helper1.Query.AsEnumerable().Select(func)];
-			ItemsCount = Items.Count;
-			HasItems = ItemsCount > 0;
+			ArgumentNullException.ThrowIfNull(query);
+			ArgumentNullException.ThrowIfNull(func);
+			var helper1 = await PaginatedQueryableHelper<TEntity>.CreateAsync(
+				query, page, itemsOnPage, cancellationToken);
+			var pagination1 = new PaginationModel(helper1.PaginationHelper);
+			var entities1 = await helper1.Query.ToListAsync(cancellationToken);
+			IReadOnlyCollection<TModel> items1 = [.. entities1.Select(func)];
+			return (pagination1, items1);
 		}
 
 

@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -21,7 +20,6 @@ namespace Ans.Net10.Common
 		/// <param name="sb">Текущий модифицируемый экземпляр <see cref="StringBuilder"/>.</param>
 		/// <param name="template">Шаблон строки форматирования. Допускает значение <see langword="null"/>.</param>
 		/// <param name="templateArgs">Массив аргументов для подстановки в шаблон форматирования.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void AppendIfPresent(
 			this StringBuilder sb,
 			string? template,
@@ -43,7 +41,6 @@ namespace Ans.Net10.Common
 		/// <param name="index">Порядковый индекс (начиная с 0), по которому необходимо выполнить вставку.</param>
 		/// <param name="template">Шаблон строки форматирования.</param>
 		/// <param name="templateArgs">Массив аргументов для подстановки в шаблон форматирования.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void InsertFormat(
 			this StringBuilder sb,
 			int index,
@@ -64,7 +61,6 @@ namespace Ans.Net10.Common
 		/// <param name="index">Порядковый индекс (начиная с 0), по которому необходимо выполнить вставку.</param>
 		/// <param name="template">Шаблон строки форматирования. Допускает значение <see langword="null"/>.</param>
 		/// <param name="templateArgs">Массив аргументов для подстановки в шаблон форматирования.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void InsertIfPresent(
 			this StringBuilder sb,
 			int index,
@@ -84,7 +80,6 @@ namespace Ans.Net10.Common
 		/// <param name="index">Порядковый индекс (начиная с 0), по которому необходимо выполнить вставку.</param>
 		/// <param name="template">Шаблон строки форматирования.</param>
 		/// <param name="templateArgs">Массив аргументов для подстановки в шаблон форматирования.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void InsertIf(
 			this StringBuilder sb,
 			bool expression,

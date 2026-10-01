@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 
 namespace Ans.Net10.Common
@@ -22,7 +21,6 @@ namespace Ans.Net10.Common
 		/// <param name="min">Нижняя (минимальная) граница числового диапазона.</param>
 		/// <param name="max">Верхняя (максимальная) граница числового диапазона.</param>
 		/// <returns>Случайное 32-битное целое число со знаком внутри заданного закрытого диапазона.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetInt(
 			int min,
 			int max)
@@ -51,7 +49,6 @@ namespace Ans.Net10.Common
 		/// <returns>Случайная строка, состоящая исключительно из символов маски, длина которой находится в рамках заданных лимитов.</returns>
 		/// <exception cref="ArgumentException">Выбрасывается, если строка-маска <paramref name="mask"/> пуста или равна <see langword="null"/>.</exception>
 		/// <exception cref="ArgumentOutOfRangeException">Выбрасывается, если результирующая минимальная длина диапазона строго меньше 0.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetString(
 			string mask,
 			int minLength,

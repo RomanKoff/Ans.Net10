@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -145,8 +144,7 @@ namespace Ans.Net10.Common
 
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static void _appendTriad(
+				private static void _appendTriad(
 			StringBuilder sb,
 			long num,
 			bool isFeminine)

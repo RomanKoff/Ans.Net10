@@ -76,7 +76,7 @@
         </member>
         <member name="T:Ans.Net10.Images.ImageSizeEnum">
             <summary>
-            Перечень стандартных категорий адаптивных размеров графических объектов (изображений).
+            Перечисление стандартных категорий адаптивных размеров графических объектов (изображений).
             </summary>
         </member>
         <member name="F:Ans.Net10.Images.ImageSizeEnum.Unknown">

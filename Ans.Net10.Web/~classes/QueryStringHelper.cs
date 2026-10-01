@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -105,7 +104,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Проверяет наличие указанного ключа в коллекции параметров.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool TestKey(
 			string key)
 		{
@@ -116,7 +114,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Проверяет, совпадает ли строковое значение параметра с указанным.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool TestValue(
 			string key,
 			string value)
@@ -131,7 +128,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает строковое значение параметра. При отсутствии возвращает значение по умолчанию.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string? GetString(
 			string key,
 			string? defaultValue = null)
@@ -148,7 +144,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает целочисленное значение параметра со сбросом в nullable.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int? GetInt(
 			string key)
 		{
@@ -161,7 +156,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает целочисленное значение параметра с поддержкой fallback-значения.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int GetInt(
 			string key,
 			int defaultValue)
@@ -176,7 +170,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает логическое значение флага. При отсутствии или ошибке возвращает <see langword="false"/>.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool GetBool(
 			string key)
 		{
@@ -190,7 +183,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает дату и время из параметров запроса.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateTime? GetDateTime(
 			string key)
 		{
@@ -203,7 +195,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает дату и время из параметров с поддержкой fallback-значения.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateTime GetDateTime(
 			string key,
 			DateTime defaultValue)
@@ -218,7 +209,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает календарную дату из параметров запроса.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateOnly? GetDateOnly(
 			string key)
 		{
@@ -231,7 +221,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает календарную дату с поддержкой fallback-значения.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateOnly GetDateOnly(
 			string key,
 			DateOnly defaultValue)
@@ -246,7 +235,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает время суток из параметров запроса.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public TimeOnly? GetTimeOnly(
 			string key)
 		{
@@ -259,7 +247,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Извлекает время суток с поддержкой fallback-значения.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public TimeOnly GetTimeOnly(
 			string key,
 			TimeOnly defaultValue)
@@ -274,7 +261,6 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Удаляет указанный параметр из коллекции строки запроса.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Remove(
 			string key)
 		{

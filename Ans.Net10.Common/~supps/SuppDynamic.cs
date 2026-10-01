@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -36,7 +34,6 @@ namespace Ans.Net10.Common
 		/// <see langword="true"/>, если свойство с именем <paramref name="propertyName"/> найдено у объекта; 
 		/// в противном случае — <see langword="false"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool HasProperty(
 			dynamic item,
 			string propertyName)

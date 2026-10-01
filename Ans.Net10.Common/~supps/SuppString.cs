@@ -1,13 +1,12 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Перечень вариантов преобразования и форматирования регистра символов текстовых строк.
+	/// Перечисление вариантов преобразования и форматирования регистра символов текстовых строк.
 	/// </summary>
 	public enum LetterCasesEnum
 	{
@@ -61,7 +60,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходная строка в кодировке Windows-1251.</param>
 		/// <returns>Перекодированная строка в формате UTF-8, либо <see cref="string.Empty"/>, если входная строка пуста.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Convert_WINDOWS1251_UTF8(
 			string source)
 		{
@@ -77,7 +75,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходная строка в кодировке KOI8-R.</param>
 		/// <returns>Перекодированная строка в формате UTF-8, либо <see cref="string.Empty"/>, если входная строка пуста.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Convert_KOI8R_UTF8(
 			string source)
 		{
@@ -93,7 +90,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходная строка в кодировке CP866.</param>
 		/// <returns>Перекодированная строка в формате UTF-8, либо <see cref="string.Empty"/>, если входная строка пуста.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Convert_CP866_UTF8(
 			string source)
 		{
@@ -109,7 +105,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходная строка в кодировке ISO-8859-1.</param>
 		/// <returns>Перекодированная строка в формате UTF-8, либо <see cref="string.Empty"/>, если входная строка пуста.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Convert_ISO88591_UTF8(
 			string source)
 		{
@@ -125,7 +120,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="values">Высокопроизводительный фиксированный набор проверяемых строк <see cref="ReadOnlySpan{T}"/>.</param>
 		/// <returns><see langword="true"/>, если найдена хотя бы одна непустая строка и не равная <see langword="null"/>; в противном случае — <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool HasAny(
 			params ReadOnlySpan<string?> values)
 		{
@@ -141,7 +135,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="values">Высокопроизводительный фиксированный набор проверяемых строк <see cref="ReadOnlySpan{T}"/>.</param>
 		/// <returns><see langword="true"/>, если все элементы набора гарантированно содержат текст; в противном случае — <see langword="false"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool HasAll(
 			params ReadOnlySpan<string?> values)
 		{
@@ -349,8 +342,7 @@ namespace Ans.Net10.Common
 		/* privates */
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static StringBuilder _prepareSafe(
+				private static StringBuilder _prepareSafe(
 			ReadOnlySpan<char> span)
 		{
 			int finalCapacity1 = 0;

@@ -1,6 +1,5 @@
 ﻿using Ans.Net10.Common;
 using ImageMagick;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Images
 {
@@ -71,8 +70,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string? ExifOrientation
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Exif?.GetValue(ExifTag.Orientation)?.ToString();
+						get => Exif?.GetValue(ExifTag.Orientation)?.ToString();
 		}
 
 

@@ -2,7 +2,6 @@
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -18,7 +17,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="value">Исходная строка.</param>
 		/// <returns>Экземпляр <see cref="HtmlString"/>, содержащий исходную строку, либо <see cref="HtmlString.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static HtmlString ToHtml(
 			this string? value)
 		{

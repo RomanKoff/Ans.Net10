@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace Ans.Net10.Common
@@ -20,7 +19,6 @@ namespace Ans.Net10.Common
 		/// Строка с экранированными спецсимволами. Если передана пустая строка или <see langword="null"/>, 
 		/// возвращается <see cref="string.Empty"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string Escape(
 			string? source)
 		{

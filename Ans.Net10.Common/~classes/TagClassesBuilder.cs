@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -72,7 +71,6 @@ namespace Ans.Net10.Common
 		/// префиксы отсутствуют в текущей коллекции. Существующие префиксы не изменяются.
 		/// </summary>
 		/// <param name="cssClasses">Строка CSS-классов, разделенная пробелами.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void ApplyOriginal(
 			string? cssClasses)
 		{
@@ -102,7 +100,6 @@ namespace Ans.Net10.Common
 		/// Существующие в контейнере базовые префиксы при совпадении перезаписываются новыми значениями.
 		/// </summary>
 		/// <param name="cssClasses">Строка CSS-классов, разделенная пробелами.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string? cssClasses)
 		{
@@ -117,7 +114,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="check">Логический флаг (условие), управляющий добавлением классов.</param>
 		/// <param name="cssClasses">Строка CSS-классов, разделенная пробелами.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AppendIf(
 			bool check,
 			string? cssClasses)
@@ -156,8 +152,7 @@ namespace Ans.Net10.Common
 		/* privates */
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string[] _getItems(
+				private static string[] _getItems(
 			string cssClasses)
 		{
 			return cssClasses.Split(

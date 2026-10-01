@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-25
 
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -18,7 +17,6 @@ namespace Ans.Net10.Common
 		/// <param name="item">Элемент пары "ключ-значение".</param>
 		/// <param name="valueTemplate">Опциональный шаблон форматирования значения.</param>
 		/// <returns>Строка, объединяющая ключ и обработанное значение.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetSerialization(
 			this KeyValuePair<string, string> item,
 			string? valueTemplate = null)
@@ -37,7 +35,6 @@ namespace Ans.Net10.Common
 		/// <param name="dictionary">Исходный словарь. Допускает значение <see langword="null"/>.</param>
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <returns>Найденное значение типа <typeparamref name="T"/> или <see langword="default"/>, если словарь пуст или ключ не найден.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? GetFromDict<T>(
 			this IDictionary<string, T>? dictionary,
 			string key)
@@ -56,7 +53,6 @@ namespace Ans.Net10.Common
 		/// <param name="dictionary">Исходный словарь только для чтения. Допускает значение <see langword="null"/>.</param>
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <returns>Найденное значение типа <typeparamref name="T"/> или <see langword="default"/>, если словарь пуст или ключ не найден.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T? Get<T>(
 			this IReadOnlyDictionary<string, T>? dictionary,
 			string key)
@@ -106,7 +102,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Строковое значение из словаря или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetStringFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -126,7 +121,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Строковое значение из словаря или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetStringFromDict(
 			this IDictionary<int, string>? dictionary,
 			int key,
@@ -146,7 +140,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Строковое значение из словаря или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetString(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -166,7 +159,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Строковое значение из словаря или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetString(
 			this IReadOnlyDictionary<int, string>? dictionary,
 			int key,
@@ -189,7 +181,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Целое число типа <see cref="int"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetIntFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -209,7 +200,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Целое число типа <see cref="int"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetIntFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -229,7 +219,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Целое число типа <see cref="int"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetInt(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -249,7 +238,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Целое число типа <see cref="int"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int GetInt(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -272,7 +260,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Большое целое число типа <see cref="long"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long GetLongFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -292,7 +279,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Большое целое число типа <see cref="long"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long GetLongFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -312,7 +298,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Большое целое число типа <see cref="long"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long GetLong(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -332,7 +317,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Большое целое число типа <see cref="long"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static long GetLong(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -355,7 +339,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="double"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static double GetDoubleFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -375,7 +358,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="double"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static double GetDoubleFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -395,7 +377,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="double"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static double GetDouble(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -415,7 +396,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="double"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static double GetDouble(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -438,7 +418,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="float"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float GetFloatFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -458,7 +437,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="float"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float GetFloatFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -478,7 +456,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="float"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float GetFloat(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -498,7 +475,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Число с плавающей запятой типа <see cref="float"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static float GetFloat(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -521,7 +497,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Высокоточное десятичное число <see cref="decimal"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static decimal GetDecimalFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -541,7 +516,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Высокоточное десятичное число <see cref="decimal"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static decimal GetDecimalFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -561,7 +535,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Высокоточное десятичное число <see cref="decimal"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static decimal GetDecimal(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -581,7 +554,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Высокоточное десятичное число <see cref="decimal"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static decimal GetDecimal(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -604,7 +576,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Объект даты и времени <see cref="DateTime"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTimeFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -624,7 +595,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Объект даты и времени <see cref="DateTime"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTimeFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -644,7 +614,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Объект даты и времени <see cref="DateTime"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTime(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -664,7 +633,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Объект даты и времени <see cref="DateTime"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateTime GetDateTime(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -687,7 +655,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Календарная дата <see cref="DateOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly GetDateOnlyFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -707,7 +674,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Календарная дата <see cref="DateOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly GetDateOnlyFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -727,7 +693,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Календарная дата <see cref="DateOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly GetDateOnly(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -747,7 +712,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Календарная дата <see cref="DateOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static DateOnly GetDateOnly(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -770,7 +734,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Компонент времени <see cref="TimeOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly GetTimeOnlyFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -790,7 +753,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Компонент времени <see cref="TimeOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly GetTimeOnlyFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -810,7 +772,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Компонент времени <see cref="TimeOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly GetTimeOnly(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -830,7 +791,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Значение по умолчанию, возвращаемое при отсутствии ключа.</param>
 		/// <returns>Компонент времени <see cref="TimeOnly"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static TimeOnly GetTimeOnly(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -853,7 +813,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Логическое значение по умолчанию, если ключ не найден.</param>
 		/// <returns>Логическое значение <see cref="bool"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool GetBoolFromDict(
 			this IDictionary<string, object>? dictionary,
 			string key,
@@ -873,7 +832,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Логическое значение по умолчанию, если ключ не найден.</param>
 		/// <returns>Логическое значение <see cref="bool"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool GetBoolFromDict(
 			this IDictionary<int, object>? dictionary,
 			int key,
@@ -893,7 +851,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Строковый ключ для поиска.</param>
 		/// <param name="defaultValue">Логическое значение по умолчанию, если ключ не найден.</param>
 		/// <returns>Логическое значение <see cref="bool"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool GetBool(
 			this IReadOnlyDictionary<string, object>? dictionary,
 			string key,
@@ -913,7 +870,6 @@ namespace Ans.Net10.Common
 		/// <param name="key">Целочисленный ключ для поиска.</param>
 		/// <param name="defaultValue">Логическое значение по умолчанию, если ключ не найден.</param>
 		/// <returns>Логическое значение <see cref="bool"/> или <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static bool GetBool(
 			this IReadOnlyDictionary<int, object>? dictionary,
 			int key,
@@ -935,8 +891,7 @@ namespace Ans.Net10.Common
 		private const float _DEC_MAX_FLOAT = (float)decimal.MaxValue;
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string _getString(
+				private static string _getString(
 			object value,
 			string defaultValue)
 		{
@@ -944,7 +899,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static int _getInt(
 			object? value,
 			int defaultValue)
@@ -961,7 +915,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static bool _getBool(
 			object? value,
 			bool defaultValue)
@@ -980,7 +933,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static long _getLong(
 			object? value,
 			long defaultValue)
@@ -998,7 +950,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static double _getDouble(
 			object? value,
 			double defaultValue)
@@ -1018,7 +969,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static float _getFloat(
 			object? value,
 			float defaultValue)
@@ -1038,7 +988,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static decimal _getDecimal(
 			object? value,
 			decimal defaultValue)
@@ -1059,7 +1008,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static DateTime _getDateTime(
 			object? value,
 			DateTime defaultValue)
@@ -1074,7 +1022,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static DateOnly _getDateOnly(
 			object? value,
 			DateOnly defaultValue)
@@ -1090,7 +1037,6 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		private static TimeOnly _getTimeOnly(
 			object? value,
 			TimeOnly defaultValue)

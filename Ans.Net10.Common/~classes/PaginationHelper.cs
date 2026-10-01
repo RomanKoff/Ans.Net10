@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -226,7 +224,6 @@ namespace Ans.Net10.Common
 		/// Формирует детальную строковую диагностическую информацию о текущем математическом состоянии и флагах пагинатора для отладки.
 		/// </summary>
 		/// <returns>Форматированная текстовая строка, содержащая размеры страниц, текущий срез диапазона в формате <c>[Start-Current-End]</c> и вычисленные смещения.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string ToString()
 		{
 			var before1 = HasItemsBefore ? $"🡠{PreviousPage} " : string.Empty;

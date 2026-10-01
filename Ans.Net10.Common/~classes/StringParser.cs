@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -102,7 +100,6 @@ namespace Ans.Net10.Common
 		/// Числовое значение типа <see cref="int"/>, если конвертация прошла успешно; 
 		/// в противном случае — значение <see langword="null"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int? GetInt(
 			int index)
 		{
@@ -119,7 +116,6 @@ namespace Ans.Net10.Common
 		/// <returns>
 		/// Преобразованное целое число, либо значение <paramref name="defaultValue"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public int GetInt(
 			int index,
 			int defaultValue)
@@ -141,7 +137,6 @@ namespace Ans.Net10.Common
 		/// Значение <see langword="true"/>, если строковое содержимое ячейки эквивалентно "1", "+" или "true" (без учета регистра); 
 		/// во всех остальных случаях — <see langword="false"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool GetBool(
 			int index)
 		{
@@ -161,7 +156,6 @@ namespace Ans.Net10.Common
 		/// Объект <see cref="DateTime"/>, если преобразование прошло успешно; 
 		/// в противном случае — <see langword="null"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateTime? GetDateTime(
 			int index)
 		{
@@ -178,7 +172,6 @@ namespace Ans.Net10.Common
 		/// <returns>
 		/// Преобразованное значение даты и времени, либо <paramref name="defaultValue"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateTime GetDateTime(
 			int index,
 			DateTime defaultValue)
@@ -196,7 +189,6 @@ namespace Ans.Net10.Common
 		/// Строковое представление даты и времени в заданном формате, 
 		/// или <see langword="null"/>, если конвертация исходного элемента не удалась.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string? GetDateTime(
 			int index,
 			string format)
@@ -216,7 +208,6 @@ namespace Ans.Net10.Common
 		/// Объект <see cref="DateOnly"/>, если преобразование прошло успешно; 
 		/// в противном случае — <see langword="null"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateOnly? GetDateOnly(
 			int index)
 		{
@@ -233,7 +224,6 @@ namespace Ans.Net10.Common
 		/// <returns>
 		/// Преобразованное значение даты, либо <paramref name="defaultValue"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public DateOnly GetDateOnly(
 			int index,
 			DateOnly defaultValue)
@@ -251,7 +241,6 @@ namespace Ans.Net10.Common
 		/// Строковое представление даты в заданном формате, 
 		/// или <see langword="null"/>, если конвертация исходного элемента не удалась.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string? GetDateOnly(
 			int index,
 			string format)
@@ -271,7 +260,6 @@ namespace Ans.Net10.Common
 		/// Объект <see cref="TimeOnly"/>, если преобразование прошло успешно; 
 		/// в противном случае — <see langword="null"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public TimeOnly? GetTimeOnly(
 			int index)
 		{
@@ -288,7 +276,6 @@ namespace Ans.Net10.Common
 		/// <returns>
 		/// Преобразованное значение времени, либо <paramref name="defaultValue"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public TimeOnly GetTimeOnly(
 			int index,
 			TimeOnly defaultValue)
@@ -306,7 +293,6 @@ namespace Ans.Net10.Common
 		/// Строковое представление времени в заданном формате, 
 		/// или <see langword="null"/>, если конвертация исходного элемента не удалась.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string? GetTimeOnly(
 			int index,
 			string format)

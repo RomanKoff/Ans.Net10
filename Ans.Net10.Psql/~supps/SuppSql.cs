@@ -1,6 +1,5 @@
 ﻿using Ans.Net10.Common;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Psql
 {
@@ -55,7 +54,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Преобразуемый объект.</param>
 		/// <returns>Результат обработки значения методом <see cref="GetValue(string)"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsString(
 			object value)
 		{
@@ -71,7 +69,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Числовое значение типа <see cref="int"/>.</param>
 		/// <returns>Строка, содержащая числовое значение.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			int value)
 		{
@@ -85,7 +82,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение целого числа, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковое представление числа либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			int? value)
 		{
@@ -100,7 +96,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление полученного числа либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsIntOrNULL(
 			object value)
 		{
@@ -114,7 +109,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление числа либо строка <c>"0"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsIntOr0(
 			object value)
 		{
@@ -130,7 +124,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Числовое значение типа <see cref="long"/>.</param>
 		/// <returns>Строка, содержащая числовое значение.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			long value)
 		{
@@ -144,7 +137,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение длинного целого числа, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковое представление числа либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			long? value)
 		{
@@ -159,7 +151,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление полученного числа либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsLongOrNULL(
 			object value)
 		{
@@ -173,7 +164,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление числа либо строка <c>"0"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsLongOr0(
 			object value)
 		{
@@ -190,7 +180,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Числовое значение типа <see cref="float"/>.</param>
 		/// <returns>Строка с числовым значением, где разделителем является точка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			float value)
 		{
@@ -204,7 +193,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение числа с плавающей запятой, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковое представление числа с точкой в качестве разделителя либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			float? value)
 		{
@@ -219,7 +207,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление полученного числа либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsFloatOrNULL(
 			object value)
 		{
@@ -233,7 +220,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление числа либо строка <c>"0"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsFloatOr0(
 			object value)
 		{
@@ -250,7 +236,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Числовое значение типа <see cref="double"/>.</param>
 		/// <returns>Строка с числовым значением, где разделителем является точка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			double value)
 		{
@@ -264,7 +249,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение числа с плавающей запятой двойной точности, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковое представление числа с точкой в качестве разделителя либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			double? value)
 		{
@@ -279,7 +263,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление полученного числа либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsDoubleOrNULL(
 			object value)
 		{
@@ -293,7 +276,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление числа либо строка <c>"0"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsDoubleOr0(
 			object value)
 		{
@@ -310,7 +292,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Числовое значение типа <see cref="decimal"/>.</param>
 		/// <returns>Строка с числовым значением, где разделителем является точка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			decimal value)
 		{
@@ -324,7 +305,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Десятичное числовое значение, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковое представление числа с точкой в качестве разделителя либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			decimal? value)
 		{
@@ -339,7 +319,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление полученного числа либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsDecimalOrNULL(
 			object value)
 		{
@@ -353,7 +332,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковое представление числа либо строка <c>"0"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsDecimalOr0(
 			object value)
 		{
@@ -370,7 +348,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение даты и времени типа <see cref="DateTime"/>.</param>
 		/// <returns>Строковый литерал даты и времени с миллисекундами, заключенный в одинарные кавычки.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			DateTime value)
 		{
@@ -384,7 +361,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение даты и времени, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковый литерал даты и времени в одинарных кавычках либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			DateTime? value)
 		{
@@ -399,7 +375,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковый литерал даты и времени в одинарных кавычках либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsDateTimeOrNULL(
 			object value)
 		{
@@ -420,7 +395,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение даты типа <see cref="DateOnly"/>.</param>
 		/// <returns>Строковый литерал даты, заключенный в одинарные кавычки.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			DateOnly value)
 		{
@@ -434,7 +408,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение даты, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковый литерал даты в одинарных кавычках либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			DateOnly? value)
 		{
@@ -449,7 +422,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковый литерал даты в одинарных кавычках либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsDateOnlyOrNULL(
 			object value)
 		{
@@ -470,7 +442,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение времени суток типа <see cref="TimeOnly"/>.</param>
 		/// <returns>Строковый литерал времени суток с миллисекундами, заключенный в одинарные кавычки.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			TimeOnly value)
 		{
@@ -484,7 +455,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Значение времени суток, допускающее <see langword="null"/>.</param>
 		/// <returns>Строковый литерал времени суток в одинарных кавычках либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			TimeOnly? value)
 		{
@@ -499,7 +469,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для парсинга.</param>
 		/// <returns>Строковый литерал времени суток в одинарных кавычках либо строка <c>"NULL"</c>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsTimeOnlyOrNULL(
 			object value)
 		{
@@ -519,7 +488,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Логическое значение.</param>
 		/// <returns>Строка <c>"'t'"</c> для истинного значения либо <c>"'f'"</c> для ложного.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValue(
 			bool value)
 		{
@@ -532,7 +500,6 @@ SELECT setval(
 		/// </summary>
 		/// <param name="value">Объект для анализа.</param>
 		/// <returns>Результат обработки значения методом <see cref="GetValue(bool)"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetValueAsBool(
 			object value)
 		{

@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-26
 
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -97,7 +96,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Очищает буфер ввода консоли от накопленных, но не обработанных нажатий клавиш.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void InputClear()
 		{
 			while (Console.KeyAvailable)
@@ -122,7 +120,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Запоминает во внутренней переменной текущие координаты курсора в буфере консоли.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void CursorSavePos()
 		{
 			_cursorLeft = Console.CursorLeft;
@@ -133,7 +130,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Восстанавливает позицию курсора на координаты, зафиксированные при последнем вызове <see cref="CursorSavePos"/>.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void CursorRestorePos()
 		{
 			Console.SetCursorPosition(_cursorLeft, _cursorTop);
@@ -143,7 +139,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Смещает позицию курсора в крайнее левое положение (индекс 0) текущей строки.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void CursorToBeginLine()
 		{
 			Console.SetCursorPosition(0, Console.CursorTop);
@@ -157,7 +152,6 @@ namespace Ans.Net10.Common
 		/// Инициализирует счетчик прогресса и сохраняет текущую точку возврата курсора.
 		/// </summary>
 		/// <param name="counter">Начальное числовое значение счетчика.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void SetCounter(
 			int counter)
 		{
@@ -234,7 +228,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Выводит в консоль разделительную линию из дефисов.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void BreakLine()
 		{
 			Console.WriteLine(_lineV);
@@ -244,7 +237,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Выводит в консоль жирную разделительную линию из знаков равенства.
 		/// </summary>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void BreakLineW()
 		{
 			Console.WriteLine(_lineW);

@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -18,7 +16,6 @@ namespace Ans.Net10.Common
 		/// <param name="form1">Форма слова для единственного числа (например, <c>"apple"</c>).</param>
 		/// <param name="formOther">Опциональная кастомная форма множественного числа. Если передано значение <see langword="null"/>, к форме <paramref name="form1"/> автоматически добавляется суффикс <c>"s"</c>.</param>
 		/// <returns>Строка, содержащая корректную форму слова в зависимости от значения <paramref name="count"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetPlural(
 			int count,
 			string form1,
@@ -37,7 +34,6 @@ namespace Ans.Net10.Common
 		/// <param name="form1">Форма слова для единственного числа.</param>
 		/// <param name="formOther">Опциональная форма множественного числа.</param>
 		/// <returns>Форматированная по шаблону строка, либо <see cref="string.Empty"/>, если параметр <paramref name="template"/> пуст или равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetPlural(
 			string? template,
 			int count,
@@ -170,8 +166,7 @@ namespace Ans.Net10.Common
 		}
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string _getMatchCase(
+				private static string _getMatchCase(
 			string original,
 			string result)
 		{

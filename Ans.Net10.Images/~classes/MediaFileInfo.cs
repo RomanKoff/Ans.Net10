@@ -1,12 +1,13 @@
-﻿using Ans.Net10.Common;
+﻿// rev 2026-010-01
+
+using Ans.Net10.Common;
 using ImageMagick;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Images
 {
 
 	/// <summary>
-	/// Перечень стандартных категорий адаптивных размеров графических объектов (изображений).
+	/// Перечисление стандартных категорий адаптивных размеров графических объектов (изображений).
 	/// </summary>
 	public enum ImageSizeEnum
 		: int
@@ -225,8 +226,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string FullName
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => FileInfo.FullName;
+						get => FileInfo.FullName;
 		}
 
 
@@ -235,8 +235,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string Name
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => FileInfo.Name;
+						get => FileInfo.Name;
 		}
 
 
@@ -245,8 +244,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string NameWithoutExtension
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Path.GetFileNameWithoutExtension(Name);
+						get => Path.GetFileNameWithoutExtension(Name);
 		}
 
 
@@ -255,8 +253,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string Extension
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => FileInfo.Extension;
+						get => FileInfo.Extension;
 		}
 
 
@@ -265,8 +262,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string DirectoryPath
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => FileInfo.DirectoryName ?? string.Empty;
+						get => FileInfo.DirectoryName ?? string.Empty;
 		}
 
 
@@ -275,8 +271,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public uint Width
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => ResizeHelper?.Width ?? 0;
+						get => ResizeHelper?.Width ?? 0;
 		}
 
 
@@ -285,8 +280,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public uint Height
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => ResizeHelper?.Height ?? 0;
+						get => ResizeHelper?.Height ?? 0;
 		}
 
 
@@ -295,8 +289,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public ImageOrientationEnum Orientation
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => ResizeHelper?.Orientation ?? ImageOrientationEnum.Unknown;
+						get => ResizeHelper?.Orientation ?? ImageOrientationEnum.Unknown;
 		}
 
 
@@ -305,8 +298,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public float Ratio
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => ResizeHelper?.Ratio ?? 0f;
+						get => ResizeHelper?.Ratio ?? 0f;
 		}
 
 
@@ -315,8 +307,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public bool IsNearSquare
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => ResizeHelper?.IsNearSquare ?? false;
+						get => ResizeHelper?.IsNearSquare ?? false;
 		}
 
 

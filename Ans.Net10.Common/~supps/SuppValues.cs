@@ -1,13 +1,12 @@
 ﻿// rev 2026-09-26
 
 using System.Numerics;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Перечень вариантов биологического пола человека.
+	/// Перечисление вариантов биологического пола человека.
 	/// </summary>
 	public enum GenderEnum
 		: int
@@ -63,7 +62,6 @@ namespace Ans.Net10.Common
 		/// <param name="defaultValue">Альтернативное возвращаемое значение по умолчанию.</param>
 		/// <param name="nullValue">Значение-маркер, интерпретируемое как отсутствие данных. По умолчанию равно <c>0</c>.</param>
 		/// <returns>Исходное число или альтернативное значение <paramref name="defaultValue"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static int Default(
 			int current,
 			int defaultValue,
@@ -135,7 +133,6 @@ namespace Ans.Net10.Common
 		/// <param name="value1">Первое сравниваемое значение.</param>
 		/// <param name="value2">Второе сравниваемое значение, завернутое в nullable-контейнер.</param>
 		/// <returns>Наибольшее из двух значений, либо <paramref name="value1"/>, если параметр <paramref name="value2"/> не имеет значения.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T MaxValue<T>(
 			T value1,
 			T? value2)
@@ -156,7 +153,6 @@ namespace Ans.Net10.Common
 		/// <param name="value1">Первое сравниваемое значение.</param>
 		/// <param name="value2">Второе сравниваемое значение, завернутое в nullable-контейнер.</param>
 		/// <returns>Наименьшее из двух значений, либо <paramref name="value1"/>, если параметр <paramref name="value2"/> не имеет значения.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T MinValue<T>(
 			T value1,
 			T? value2)
@@ -177,7 +173,6 @@ namespace Ans.Net10.Common
 		/// <param name="value1">Первое сравниваемое число.</param>
 		/// <param name="value2">Второе сравниваемое число, завернутое в nullable-контейнер.</param>
 		/// <returns>Наибольшее из двух чисел, вычисленное без аллокаций.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T MaxNum<T>(
 			T value1,
 			T? value2)
@@ -196,7 +191,6 @@ namespace Ans.Net10.Common
 		/// <param name="value1">Первое сравниваемое число.</param>
 		/// <param name="value2">Второе сравниваемое число, завернутое в nullable-контейнер.</param>
 		/// <returns>Наименьшее из двух чисел, вычисленное без аллокаций.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static T MinNum<T>(
 			T value1,
 			T? value2)
@@ -234,7 +228,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="number">Входящая алфавитно-цифровая строка.</param>
 		/// <returns>Строка, состоящая только из последовательности цифр, либо <see cref="string.Empty"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetDigitalOnly(
 			string number)
 		{
@@ -249,7 +242,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="amount">Исходная денежная сумма типа <see cref="decimal"/>.</param>
 		/// <returns>Строка отформатированной валюты.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetCurrencyLoc(
 			decimal amount)
 		{

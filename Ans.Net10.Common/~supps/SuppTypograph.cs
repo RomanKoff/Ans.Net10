@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-28
 
 using System.Collections.Frozen;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -98,7 +97,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Исходная строка.</param>
 		/// <returns>Строка с экранированными символами или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetHtml2Text(
 			string? value)
 		{
@@ -111,7 +109,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Строка с HTML-сущностями.</param>
 		/// <returns>Декодированная строка или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetText2Html(
 			string? value)
 		{
@@ -215,7 +212,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Исходный HTML или простой текст.</param>
 		/// <returns>Обработанный текст или <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetTypografMin(
 			string? value)
 		{
@@ -231,7 +227,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Исходная строка.</param>
 		/// <returns>Нормализованная строка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetFixTextLine(
 			string? value)
 		{
@@ -248,7 +243,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="value">Исходный текстовый блок.</param>
 		/// <returns>Очищенная многострочная строка.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetFixTextBox(
 			string? value)
 		{

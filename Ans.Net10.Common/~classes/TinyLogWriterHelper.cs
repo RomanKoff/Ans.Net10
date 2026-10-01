@@ -1,4 +1,4 @@
-﻿// rev 2026-09-25
+﻿// rev 2026-09-30
 
 using System.Text;
 
@@ -6,7 +6,8 @@ namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Хелпер буферизированной записи логов в файл порциями для минимизации дисковых операций ввода-вывода.
+	/// Хелпер буферизированной записи логов в файл порциями для минимизации и автоматизации 
+	/// асинхронных дисковых операций ввода-вывода.
 	/// </summary>
 	public class TinyLogWriterHelper
 	{
@@ -24,16 +25,18 @@ namespace Ans.Net10.Common
 		/// <param name="filename">Полный путь к файлу лога.</param>
 		/// <param name="rewrite">Если установлено значение <see langword="true"/>, целевой файл лога будет предварительно очищен.</param>
 		/// <param name="length">Максимальное количество записей (порций) в буфере до автоматического сброса на диск.</param>
+		/// <exception cref="ArgumentException">Вызывается, если путь <paramref name="filename"/> пуст.</exception>
 		public TinyLogWriterHelper(
 			string filename,
 			bool rewrite,
 			int length = 300)
 		{
+			ArgumentException.ThrowIfNullOrEmpty(filename);
 			_init();
 			Filename = filename;
 			Length = length;
 			if (rewrite)
-				SuppIO.FileWrite(Filename, string.Empty);
+				File.WriteAllText(Filename, string.Empty);
 		}
 
 
@@ -44,7 +47,7 @@ namespace Ans.Net10.Common
 		/// Возвращает или задает лимит количества порций записей в буфере до автосохранения.
 		/// </summary>
 		/// <value>
-		/// Числовое значение лимита операций добавления, после превышения которого автоматически вызывается метод <see cref="Save"/>.
+		/// Числовое значение лимита операций добавления, после превышения которого автоматически вызывается асинхронный метод сброса на диск.
 		/// </value>
 		public int Length { get; set; }
 
@@ -62,7 +65,7 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Добавляет текст в буфер лога.
+		/// Добавляет текст в буфер лога. Синхронная операция для обеспечения максимального быстродействия и потокобезопасности буфера.
 		/// </summary>
 		/// <param name="text">Добавляемая текстовая строка. Если передано значение <see langword="null"/>, буфер не изменяется.</param>
 		public void Append(
@@ -102,15 +105,13 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Форматирует и добавляет строку с переносом строки в буфер лога.
 		/// </summary>
-		/// <param name="template">Шаблон строки форматирования (содержит маркеры вида {0}, {1} и т.д.).</param>
+		/// <param name="template">Шаблон строки форматирования.</param>
 		/// <param name="templateArgs">Массив аргументов для подстановки в шаблон строки.</param>
 		public void AppendLine(
 			string template,
 			params object[] templateArgs)
 		{
-			_sb
-				.AppendFormat(template, templateArgs)
-				.AppendLine();
+			_sb.AppendFormat(template, templateArgs).AppendLine();
 			_test();
 		}
 
@@ -146,17 +147,17 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Принудительно сбрасывает все накопленные в буфере логи на диск (в конец файла) и очищает буфер.
+		/// Принудительно и асинхронно сбросить все накопленные в буфере логи на диск (в конец файла) и очистить буфер без блокировки вызывающего потока.
 		/// </summary>
-		/// <remarks>
-		/// Запись осуществляется в режиме <see cref="System.IO.FileMode.Append"/>. Если на момент вызова буфер пуст, обращение к диску не производится.
-		/// </remarks>
-		public void Save()
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Временная задача <see cref="ValueTask"/>, представляющая асинхронную операцию записи.</returns>
+		public async ValueTask SaveAsync(
+			CancellationToken cancellationToken = default)
 		{
 			if (_sb.Length == 0)
 				return;
-			SuppIO.FileWrite(Filename, _sb.ToString(), mode: FileMode.Append);
-			_init();
+			await SuppIO.FileWriteAsync(Filename, _sb.ToString(), EncodingsEnum.UTF8, FileMode.Append, cancellationToken);
+			_clearBuffer();
 		}
 
 
@@ -170,11 +171,18 @@ namespace Ans.Net10.Common
 		}
 
 
+		private void _clearBuffer()
+		{
+			_sb.Clear();
+			_count = 0;
+		}
+
+
 		private void _test()
 		{
 			_count++;
 			if (_count > Length)
-				Save();
+				Task.Run(async () => await SaveAsync(CancellationToken.None));
 		}
 
 	}

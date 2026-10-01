@@ -1,7 +1,6 @@
-﻿// rev 2026-09-21
+﻿// rev 2026-10-01
 
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common.Crud
 {
@@ -31,19 +30,21 @@ namespace Ans.Net10.Common.Crud
 		/// <summary>
 		/// Возвращает новый, инициализированный по умолчанию экземпляр сущности.
 		/// </summary>
+		/// <returns>Новый экземпляр сущности типа <typeparamref name="T"/>.</returns>
 		T GetNew();
 
 		/// <summary>
-		/// Возвращает общее количество всех сущностей данного типа в базе данных.
+		/// Асинхронно возвращает общее количество всех сущностей данного типа в базе данных.
 		/// </summary>
-		int GetItemsCount();
+		/// <returns>Задача, результатом выполнения которой является общее количество записей в таблице.</returns>
+		Task<int> GetItemsCountAsync();
 	}
 
 
 
 	/// <summary>
 	/// Абстрактный прототип класса для реализации репозиториев CRUD-операций
-	/// над главными сущностями с использованием Entity Framework.
+	/// над главными сущностями с использованием Entity Framework Core.
 	/// </summary>
 	/// <typeparam name="T">Тип доменной сущности, реализующей <see cref="IMasterEntity"/>.</typeparam>
 	public abstract class _CrudMasterRepository_Proto<T>(
@@ -58,10 +59,9 @@ namespace Ans.Net10.Common.Crud
 
 
 		/// <inheritdoc />
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public virtual int GetItemsCount()
+		public virtual async Task<int> GetItemsCountAsync()
 		{
-			return base.GetItemsCount(null);
+			return await base.GetItemsCountAsync(null);
 		}
 
 	}

@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -74,7 +72,6 @@ namespace Ans.Net10.Common
 		/// <param name="date2">Конечная календарная дата диапазона. Допускает значение <see langword="null"/>.</param>
 		/// <param name="showCurrentYear">Признак принудительного вывода года в строке ответа.</param>
 		/// <returns>Форматированная строка диапазона дат.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetSpan(
 			DateOnly date1,
 			DateOnly? date2,

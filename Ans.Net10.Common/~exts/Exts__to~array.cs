@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -15,7 +13,6 @@ namespace Ans.Net10.Common
 		/// <param name="source">Исходная последовательность элементов. Допускает значение <see langword="null"/>.</param>
 		/// <param name="count">Максимальное количество элементов в одном результирующем блоке.</param>
 		/// <returns>Последовательность массивов, содержащих элементы исходной коллекции, разбитые на батчи.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<T[]> ToGrid<T>(
 			this IEnumerable<T>? source,
 			int count)

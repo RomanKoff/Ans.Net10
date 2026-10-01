@@ -12,4 +12,5 @@
   <Project Path="Ans.Net10.Web/Ans.Net10.Web.csproj" Id="cb9e22c5-b7db-413b-bec5-177a04f95673" />
   <Project Path="_api_tools/_api_tools.csproj" Id="c972ac7e-0d72-4c48-ab3d-a4d947392c4e" />
   <Project Path="_test_common/_test_common.csproj" Id="c80764bd-821e-4b74-bbfe-7d03f483bef4" />
+  <Project Path="_test_web/_test_web.csproj" Id="c415a90c-244c-4941-9986-4ffa2441b434" />
 </Solution>

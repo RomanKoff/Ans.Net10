@@ -2,7 +2,6 @@
 
 using System.Buffers;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -22,8 +21,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="Assembly"/>, представляющий исполняемый файл приложения, либо <see langword="null"/>.</value>
 		public static Assembly? EntryAssembly
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Assembly.GetEntryAssembly();
+						get => Assembly.GetEntryAssembly();
 		}
 
 
@@ -33,8 +31,7 @@ namespace Ans.Net10.Common
 		/// <value>Объект <see cref="Assembly"/> вызывающей сборки, либо <see langword="null"/>.</value>
 		public static Assembly? CallingAssembly
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Assembly.GetCallingAssembly();
+						get => Assembly.GetCallingAssembly();
 		}
 
 
@@ -44,8 +41,7 @@ namespace Ans.Net10.Common
 		/// <value>Строка, содержащая абсолютный путь к активному каталогу операционной системы.</value>
 		public static string CurrentDirectory
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Environment.CurrentDirectory;
+						get => Environment.CurrentDirectory;
 		}
 
 
@@ -55,8 +51,7 @@ namespace Ans.Net10.Common
 		/// <value>Строка, содержащая путь к директории, из которой было запущено приложение.</value>
 		public static string BaseDirectory
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => AppDomain.CurrentDomain.BaseDirectory;
+						get => AppDomain.CurrentDomain.BaseDirectory;
 		}
 
 
@@ -101,8 +96,7 @@ namespace Ans.Net10.Common
 		private static readonly SearchValues<char> _SEP_DIR = SearchValues.Create(_SEP_DIR_CHARS);
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string _getLastPathSegment(
+				private static string _getLastPathSegment(
 		string path)
 		{
 			if (string.IsNullOrEmpty(path))

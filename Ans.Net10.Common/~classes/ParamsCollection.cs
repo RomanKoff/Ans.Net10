@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -60,7 +59,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Строковое значение параметра запроса.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			string value)
@@ -77,7 +75,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Логическое значение типа <see cref="bool"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			bool value)
@@ -95,7 +92,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">32-битное целое число со знаком типа <see cref="int"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			int value)
@@ -113,7 +109,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">64-битное целое число со знаком типа <see cref="long"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			long value)
@@ -131,7 +126,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Число с плавающей запятой двойной точности типа <see cref="double"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			double value)
@@ -149,7 +143,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Число с плавающей запятой одинарной точности типа <see cref="float"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			float value)
@@ -167,7 +160,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Десятичное число с высокой точностью типа <see cref="decimal"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			decimal value)
@@ -185,7 +177,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Значение структуры <see cref="DateTime"/>, допускающее <see langword="null"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			DateTime? value)
@@ -203,7 +194,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) haematology параметра URL.</param>
 		/// <param name="value">Значение структуры <see cref="DateOnly"/>, допускающее <see langword="null"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			DateOnly? value)
@@ -221,7 +211,6 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="name">Уникальное имя (ключ) параметра URL.</param>
 		/// <param name="value">Значение структуры <see cref="TimeOnly"/>, допускающее <see langword="null"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void Append(
 			string name,
 			TimeOnly? value)

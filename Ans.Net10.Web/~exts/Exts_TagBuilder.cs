@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-28
 
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -24,7 +23,6 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если <paramref name="tag"/>, <paramref name="name"/>, <paramref name="value"/> или <paramref name="separator"/> равны <see langword="null"/>.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ExpandAttribute(
 			this TagBuilder tag,
 			string name,
@@ -48,7 +46,6 @@ namespace Ans.Net10.Web
 		/// <param name="tag">Текущий построитель тега.</param>
 		/// <param name="value">Имя добавляемого CSS-класса (или несколько классов через пробел).</param>
 		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="tag"/> или <paramref name="value"/> равны <see langword="null"/>.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ExpandClassAttribute(
 			this TagBuilder tag,
 			string value)
@@ -63,7 +60,6 @@ namespace Ans.Net10.Web
 		/// <param name="tag">Текущий построитель тега.</param>
 		/// <param name="value">Строка добавляемого CSS-стиля (например, <c>"display:none"</c>).</param>
 		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="tag"/> или <paramref name="value"/> равны <see langword="null"/>.</exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void ExpandStyleAttribute(
 			this TagBuilder tag,
 			string value)

@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -173,7 +171,6 @@ namespace Ans.Net10.Common
 		/// Форматированная строка, сгенерированная методом <see cref="GetPassed(DateTime, bool, bool)"/>, 
 		/// либо локализованный текст по умолчанию (например, "никогда"), если <paramref name="datetime"/> равен <see langword="null"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string GetPassed(
 			DateTime? datetime,
 			bool addTime,
@@ -191,7 +188,6 @@ namespace Ans.Net10.Common
 		/// <param name="date">Объект <see cref="DateOnly"/>, представляющий дату проверяемого события.</param>
 		/// <param name="useYesterdayTodayTomorrow">Признак использования словесных подстановок "сегодня", "вчера", "завтра".</param>
 		/// <returns>Форматированная человекочитаемая строка без временного компонента.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string GetPassed(
 			DateOnly date,
 			bool useYesterdayTodayTomorrow)
@@ -208,7 +204,6 @@ namespace Ans.Net10.Common
 		/// <returns>
 		/// Форматированная строка даты, либо локализованный текст по умолчанию (например, "никогда"), если <paramref name="date"/> равен <see langword="null"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public string GetPassed(
 			DateOnly? date,
 			bool useYesterdayTodayTomorrow)

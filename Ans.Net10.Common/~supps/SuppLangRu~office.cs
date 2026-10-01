@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -82,7 +81,6 @@ namespace Ans.Net10.Common
 		/// <param name="fullname">Исходная строка с полным ФИО (например, <c>"Эфендиев Эльчин Ильяс оглы"</c>).</param>
 		/// <param name="textCase">Тип операции преобразования регистра букв. По умолчанию <see cref="LetterCasesEnum.TitleCase"/>.</param>
 		/// <returns>Строка стандартного формата "Фамилия И.О." (например, <c>"Эфендиев Э.И."</c>).</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetFamilyAndInitialsString(
 			string fullname,
 			LetterCasesEnum textCase = LetterCasesEnum.TitleCase)
@@ -98,7 +96,6 @@ namespace Ans.Net10.Common
 		/// <param name="family">Строка фамилии.</param>
 		/// <param name="initials">Строка инициалов.</param>
 		/// <returns>Безопасный латинский идентификатор в нижнем регистре (например, <c>"efendiev_ei"</c>).</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string GetFamilyAndInitialsTranslit(
 			string family,
 			string initials)
@@ -116,7 +113,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="phone">Исходная строка номера телефона для нормализации.</param>
 		/// <returns>Строка номера с замененным начальным кодом страны или исходная строка, если замена не требуется.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string FixTelephoneRuCityCode(
 			string phone)
 		{

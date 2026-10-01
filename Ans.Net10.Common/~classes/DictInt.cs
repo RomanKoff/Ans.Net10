@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -30,7 +28,7 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="serialization">Последовательность сериализованных строк. Если коллекция равна <see langword="null"/>, словарь останется пустым.</param>
 		public DictInt(
-			IEnumerable<string> serialization)
+			IEnumerable<string>? serialization)
 			: base(serialization)
 		{
 		}
@@ -41,7 +39,7 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="serialization">Массив строк, каждая из которых должна соответствовать формату <c>"ключ=значение"</c>.</param>
 		public DictInt(
-			params string[] serialization)
+			params string[]? serialization)
 			: base(serialization)
 		{
 		}
@@ -55,7 +53,7 @@ namespace Ans.Net10.Common
 		/// </remarks>
 		/// <param name="serialization">Единая строка сериализованных данных. Если строка пуста или равна <see langword="null"/>, инициализируется пустой словарь.</param>
 		public DictInt(
-			string serialization)
+			string? serialization)
 			: base(serialization)
 		{
 		}
@@ -70,7 +68,6 @@ namespace Ans.Net10.Common
 		/// <exception cref="FormatException">
 		/// Вызывается, если переданная строка <paramref name="key"/> не может быть корректно преобразована в 32-битное целое число со знаком с помощью метода расширения <c>ToInt()</c>.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override int StringToKey(
 			string key)
 		{
@@ -83,7 +80,6 @@ namespace Ans.Net10.Common
 		/// <inheritdoc />
 		/// <param name="value">Строковое представление значения, извлеченное при парсинге.</param>
 		/// <returns>Оригинальное строковое значение типа <see cref="string"/> без изменений.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string StringToValue(
 			string value)
 		{
@@ -94,7 +90,6 @@ namespace Ans.Net10.Common
 		/// <inheritdoc />
 		/// <param name="key">Целочисленный ключ типа <see cref="int"/>.</param>
 		/// <returns>Строковое представление числа.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string KeyToString(
 			int key)
 		{
@@ -105,7 +100,6 @@ namespace Ans.Net10.Common
 		/// <inheritdoc />
 		/// <param name="value">Строковое значение типа <see cref="string"/>.</param>
 		/// <returns>Строка для записи в сериализуемый поток.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string ValueToString(
 			string value)
 		{

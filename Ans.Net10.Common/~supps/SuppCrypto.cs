@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -192,7 +191,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходный байтовый срез памяти <see cref="ReadOnlySpan{Byte}"/> для хэширования.</param>
 		/// <returns>Массив байт вычисленного хэш-кода.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] ComputeSha256(
 			ReadOnlySpan<byte> source)
 		{
@@ -205,7 +203,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="stream">Исходный поток данных <see cref="Stream"/>. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Массив байт хэш-кода, либо пустой массив, если объект потока равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] ComputeSha256(
 			Stream? stream)
 		{
@@ -239,7 +236,6 @@ namespace Ans.Net10.Common
 		/// <param name="source">Исходный байтовый срез данных <see cref="ReadOnlySpan{Byte}"/>.</param>
 		/// <param name="key">Байтовый срез секретного криптографического ключа <see cref="ReadOnlySpan{Byte}"/>.</param>
 		/// <returns>Массив байт итогового кода аутентификации.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] ComputeHmacSha256(
 			ReadOnlySpan<byte> source,
 			ReadOnlySpan<byte> key)
@@ -254,7 +250,6 @@ namespace Ans.Net10.Common
 		/// <param name="stream">Исходный поток данных <see cref="Stream"/>. Допускает значение <see langword="null"/>.</param>
 		/// <param name="key">Массив байт секретного криптографического ключа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Массив байт кода аутентификации, либо пустой массив при равенстве параметров значению <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] ComputeHmacSha256(
 			Stream? stream,
 			byte[]? key)
@@ -270,7 +265,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходная строка для кодирования. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Массив байт UTF-8 или пустой массив, если строка равна <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static byte[] ToSecureBytes(
 			string? source)
 		{
@@ -285,7 +279,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="source">Исходный кодированный массив байт. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Декодированная строка, либо <see cref="string.Empty"/>, если массив равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string ToSecureString(
 			byte[]? source)
 		{

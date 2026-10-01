@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
@@ -107,32 +106,28 @@ namespace Ans.Net10.Common
 		/// <inheritdoc />
 		public IEnumerable<ITreeItem> Parents
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => _getParents();
+						get => _getParents();
 		}
 
 
 		/// <inheritdoc />
 		public IEnumerable<ITreeItem> Children
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => _children ?? Enumerable.Empty<ITreeItem>();
+						get => _children ?? Enumerable.Empty<ITreeItem>();
 		}
 
 
 		/// <inheritdoc />
 		public bool HasChildren
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => _children?.Count > 0;
+						get => _children?.Count > 0;
 		}
 
 
 		/// <inheritdoc />
 		public bool HasParent
 		{
-			[MethodImpl(MethodImplOptions.AggressiveInlining)]
-			get => Parent != null;
+						get => Parent != null;
 		}
 
 

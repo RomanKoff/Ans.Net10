@@ -1,13 +1,12 @@
 ﻿// rev 2026-09-25
 
 using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Common
 {
 
 	/// <summary>
-	/// Перечень категорий (групп) типов контента.
+	/// Перечисление категорий (групп) типов контента.
 	/// </summary>
 	public enum ContentGroupEnum
 	{
@@ -77,7 +76,6 @@ namespace Ans.Net10.Common
 		/// <param name="group">Группа контента из перечисления <see cref="ContentGroupEnum"/>, к которой относится данный тип.</param>
 		/// <param name="isWebImage">Флаг, указывающий, является ли изображение оптимизированным и безопасным для использования в Web (например, png, jpeg, gif, webp). Значение по умолчанию: <see langword="false"/>.</param>
 		/// <param name="isJpeg">Флаг, указывающий, является ли изображение форматом JPEG (jpg, jpeg). Значение по умолчанию: <see langword="false"/>.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ContentInfo(
 			string extension,
 			string contentType,
@@ -173,7 +171,6 @@ namespace Ans.Net10.Common
 		/// Возвращает строковое представление текущего объекта информации о контенте с перечислением ключевых параметров.
 		/// </summary>
 		/// <returns>Форматированная диагностическая строка, содержащая группу, MIME-тип и значения логических флагов контента.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override string ToString()
 		{
 			return $"[{Group}] '{ContentType}' IsImage:{IsImage} IsWebImage:{IsWebImage} IsJpeg:{IsJpeg}";

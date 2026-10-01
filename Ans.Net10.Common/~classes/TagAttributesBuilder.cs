@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-25
 
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Ans.Net10.Common
@@ -79,7 +78,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="check">Логический флаг (условие), управляющий добавлением атрибутов.</param>
 		/// <param name="serialization">Строка с перечислением HTML-атрибутов, разделенных пробелами.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public void AppendIf(
 			bool check,
 			string? serialization)
@@ -122,8 +120,7 @@ namespace Ans.Net10.Common
 		/* privates */
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static string[] _getItems(
+				private static string[] _getItems(
 			string serialization)
 		{
 			return serialization.Split(

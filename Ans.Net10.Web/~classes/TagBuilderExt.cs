@@ -3,7 +3,6 @@
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 
 namespace Ans.Net10.Web
@@ -102,7 +101,6 @@ namespace Ans.Net10.Web
 		/// Преобразует текущий сгенерированный тег в безопасную для вывода в Razor-представлениях структуру <see cref="HtmlString"/>.
 		/// </summary>
 		/// <returns>Экземпляр <see cref="HtmlString"/>, готовый к рендерингу без принудительного экранирования.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public HtmlString ToHtml()
 		{
 			return new HtmlString(ToString());

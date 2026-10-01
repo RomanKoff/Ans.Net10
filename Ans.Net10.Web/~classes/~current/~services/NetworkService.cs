@@ -2,7 +2,6 @@
 
 using Ans.Net10.Common;
 using System.Net;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -154,7 +153,6 @@ namespace Ans.Net10.Web
 		/// Значение <see langword="true"/>, если удаленный IP-адрес не входит ни в одну подсеть из списка; 
 		/// в противном случае — <see langword="false"/>.
 		/// </returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsNotRelate(
 			IPSubnetsList? subnets)
 		{

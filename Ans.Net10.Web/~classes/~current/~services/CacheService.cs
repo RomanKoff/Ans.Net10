@@ -1,7 +1,6 @@
 ﻿// rev 2026-09-29
 
 using Microsoft.Extensions.Caching.Hybrid;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -65,7 +64,6 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="cacheKey"/> равен <see langword="null"/>.
 		/// </exception>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public ValueTask RemoveAsync(
 			string cacheKey)
 		{

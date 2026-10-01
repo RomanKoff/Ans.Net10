@@ -2,7 +2,6 @@
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
-using System.Runtime.CompilerServices;
 
 namespace Ans.Net10.Web
 {
@@ -104,6 +103,12 @@ namespace Ans.Net10.Web
 		/// Получает или задает списки подсетей для ограничения доступа.
 		/// </summary>
 		public SubnetsOptions? Subnets { get; set; }
+
+
+		/// <summary>
+		/// Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
+		/// </summary>
+		public ProxyOptions? Proxy { get; set; }
 
 	}
 
@@ -263,8 +268,7 @@ namespace Ans.Net10.Web
 		/* privates */
 
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		private static IPSubnetsList? _getSubnets(
+				private static IPSubnetsList? _getSubnets(
 			string value,
 			ref IPSubnetsList? cache)
 		{
@@ -273,6 +277,24 @@ namespace Ans.Net10.Web
 				: cache ??= new IPSubnetsList(value);
 		}
 
+	}
+
+
+	/// <summary>
+	/// Параметры конфигурации обработки прокси-заголовков.
+	/// </summary>
+	public class ProxyOptions
+	{
+		/// <summary>
+		/// Флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
+		/// </summary>
+		public bool UseForwardedHeaders { get; set; } = false;
+
+		/// <summary>
+		/// Список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
+		/// Если пустой — по умолчанию доверяется локальной петле (Loopback).
+		/// </summary>
+		public string KnownProxies { get; set; } = string.Empty;
 	}
 
 }

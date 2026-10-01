@@ -1,6 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace Ans.Net10.Common
@@ -21,7 +20,6 @@ namespace Ans.Net10.Common
 		/// <param name="identity">Удостоверение, в которое добавляется утверждение.</param>
 		/// <param name="type">Тип добавляемого утверждения.</param>
 		/// <param name="value">Значение добавляемого утверждения.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void AddClaim(
 			this ClaimsIdentity identity,
 			string type,
@@ -68,7 +66,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект безопасности <see cref="ClaimsPrincipal"/>, которому добавляются роли.</param>
 		/// <param name="roles">Массив наименований ролей.</param>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static void AddRolesClaims(
 			this ClaimsPrincipal principal,
 			string[] roles)
@@ -85,7 +82,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Значение утверждения в виде строки или <see langword="null"/>, если утверждение не найдено или субъект равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetNameIdentifierFromClaim(
 			this ClaimsPrincipal? principal)
 		{
@@ -98,7 +94,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Значение утверждения или <see langword="null"/>, если утверждение не найдено или субъект равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetIdUsernameFromClaim(
 			this ClaimsPrincipal? principal)
 		{
@@ -111,7 +106,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Значение утверждения или <see langword="null"/>, если утверждение не найдено или субъект равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetEmailFromClaim(
 			this ClaimsPrincipal? principal)
 		{
@@ -124,7 +118,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Значение утверждения или <see langword="null"/>, если утверждение не найдено или субъект равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetNameFromClaim(
 			this ClaimsPrincipal? principal)
 		{
@@ -137,7 +130,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Значение утверждения или <see langword="null"/>, если утверждение не найдено или субъект равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetSurnameFromClaim(
 			this ClaimsPrincipal? principal)
 		{
@@ -150,7 +142,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Значение утверждения или <see langword="null"/>, если утверждение не найдено или субъект равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetGivenNameFromClaim(
 			this ClaimsPrincipal? principal)
 		{
@@ -163,7 +154,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Значение утверждения или <see langword="null"/>, если утверждение не найдено или субъект равен <see langword="null"/>.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static string? GetGenderFromClaim(
 			this ClaimsPrincipal? principal)
 		{
@@ -176,7 +166,6 @@ namespace Ans.Net10.Common
 		/// </summary>
 		/// <param name="principal">Субъект для анализа. Допускает значение <see langword="null"/>.</param>
 		/// <returns>Последовательность строковых названий ролей <see cref="IEnumerable{String}"/>. Если субъект не задан или равен <see langword="null"/>, возвращает пустой массив.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<string> GetRolesFromClaim(
 			this ClaimsPrincipal? principal)
 		{

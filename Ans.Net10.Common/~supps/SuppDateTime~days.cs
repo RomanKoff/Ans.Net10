@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-26
 
-using System.Runtime.CompilerServices;
-
 namespace Ans.Net10.Common
 {
 
@@ -41,7 +39,6 @@ namespace Ans.Net10.Common
 		/// <param name="end">Конечная календарная дата диапазона.</param>
 		/// <param name="useMod">Флаг, разрешающий автоматический разворот границ диапазона, если начальная дата <paramref name="start"/> хронологически позже конечной <paramref name="end"/>.</param>
 		/// <returns>Последовательность календарных дней в виде объектов <see cref="DateTime"/> со временем на 00:00:00.</returns>
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public static IEnumerable<DateTime> GetDays(
 			DateOnly start,
 			DateOnly end,
