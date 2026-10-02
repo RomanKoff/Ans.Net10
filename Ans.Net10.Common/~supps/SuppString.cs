@@ -1,4 +1,4 @@
-﻿// rev 2026-09-26
+﻿// rev 2026-10-02
 
 using System.Text;
 
@@ -65,8 +65,8 @@ namespace Ans.Net10.Common
 		{
 			if (string.IsNullOrEmpty(source))
 				return string.Empty;
-			return _Consts.ENCODING_UTF8.GetString(
-				_Consts.ENCODING_WINDOWS1251.GetBytes(source));
+			return SuppIO.ENCODING_UTF8.GetString(
+				SuppIO.ENCODING_WINDOWS1251.GetBytes(source));
 		}
 
 
@@ -80,8 +80,8 @@ namespace Ans.Net10.Common
 		{
 			if (string.IsNullOrEmpty(source))
 				return string.Empty;
-			return _Consts.ENCODING_UTF8.GetString(
-				_Consts.ENCODING_KOI8R.GetBytes(source));
+			return SuppIO.ENCODING_UTF8.GetString(
+				SuppIO.ENCODING_KOI8R.GetBytes(source));
 		}
 
 
@@ -95,8 +95,8 @@ namespace Ans.Net10.Common
 		{
 			if (string.IsNullOrEmpty(source))
 				return string.Empty;
-			return _Consts.ENCODING_UTF8.GetString(
-				_Consts.ENCODING_CP866.GetBytes(source));
+			return SuppIO.ENCODING_UTF8.GetString(
+				SuppIO.ENCODING_CP866.GetBytes(source));
 		}
 
 
@@ -110,8 +110,8 @@ namespace Ans.Net10.Common
 		{
 			if (string.IsNullOrEmpty(source))
 				return string.Empty;
-			return _Consts.ENCODING_UTF8.GetString(
-				_Consts.ENCODING_ISO88591.GetBytes(source));
+			return SuppIO.ENCODING_UTF8.GetString(
+				SuppIO.ENCODING_ISO88591.GetBytes(source));
 		}
 
 
@@ -342,7 +342,7 @@ namespace Ans.Net10.Common
 		/* privates */
 
 
-				private static StringBuilder _prepareSafe(
+		private static StringBuilder _prepareSafe(
 			ReadOnlySpan<char> span)
 		{
 			int finalCapacity1 = 0;

@@ -161,7 +161,7 @@ namespace Ans.Net10.Common
 		{
 			if (string.IsNullOrEmpty(value))
 				return null;
-			var cleanSpaces1 = _Consts.G_REGEX_MULTISPACE().Replace(value, " ");
+			var cleanSpaces1 = SuppRegex.G_REGEX_MULTISPACE().Replace(value, " ");
 			return cleanSpaces1?.ReplaceFromDict(_DICT_TYPOGRAFFIX);
 		}
 

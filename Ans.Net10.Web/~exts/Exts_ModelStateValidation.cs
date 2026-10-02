@@ -25,7 +25,7 @@ namespace Ans.Net10.Web
 			string fieldName,
 			string? value)
 		{
-			if (string.IsNullOrEmpty(value) || !_Consts.G_REGEX_VARNAME_STRICT().IsMatch(value))
+			if (string.IsNullOrEmpty(value) || !SuppRegex.G_REGEX_VARNAME_STRICT().IsMatch(value))
 			{
 				modelState.AddModelError(
 					fieldName,
@@ -48,7 +48,7 @@ namespace Ans.Net10.Web
 			string fieldName,
 			string? value)
 		{
-			if (string.IsNullOrEmpty(value) || !_Consts.G_REGEX_EMAIL_STRICT().IsMatch(value))
+			if (string.IsNullOrEmpty(value) || !SuppRegex.G_REGEX_EMAIL_STRICT().IsMatch(value))
 			{
 				modelState.AddModelError(
 					fieldName,
@@ -71,7 +71,7 @@ namespace Ans.Net10.Web
 			string fieldName,
 			string? value)
 		{
-			if (string.IsNullOrEmpty(value) || !_Consts.G_REGEX_NAME_STRICT().IsMatch(value))
+			if (string.IsNullOrEmpty(value) || !SuppRegex.G_REGEX_NAME_STRICT().IsMatch(value))
 			{
 				modelState.AddModelError(
 					fieldName,
@@ -94,7 +94,7 @@ namespace Ans.Net10.Web
 			string fieldName,
 			string? value)
 		{
-			if (string.IsNullOrEmpty(value) || !_Consts.G_REGEX_IPATH_STRICT().IsMatch(value))
+			if (string.IsNullOrEmpty(value) || !SuppRegex.G_REGEX_IPATH_STRICT().IsMatch(value))
 			{
 				modelState.AddModelError(
 					fieldName,
@@ -117,7 +117,7 @@ namespace Ans.Net10.Web
 			string fieldName,
 			string? value)
 		{
-			if (string.IsNullOrEmpty(value) || !_Consts.G_REGEX_IP4().IsMatch(value))
+			if (string.IsNullOrEmpty(value) || !SuppRegex.G_REGEX_IP4().IsMatch(value))
 			{
 				modelState.AddModelError(
 					fieldName,

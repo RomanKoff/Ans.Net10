@@ -83,7 +83,7 @@ namespace Ans.Net10.Images
 					var inferredMime1 = $"image/{Format}";
 					if (Mimetype == "image/jpeg" && inferredMime1 != "image/jpeg")
 					{
-						Mimetype = Common._Consts.CONTENTINFO_BIN.ContentType;
+						Mimetype = SuppIO.CONTENTINFO_BIN.ContentType;
 						IsInvalidImage = true;
 					}
 					else
@@ -97,7 +97,7 @@ namespace Ans.Net10.Images
 				}
 				catch (Exception)
 				{
-					Mimetype = Common._Consts.CONTENTINFO_BIN.ContentType;
+					Mimetype = SuppIO.CONTENTINFO_BIN.ContentType;
 					IsInvalidImage = true;
 				}
 			}
@@ -226,7 +226,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string FullName
 		{
-						get => FileInfo.FullName;
+			get => FileInfo.FullName;
 		}
 
 
@@ -235,7 +235,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string Name
 		{
-						get => FileInfo.Name;
+			get => FileInfo.Name;
 		}
 
 
@@ -244,7 +244,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string NameWithoutExtension
 		{
-						get => Path.GetFileNameWithoutExtension(Name);
+			get => Path.GetFileNameWithoutExtension(Name);
 		}
 
 
@@ -253,7 +253,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string Extension
 		{
-						get => FileInfo.Extension;
+			get => FileInfo.Extension;
 		}
 
 
@@ -262,7 +262,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public string DirectoryPath
 		{
-						get => FileInfo.DirectoryName ?? string.Empty;
+			get => FileInfo.DirectoryName ?? string.Empty;
 		}
 
 
@@ -271,7 +271,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public uint Width
 		{
-						get => ResizeHelper?.Width ?? 0;
+			get => ResizeHelper?.Width ?? 0;
 		}
 
 
@@ -280,7 +280,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public uint Height
 		{
-						get => ResizeHelper?.Height ?? 0;
+			get => ResizeHelper?.Height ?? 0;
 		}
 
 
@@ -289,7 +289,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public ImageOrientationEnum Orientation
 		{
-						get => ResizeHelper?.Orientation ?? ImageOrientationEnum.Unknown;
+			get => ResizeHelper?.Orientation ?? ImageOrientationEnum.Unknown;
 		}
 
 
@@ -298,7 +298,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public float Ratio
 		{
-						get => ResizeHelper?.Ratio ?? 0f;
+			get => ResizeHelper?.Ratio ?? 0f;
 		}
 
 
@@ -307,7 +307,7 @@ namespace Ans.Net10.Images
 		/// </summary>
 		public bool IsNearSquare
 		{
-						get => ResizeHelper?.IsNearSquare ?? false;
+			get => ResizeHelper?.IsNearSquare ?? false;
 		}
 
 
@@ -323,22 +323,22 @@ namespace Ans.Net10.Images
 			HasMedium = true;
 			HasLarge = true;
 			HasExtralarge = true;
-			if (minDimension1 >= Common._Consts.SIZE_XL)
+			if (minDimension1 >= ImageResizeHelper.SIZE_XL)
 				return;
 			HasExtralarge = false;
 			MaxSize = ImageSizeEnum.Large;
 			SizeIndex = 4;
-			if (minDimension1 >= Common._Consts.SIZE_LG)
+			if (minDimension1 >= ImageResizeHelper.SIZE_LG)
 				return;
 			HasLarge = false;
 			MaxSize = ImageSizeEnum.Medium;
 			SizeIndex = 3;
-			if (minDimension1 >= Common._Consts.SIZE_MD)
+			if (minDimension1 >= ImageResizeHelper.SIZE_MD)
 				return;
 			HasMedium = false;
 			MaxSize = ImageSizeEnum.Small;
 			SizeIndex = 2;
-			if (minDimension1 >= Common._Consts.SIZE_SM)
+			if (minDimension1 >= ImageResizeHelper.SIZE_SM)
 				return;
 			HasSmall = false;
 			MaxSize = ImageSizeEnum.Extrasmall;

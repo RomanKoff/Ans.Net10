@@ -233,7 +233,7 @@ namespace Ans.Net10.Common
 		{
 			if (string.IsNullOrEmpty(number))
 				return string.Empty;
-			return _Consts.G_REGEX_NOT_NUMBER().Replace(number, "");
+			return SuppRegex.G_REGEX_NOT_NUMBER().Replace(number, "");
 		}
 
 
