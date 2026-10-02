@@ -669,6 +669,1446 @@
             Выполняет проверку прав доступа, инициализацию окружения и генерирует Razor-представление страницы подтверждения удаления.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.Forms.IFormCellControl">
+            <summary>
+            Интерфейс базового визуального компонента ячейки формы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.IFormCellControl.ToString">
+            <summary>
+            Возвращает строковое представление HTML-разметки элемента управления.
+            </summary>
+            <returns>Строка валидного HTML-кода.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.IFormFieldControl">
+            <summary>
+            Интерфейс именованного поля ввода формы, привязанного к свойству модели.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.IFormFieldControl.Name">
+            <summary>
+            Системное программное имя поля формы, соответствующее свойству DTO или доменной сущности.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.IFormViewControl">
+            <summary>
+            Интерфейс компонента формы, предназначенного исключительно для отображения данных (Read-Only).
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.IFormEditControl">
+            <summary>
+            Интерфейс интерактивного компонента формы, предназначенного для редактирования данных (ввода).
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.FormHelper">
+            <summary>
+            Вспомогательный класс для централизованного построения, стилизации 
+            и автоматического рендеринга полей, ячеек и метаданных валидации на формах CRUD.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.FormHelper.#ctor(Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper,System.Resources.ResourceManager[])">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.FormHelper"/> с привязкой к текущему контексту представления.
+            </summary>
+            <param name="helper">Экземпляр системного помощника <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper"/> текущего Razor-представления.</param>
+            <param name="resources">Массив пользовательских менеджеров ресурсов локализации.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormHelper.Helper">
+            <summary>
+            Возвращает системный помощник <see cref="T:Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper"/> текущего представления.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormHelper.Res">
+            <summary>
+            Возвращает хелпер каскадных строковых и HTML-ресурсов формы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.FormHelper.Face(System.String)">
+            <summary>
+            Возвращает или кэширует метаданные визуального отображения поля ввода по его системному имени.
+            </summary>
+            <param name="name">Системное имя поля для поиска в ресурсах.</param>
+            <returns>Заполненный объект описания метаданных <see cref="T:Ans.Net10.Common.CrudFace"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.FormHelper.AddCell(System.String,System.String,System.String,System.String)">
+            <summary>
+            Генерирует HTML-разметку ячейки таблицы <c>&lt;td&gt;</c> на основе текстового контента.
+            </summary>
+            <param name="control">Текстовое или HTML содержимое ячейки.</param>
+            <param name="cssClasses">Опциональная строка CSS-классов ячейки.</param>
+            <param name="styles">Опциональная строка инлайновых CSS-стилей.</param>
+            <param name="attributes">Опциональная строка произвольных HTML-атрибутов.</param>
+            <returns>Безопасная HTML-строка ячейки таблицы.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.FormHelper.AddCell(Ans.Net10.Web.Forms.IFormCellControl,System.String,System.String,System.String)">
+            <summary>
+            Генерирует HTML-разметку ячейки таблицы <c>&lt;td&gt;</c> на основе компонента ячейки формы.
+            </summary>
+            <param name="control">Компонент ячейки формы, реализующий <see cref="T:Ans.Net10.Web.Forms.IFormCellControl"/>.</param>
+            <param name="cssClasses">Опциональная строка CSS-классов ячейки.</param>
+            <param name="styles">Опциональная строка инлайновых CSS-стилей.</param>
+            <param name="attributes">Опциональная строка произвольных HTML-атрибутов.</param>
+            <returns>Безопасная HTML-строка ячейки таблицы.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.FormHelper.AddView(Ans.Net10.Web.Forms.IFormViewControl,System.Boolean)">
+            <summary>
+            Генерирует и возвращает разметку поля формы в режиме отображения данных (Read-Only) со связанной подписью.
+            </summary>
+            <param name="control">Компонент отображения данных, реализующий <see cref="T:Ans.Net10.Web.Forms.IFormViewControl"/>.</param>
+            <param name="hideDetails">Флаг принудительного скрытия описания (Description) и примера заполнения (Sample) поля.</param>
+            <returns>Безопасная HTML-строка контейнера поля формы.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.FormHelper.AddEdit(Ans.Net10.Web.Forms.IFormEditControl,System.Boolean,System.Boolean)">
+            <summary>
+            Генерирует и возвращает разметку интерактивного поля ввода формы со связанной подписью и блоками ошибок валидации.
+            </summary>
+            <param name="control">Компонент ввода данных, реализующий <see cref="T:Ans.Net10.Web.Forms.IFormEditControl"/>.</param>
+            <param name="isRequired">Признак обязательности заполнения поля ввода.</param>
+            <param name="hideDetails">Флаг принудительного скрытия описания (Description) и примера заполнения (Sample) поля.</param>
+            <returns>Безопасная HTML-строка контейнера поля формы.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.FormResources">
+            <summary>
+            Класс-хелпер для каскадного извлечения, локализации и автоматического форматирования 
+            строковых и HTML-ресурсов экранных форм и страниц CRUD.
+            </summary>
+            <remarks>
+            Наследует базовую логику каскадного поиска метаданных из <see cref="T:Ans.Net10.Common.ResourcesHelper"/> 
+            и обеспечивает интеграцию со стандартными шаблонами локализации <see cref="T:Ans.Net10.Common.Resources.Form"/>.
+            </remarks>
+            <param name="resources">Массив пользовательских менеджеров ресурсов, имеющих приоритет при каскадном поиске.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.FormResources.#ctor(System.Resources.ResourceManager[])">
+            <summary>
+            Класс-хелпер для каскадного извлечения, локализации и автоматического форматирования 
+            строковых и HTML-ресурсов экранных форм и страниц CRUD.
+            </summary>
+            <remarks>
+            Наследует базовую логику каскадного поиска метаданных из <see cref="T:Ans.Net10.Common.ResourcesHelper"/> 
+            и обеспечивает интеграцию со стандартными шаблонами локализации <see cref="T:Ans.Net10.Common.Resources.Form"/>.
+            </remarks>
+            <param name="resources">Массив пользовательских менеджеров ресурсов, имеющих приоритет при каскадном поиске.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.TitlePluralize">
+            <summary>
+            Возвращает множественное имя сущности (например, "Пользователи", "Статьи"), 
+            извлеченное из мета-ключа "_TitlePluralize".
+            </summary>
+            <value>Строка с заголовком. Если ключ не найден, возвращается имя ключа.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.TitlePluralize_Html">
+            <summary>
+            Возвращает множественное имя сущности в виде безопасной HTML-строки с примененными правилами типографики.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.TitleWhoWhat">
+            <summary>
+            Возвращает имя сущности в именительном падеже (Кто? Что? Например, "пользователь", "статья"), 
+            извлеченное из мета-ключа "_TitleWhoWhat".
+            </summary>
+            <value>Строка с заголовком. Если ключ не найден, возвращается имя ключа.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.TitleWhoWhat_Html">
+            <summary>
+            Возвращает имя сущности в именительном падеже в виде безопасной HTML-строки с примененными правилами типографики.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.ListPageTitle">
+            <summary>
+            Возвращает локализованный и отформатированный заголовок страницы для отображения списков и таблиц записей.
+            </summary>
+            <value>Строка вида "Пользователи" или "Список объектов".</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.AddPageTitle">
+            <summary>
+            Возвращает локализованный и отформатированный заголовок страницы создания новой записи.
+            </summary>
+            <value>Строка вида "Создание пользователя".</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.EditPageTitle">
+            <summary>
+            Возвращает локализованный и отформатированный заголовок страницы редактирования существующей записи.
+            </summary>
+            <value>Строка вида "Редактирование пользователя".</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.DetailPageTitle">
+            <summary>
+            Возвращает локализованный и отформатированный заголовок страницы просмотра параметров и деталей записи.
+            </summary>
+            <value>Строка вида "Параметры пользователя".</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.DeletePageTitle">
+            <summary>
+            Возвращает локализованный и отформатированный заголовок страницы подтверждения удаления записи.
+            </summary>
+            <value>Строка вида "Удаление пользователя".</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_EmptyItems_Html">
+            <summary>
+            Возвращает локализованный text сообщения об отсутствии элементов в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_Cancel_Html">
+            <summary>
+            Возвращает локализованный text кнопки отмены операции в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_Add_Html">
+            <summary>
+            Возвращает локализованный text действия "Создать" в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_Save_Html">
+            <summary>
+            Возвращает локализованный text действия "Сохранить" в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_SubmitAdd_Html">
+            <summary>
+            Возвращает локализованный text кнопки подтверждения создания записи в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_SubmitAddAndEdit_Html">
+            <summary>
+            Возвращает локализованный text кнопки создания и продолжения редактирования записи в виде безопасной HTML-строки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_SubmitSave_Html">
+            <summary>
+            Возвращает локализованный text кнопки отправки формы сохранения изменений в виде безопасной HTML-строки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Text_SubmitDelete_Html">
+            <summary>
+            Возвращает локализованный text кнопки подтверждения безвозвратного удаления записи в виде безопасной HTML-строки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Title_Edit_Html">
+            <summary>
+            Возвращает локализованную ссылку-заголовок "редактировать" в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Title_Detail_Html">
+            <summary>
+            Возвращает локализованную ссылку-заголовок "просмотр" в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.FormResources.Title_Delete_Html">
+            <summary>
+            Возвращает локализованную ссылку-заголовок "удалить" в виде безопасной HTML-строки с типографикой.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.SuppForms">
+            <summary>
+            Вспомогательный класс, содержащий базовые конфигурационные константы, 
+            лимиты ширины (Max Width) и параметры разметки для полей ввода CRUD-форм.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Text50">
+            <summary>
+            Максимальная ширина для ультракороткого текстового поля ввода (Text50).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Text100">
+            <summary>
+            Максимальная ширина для короткого текстового поля ввода (Text100).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Text250">
+            <summary>
+            Максимальная ширина для текстового поля ввода средней длины (Text250).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Text400">
+            <summary>
+            Максимальная ширина для расширенного текстового поля ввода (Text400).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.COLS_Memo">
+            <summary>
+            Стандартное количество колонок (ширина) для многострочного текстового поля (Memo/TextArea).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Name">
+            <summary>
+            Максимальная ширина для поля ввода стандартных имен или названий (Name).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Varname">
+            <summary>
+            Максимальная ширина для поля ввода системных имен переменных в C#-стиле (Varname).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Email">
+            <summary>
+            Максимальная ширина для поля ввода адреса электронной почты (Email).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Int">
+            <summary>
+            Максимальная ширина для поля ввода стандартных 32-битных целых чисел (Int).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Long">
+            <summary>
+            Максимальная ширина для поля ввода больших 64-битных целых чисел (Long).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Float">
+            <summary>
+            Максимальная ширина для поля ввода вещественных чисел одинарной точности (Float).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Double">
+            <summary>
+            Максимальная ширина для поля ввода вещественных чисел двойной точности (Double).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Decimal">
+            <summary>
+            Максимальная ширина для поля ввода высокоточных десятичных финансовых чисел (Decimal).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_DateTime">
+            <summary>
+            Максимальная ширина для поля ввода даты и времени (DateTime).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_DateOnly">
+            <summary>
+            Максимальная ширина для поля ввода календарной даты без времени (DateOnly).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_TimeOnly">
+            <summary>
+            Максимальная ширина для поля ввода времени суток без даты (TimeOnly).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.MW_Bool">
+            <summary>
+            Максимальная ширина для поля ввода логического флажка (Bool).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Forms.SuppForms.SEP_ITEMS">
+            <summary>
+            Стандартный набор символов-разделителей элементов коллекции.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms._Cell_Text_Base">
+            <summary>
+            Базовый класс для компонентов ячеек форм, выполняющий 
+            вывод текстовых данных с поддержкой автотипографики и экранирования.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._Cell_Text_Base.#ctor(System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms._Cell_Text_Base"/>.
+            </summary>
+            <param name="value">Текстовое значение для вывода в ячейку. Допускает значение <see langword="null"/>.</param>
+            <param name="useRaw">Признак вывода строки в сыром виде (без экранирования HTML-сущностей и автотипографики).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Cell_Text_Base.Value">
+            <summary>
+            Возвращает исходное текстовое значение ячейки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Cell_Text_Base.UseRaw">
+            <summary>
+            Возвращает признак вывода строки без предварительного экранирования HTML-сущностей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._Cell_Text_Base.ToString">
+            <summary>
+            Формирует и возвращает финальное строковое HTML-представление текстовой ячейки.
+            </summary>
+            <remarks>
+            Если значение свойства <see cref="P:Ans.Net10.Web.Forms._Cell_Text_Base.Value"/> пусто или равно <see langword="null"/>, 
+            метод возвращает неразрывный пробел <c>&amp;nbsp;</c> для предотвращения визуального схлопывания ячейки.
+            </remarks>
+            <returns>Строка, содержащая HTML-код для вывода в представлении.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell__Crop50">
+            <summary>
+            Компонент ячейки формы, выполняющий интеллектуальное усечение текста 
+            до 50 символов с автоматическим добавлением маркера обрезки и HTML-экранированием.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell__Crop50.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell__Crop50"/>.
+            </summary>
+            <param name="value">Исходное текстовое значение для усечения и вывода. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Cell__Crop50.Value">
+            <summary>
+            Возвращает исходное текстовое значение ячейки.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell__Crop50.ToString">
+            <summary>
+            Формирует и возвращает усеченное до 50 символов строковое HTML-представление ячейки.
+            </summary>
+            <remarks>
+            Если исходный текст пуст или равен <see langword="null"/>, возвращается неразрывный пробел 
+            <c>&amp;nbsp;</c> для предотвращения визуального схлопывания ячейки в браузере.
+            </remarks>
+            <returns>Строка, содержащая экранированный и усеченный HTML-код.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell__Link">
+            <summary>
+            Компонент ячейки формы, отображающий внешнюю веб-ссылку 
+            с интеллектуальным усечением отображаемого URL до 50 символов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell__Link.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell__Link"/>.
+            </summary>
+            <param name="value">Целевой URL-адрес для ссылки. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Cell__Link.Value">
+            <summary>
+            Возвращает исходный URL-адрес ссылки.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell__Link.ToString">
+            <summary>
+            Формирует и возвращает HTML-разметку тега ссылки <c>&lt;a&gt;</c> с атрибутом открытия в новом окне.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Bool">
+            <summary>
+            Компонент ячейки формы, отображающий логическое значение (флаг) 
+            в виде локализованной HTML-метки Да/Нет.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Bool.#ctor(System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Bool"/>.
+            </summary>
+            <param name="value">Логическое значение.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_DateOnly">
+            <summary>
+            Компонент ячейки формы для отображения календарной даты без времени.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_DateOnly.#ctor(System.Nullable{System.DateOnly})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_DateOnly"/>.
+            </summary>
+            <param name="value">Календарная дата.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_DateTime">
+            <summary>
+            Компонент ячейки формы для отображения даты и времени в стандартном коротком формате.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_DateTime.#ctor(System.Nullable{System.DateTime})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_DateTime"/>.
+            </summary>
+            <param name="value">Объект даты и времени.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Decimal">
+            <summary>
+            Компонент ячейки формы для отображения высокоточных десятичных финансовых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Decimal.#ctor(System.Nullable{System.Decimal})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Decimal"/>.
+            </summary>
+            <param name="value">Десятичное число.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Double">
+            <summary>
+            Компонент ячейки формы для отображения чисел с плавающей запятой двойной точности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Double.#ctor(System.Nullable{System.Double})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Double"/>.
+            </summary>
+            <param name="value">Число двойной точности.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Email">
+            <summary>
+            Компонент ячейки формы для отображения адресов электронной почты.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Email.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Email"/>.
+            </summary>
+            <param name="value">Адрес электронной почты.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Float">
+            <summary>
+            Компонент ячейки формы для отображения чисел с плавающей запятой одинарной точности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Float.#ctor(System.Nullable{System.Single})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Float"/>.
+            </summary>
+            <param name="value">Число одинарной точности.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Int">
+            <summary>
+            Компонент ячейки формы для отображения стандартных 32-битных целых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Int.#ctor(System.Nullable{System.Int32})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Int"/>.
+            </summary>
+            <param name="value">Целое число.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Long">
+            <summary>
+            Компонент ячейки формы для отображения больших 64-битных целых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Long.#ctor(System.Nullable{System.Int64})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Long"/>.
+            </summary>
+            <param name="value">Большое целое число.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Enum">
+            <summary>
+            Компонент ячейки формы для отображения значения из фиксированного реестра по числовому коду.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Enum.#ctor(System.Int32,Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Enum"/>.
+            </summary>
+            <param name="value">Числовой идентификатор перечисления.</param>
+            <param name="registry">Реестр элементов справочника.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_EnumString">
+            <summary>
+            Компонент ячейки формы для отображения значения из фиксированного реестра по строковому ключу.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_EnumString.#ctor(System.String,Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_EnumString"/>.
+            </summary>
+            <param name="value">Строковый ключ перечисления.</param>
+            <param name="registry">Реестр элементов справочника.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Reference">
+            <summary>
+            Компонент ячейки формы для отображения текстового названия связанной внешней сущности (внешнего ключа).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Reference.#ctor(System.Nullable{System.Int32},Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Reference"/>.
+            </summary>
+            <param name="value">Идентификатор связи.</param>
+            <param name="registry">Реестр связанных сущностей.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Set">
+            <summary>
+            Компонент ячейки формы для отображения набора выбранных флагов (множественного выбора), 
+            разделенных знаками пунктуации, в виде сгруппированных HTML-тегов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Set.#ctor(System.String,Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Set"/>.
+            </summary>
+            <param name="value">Сериализованная строка выбранных ключей флагов.</param>
+            <param name="registry">Реестр элементов справочника флагов.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_TimeOnly">
+            <summary>
+            Компонент ячейки формы для отображения точного времени суток без привязки к календарной дате.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_TimeOnly.#ctor(System.Nullable{System.TimeOnly})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_TimeOnly"/>.
+            </summary>
+            <param name="value">Время суток.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Memo">
+            <summary>
+            Компонент ячейки формы для отображения расширенных многострочных текстовых блоков (Memo).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Memo.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Memo"/>.
+            </summary>
+            <param name="value">Многострочный текст.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Name">
+            <summary>
+            Компонент ячейки формы для отображения стандартных имен, названий и строковых идентификаторов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Name.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Name"/>.
+            </summary>
+            <param name="value">Имя или название.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Varname">
+            <summary>
+            Компонент ячейки формы для отображения системных имен переменных в C#-стиле.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Varname.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Varname"/>.
+            </summary>
+            <param name="value">Имя переменной.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Text50">
+            <summary>
+            Компонент ячейки формы для отображения ультракоротких текстовых строк (до 50 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Text50.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Text50"/>.
+            </summary>
+            <param name="value">Текст короткой строки.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Text100">
+            <summary>
+            Компонент ячейки формы для отображения коротких текстовых строк (до 100 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Text100.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Text100"/>.
+            </summary>
+            <param name="value">Текст строки.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Text250">
+            <summary>
+            Компонент ячейки формы для отображения строк средней длины (до 250 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Text250.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Text250"/>.
+            </summary>
+            <param name="value">Текст строки.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Cell_Text400">
+            <summary>
+            Компонент ячейки формы для отображения расширенных текстовых строк (до 400 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Cell_Text400.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Cell_Text400"/>.
+            </summary>
+            <param name="value">Текст расширенной строки.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms._Edit_Registry_Base">
+            <summary>
+            Базовый класс для компонентов редактирования, работающих со справочниками и реестрами данных.
+            </summary>
+            <remarks>
+            Автоматически определяет оптимальный режим отображения (выпадающий список или группа переключателей) 
+            на основе плотности данных справочника.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._Edit_Registry_Base.#ctor(System.String,System.String,Ans.Net10.Common.RegistryList,Ans.Net10.Common.RegistryModeEnum,System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms._Edit_Registry_Base"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее сохраненное строковое значение (или список ключей через запятую). Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>, содержащий доступные варианты выбора.</param>
+            <param name="mode">Режим визуального рендеринга компонента (выпадающий список, чекбоксы/радиокнопки или автовыбор).</param>
+            <param name="cssClasses">Дополнительные CSS-классы для кастомизации внешнего вида элемента. Допускает значение <see langword="null"/>.</param>
+            <param name="isMultiple">Флаг, указывающий на поддержку множественного выбора элементов (чекбоксы вместо радиокнопок).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Registry_Base.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Registry_Base.Value">
+            <summary>
+            Получает текущее строковое значение поля.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Registry_Base.Registry">
+            <summary>
+            Получает привязанный справочник элементов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Registry_Base.Mode">
+            <summary>
+            Получает рассчитанный или явно заданный режим визуального рендеринга.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Registry_Base.CssClasses">
+            <summary>
+            Получает строку кастомных CSS-классов
+            .</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Registry_Base.Control">
+            <summary>
+            Получает сгенерированный расширенный тег компонента ввода.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Registry_Base.IsMultiple">
+            <summary>
+            Получает флаг поддержки множественного выбора.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._Edit_Registry_Base.ToString">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._Edit_Registry_Base.GetControl">
+            <summary>
+            Конструирует и настраивает объект управления <see cref="T:Ans.Net10.Web.TagBuilderExt"/> в зависимости от выбранного режима.
+            </summary>
+            <returns>Инициализированный объект тега компонента.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms._Edit_Text_Base">
+            <summary>
+            Базовый класс для стандартных текстовых полей ввода формы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._Edit_Text_Base.#ctor(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms._Edit_Text_Base"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее строковое текстовое значение инпута. Допускает значение <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы для стилизации HTML-тега. Допускает значение <see langword="null"/>.</param>
+            <param name="maxWidth">Ограничение максимальной ширины блока в rem единицах (на основе констант геометрии форм).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Text_Base.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Text_Base.Value">
+            <summary>Получает текущее текстовое значение поля.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Text_Base.MaxWidth">
+            <summary>Получает ограничение максимальной ширины блока.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._Edit_Text_Base.Control">
+            <summary>Получает объект стандартного текстового тега ввода.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._Edit_Text_Base.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit__Custom">
+            <summary>
+            Компонент формы, позволяющий внедрить произвольную кастомную HTML-разметку в качестве поля ввода.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit__Custom.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit__Custom"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="control">Сырая HTML-строка кастомного элемента управления со всей необходимой разметкой.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit__Custom.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit__Custom.Control">
+            <summary>Получает сырую HTML-разметку кастомного элемента.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit__Custom.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit__Select">
+            <summary>
+            Компонент формы, принудительно использующий классический выпадающий список (Dropdown/Select) для выбора элемента справочника.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit__Select.#ctor(System.String,System.Nullable{System.Int32},Ans.Net10.Common.RegistryList,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit__Select"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Числовой идентификатор выбранного значения. Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Bool">
+            <summary>
+            Компонент формы для редактирования логических состояний в виде одиночного Bootstrap-чебокса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Bool.#ctor(System.String,System.Boolean,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Bool"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее логическое состояние переключателя (активен/деактивирован).</param>
+            <param name="title">Отображаемый текст подписи рядом с флажком. Если не задан, берется стандартный текст "Да". Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_Bool.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_Bool.Value">
+            <summary>Получает логическое значение переключателя.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_Bool.Title">
+            <summary>Получает текст подписи флажка.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_Bool.Control">
+            <summary>Получает сгенерированный Bootstrap-компонент флажка.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Bool.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_FileUpload">
+            <summary>
+            Компонент формы для организации поля загрузки локальных файлов с диска пользователя.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_FileUpload.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_FileUpload"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_FileUpload.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_FileUpload.Control">
+            <summary>Получает объект HTML-тега выбора файла.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_FileUpload.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Enum">
+            <summary>
+            Компонент формы для редактирования перечислений на основе числовых кодов справочника.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Enum.#ctor(System.String,System.Int32,Ans.Net10.Common.RegistryList,Ans.Net10.Common.RegistryModeEnum,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Enum"/> с указанием явного режима рендеринга.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее числовое значение перечисления.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+            <param name="mode">Явно заданный режим визуального отображения.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Enum.#ctor(System.String,System.Int32,Ans.Net10.Common.RegistryList,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Enum"/> с автоматическим расчетом режима рендеринга.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее числовое значение перечисления.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_EnumString">
+            <summary>
+            Компонент формы для редактирования перечислений на основе строковых ключей справочника.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_EnumString.#ctor(System.String,System.String,Ans.Net10.Common.RegistryList,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_EnumString"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее строковое значение перечисления. Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Reference">
+            <summary>
+            Компонент формы для управления ссылками внешних ключей (взаимосвязей объектов) на основе реестра сущностей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Reference.#ctor(System.String,System.Nullable{System.Int32},Ans.Net10.Common.RegistryList,Ans.Net10.Common.RegistryModeEnum,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Reference"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Идентификатор связи (внешний ключ). Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Реестр связанных сущностей <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+            <param name="registryMode">Режим визуального отображения компонента.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Set">
+            <summary>
+            Компонент формы для редактирования массивов и наборов флагов (связей многие-ко-многим).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Set.#ctor(System.String,System.Int32[],Ans.Net10.Common.RegistryList,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Set"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Массив выбранных целочисленных ключей флагов. Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Полный справочник доступных флагов.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Memo">
+            <summary>
+            Компонент формы для редактирования расширенных многострочных текстовых блоков (Memo/TextArea).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Memo.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Memo"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее значение многострочного текста. Допускает значение <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_Memo.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_Memo.Value">
+            <summary>Получает текущее значение многострочного текста.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.Edit_Memo.Control">
+            <summary>Получает объект HTML-тега текстовой области.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Memo.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_DateOnly">
+            <summary>
+            Компонент формы для ввода календарной даты без временной составляющей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_DateOnly.#ctor(System.String,System.Nullable{System.DateOnly},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_DateOnly"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее календарное значение даты. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_DateTime">
+            <summary>
+            Компонент формы для ввода даты и точного времени.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_DateTime.#ctor(System.String,System.Nullable{System.DateTime},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_DateTime"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее значение даты и времени. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_TimeOnly">
+            <summary>
+            Компонент формы для ввода точного времени суток без привязки к дате.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_TimeOnly.#ctor(System.String,System.Nullable{System.TimeOnly},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_TimeOnly"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее значение времени суток. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Decimal">
+            <summary>
+            Компонент формы для ввода фиксированных десятичных финансовых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Decimal.#ctor(System.String,System.Nullable{System.Decimal},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Decimal"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее числовое значение. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Double">
+            <summary>
+            Компонент формы для ввода чисел с плавающей запятой двойной точности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Double.#ctor(System.String,System.Nullable{System.Double},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Double"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее числовое значение. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Float">
+            <summary>
+            Компонент формы для ввода чисел с плавающей запятой одинарной точности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Float.#ctor(System.String,System.Nullable{System.Single},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Float"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее числовое значение. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Int">
+            <summary>
+            Компонент формы для ввода стандартных 32-битных целых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Int.#ctor(System.String,System.Nullable{System.Int32},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Int"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее целое число. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Long">
+            <summary>
+            Компонент формы для ввода больших 64-битных целых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Long.#ctor(System.String,System.Nullable{System.Int64},System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Long"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текущее целое число. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Email">
+            <summary>
+            Компонент формы для ввода адресов электронной почты.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Email.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Email"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текстовая строка email адреса. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Name">
+            <summary>
+            Компонент формы для ввода стандартных имен и заголовков объектов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Name.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Name"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Текстовое значение названия. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Varname">
+            <summary>
+            Компонент формы для ввода системных наименований переменных.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Varname.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Varname"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строка с именем переменной. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Text50">
+            <summary>Компонент формы для ввода ультракоротких текстовых строк (до 50 символов).</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Text50.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Text50"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строка текста. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Text100">
+            <summary>
+            Компонент формы для ввода коротких текстовых строк (до 100 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Text100.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Text100"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строка текста. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Text250">
+            <summary>
+            Компонент формы для ввода текстовых строк средней длины (до 250 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Text250.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Text250"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строка текста. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.Edit_Text400">
+            <summary>
+            Компонент формы для ввода длинных текстовых строк (до 400 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.Edit_Text400.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.Edit_Text400"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строка текста. Допускает <see langword="null"/>.</param>
+            <param name="cssClasses">Дополнительные CSS-классы. Допускает <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms._View_Text_Base">
+            <summary>
+            Базовый класс для компонентов просмотра, отображающих текстовые данные 
+            с автоматической генерацией скрытого поля для сохранения состояния модели.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._View_Text_Base.#ctor(System.String,System.String,System.Object,System.Int32,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms._View_Text_Base"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="valueText">Текстовое представление значения для вывода на экран. Допускает значение <see langword="null"/>.</param>
+            <param name="valueData">Оригинальный объект данных для сериализации в скрытое поле формы. Допускает значение <see langword="null"/>.</param>
+            <param name="maxWidth">Ограничение максимальной ширины текстового блока в rem единицах.</param>
+            <param name="useRaw">Флаг вывода текста в сыром виде (без экранирования HTML-сущностей).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._View_Text_Base.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._View_Text_Base.Value">
+            <summary>
+            Получает текстовое представление отображаемого значения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._View_Text_Base.ValueData">
+            <summary>
+            Получает строковое сериализованное значение скрытого поля.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._View_Text_Base.MaxWidth">
+            <summary>
+            Получает ограничение максимальной ширины блока.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._View_Text_Base.UseRaw">
+            <summary>
+            Получает признак вывода текста без экранирования.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms._View_Text_Base.Control">
+            <summary>
+            Получает сгенерированный HTML-компонент контейнера текста.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._View_Text_Base.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Forms._View_Reference_Base">
+            <summary>
+            Базовый класс для компонентов просмотра внешних связей и справочников.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms._View_Reference_Base.#ctor(System.String,System.String,Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms._View_Reference_Base"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Ключ элемента справочника. Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>, содержащий текстовые значения.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Bool">
+            <summary>
+            Компонент просмотра логических состояний в виде локализованной текстовой метки Да/Нет.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Bool.#ctor(System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Bool"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее логическое значение флага.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_DateOnly">
+            <summary>
+            Компонент просмотра календарной даты без временной составляющей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_DateOnly.#ctor(System.String,System.Nullable{System.DateOnly})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_DateOnly"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее значение календарной даты. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_DateTime">
+            <summary>
+            Компонент просмотра даты и точного времени в стандартном коротком формате.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_DateTime.#ctor(System.String,System.Nullable{System.DateTime})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_DateTime"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее значение даты и времени. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_TimeOnly">
+            <summary>
+            Компонент просмотра точного времени суток без привязки к календарной дате.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_TimeOnly.#ctor(System.String,System.Nullable{System.TimeOnly})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_TimeOnly"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее значение времени суток. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Decimal">
+            <summary>
+            Компонент просмотра высокоточных десятичных финансовых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Decimal.#ctor(System.String,System.Nullable{System.Decimal})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Decimal"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее десятичное число. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Double">
+            <summary>
+            Компонент просмотра числовых значений с плавающей запятой двойной точности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Double.#ctor(System.String,System.Nullable{System.Double})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Double"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее числовое значение. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Float">
+            <summary>
+            Компонент просмотра числовых значений с плавающей запятой одинарной точности.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Float.#ctor(System.String,System.Nullable{System.Single})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Float"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее числовое значение. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Int">
+            <summary>
+            Компонент просмотра стандартных 32-битных целых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Int.#ctor(System.String,System.Nullable{System.Int32})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Int"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее целое число. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Long">
+            <summary>
+            Компонент просмотра больших 64-битных целых чисел.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Long.#ctor(System.String,System.Nullable{System.Int64})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Long"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Текущее большое целое число. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Enum">
+            <summary>
+            Компонент просмотра значения перечисления из справочника по числовому коду.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Enum.#ctor(System.String,System.Int32,Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Enum"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Числовой код выбранного перечисления.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_EnumString">
+            <summary>
+            Компонент просмотра значения перечисления из справочника по строковому ключу.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_EnumString.#ctor(System.String,System.String,Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_EnumString"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Строковый ключ выбранного перечисления. Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Справочник элементов <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Reference">
+            <summary>
+            Компонент просмотра текстового названия внешней связанной сущности (внешнего ключа).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Reference.#ctor(System.String,System.Nullable{System.Int32},Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Reference"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Идентификатор связи. Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Справочник связанных сущностей <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Set">
+            <summary>
+            Компонент просмотра набора выбранных флагов, генерирующий визуальные значки 
+            элементов и группу скрытых инпутов для передачи коллекции.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Set.#ctor(System.String,System.Int32[],Ans.Net10.Common.RegistryList)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Set"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы, соответствующее свойству модели.</param>
+            <param name="value">Массив выбранных числовых идентификаторов. Допускает значение <see langword="null"/>.</param>
+            <param name="registry">Справочник доступных флагов и групп <see cref="T:Ans.Net10.Common.RegistryList"/>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.View_Set.Name">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.View_Set.Value">
+            <summary>Получает HTML-разметку отображаемого списка значков.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.View_Set.ValueData">
+            <summary>Получает массив строковых ключей для скрытых полей.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Forms.View_Set.Control">
+            <summary>Получает сгенерированный HTML-компонент контейнера значков.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Set.ToString">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Email">
+            <summary>
+            Компонент просмотра адресов электронной почты.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Email.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Email"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Значение адреса электронной почты. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Memo">
+            <summary>
+            Компонент просмотра многострочных блоков текста (Memo) без принудительного ограничения ширины.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Memo.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Memo"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Значение многострочного текста. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Name">
+            <summary>
+            Компонент просмотра стандартных имен и заголовков объектов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Name.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Name"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Значение имени или названия. Допускает значение <see langword="null"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Varname">
+            <summary>
+            Компонент просмотра системных имен переменных в C#-стиле.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Varname.#ctor(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Varname"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Значение имени переменной. Допускает значение <see langword="null"/>.</param>
+            <param name="maxWidth">Кастомное ограничение максимальной ширины блока. Если <see langword="null"/>, применяется дефолтный лимит.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Text50">
+            <summary>
+            Компонент просмотра ультракоротких строк (до 50 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Text50.#ctor(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Text50"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строковое текстовое значение. Допускает значение <see langword="null"/>.</param>
+            <param name="maxWidth">Кастомное ограничение максимальной ширины блока. Если <see langword="null"/>, применяется дефолтный лимит.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Text100">
+            <summary>
+            Компонент просмотра коротких строк (до 100 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Text100.#ctor(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Text100"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строковое текстовое значение. Допускает значение <see langword="null"/>.</param>
+            <param name="maxWidth">Кастомное ограничение максимальной ширины блока. Если <see langword="null"/>, применяется дефолтный лимит.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Text250">
+            <summary>
+            Компонент просмотра строк средней длины (до 250 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Text250.#ctor(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Text250"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строковое текстовое значение. Допускает значение <see langword="null"/>.</param>
+            <param name="maxWidth">Кастомное ограничение максимальной ширины блока. Если <see langword="null"/>, применяется дефолтный лимит.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.Forms.View_Text400">
+            <summary>
+            Компонент просмотра расширенных длинных строк (до 400 символов).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Forms.View_Text400.#ctor(System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Forms.View_Text400"/>.
+            </summary>
+            <param name="name">Системное программное имя поля формы.</param>
+            <param name="value">Строковое текстовое значение. Допускает значение <see langword="null"/>.</param>
+            <param name="maxWidth">Кастомное ограничение максимальной ширины блока. Если <see langword="null"/>, применяется дефолтный лимит.</param>
+        </member>
         <member name="T:Ans.Net10.Web.LibWebInfo">
             <summary>
             Предоставляет информацию о текущей вызывающей сборке библиотеки.
@@ -4219,7 +5659,7 @@
         </member>
         <member name="T:Ans.Net10.Web.SuppClaims">
             <summary>
-            Вспомогательный класс-реестр, содержащий стандартизированные имена типов утверждений (Claims) 
+            Вспомогательный класс, содержащий стандартизированные имена типов утверждений (Claims) 
             и строковые константы для настройки глобальных политик авторизации в приложении.
             </summary>
         </member>

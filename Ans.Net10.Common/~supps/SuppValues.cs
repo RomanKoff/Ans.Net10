@@ -208,7 +208,7 @@ namespace Ans.Net10.Common
 		/// <param name="value">Объект для веб-сериализации.</param>
 		/// <returns>Строковое нормализованное веб-представление объекта, либо <see cref="string.Empty"/>, если объект равен <see langword="null"/>.</returns>
 		public static string GetStringForWeb(
-			object value)
+			object? value)
 		{
 			if (value == null)
 				return string.Empty;
