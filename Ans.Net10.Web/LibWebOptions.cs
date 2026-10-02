@@ -29,14 +29,13 @@ namespace Ans.Net10.Web
 		/// </remarks>
 		public override void Test()
 		{
-			base.Test();
+			if (Region == null)
+				throw GetExceptionParamRequired("Region");
+			if (string.IsNullOrEmpty(Region.Culture))
+				throw GetExceptionParamRequired("Region.Culture");
+			if (string.IsNullOrEmpty(Region.TelCode))
+				throw GetExceptionParamRequired("Region.TelCode");
 		}
-
-
-		/// <summary>
-		/// Получает или задает культуру по умолчанию (например, "ru", "en").
-		/// </summary>
-		public string Culture { get; set; } = "ru";
 
 
 		/// <summary>
@@ -88,6 +87,12 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
+		/// Получает или задает региональные настройки.
+		/// </summary>
+		public RegionOptions? Region { get; set; }
+
+
+		/// <summary>
 		/// Получает или задает параметры службы отправки писем.
 		/// </summary>
 		public MailServiceOptions? MailService { get; set; }
@@ -109,6 +114,27 @@ namespace Ans.Net10.Web
 		/// Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
 		/// </summary>
 		public ProxyOptions? Proxy { get; set; }
+
+	}
+
+
+
+	/// <summary>
+	/// Региональные настройки.
+	/// </summary>
+	public class RegionOptions
+	{
+
+		/// <summary>
+		/// Получает или задает культуру по умолчанию (например, "ru", "en").
+		/// </summary>
+		public string Culture { get; set; } = "ru";
+
+
+		/// <summary>
+		/// Получает или задает телефонный код региона по умолчанию.
+		/// </summary>
+		public string TelCode { get; set; } = "+7-812";
 
 	}
 
@@ -268,9 +294,9 @@ namespace Ans.Net10.Web
 		/* privates */
 
 
-				private static IPSubnetsList? _getSubnets(
-			string value,
-			ref IPSubnetsList? cache)
+		private static IPSubnetsList? _getSubnets(
+	string value,
+	ref IPSubnetsList? cache)
 		{
 			return string.IsNullOrEmpty(value)
 				? null

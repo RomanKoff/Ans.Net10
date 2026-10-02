@@ -40,7 +40,6 @@ namespace Ans.Net10.Common
 
 
 
-
 	/// <summary>
 	/// Вспомогательный класс для работы с операциями ввода-вывода (IO), хэшированием файлов и безопасными именами.
 	/// </summary>
@@ -777,8 +776,12 @@ namespace Ans.Net10.Common
 			byte[] buffer2 = new byte[_BUF_SIZE1];
 			while (true)
 			{
-				int count1 = await stream1.ReadAsync(buffer1.AsMemory(0, _BUF_SIZE1), cancellationToken).ConfigureAwait(false);
-				int count2 = await stream2.ReadAsync(buffer2.AsMemory(0, _BUF_SIZE1), cancellationToken).ConfigureAwait(false);
+				int count1 = await stream1
+					.ReadAsync(buffer1.AsMemory(0, _BUF_SIZE1), cancellationToken)
+					.ConfigureAwait(false);
+				int count2 = await stream2
+					.ReadAsync(buffer2.AsMemory(0, _BUF_SIZE1), cancellationToken)
+					.ConfigureAwait(false);
 				if (count1 != count2)
 					return false;
 				if (count1 == 0)

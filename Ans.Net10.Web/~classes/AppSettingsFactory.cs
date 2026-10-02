@@ -82,7 +82,6 @@ namespace Ans.Net10.Web
 			string paramName)
 		{
 			ArgumentException.ThrowIfNullOrEmpty(paramName);
-
 			return new Exception(
 				$"[appsettings.json/{SectionName}/{paramName}] is required!");
 		}

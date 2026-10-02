@@ -1,0 +1,74 @@
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+
+namespace Ans.Net10.Web.TagHelpers
+{
+
+	/*
+	 * <site-container>...</site-container>
+	 * <node-container>...</node-container>
+	 * <page-container>...</page-container>	 
+	 * <admin-container free="false">...</admin-container>
+	 */
+
+
+
+	[HtmlTargetElement("site-container")]
+	public class SiteContainerTagHelper(
+		CurrentContext current)
+		: _AnsTagHelper_Base(current)
+	{
+		public override void Process(
+			TagHelperContext context,
+			TagHelperOutput output)
+		{
+			UseAutoContent = true;
+			output.TagMode = TagMode.StartTagAndEndTag;
+			output.TagName = "div";
+			ClassBefore = Current.Site.ContainerClasses;
+			base.Process(context, output);
+		}
+	}
+
+
+
+	[HtmlTargetElement("node-container")]
+	public class NodeContainerTagHelper(
+		CurrentContext current)
+		: _AnsTagHelper_Base(current)
+	{
+		public override void Process(
+			TagHelperContext context,
+			TagHelperOutput output)
+		{
+			UseAutoContent = true;
+			output.TagMode = TagMode.StartTagAndEndTag;
+			output.TagName = "div";
+			ClassBefore = Current.Node.ContainerClasses;
+			base.Process(context, output);
+		}
+	}
+
+
+
+	[HtmlTargetElement("page-container")]
+	public class PageContainerTagHelper(
+		CurrentContext current)
+		: _AnsTagHelper_Base(current)
+	{
+		public override void Process(
+			TagHelperContext context,
+			TagHelperOutput output)
+		{
+			UseAutoContent = true;
+			output.TagMode = TagMode.StartTagAndEndTag;
+			output.TagName = "div";
+			ClassBefore = Current.Page.ContainerClasses;
+			base.Process(context, output);
+		}
+	}
+
+
+
+	
+
+}

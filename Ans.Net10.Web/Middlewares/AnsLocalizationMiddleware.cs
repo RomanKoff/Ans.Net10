@@ -48,7 +48,7 @@ namespace Ans.Net10.Web.Middlewares
 			if (string.IsNullOrWhiteSpace(targetCulture1))
 				targetCulture1 = context.Request.Cookies[CULTURE_COOKIE_KEY];
 			if (string.IsNullOrWhiteSpace(targetCulture1))
-				targetCulture1 = options.Culture;
+				targetCulture1 = options.Region?.Culture;
 			if (!string.IsNullOrWhiteSpace(targetCulture1))
 				try
 				{

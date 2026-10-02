@@ -68,6 +68,24 @@
             <exception cref="T:System.ArgumentException">Вызывается, если параметр <paramref name="type"/> пуст или равен <see langword="null"/>.</exception>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="funcValue"/> равен <see langword="null"/>.</exception>
         </member>
+        <member name="T:Ans.Net10.Web.Attributes.SubnetAccessAttribute">
+            <summary>
+            Декларативный атрибут для ограничения доступа к действиям контроллера
+            на основе проверки вхождения IP-адреса клиента в заданные подсети.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.SubnetAccessAttribute.#ctor(System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Attributes.SubnetAccessAttribute"/> с указанием сетевой зоны.
+            </summary>
+            <param name="subnetZone">Имя зоны из настроек подсетей (например, "Admin", "Safe", "Allow").</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Attributes.SubnetAccessAttribute.IsReusable">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Attributes.SubnetAccessAttribute.CreateInstance(System.IServiceProvider)">
+            <inheritdoc />
+        </member>
         <member name="T:Ans.Net10.Web.Crud.ICrudMasterController`1">
             <summary>
             Интерфейс асинхронного CRUD-контроллера для управления жизненным циклом главных (Master) сущностей.
@@ -668,6 +686,32 @@
             <summary>
             Выполняет проверку прав доступа, инициализацию окружения и генерирует Razor-представление страницы подтверждения удаления.
             </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Filters.SuppFormsValidationFilter">
+            <summary>
+            Глобальный или контроллерный фильтр для автоматической строгой валидации полей моделей
+            на основе системных констант и регулярных выражений регулярных выражений экосистемы Ans.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Filters.SuppFormsValidationFilter.OnActionExecutionAsync(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext,Microsoft.AspNetCore.Mvc.Filters.ActionExecutionDelegate)">
+            <summary>
+            Асинхронно перехватывает конвейер выполнения действия контроллера, выполняет
+            строгую пре-валидацию строковых свойств входящих моделей по регулярным выражениям
+            и прерывает запрос с возвратом стандартизированной ошибки в случае обнаружения нарушений.
+            </summary>
+            <param name="context">Контекст выполнения текущего действия MVC-контроллера.</param>
+            <param name="next">Делегат, представляющий последующий этап выполнения конвейера запроса.</param>
+            <returns>Задача, представляющая асинхронную операцию перехвата и валидации.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="next"/> равен <see langword="null"/>.
+            </exception>
+            <remarks>
+            Метод автоматически сканирует словарь <see cref="P:Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext.ActionArguments"/>, 
+            находит пользовательские ссылочные типы (DTO и доменные модели) и выполняет сопоставление 
+            имен их строковых свойств с каноническими методами проверки из <see cref="T:Ans.Net10.Web.Exts_ModelStateValidation"/>.
+            Если <see cref="P:Microsoft.AspNetCore.Mvc.ModelBinding.ModelStateDictionary.IsValid"/> возвращает <see langword="false"/>, выполнение действия 
+            блокируется, а клиенту возвращается структура <see cref="T:Ans.Net10.Web.ApiResultModel"/> со статусом Bad Request.
+            </remarks>
         </member>
         <member name="T:Ans.Net10.Web.Forms.IFormCellControl">
             <summary>
@@ -2131,11 +2175,6 @@
             Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
             </remarks>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.Culture">
-            <summary>
-            Получает или задает культуру по умолчанию (например, "ru", "en").
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.UseContentDrivenMode">
             <summary>
             Получает или задает флаг работы приложения в режиме Content-driven.
@@ -2176,6 +2215,11 @@
             Получает или задает список кастомных маршрутов роутинга.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Region">
+            <summary>
+            Получает или задает региональные настройки.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.MailService">
             <summary>
             Получает или задает параметры службы отправки писем.
@@ -2194,6 +2238,21 @@
         <member name="P:Ans.Net10.Web.LibWebOptions.Proxy">
             <summary>
             Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.RegionOptions">
+            <summary>
+            Региональные настройки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RegionOptions.Culture">
+            <summary>
+            Получает или задает культуру по умолчанию (например, "ru", "en").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.RegionOptions.TelCode">
+            <summary>
+            Получает или задает телефонный код региона по умолчанию.
             </summary>
         </member>
         <member name="T:Ans.Net10.Web.MailServiceOptions">
@@ -2594,6 +2653,52 @@
             Исполняет непосредственный запуск движка рендеринга Razor в выделенный текстовый поток StreamWriter.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.AdminContainerTagHelper">
+            <summary>
+            Асинхронный Tag Helper для создания условного контейнера <c>&lt;admin-container&gt;</c>,
+            который отображает свое содержимое только пользователям из административной IP-подсети.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.AdminContainerTagHelper"/> с внедрением контекста.
+            </remarks>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.AdminContainerTagHelper.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Асинхронный Tag Helper для создания условного контейнера <c>&lt;admin-container&gt;</c>,
+            который отображает свое содержимое только пользователям из административной IP-подсети.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.AdminContainerTagHelper"/> с внедрением контекста.
+            </remarks>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.AdminContainerTagHelper.IsFree">
+            <summary>
+            Получает или задает признак «свободного» контейнера.
+            Если равен <see langword="true"/>, контент выводится без дополнительной визуальной обертки.
+            Значение по умолчанию: <see langword="false"/>.
+            </summary>
+            <value>Логический флаг скрытия декоративного контейнера div.</value>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.AdminContainerTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает логику контейнера, проверяя сетевой статус клиента
+            и полностью уничтожая вывод для неавторизованных IP-адресов.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+            <remarks>
+            Метод использует службу <see cref="T:Ans.Net10.Web.NetworkService"/> для проверки прав. Если клиент не является 
+            администратором, контент полностью очищается, предотвращая утечку данных. Если доступ разрешен 
+            и параметр <see cref="P:Ans.Net10.Web.TagHelpers.AdminContainerTagHelper.IsFree"/> равен <see langword="false"/>, содержимое оборачивается в тег <c>div</c> 
+            с предупреждающим фоном Bootstrap.
+            </remarks>
+        </member>
         <member name="T:Ans.Net10.Web.TagHelpers.AnsPaginationTagHelper">
             <summary>
             Асинхронный Tag Helper для генерации HTML-разметки постраничной навигации (пагинации) 
@@ -2628,6 +2733,349 @@
             <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
             <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
             <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.Exts_ATagHelper">
+            <summary>
+            Асинхронный Tag Helper для элемента <c>&lt;a&gt;</c>, расширяющий стандартный <see cref="T:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper"/>
+            возможностями автоматического разбора email, телефонов, медиа-объектов и канонических ссылок Ans Core.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.Exts_ATagHelper"/> с внедрением системного генератора и контекста.
+            </remarks>
+            <param name="generator">Системный генератор HTML-компонентов ASP.NET Core.</param>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.#ctor(Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator,Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Асинхронный Tag Helper для элемента <c>&lt;a&gt;</c>, расширяющий стандартный <see cref="T:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper"/>
+            возможностями автоматического разбора email, телефонов, медиа-объектов и канонических ссылок Ans Core.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.Exts_ATagHelper"/> с внедрением системного генератора и контекста.
+            </remarks>
+            <param name="generator">Системный генератор HTML-компонентов ASP.NET Core.</param>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefMediaData">
+            <summary>
+            Получает или задает URL-адрес медиа-ресурса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.MediaAutoTitleData">
+            <summary>
+            Определяет, нужно ли генерировать авто-заголовок для медиа-ресурса. По умолчанию: <see langword="true"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.MediaVariantData">
+            <summary>
+            Получает или задает числовой идентификатор варианта медиа-файла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefEmailData">
+            <summary>
+            Получает или задает адрес электронной почты.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefTelData">
+            <summary>
+            Получает или задает телефонный номер в сыром или строгом формате.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.TelCodeData">
+            <summary>
+            Получает или задает код телефонного региона по умолчанию.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefSiteResData">
+            <summary>
+            Получает или задает относительный путь к ресурсу уровня сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefNodeResData">
+            <summary>
+            Получает или задает относительный путь к ресурсу уровня информационного узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefPageResData">
+            <summary>
+            Получает или задает относительный путь к ресурсу уровня страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefSiteData">
+            <summary>
+            Получает или задает внутренний маршрут на раздел уровня сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefNodeData">
+            <summary>
+            Получает или задает внутренний маршрут на раздел уровня информационного узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.HrefPageData">
+            <summary>
+            Получает или задает внутренний маршрут на раздел уровня страницы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.Exts_ATagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает логику тега ссылки, вычисляет целевой контекст 
+            и формирует валидные атрибуты href, target и семантические CSS-классы.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега ссылки.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper">
+            <summary>
+            Асинхронный Tag Helper для элемента <c>&lt;img&gt;</c>, обеспечивающий автоматическое 
+            вычисление и подстановку абсолютных или относительных путей к изображениям 
+            на основе различных уровней изоляции ресурсов (Site, Node, Page).
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper"/> с внедрением контекста.
+            </remarks>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+            <example>
+            &lt;img src-site-res="images/logo1.svg"/&gt;
+            &lt;img src-node-res="persons/head.png"/&gt;
+            &lt;img src-page-res="img1.jpg"/&gt;
+            </example>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Асинхронный Tag Helper для элемента <c>&lt;img&gt;</c>, обеспечивающий автоматическое 
+            вычисление и подстановку абсолютных или относительных путей к изображениям 
+            на основе различных уровней изоляции ресурсов (Site, Node, Page).
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper"/> с внедрением контекста.
+            </remarks>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+            <example>
+            &lt;img src-site-res="images/logo1.svg"/&gt;
+            &lt;img src-node-res="persons/head.png"/&gt;
+            &lt;img src-page-res="img1.jpg"/&gt;
+            </example>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper.SrcSiteResData">
+            <summary>
+            Получает или задает имя или путь к ресурсу глобального уровня сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper.SrcNodeResData">
+            <summary>
+            Получает или задает имя или путь к ресурсу уровня текущего информационного узла (Node).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper.SrcPageResData">
+            <summary>
+            Получает или задает имя или путь к ресурсу уровня текущей изолированной страницы (Page).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.Any_ImgTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает тег изображения, вычисляет целевой URL ресурса 
+            и принудительно переписывает HTML-атрибуты <c>src</c> и режим закрытия тега.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.Any__StylerTagHelper">
+            <summary>
+            Асинхронный Tag Helper общего назначения, перехватывающий рендеринг элементов <c>&lt;div&gt;</c>, 
+            <c>&lt;span&gt;</c> и <c>&lt;img&gt;</c> для интеллектуального слияния стандартных атрибутов стилизации
+            с прикладными метаданными <see cref="T:Ans.Net10.Common.TagStyler"/>.
+            </summary>
+            <example>
+            &lt;div ans-styler=""&gt;&lt;/div&gt;
+            &lt;span ans-styler=""&gt;&lt;/span&gt;
+            &lt;img ans-styler=""/&gt;
+            </example>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Any__StylerTagHelper.StylerData">
+            <summary>
+            Получает или задает структурированные данные стилизатора тега Ans Core.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Any__StylerTagHelper.Class">
+            <summary>
+            Получает или задает сырую строку CSS-классов, переданную в стандартном HTML-атрибуте <c>class</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.Any__StylerTagHelper.Style">
+            <summary>
+            Получает или задает сырую строку инлайновых CSS-стилей, переданную в стандартном HTML-атрибуте <c>style</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.Any__StylerTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает разметку тега, выполняя слияние классов, инлайновых стилей
+            и обеспечивая неблокирующее извлечение и рендеринг вложенного дочернего контента.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.InfoDisplayTagHelper">
+            <summary>
+            Асинхронный Tag Helper для вывода визуального блока отладки, отображающего
+            текущую активную адаптивную контрольную точку (Breakpoint) экранной сетки Bootstrap.
+            </summary>
+            <remarks>
+            Полезен на этапе разработки и тестирования верстки для контроля поведения
+            элементов интерфейса на экранах различных разрешений (от XS до XXL).
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.InfoDisplayTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает Tag Helper, подавляя генерацию оборачивающего тега
+            и внедряя в выходной поток HTML-разметку индикаторов адаптивности.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+            <remarks>
+            Метод устанавливает свойство <see cref="P:Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput.TagName"/> в <see langword="null"/>,
+            благодаря чему сам элемент не рендерится в итоговом HTML, а на его место в режиме 
+            <see cref="F:Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag"/> выводится блок диагностических классов <c>d-block</c> и <c>d-none</c>.
+            </remarks>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.InfoVersionTagHelper">
+            <summary>
+            Асинхронный Tag Helper для автоматической генерации HTML-разметки <c>&lt;span&gt;</c>,
+            содержащей имя, полную информационную версию и описание текущей сборки веб-библиотеки.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.InfoVersionTagHelper"/> с внедрением контекста.
+            </remarks>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.InfoVersionTagHelper.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Асинхронный Tag Helper для автоматической генерации HTML-разметки <c>&lt;span&gt;</c>,
+            содержащей имя, полную информационную версию и описание текущей сборки веб-библиотеки.
+            </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.TagHelpers.InfoVersionTagHelper"/> с внедрением контекста.
+            </remarks>
+            <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.InfoVersionTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает Tag Helper, настраивая имя тега, режим рендеринга
+            и принудительно подставляя текстовые метаданные версии сборки в качестве содержимого.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+            <remarks>
+            Метод переводит элемент в парный режим <see cref="F:Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag"/>, преобразует его в тег <c>span</c>
+            и полностью перекрывает внутреннее тело разметки значением свойства <see cref="P:Ans.Net10.Web._TagHelper_Base.CustomContent"/>, 
+            форматируя данные с помощью метода расширения <see cref="M:Ans.Net10.Common.Exts__make.Make(System.String,System.String)"/>.
+            </remarks>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.InputHiddenTagHelper">
+            <summary>
+            Асинхронный Tag Helper для элемента <c>&lt;input-hidden&gt;</c>, обеспечивающий автоматическую
+            генерацию скрытого поля ввода на основе переданного выражения модели (Model Expression).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.InputHiddenTagHelper.ViewContext">
+            <summary>
+            Получает или задает контекст текущего выполняемого Razor-представления.
+            Данное свойство заполняется автоматически и не привязывается к HTML-атрибутам.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.TagHelpers.InputHiddenTagHelper.For">
+            <summary>
+            Получает или задает выражение модели, определяющее свойство DTO или сущности,
+            к которому привязывается скрытое поле ввода.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.InputHiddenTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает логику работы скрытого поля, настраивая атрибуты типа, 
+            идентификатора, имени и текущего значения на основе метаданных привязки.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.InvalidOperationException">
+            Вызывается, если метаданные свойства модели не инициализированы или атрибут 'for' указан неверно.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.SampleRuSmallerTagHelper">
+            <summary>
+            Асинхронный Tag Helper для условного HTML-элемента <c>&lt;sample-ru-smaller&gt;</c>,
+            предназначенный для генерации оттипографленного ультракороткого демонстрационного «рыба-текста» на русском языке.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.SampleRuSmallerTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает Tag Helper, подавляя вывод окружающего HTML-тега
+            и записывая в выходной поток ультракороткую текстовую заглушку.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.SampleRuSmallTagHelper">
+            <summary>
+            Асинхронный Tag Helper для условного HTML-элемента <c>&lt;sample-ru-small&gt;</c>,
+            предназначенный для генерации оттипографленного короткого демонстрационного «рыба-текста» на русском языке.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.SampleRuSmallTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает Tag Helper, подавляя вывод окружающего HTML-тега
+            и записывая в выходной поток короткую текстовую заглушку.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.TagHelpers.SampleRuTagHelper">
+            <summary>
+            Асинхронный Tag Helper для условного HTML-элемента <c>&lt;sample-ru&gt;</c>,
+            предназначенный для генерации оттипографленного демонстрационного «рыба-текста» средней длины на русском языке.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.TagHelpers.SampleRuTagHelper.ProcessAsync(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext,Microsoft.AspNetCore.Razor.TagHelpers.TagHelperOutput)">
+            <summary>
+            Асинхронно обрабатывает Tag Helper, подавляя вывод окружающего HTML-тега
+            и записывая в выходной поток текстовую заглушку средней длины.
+            </summary>
+            <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
+            <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
+            <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:Ans.Net10.Web.ActionClaimsHelper">
             <summary>
@@ -3706,6 +4154,11 @@
             Получает службу безопасного чтения и записи файлов Cookie.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Network">
+            <summary>
+            Получает службу сетевого анализа подключения и валидации IP-адресов/подсетей.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.CurrentContext.QueryString">
             <summary>
             Получает службу для работы со строкой запроса (Query String) и фильтрации URL параметров.
@@ -4671,6 +5124,64 @@
             <param name="viewName">Опциональное имя или полный виртуальный путь к Razor-представлению. Если равен <see langword="null"/>, используется дефолтное представление экшена.</param>
             <returns>Задача, результатом выполнения которой является <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>, содержащий материализованный список элементов страницы.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="controller"/> или <paramref name="dbSet"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Exts_CrudFace">
+            <summary>
+            Методы расширения для класса метаданных <see cref="T:Ans.Net10.Common.CrudFace"/>,
+            обеспечивающие безопасную трансформацию текстовых описаний полей в HTML-строки с применением экранной типографики.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_CrudFace.TitleHtml(Ans.Net10.Common.CrudFace)">
+            <summary>
+            Преобразует основное наименование (заголовок) поля в безопасную HTML-строку с наложением правил типографики.
+            </summary>
+            <param name="helper">Текущий экземпляр описания метаданных поля <see cref="T:Ans.Net10.Common.CrudFace"/>.</param>
+            <returns>
+            Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий отформатированный заголовок поля. 
+            Если заголовок не задан, возвращает пустую HTML-строку.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если расширяемый параметр <paramref name="helper"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_CrudFace.ShortTitleHtml(Ans.Net10.Common.CrudFace)">
+            <summary>
+            Преобразует сокращенное наименование поля в безопасную HTML-строку с наложением правил типографики.
+            </summary>
+            <param name="helper">Текущий экземпляр описания метаданных поля <see cref="T:Ans.Net10.Common.CrudFace"/>.</param>
+            <returns>
+            Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий отформатированное краткое имя поля. 
+            Если краткое имя отсутствует, возвращает пустую HTML-строку.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если расширяемый параметр <paramref name="helper"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_CrudFace.DescriptionHtml(Ans.Net10.Common.CrudFace)">
+            <summary>
+            Преобразует подробное всплывающее описание (подсказку) поля в безопасную HTML-строку с наложением правил типографики.
+            </summary>
+            <param name="helper">Текущий экземпляр описания метаданных поля <see cref="T:Ans.Net10.Common.CrudFace"/>.</param>
+            <returns>
+            Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий отформатированный текст описания. 
+            Если описание не заполнено, возвращает пустую HTML-строку.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если расширяемый параметр <paramref name="helper"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts_CrudFace.SampleHtml(Ans.Net10.Common.CrudFace)">
+            <summary>
+            Преобразует демонстрационный пример заполнения поля в безопасную HTML-строку с наложением правил типографики.
+            </summary>
+            <param name="helper">Текущий экземпляр описания метаданных поля <see cref="T:Ans.Net10.Common.CrudFace"/>.</param>
+            <returns>
+            Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий отформатированный текст примера ввода. 
+            Если пример отсутствует, возвращает пустую HTML-строку.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если расширяемый параметр <paramref name="helper"/> равен <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:Ans.Net10.Web.Exts_Exception">
             <summary>
@@ -5912,6 +6423,71 @@
             <param name="webOptions">Загруженные параметры конфигурации библиотеки.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметры <paramref name="options"/> или <paramref name="webOptions"/> равны <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.SuppRender">
+            <summary>
+            Вспомогательный класс для генерации и рендеринга стандартных демонстрационных текстовых фрагментов (рыба-текст)
+            в виде безопасных HTML-строк с автоматическим наложением правил экранной типографики.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppRender.SampleRu">
+            <summary>
+            Генерирует стандартный демонстрационный текст средней длины на русском языке
+            и возвращает его в виде безопасной HTML-строки с примененной типографикой.
+            </summary>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий оттипографленный демонстрационный текст.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppRender.SampleSmallRu">
+            <summary>
+            Генерирует короткий демонстрационный текст на русском языке
+            и возвращает его в виде безопасной HTML-строки с примененной типографикой.
+            </summary>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий короткий оттипографленный демонстрационный текст.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppRender.SampleSmallerRu">
+            <summary>
+            Генерирует ультракороткий демонстрационный текст на русском языке
+            и возвращает его в виде безопасной HTML-строки с примененной типографикой.
+            </summary>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, содержащий ультракороткий оттипографленный демонстрационный текст.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.SuppResult">
+            <summary>
+            Вспомогательный класс для формирования стандартизированных результатов ответов контроллера (Action Results),
+            оптимизированных для эффективной асинхронной отдачи физических файлов с поддержкой HTTP-кэширования.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppResult.GetPhysicalFileResult(System.String,System.String)">
+            <summary>
+            Конструирует высокопроизводительный результат отдачи физического файла, внедряя в HTTP-заголовки 
+            метаданные даты изменения и уникального валидатора тега (ETag) для кэширования на стороне клиента.
+            </summary>
+            <param name="physicalPath">Абсолютный физический путь к целевому файлу на диске сервера.</param>
+            <param name="contentType">Официальный MIME-тип контента (например, "image/png", "application/pdf").</param>
+            <returns>Строго типизированный объект результата <see cref="T:Microsoft.AspNetCore.Mvc.PhysicalFileResult"/>.</returns>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если параметр <paramref name="physicalPath"/> или <paramref name="contentType"/> пуст или равен <see langword="null"/>.
+            </exception>
+            <remarks>
+            Метод считывает временную метку последней записи файла для формирования заголовка Last-Modified 
+            и генерирует на её основе строгий <see cref="T:Microsoft.Net.Http.Headers.EntityTagHeaderValue"/>, предотвращая повторную 
+            избыточную передачу неизмененного контента по сети.
+            </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppResult.GetPhysicalFileOrNotFoundResultAsync(System.String,System.String)">
+            <summary>
+            Асинхронно проверяет фактическое существование файла на диске и возвращает результат отдачи файла, 
+            либо стандартизированный ответ HTTP 404 Not Found, не блокируя потоки веб-сервера.
+            </summary>
+            <param name="path">Абсолютный физический путь к запрашиваемому файлу.</param>
+            <param name="contentType">Официальный MIME-тип контента.</param>
+            <returns>
+            Задача, результатом которой является <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>: <see cref="T:Microsoft.AspNetCore.Mvc.PhysicalFileResult"/> при успешном обнаружении,
+            либо <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundResult"/>, если файл отсутствует или доступ к нему запрещен.
+            </returns>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если параметр <paramref name="path"/> или <paramref name="contentType"/> пуст или равен <see langword="null"/>.
             </exception>
         </member>
         <member name="T:Ans.Net10.Web.SuppWebCache">

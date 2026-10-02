@@ -171,9 +171,9 @@ namespace Ans.Net10.Web
 		public CookiesService Cookies { get; }
 
 
-		///// <summary>
-		///// Получает службу сетевого анализа подключения и валидации IP-адресов/подсетей.
-		///// </summary>
+		/// <summary>
+		/// Получает службу сетевого анализа подключения и валидации IP-адресов/подсетей.
+		/// </summary>
 		public NetworkService Network { get; }
 
 
@@ -193,6 +193,18 @@ namespace Ans.Net10.Web
 		/// Получает службу выполнения запросов к внешним Web API с поддержкой гибридного кэширования.
 		/// </summary>
 		public WebApiService WebApi { get; }
+
+
+		internal string GetResUrl(string v)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		internal string GetUrl(string v)
+		{
+			throw new NotImplementedException();
+		}
 
 	}
 
