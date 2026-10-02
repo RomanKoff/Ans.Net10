@@ -11,6 +11,7 @@ namespace Ans.Net10.Common
 	public static partial class Exts_Assembly
 	{
 
+		/// <param name="instance">Экземпляр исследуемой сборки.</param>
 		extension(Assembly? instance)
 		{
 

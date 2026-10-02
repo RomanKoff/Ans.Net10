@@ -34,10 +34,11 @@ namespace Ans.Net10.Common.Crud
 		T GetNew();
 
 		/// <summary>
-		/// Асинхронно возвращает общее количество всех сущностей данного типа в базе данных.
+		/// Асинхронно возвращает общее количество всех главных сущностей данного типа в базе данных.
 		/// </summary>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Задача, результатом выполнения которой является общее количество записей в таблице.</returns>
-		Task<int> GetItemsCountAsync();
+		Task<int> GetItemsCountAsync(CancellationToken cancellationToken = default);
 	}
 
 
@@ -47,6 +48,7 @@ namespace Ans.Net10.Common.Crud
 	/// над главными сущностями с использованием Entity Framework Core.
 	/// </summary>
 	/// <typeparam name="T">Тип доменной сущности, реализующей <see cref="IMasterEntity"/>.</typeparam>
+	/// <param name="db">Экземпляр контекста базы данных <see cref="DbContext"/>.</param>
 	public abstract class _CrudMasterRepository_Proto<T>(
 		DbContext db)
 		: __CrudRepository_Base<T>(db),
@@ -59,9 +61,10 @@ namespace Ans.Net10.Common.Crud
 
 
 		/// <inheritdoc />
-		public virtual async Task<int> GetItemsCountAsync()
+		public virtual async Task<int> GetItemsCountAsync(
+			CancellationToken cancellationToken = default)
 		{
-			return await base.GetItemsCountAsync(null);
+			return await base.GetItemsCountAsync(null, cancellationToken);
 		}
 
 	}

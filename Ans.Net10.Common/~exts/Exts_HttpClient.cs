@@ -85,10 +85,21 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// (Source Gen) Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="HybridCache"/> 
-		/// и десериализует JSON-ответ без использования рантайм-рефлексии. Безопасно обрабатывает сетевые сбои.
+		/// (Source Gen) Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="HybridCache"/> 
+		/// и десериализует JSON-ответ в объект типа <typeparamref name="T"/> без использования рантайм-рефлексии на основе сгенерированных метаданных. 
+		/// Безопасно обрабатывает сетевые сбои и ошибки парсинга.
 		/// </summary>
 		/// <typeparam name="T">Тип модели данных, в которую десериализуется ответ.</typeparam>
+		/// <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
+		/// <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+		/// <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+		/// <param name="jsonTypeInfo">Инфраструктурные метаданные типа со сценарием Source Generation, сгенерированные компилятором на этапе сборки.</param>
+		/// <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи гибридного кэша.</param>
+		/// <param name="encoding">Кастомная кодировка текста. Если <see langword="null"/> — используется стандартный UTF-8.</param>
+		/// <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="HttpRequestMessage"/> перед отправкой.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, результатом которой является объект ответа <see cref="WebApiResult{T}"/> с десериализованными данными из кэша или напрямую от API.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="requestUri"/>, <paramref name="cache"/> или <paramref name="jsonTypeInfo"/> равен <see langword="null"/>.</exception>
 		public static async Task<WebApiResult<T>> GetJsonGenResultAsync<T>(
 			this HttpClient client,
 			string requestUri,
@@ -145,9 +156,20 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="HybridCache"/> 
-		/// и десериализует XML-ответ в объект типа T. Безопасно перехватывает ошибки валидации схемы.
+		/// Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="HybridCache"/> 
+		/// и десериализует XML-ответ в объект типа <typeparamref name="T"/>. Безопасно перехватывает ошибки валидации схемы.
 		/// </summary>
+		/// <typeparam name="T">Тип модели данных, в которую десериализуется XML-ответ.</typeparam>
+		/// <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
+		/// <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+		/// <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+		/// <param name="defaultNamespace">Опциональное пространство имен XML, применяемое при разборе схемы документа.</param>
+		/// <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи гибридного кэша.</param>
+		/// <param name="encoding">Кастомная кодировка текста. Если <see langword="null"/> — используется кодировка, определенная XML-десериализатором автоматически.</param>
+		/// <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="HttpRequestMessage"/> перед отправкой.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, результатом которой является объект ответа <see cref="WebApiResult{T}"/> с десериализованными XML-данными из кэша или напрямую от API.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равен <see langword="null"/>.</exception>
 		public static async Task<WebApiResult<T>> GetXmlResultAsync<T>(
 			this HttpClient client,
 			string requestUri,
@@ -204,8 +226,21 @@ namespace Ans.Net10.Common
 
 		/// <summary>
 		/// Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="HybridCache"/>, 
-		/// безопасно парсит построчные текстовые данные в формате GRID и проецирует их в материализованную коллекцию объектов.
+		/// безопасно и неблокирующе парсит построчные текстовые данные в формате GRID из HTTP-потока 
+		/// и проецирует их в материализованную коллекцию объектов.
 		/// </summary>
+		/// <typeparam name="T">Тип результирующего объекта маппинга.</typeparam>
+		/// <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
+		/// <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+		/// <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+		/// <param name="selector">Функция-предикат (лямбда) для маппинга полей строки в объект типа T.</param>
+		/// <param name="provider">Опциональный провайдер культуры для парсинга полей внутри строки.</param>
+		/// <param name="encoding">Опциональная кодировка текста. Если равен <see langword="null"/> — используется UTF-8 без BOM.</param>
+		/// <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи гибридного кэша.</param>
+		/// <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="HttpRequestMessage"/> перед отправкой.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Объект ответа <see cref="WebApiResult{T}"/> с материализованной коллекцией данных из кэша или напрямую от API.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="client"/>, <paramref name="requestUri"/>, <paramref name="cache"/> или <paramref name="selector"/> равны <see langword="null"/>.</exception>
 		public static async Task<WebApiResult<IEnumerable<T>>> GetGridResultAsync<T>(
 			this HttpClient client,
 			string requestUri,
@@ -237,7 +272,11 @@ namespace Ans.Net10.Common
 						try
 						{
 							using var stream1 = await rawResult1.Content.Content.ReadAsStreamAsync(token1);
-							result1.Content = [.. SuppGrid.GetItemsFromStream(stream1, selector, provider, encoding)];
+							var list1 = new List<T>();
+							await foreach (var item1 in SuppGrid.GetItemsFromStreamAsync(
+								stream1, selector, provider, encoding, token1).ConfigureAwait(false))
+								list1.Add(item1);
+							result1.Content = list1;
 						}
 						catch (Exception ex) when (ex is FormatException or IndexOutOfRangeException)
 						{
@@ -256,8 +295,16 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Принудительно асинхронно удаляет (инвалидирует) ранее сохраненную запись HTTP-ответа из гибридного кэша по заданному формату и URI ресурса.
+		/// Принудительно асинхронно удаляет (инвалидирует) ранее сохраненную запись HTTP-ответа из L1/L2 уровней гибридного кэша 
+		/// по вычисленному составному ключу на основе формата и URI ресурса.
 		/// </summary>
+		/// <param name="client">Экземпляр HTTP-клиента, чей базовый адрес используется для формирования ключа кэша.</param>
+		/// <param name="format">Строковый идентификатор формата кэшируемых данных (например, "json", "xml", "grid").</param>
+		/// <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+		/// <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Структура <see cref="ValueTask"/>, представляющая асинхронную операцию удаления записи из кэша.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="format"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равен <see langword="null"/>.</exception>
 		public static ValueTask InvalidateHttpCacheAsync(
 			this HttpClient client,
 			string format,
@@ -313,7 +360,7 @@ namespace Ans.Net10.Common
 		}
 
 
-				private static string _getCacheKey(
+		private static string _getCacheKey(
 			string format,
 			string? baseAddress,
 			string requestUri)

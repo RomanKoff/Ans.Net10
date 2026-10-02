@@ -537,28 +537,41 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Выполняет полное глубокое побайтовое сравнение содержимого двух файлов на диске. Различия в путях или именах файлов игнорируются.
+		/// Выполняет полное глубокое побайтовое сравнение содержимого двух файлов на диске в асинхронном неблокирующем режиме. 
+		/// Различия в путях или именах файлов игнорируются.
 		/// </summary>
 		/// <param name="file1">Первый сравниваемый файл.</param>
 		/// <param name="file2">Второй сравниваемый файл.</param>
-		/// <returns><see langword="true"/>, если содержимое файлов абсолютно побайтово совпадает; иначе — <see langword="false"/>.</returns>
-		public static bool IsFilesEqualFull(
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, результатом которой является <see langword="true"/>, если содержимое файлов абсолютно побайтово совпадает; в противном случае — <see langword="false"/>.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если один из параметров равен <see langword="null"/>.</exception>
+		public static async Task<bool> IsFilesEqualFullAsync(
 			FileInfo file1,
-			FileInfo file2)
+			FileInfo file2,
+			CancellationToken cancellationToken = default)
 		{
+			ArgumentNullException.ThrowIfNull(file1);
+			ArgumentNullException.ThrowIfNull(file2);
 			if (file1.Length != file2.Length)
 				return false;
 			if (string.Equals(file1.FullName, file2.FullName, StringComparison.OrdinalIgnoreCase))
 				return true;
-			using var stream1 = file1.OpenRead();
-			using var stream2 = file2.OpenRead();
-			const int _BUF_SIZE = 4096;
-			byte[] buffer1 = new byte[_BUF_SIZE];
-			byte[] buffer2 = new byte[_BUF_SIZE];
+			const int _BUF_SIZE1 = 4096;
+			var options1 = new FileStreamOptions
+			{
+				Mode = FileMode.Open,
+				Access = FileAccess.Read,
+				Share = FileShare.Read,
+				Options = FileOptions.Asynchronous
+			};
+			using var stream1 = new FileStream(file1.FullName, options1);
+			using var stream2 = new FileStream(file2.FullName, options1);
+			byte[] buffer1 = new byte[_BUF_SIZE1];
+			byte[] buffer2 = new byte[_BUF_SIZE1];
 			while (true)
 			{
-				int count1 = stream1.Read(buffer1, 0, _BUF_SIZE);
-				int count2 = stream2.Read(buffer2, 0, _BUF_SIZE);
+				int count1 = await stream1.ReadAsync(buffer1.AsMemory(0, _BUF_SIZE1), cancellationToken).ConfigureAwait(false);
+				int count2 = await stream2.ReadAsync(buffer2.AsMemory(0, _BUF_SIZE1), cancellationToken).ConfigureAwait(false);
 				if (count1 != count2)
 					return false;
 				if (count1 == 0)
@@ -571,19 +584,25 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Выполняет быстрое «ленивое» сравнение двух файлов по их метаданным (размеру и дате изменения). Если они совпадают, возвращает true; иначе перепроверяет побайтово через <see cref="IsFilesEqualFull"/>.
+		/// Выполняет быстрое «ленивое» асинхронное сравнение двух файлов по их метаданным (размеру и дате изменения). 
+		/// Если они совпадают, возвращает <see langword="true"/>; иначе перепроверяет побайтово через <see cref="IsFilesEqualFullAsync"/>.
 		/// </summary>
 		/// <param name="file1">Первый сравниваемый файл.</param>
 		/// <param name="file2">Второй сравниваемый файл.</param>
-		/// <returns><see langword="true"/>, если файлы идентичны; иначе — <see langword="false"/>.</returns>
-		public static bool IsFilesEqualLazy(
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, результатом которой является <see langword="true"/>, если файлы идентичны по метаданным или содержимому; в противном случае — <see langword="false"/>.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если один из параметров равен <see langword="null"/>.</exception>
+		public static async Task<bool> IsFilesEqualLazyAsync(
 			FileInfo file1,
-			FileInfo file2)
+			FileInfo file2,
+			CancellationToken cancellationToken = default)
 		{
-			if (file1.Length == file2.Length
-				&& file1.LastWriteTimeUtc == file2.LastWriteTimeUtc)
+			ArgumentNullException.ThrowIfNull(file1);
+			ArgumentNullException.ThrowIfNull(file2);
+
+			if (file1.Length == file2.Length && file1.LastWriteTimeUtc == file2.LastWriteTimeUtc)
 				return true;
-			return IsFilesEqualFull(file1, file2);
+			return await IsFilesEqualFullAsync(file1, file2, cancellationToken).ConfigureAwait(false);
 		}
 
 

@@ -133,13 +133,15 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип результирующего целевого объекта.</typeparam>
 		/// <param name="stream">Входящий асинхронный поток данных.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Структура <see cref="ValueTask{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
 		public static ValueTask<T?> GetObjectFromJsonStreamAsync<T>(
 			Stream stream,
-			JsonSerializerOptions? options = null)
+			JsonSerializerOptions? options = null,
+			CancellationToken cancellationToken = default)
 		{
 			return JsonSerializer.DeserializeAsync<T>(
-				stream, options ?? DEFAULT_JSON_SERIALIZER_OPTIONS);
+				stream, options ?? DEFAULT_JSON_SERIALIZER_OPTIONS, cancellationToken);
 		}
 
 
@@ -167,15 +169,24 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип результирующего целевого объекта.</typeparam>
 		/// <param name="filename">Полный или относительный путь к файлу JSON на диске.</param>
 		/// <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
-		/// <returns>Поток-задача <see cref="Task{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
-		public static async Task<T?> GetObjectFromJsonFileAsync<T>(
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача-структура <see cref="ValueTask{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
+		/// <exception cref="ArgumentException">Вызывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
+		public static async ValueTask<T?> GetObjectFromJsonFileAsync<T>(
 			string filename,
-			JsonSerializerOptions? options = null)
+			JsonSerializerOptions? options = null,
+			CancellationToken cancellationToken = default)
 		{
-			using var stream1 = new FileStream(
-				filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
-			return await GetObjectFromJsonStreamAsync<T>(
-				stream1, options);
+			ArgumentException.ThrowIfNullOrEmpty(filename);
+			var options1 = new FileStreamOptions
+			{
+				Mode = FileMode.Open,
+				Access = FileAccess.Read,
+				Share = FileShare.Read,
+				Options = FileOptions.Asynchronous
+			};
+			using var stream1 = new FileStream(filename, options1);
+			return await GetObjectFromJsonStreamAsync<T>(stream1, options, cancellationToken).ConfigureAwait(false);
 		}
 
 
@@ -263,13 +274,15 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип десериализуемого объекта.</typeparam>
 		/// <param name="stream">Входящий асинхронный поток данных.</param>
 		/// <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Структура-задача <see cref="ValueTask{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
 		public static ValueTask<T?> GetObjectFromJsonStreamGenAsync<T>(
 			Stream stream,
-			JsonTypeInfo<T> jsonTypeInfo)
+			JsonTypeInfo<T> jsonTypeInfo,
+			CancellationToken cancellationToken = default)
 		{
 			return JsonSerializer.DeserializeAsync(
-				stream, jsonTypeInfo);
+				stream, jsonTypeInfo, cancellationToken);
 		}
 
 
@@ -279,15 +292,24 @@ namespace Ans.Net10.Common
 		/// <typeparam name="T">Тип десериализуемого объекта.</typeparam>
 		/// <param name="filename">Полный или относительный путь к файлу на диске.</param>
 		/// <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
-		/// <returns>Поток-задача <see cref="Task{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
-		public static async Task<T?> GetObjectFromJsonFileGenAsync<T>(
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача-структура <see cref="ValueTask{T}"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
+		/// <exception cref="ArgumentException">Вызывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
+		public static async ValueTask<T?> GetObjectFromJsonFileGenAsync<T>(
 			string filename,
-			JsonTypeInfo<T> jsonTypeInfo)
+			JsonTypeInfo<T> jsonTypeInfo,
+			CancellationToken cancellationToken = default)
 		{
-			using var stream1 = new FileStream(
-				filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous);
-			return await GetObjectFromJsonStreamGenAsync(
-				stream1, jsonTypeInfo);
+			ArgumentException.ThrowIfNullOrEmpty(filename);
+			var options1 = new FileStreamOptions
+			{
+				Mode = FileMode.Open,
+				Access = FileAccess.Read,
+				Share = FileShare.Read,
+				Options = FileOptions.Asynchronous
+			};
+			using var stream1 = new FileStream(filename, options1);
+			return await GetObjectFromJsonStreamGenAsync(stream1, jsonTypeInfo, cancellationToken).ConfigureAwait(false);
 		}
 
 

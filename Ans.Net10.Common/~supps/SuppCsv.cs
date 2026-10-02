@@ -12,31 +12,34 @@ namespace Ans.Net10.Common
 	/// </summary>
 	public static class SuppCsv
 	{
-
-		/* functions */
-
 		/// <summary>
-		/// Сериализует коллекцию объектов в массив байт CSV (в кодировке UTF-8 без BOM).
+		/// Асинхронно и в неблокирующем режиме сериализует коллекцию объектов и записывает её напрямую в целевой поток 
+		/// в кодировке UTF-8 без BOM, предотвращая избыточные аллокации памяти.
 		/// </summary>
 		/// <remarks>
-		/// Использование UTF-8 без BOM является лучшей практикой для интеграции с веб-интерфейсами и внешними API.
-		/// Если переданная коллекция <paramref name="items"/> пуста, метод вернет массив байт, содержащий только строку заголовков свойств типа <typeparamref name="T"/>.
+		/// Этот метод идеален для веб-приложений, так как позволяет осуществлять потоковую передачу данных (streaming) 
+		/// напрямую в тело HTTP-ответа без необходимости буферизации всего документа в оперативной памяти сервера.
 		/// </remarks>
 		/// <typeparam name="T">Тип сериализуемых доменных объектов или моделей данных.</typeparam>
+		/// <param name="targetStream">Целевой выходной поток (например, поток файла или поток HTTP-ответа), в который ведется запись.</param>
 		/// <param name="items">Коллекция элементов для выгрузки в CSV-документ.</param>
-		/// <returns>Массив байт, представляющий готовый документ в формате CSV.</returns>
-		public static byte[] GetCsvBytesFromObject<T>(
-			IEnumerable<T> items)
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, представляющая асинхронную операцию потоковой записи CSV.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="targetStream"/> или <paramref name="items"/> равен <see langword="null"/>.</exception>
+		public static async Task WriteCsvToStreamAsync<T>(
+			Stream targetStream,
+			IEnumerable<T> items,
+			CancellationToken cancellationToken = default)
 		{
-			using var stream1 = new MemoryStream();
+			ArgumentNullException.ThrowIfNull(targetStream);
+			ArgumentNullException.ThrowIfNull(items);
 			// Использование UTF-8 без BOM — лучшая практика для веб-интерфейсов и API
-			using var writer1 = new StreamWriter(stream1, new UTF8Encoding(false));
+			// Оставляем поток открытым (leaveOpen: true), так как за жизненный цикл targetStream отвечает вызывающий код
+			using var writer1 = new StreamWriter(targetStream, new UTF8Encoding(false), leaveOpen: true);
 			using var csv1 = new CsvWriter(writer1, CultureInfo.CurrentCulture);
-			csv1.WriteRecords(items);
-			writer1.Flush();
-			return stream1.ToArray();
+			await csv1.WriteRecordsAsync(items, cancellationToken).ConfigureAwait(false);
+			await writer1.FlushAsync(cancellationToken).ConfigureAwait(false);
 		}
-
 	}
 
 }

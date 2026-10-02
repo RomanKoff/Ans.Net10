@@ -166,7 +166,7 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Асинхронно десериализует большой XML-файл в объект, используя прямую потоковую обработку в выделенном фоновом потоке.
+		/// Асинхронно десериализует большой XML-файл в объект, используя потоковую неблокирующую обработку файлового дескриптора.
 		/// </summary>
 		/// <remarks>
 		/// Метод рекомендуется использовать для файлов крупного размера (более 10–20 МБ) во избежание 
@@ -177,7 +177,7 @@ namespace Ans.Net10.Common
 		/// <param name="encoding">Кодировка текстового файла. Если передано значение <see langword="null"/>, кодировка определяется автоматически.</param>
 		/// <param name="defaultNamespace">Пространство имен XML по умолчанию.</param>
 		/// <returns>Поток-задача, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
-		/// <exception cref="ArgumentNullException">Выбрасывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentException">Выбрасывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
 		/// <exception cref="FileNotFoundException">Вызывается, если файл отсутствует по указанному пути на диске.</exception>
 		public static async Task<T?> GetHardObjectFromXmlFileAsync<T>(
 			string filename,
@@ -187,24 +187,27 @@ namespace Ans.Net10.Common
 			ArgumentException.ThrowIfNullOrWhiteSpace(filename);
 			if (!File.Exists(filename))
 				throw new FileNotFoundException("XML file not found.", filename);
-			return await Task.Run(() =>
+			var options1 = new FileStreamOptions
 			{
-				using var stream1 = new FileStream(
-					filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, useAsync: false);
-				var settings1 = _getReaderSettings();
-				var serializer1 = _getCachedSerializer(typeof(T), defaultNamespace);
-				if (encoding is not null)
-				{
-					using var reader1 = new StreamReader(stream1, encoding);
-					using var xml1 = XmlReader.Create(reader1, settings1);
-					return (T?)serializer1.Deserialize(xml1);
-				}
-				else
-				{
-					using var xml1 = XmlReader.Create(stream1, settings1);
-					return (T?)serializer1.Deserialize(xml1);
-				}
-			});
+				Mode = FileMode.Open,
+				Access = FileAccess.Read,
+				Share = FileShare.Read,
+				Options = FileOptions.Asynchronous
+			};
+			using var stream1 = new FileStream(filename, options1);
+			var settings1 = _getReaderSettings();
+			var serializer1 = _getCachedSerializer(typeof(T), defaultNamespace);
+			if (encoding is not null)
+			{
+				using var reader1 = new StreamReader(stream1, encoding);
+				using var xml1 = XmlReader.Create(reader1, settings1);
+				return (T?)serializer1.Deserialize(xml1);
+			}
+			else
+			{
+				using var xml1 = XmlReader.Create(stream1, settings1);
+				return (T?)serializer1.Deserialize(xml1);
+			}
 		}
 
 
@@ -248,7 +251,7 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Асинхронно сериализует объект в большой XML-файл, используя потоковую запись напрямую на диск в фоновом потоке.
+		/// Асинхронно сериализует объект в большой XML-файл, используя прямую потоковую запись на устройство ввода-вывода.
 		/// </summary>
 		/// <remarks>
 		/// Рекомендуется применять для тяжелых объектов сложной структуры во избежание 
@@ -261,6 +264,7 @@ namespace Ans.Net10.Common
 		/// <param name="namespaces">Пользовательские пространства имен XML. Если не заданы, пространства имен опускаются.</param>
 		/// <param name="useFormatted">Признак применения структурного форматирования XML-текста.</param>
 		/// <returns>Объект-задача <see cref="Task"/>, представляющий асинхронную операцию записи.</returns>
+		/// <exception cref="ArgumentException">Выбрасывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
 		public static async Task SaveHardObjectToXmlFileAsync<T>(
 			T? obj,
 			string filename,
@@ -270,18 +274,20 @@ namespace Ans.Net10.Common
 		{
 			if (obj is null)
 				return;
+			ArgumentException.ThrowIfNullOrWhiteSpace(filename);
 			var serializer1 = _getCachedSerializer(typeof(T));
-			var settings1 = _getWriterSettings(
-				useFormatted, encoding, omitXmlDeclaration: false, isAsync: false);
-			await Task.Run(() =>
+			var settings1 = _getWriterSettings(useFormatted, encoding, omitXmlDeclaration: false, isAsync: true);
+			var options1 = new FileStreamOptions
 			{
-				using var fs1 = new FileStream(
-					filename, FileMode.Create, FileAccess.Write, FileShare.None, 4096, useAsync: false);
-				using var writer1 = XmlWriter.Create(fs1, settings1);
-
-				serializer1.Serialize(writer1, obj, namespaces ?? _emptyNamespaces);
-				writer1.Flush();
-			});
+				Mode = FileMode.Create,
+				Access = FileAccess.Write,
+				Share = FileShare.None,
+				Options = FileOptions.Asynchronous
+			};
+			using var fs1 = new FileStream(filename, options1);
+			using var writer1 = XmlWriter.Create(fs1, settings1);
+			serializer1.Serialize(writer1, obj, namespaces ?? _emptyNamespaces);
+			await writer1.FlushAsync().ConfigureAwait(false);
 		}
 
 

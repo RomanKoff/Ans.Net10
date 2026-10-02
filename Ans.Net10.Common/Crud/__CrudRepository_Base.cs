@@ -55,8 +55,9 @@ namespace Ans.Net10.Common.Crud
 		/// Асинхронно возвращает общее количество сущностей, удовлетворяющих заданному фильтру.
 		/// </summary>
 		/// <param name="filter">Выражение-фильтр для подсчета. Если равен <see langword="null"/>, подсчитываются все записи в наборе.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Задача, результатом которой является общее количество записей, соответствующих условию.</returns>
-		Task<int> GetItemsCountAsync(Expression<Func<T, bool>>? filter);
+		Task<int> GetItemsCountAsync(Expression<Func<T, bool>>? filter, CancellationToken cancellationToken = default);
 
 		/* methods */
 
@@ -93,26 +94,32 @@ namespace Ans.Net10.Common.Crud
 		Task RemoveAsync(int id);
 
 		/// <summary>
-		/// Синхронно добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+		/// Асинхронно добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
 		/// <param name="keys">Коллекция идентификаторов связываемых объектов.</param>
-		void AddManyrefs(int masterPtr, IEnumerable<int> keys);
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, представляющая асинхронную операцию добавления связей.</returns>
+		Task AddManyrefsAsync(int masterPtr, IEnumerable<int> keys, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Синхронно удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+		/// Асинхронно удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
 		/// <param name="keys">Коллекция идентификаторов отвязываемых объектов.</param>
-		void RemoveManyrefs(int masterPtr, IEnumerable<int> keys);
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, представляющая асинхронную операцию удаления связей.</returns>
+		Task RemoveManyrefsAsync(int masterPtr, IEnumerable<int> keys, CancellationToken cancellationToken = default);
 
 		/// <summary>
-		/// Синхронно синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
+		/// Асинхронно синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
 		/// <param name="oldKeys">Старый (текущий) набор связанных ключей.</param>
 		/// <param name="newKeys">Новый (целевой) набор связанных ключей.</param>
-		void ManyrefUpdate(int masterPtr, IEnumerable<int> oldKeys, IEnumerable<int> newKeys);
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+		/// <returns>Задача, представляющая асинхронную операцию синхронизации связей.</returns>
+		Task ManyrefUpdateAsync(int masterPtr, IEnumerable<int> oldKeys, IEnumerable<int> newKeys, CancellationToken cancellationToken = default);
 	}
 
 
@@ -172,11 +179,12 @@ namespace Ans.Net10.Common.Crud
 
 		/// <inheritdoc />
 		public virtual async Task<int> GetItemsCountAsync(
-			Expression<Func<T, bool>>? filter)
+			Expression<Func<T, bool>>? filter,
+			CancellationToken cancellationToken = default)
 		{
 			return filter == null
-				? await DbSet.CountAsync()
-				: await DbSet.Where(filter).CountAsync();
+				? await DbSet.CountAsync(cancellationToken)
+				: await DbSet.Where(filter).CountAsync(cancellationToken);
 		}
 
 
@@ -237,36 +245,39 @@ namespace Ans.Net10.Common.Crud
 
 
 		/// <inheritdoc />
-		public virtual void AddManyrefs(
+		public virtual Task AddManyrefsAsync(
 			int masterPtr,
-			IEnumerable<int> keys)
+			IEnumerable<int> keys,
+			CancellationToken cancellationToken = default)
 		{
-			throw new NotImplementedException();
+			return Task.CompletedTask;
 		}
 
 
 		/// <inheritdoc />
-		public virtual void RemoveManyrefs(
+		public virtual Task RemoveManyrefsAsync(
 			int masterPtr,
-			IEnumerable<int> keys)
+			IEnumerable<int> keys,
+			CancellationToken cancellationToken = default)
 		{
-			throw new NotImplementedException();
+			return Task.CompletedTask;
 		}
 
 
 		/// <inheritdoc />
-		public virtual void ManyrefUpdate(
+		public virtual async Task ManyrefUpdateAsync(
 			int masterPtr,
 			IEnumerable<int> oldKeys,
-			IEnumerable<int> newKeys)
+			IEnumerable<int> newKeys,
+			CancellationToken cancellationToken = default)
 		{
 			ArgumentNullException.ThrowIfNull(oldKeys);
 			ArgumentNullException.ThrowIfNull(newKeys);
 			var comparer1 = new KeysComparer(oldKeys, newKeys);
 			if (comparer1.HasAdded)
-				AddManyrefs(masterPtr, comparer1.Added);
+				await AddManyrefsAsync(masterPtr, comparer1.Added, cancellationToken);
 			if (comparer1.HasDeleted)
-				RemoveManyrefs(masterPtr, comparer1.Deleted);
+				await RemoveManyrefsAsync(masterPtr, comparer1.Deleted, cancellationToken);
 		}
 
 	}

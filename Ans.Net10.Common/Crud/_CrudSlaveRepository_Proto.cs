@@ -54,8 +54,9 @@ namespace Ans.Net10.Common.Crud
 		/// Асинхронно возвращает общее количество всех подчиненных сущностей, принадлежащих указанному владельцу.
 		/// </summary>
 		/// <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>Задача, результатом выполнения которой является количество записей, связанных с указанным владельцем.</returns>
-		Task<int> GetItemsCountAsync(int masterPtr);
+		Task<int> GetItemsCountAsync(int masterPtr, CancellationToken cancellationToken = default);
 	}
 
 
@@ -65,6 +66,7 @@ namespace Ans.Net10.Common.Crud
 	/// над подчиненными сущностями с использованием Entity Framework Core.
 	/// </summary>
 	/// <typeparam name="T">Тип доменной сущности, реализующей <see cref="ISlaveEntity"/>.</typeparam>
+	/// <param name="db">Экземпляр контекста базы данных <see cref="DbContext"/>.</param>
 	public abstract class _CrudSlaveRepository_Proto<T>(
 		DbContext db)
 		: __CrudRepository_Base<T>(db),
@@ -91,10 +93,11 @@ namespace Ans.Net10.Common.Crud
 
 		/// <inheritdoc />
 		public virtual async Task<int> GetItemsCountAsync(
-			int masterPtr)
+			int masterPtr,
+			CancellationToken cancellationToken = default)
 		{
 			return await base.GetItemsCountAsync(
-				x => x.MasterPtr == masterPtr);
+				x => x.MasterPtr == masterPtr, cancellationToken);
 		}
 
 	}

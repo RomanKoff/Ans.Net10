@@ -27,10 +27,11 @@
             </summary>
             <returns>Новый экземпляр сущности типа <typeparamref name="T"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudMasterRepository`1.GetItemsCountAsync">
+        <member name="M:Ans.Net10.Common.Crud.ICrudMasterRepository`1.GetItemsCountAsync(System.Threading.CancellationToken)">
             <summary>
-            Асинхронно возвращает общее количество всех сущностей данного типа в базе данных.
+            Асинхронно возвращает общее количество всех главных сущностей данного типа в базе данных.
             </summary>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Задача, результатом выполнения которой является общее количество записей в таблице.</returns>
         </member>
         <member name="T:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1">
@@ -39,6 +40,7 @@
             над главными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.IMasterEntity"/>.</typeparam>
+            <param name="db">Экземпляр контекста базы данных <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/>.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.#ctor(Microsoft.EntityFrameworkCore.DbContext)">
             <summary>
@@ -46,11 +48,12 @@
             над главными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.IMasterEntity"/>.</typeparam>
+            <param name="db">Экземпляр контекста базы данных <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/>.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.GetNew">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.GetItemsCountAsync">
+        <member name="M:Ans.Net10.Common.Crud._CrudMasterRepository_Proto`1.GetItemsCountAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Common.Crud.ISlaveEntity">
@@ -91,11 +94,12 @@
             </param>
             <returns>Запрос <see cref="T:System.Linq.IQueryable`1"/> для извлечения подчиненных сущностей.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudSlaveRepository`1.GetItemsCountAsync(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud.ICrudSlaveRepository`1.GetItemsCountAsync(System.Int32,System.Threading.CancellationToken)">
             <summary>
             Асинхронно возвращает общее количество всех подчиненных сущностей, принадлежащих указанному владельцу.
             </summary>
             <param name="masterPtr">Идентификатор главной (владеющей) сущности.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Задача, результатом выполнения которой является количество записей, связанных с указанным владельцем.</returns>
         </member>
         <member name="T:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1">
@@ -104,6 +108,7 @@
             над подчиненными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.ISlaveEntity"/>.</typeparam>
+            <param name="db">Экземпляр контекста базы данных <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/>.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.#ctor(Microsoft.EntityFrameworkCore.DbContext)">
             <summary>
@@ -111,6 +116,7 @@
             над подчиненными сущностями с использованием Entity Framework Core.
             </summary>
             <typeparam name="T">Тип доменной сущности, реализующей <see cref="T:Ans.Net10.Common.Crud.ISlaveEntity"/>.</typeparam>
+            <param name="db">Экземпляр контекста базы данных <see cref="T:Microsoft.EntityFrameworkCore.DbContext"/>.</param>
         </member>
         <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.GetNew(System.Int32)">
             <inheritdoc />
@@ -118,7 +124,7 @@
         <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.GetItemsAsQueryable(System.Int32,System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.GetItemsCountAsync(System.Int32)">
+        <member name="M:Ans.Net10.Common.Crud._CrudSlaveRepository_Proto`1.GetItemsCountAsync(System.Int32,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Common.Crud.ICrudRepository`1">
@@ -161,11 +167,12 @@
             <param name="filter">Выражение-фильтр для поиска сущности.</param>
             <returns>Задача, результатом которой является первая найденная сущность типа <typeparamref name="T"/> или <see langword="null"/>, если совпадений не найдено.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItemsCountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.GetItemsCountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
             <summary>
             Асинхронно возвращает общее количество сущностей, удовлетворяющих заданному фильтру.
             </summary>
             <param name="filter">Выражение-фильтр для подсчета. Если равен <see langword="null"/>, подсчитываются все записи в наборе.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Задача, результатом которой является общее количество записей, соответствующих условию.</returns>
         </member>
         <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.Add(`0)">
@@ -200,27 +207,33 @@
             <param name="id">Идентификатор удаляемой сущности.</param>
             <returns>Задача, представляющая асинхронную операцию поиска перед удалением.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.AddManyrefs(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.AddManyrefsAsync(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Threading.CancellationToken)">
             <summary>
-            Синхронно добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+            Асинхронно добавляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
             </summary>
             <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
             <param name="keys">Коллекция идентификаторов связываемых объектов.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая асинхронную операцию добавления связей.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.RemoveManyrefs(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.RemoveManyrefsAsync(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Threading.CancellationToken)">
             <summary>
-            Синхронно удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
+            Асинхронно удаляет связи «многие ко многим» для указанного главного объекта и набора связанных ключей.
             </summary>
             <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
             <param name="keys">Коллекция идентификаторов отвязываемых объектов.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая асинхронную операцию удаления связей.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.ManyrefUpdate(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:Ans.Net10.Common.Crud.ICrudRepository`1.ManyrefUpdateAsync(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32},System.Threading.CancellationToken)">
             <summary>
-            Синхронно синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
+            Асинхронно синхронизирует связи «многие ко многим», вычисляя добавленные и удаленные ключи.
             </summary>
             <param name="masterPtr">Идентификатор главного (владеющего) объекта.</param>
             <param name="oldKeys">Старый (текущий) набор связанных ключей.</param>
             <param name="newKeys">Новый (целевой) набор связанных ключей.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая асинхронную операцию синхронизации связей.</returns>
         </member>
         <member name="T:Ans.Net10.Common.Crud.__CrudRepository_Base`1">
             <summary>
@@ -249,7 +262,7 @@
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemsCountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.GetItemsCountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.Add(`0)">
@@ -267,13 +280,13 @@
         <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.RemoveAsync(System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.AddManyrefs(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.AddManyrefsAsync(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.RemoveManyrefs(System.Int32,System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.RemoveManyrefsAsync(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.ManyrefUpdate(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32})">
+        <member name="M:Ans.Net10.Common.Crud.__CrudRepository_Base`1.ManyrefUpdateAsync(System.Int32,System.Collections.Generic.IEnumerable{System.Int32},System.Collections.Generic.IEnumerable{System.Int32},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Common.Crud.CrudEntityTypeEnum">
@@ -5833,6 +5846,9 @@
         <member name="M:Ans.Net10.Common.Exts_Assembly.get_Description(System.Reflection.Assembly)">
             <inheritdoc cref="P:Ans.Net10.Common.Exts_Assembly.&lt;G&gt;$9EA1809196CC07098857FF38CF65557B.Description"/>
         </member>
+        <member name="T:Ans.Net10.Common.Exts_Assembly.&lt;G&gt;$9EA1809196CC07098857FF38CF65557B.&lt;M&gt;$C6380348158B993EDE3250D7611A73A6">
+            <param name="instance">Экземпляр исследуемой сборки.</param>
+        </member>
         <member name="P:Ans.Net10.Common.Exts_Assembly.&lt;G&gt;$9EA1809196CC07098857FF38CF65557B.Name">
             <summary>
             Возвращает имя сборки.
@@ -6029,27 +6045,70 @@
         </member>
         <member name="M:Ans.Net10.Common.Exts_HttpClient.GetJsonGenResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            (Source Gen) Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
-            и десериализует JSON-ответ без использования рантайм-рефлексии. Безопасно обрабатывает сетевые сбои.
+            (Source Gen) Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
+            и десериализует JSON-ответ в объект типа <typeparamref name="T"/> без использования рантайм-рефлексии на основе сгенерированных метаданных. 
+            Безопасно обрабатывает сетевые сбои и ошибки парсинга.
             </summary>
             <typeparam name="T">Тип модели данных, в которую десериализуется ответ.</typeparam>
+            <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
+            <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+            <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+            <param name="jsonTypeInfo">Инфраструктурные метаданные типа со сценарием Source Generation, сгенерированные компилятором на этапе сборки.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи гибридного кэша.</param>
+            <param name="encoding">Кастомная кодировка текста. Если <see langword="null"/> — используется стандартный UTF-8.</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> перед отправкой.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, результатом которой является объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными данными из кэша или напрямую от API.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="requestUri"/>, <paramref name="cache"/> или <paramref name="jsonTypeInfo"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.Exts_HttpClient.GetXmlResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
-            Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
-            и десериализует XML-ответ в объект типа T. Безопасно перехватывает ошибки валидации схемы.
+            Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
+            и десериализует XML-ответ в объект типа <typeparamref name="T"/>. Безопасно перехватывает ошибки валидации схемы.
             </summary>
+            <typeparam name="T">Тип модели данных, в которую десериализуется XML-ответ.</typeparam>
+            <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
+            <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+            <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+            <param name="defaultNamespace">Опциональное пространство имен XML, применяемое при разборе схемы документа.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи гибридного кэша.</param>
+            <param name="encoding">Кастомная кодировка текста. Если <see langword="null"/> — используется кодировка, определенная XML-десериализатором автоматически.</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> перед отправкой.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, результатом которой является объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными XML-данными из кэша или напрямую от API.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.Exts_HttpClient.GetGridResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
             Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>, 
-            безопасно парсит построчные текстовые данные в формате GRID и проецирует их в материализованную коллекцию объектов.
+            безопасно и неблокирующе парсит построчные текстовые данные в формате GRID из HTTP-потока 
+            и проецирует их в материализованную коллекцию объектов.
             </summary>
+            <typeparam name="T">Тип результирующего объекта маппинга.</typeparam>
+            <param name="client">Экземпляр HTTP-клиента, выполняющий запрос.</param>
+            <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+            <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+            <param name="selector">Функция-предикат (лямбда) для маппинга полей строки в объект типа T.</param>
+            <param name="provider">Опциональный провайдер культуры для парсинга полей внутри строки.</param>
+            <param name="encoding">Опциональная кодировка текста. Если равен <see langword="null"/> — используется UTF-8 без BOM.</param>
+            <param name="cacheOptions">Опциональные параметры времени жизни и ограничений записи гибридного кэша.</param>
+            <param name="configureRequest">Опциональный делегат для кастомизации объекта <see cref="T:System.Net.Http.HttpRequestMessage"/> перед отправкой.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с материализованной коллекцией данных из кэша или напрямую от API.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="client"/>, <paramref name="requestUri"/>, <paramref name="cache"/> или <paramref name="selector"/> равны <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.Exts_HttpClient.InvalidateHttpCacheAsync(System.Net.Http.HttpClient,System.String,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Threading.CancellationToken)">
             <summary>
-            Принудительно асинхронно удаляет (инвалидирует) ранее сохраненную запись HTTP-ответа из гибридного кэша по заданному формату и URI ресурса.
+            Принудительно асинхронно удаляет (инвалидирует) ранее сохраненную запись HTTP-ответа из L1/L2 уровней гибридного кэша 
+            по вычисленному составному ключу на основе формата и URI ресурса.
             </summary>
+            <param name="client">Экземпляр HTTP-клиента, чей базовый адрес используется для формирования ключа кэша.</param>
+            <param name="format">Строковый идентификатор формата кэшируемых данных (например, "json", "xml", "grid").</param>
+            <param name="requestUri">Относительный или абсолютный URI целевого ресурса.</param>
+            <param name="cache">Служба гибридного кэширования платформы .NET 10.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Структура <see cref="T:System.Threading.Tasks.ValueTask"/>, представляющая асинхронную операцию удаления записи из кэша.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="format"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="T:Ans.Net10.Common.Exts_IPAddress">
             <summary>
@@ -8130,17 +8189,21 @@
             Вспомогательный класс для высокопроизводительной работы с данными в формате CSV.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Common.SuppCsv.GetCsvBytesFromObject``1(System.Collections.Generic.IEnumerable{``0})">
+        <member name="M:Ans.Net10.Common.SuppCsv.WriteCsvToStreamAsync``1(System.IO.Stream,System.Collections.Generic.IEnumerable{``0},System.Threading.CancellationToken)">
             <summary>
-            Сериализует коллекцию объектов в массив байт CSV (в кодировке UTF-8 без BOM).
+            Асинхронно и в неблокирующем режиме сериализует коллекцию объектов и записывает её напрямую в целевой поток 
+            в кодировке UTF-8 без BOM, предотвращая избыточные аллокации памяти.
             </summary>
             <remarks>
-            Использование UTF-8 без BOM является лучшей практикой для интеграции с веб-интерфейсами и внешними API.
-            Если переданная коллекция <paramref name="items"/> пуста, метод вернет массив байт, содержащий только строку заголовков свойств типа <typeparamref name="T"/>.
+            Этот метод идеален для веб-приложений, так как позволяет осуществлять потоковую передачу данных (streaming) 
+            напрямую в тело HTTP-ответа без необходимости буферизации всего документа в оперативной памяти сервера.
             </remarks>
             <typeparam name="T">Тип сериализуемых доменных объектов или моделей данных.</typeparam>
+            <param name="targetStream">Целевой выходной поток (например, поток файла или поток HTTP-ответа), в который ведется запись.</param>
             <param name="items">Коллекция элементов для выгрузки в CSV-документ.</param>
-            <returns>Массив байт, представляющий готовый документ в формате CSV.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая асинхронную операцию потоковой записи CSV.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="targetStream"/> или <paramref name="items"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="T:Ans.Net10.Common.SuppCulture">
             <summary>
@@ -8421,16 +8484,17 @@
             Вспомогательный класс для высокопроизводительного потокового чтения данных в формате GRID.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Common.SuppGrid.GetItems``1(System.IO.TextReader,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider)">
+        <member name="M:Ans.Net10.Common.SuppGrid.GetItemsAsync``1(System.IO.TextReader,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Threading.CancellationToken)">
             <summary>
-            Выполняет ленивое потоковое чтение GRID-данных из текстового потока <see cref="T:System.IO.TextReader"/>, 
+            Выполняет асинхронное ленивое потоковое чтение GRID-данных из текстового потока <see cref="T:System.IO.TextReader"/>, 
             автоматически фильтруя комментарии (//, --, ==) и проецируя строки в целевые объекты.
             </summary>
             <typeparam name="T">Тип результирующего объекта маппинга.</typeparam>
             <param name="reader">Входящий поток текстовых данных.</param>
             <param name="selector">Функция-предикат (лямбда) для маппинга полей строки в объект типа T.</param>
             <param name="provider">Опциональный провайдер культуры для парсинга полей внутри строки. Если равен <see langword="null"/>, используется инвариантная культура.</param>
-            <returns>Ленивый поток материализованных объектов типа T.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Асинхронный ленивый поток материализованных объектов типа T.</returns>
             <exception cref="T:System.ArgumentNullException">Выбрасывается, если параметр <paramref name="reader"/> или <paramref name="selector"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppGrid.GetItemsFromString``1(System.String,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider)">
@@ -8443,29 +8507,32 @@
             <param name="provider">Опциональный провайдер культуры для парсинга полей внутри строки. Если равен <see langword="null"/>, используется инвариантная культура.</param>
             <returns>Ленивый поток материализованных объектов типа T.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppGrid.GetItemsFromStream``1(System.IO.Stream,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding)">
+        <member name="M:Ans.Net10.Common.SuppGrid.GetItemsFromStreamAsync``1(System.IO.Stream,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,System.Threading.CancellationToken)">
             <summary>
-            Выполняет ленивое чтение GRID-данных из входящего бинарного потока <see cref="T:System.IO.Stream"/>.
+            Выполняет асинхронное ленивое чтение GRID-данных из входящего бинарного потока <see cref="T:System.IO.Stream"/>.
             </summary>
             <typeparam name="T">Тип результирующего объекта маппинга.</typeparam>
             <param name="stream">Входящий бинарный поток данных.</param>
             <param name="selector">Функция-предикат для маппинга полей строки в объект типа T.</param>
             <param name="provider">Опциональный провайдер культуры для парсинга полей внутри строки. Если равен <see langword="null"/>, используется инвариантная культура.</param>
             <param name="encoding">Опциональная кодировка текста. Если равен <see langword="null"/> — используется UTF-8 без BOM.</param>
-            <returns>Ленивый поток материализованных объектов типа T.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Асинхронный ленивый поток материализованных объектов типа T.</returns>
             <exception cref="T:System.ArgumentNullException">Выбрасывается, если параметр <paramref name="stream"/> равен <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.SuppGrid.GetItemsFromFile``1(System.String,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding)">
+        <member name="M:Ans.Net10.Common.SuppGrid.GetItemsFromFileAsync``1(System.String,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,System.Threading.CancellationToken)">
             <summary>
-            Выполняет высокоэффективное ленивое чтение GRID-данных напрямую из файла на диске.
+            Выполняет асинхронное и высокоэффективное построчное чтение GRID-данных напрямую из файла на диске.
             </summary>
             <typeparam name="T">Тип результирующего объекта маппинга.</typeparam>
             <param name="path">Полный путь к файлу в формате GRID.</param>
             <param name="selector">Функция-предикат для маппинга полей строки в объект типа T.</param>
             <param name="provider">Опциональный провайдер культуры для парсинга полей внутри строки. Если равен <see langword="null"/>, используется инвариантная культура.</param>
             <param name="encoding">Опциональная кодировка текста файла. Если равен <see langword="null"/> — используется UTF-8 без BOM.</param>
-            <returns>Ленивый поток материализованных объектов типа T.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Асинхронный ленивый поток материализованных объектов типа T.</returns>
             <exception cref="T:System.ArgumentException">Выбрасывается, если путь к файлу <paramref name="path"/> пуст или равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentNullException">Выбрасывается, если параметр <paramref name="selector"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppGrid.GetItemsFromFileAsync``1(System.String,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding)">
             <summary>
@@ -8479,11 +8546,6 @@
             <returns>Асинхронный ленивый поток материализованных объектов типа T.</returns>
             <exception cref="T:System.ArgumentException">Выбрасывается, если путь к файлу <paramref name="path"/> пуст или равен <see langword="null"/>.</exception>
             <exception cref="T:System.ArgumentNullException">Выбрасывается, если параметр <paramref name="selector"/> равен <see langword="null"/>.</exception>
-        </member>
-        <member name="M:Ans.Net10.Common.SuppGrid._getRowParser(System.String,System.IFormatProvider)">
-            <summary>
-            Инкапсулирует логику валидации строки, фильтрации комментариев и создания парсера строки.
-            </summary>
         </member>
         <member name="T:Ans.Net10.Common.EncodingsEnum">
             <summary>
@@ -8739,21 +8801,27 @@
             <param name="filename">Проверяемое имя файла.</param>
             <returns><see langword="true"/>, если имя содержит запрещенные символы; в противном случае — <see langword="false"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.IsFilesEqualFull(System.IO.FileInfo,System.IO.FileInfo)">
+        <member name="M:Ans.Net10.Common.SuppIO.IsFilesEqualFullAsync(System.IO.FileInfo,System.IO.FileInfo,System.Threading.CancellationToken)">
             <summary>
-            Выполняет полное глубокое побайтовое сравнение содержимого двух файлов на диске. Различия в путях или именах файлов игнорируются.
+            Выполняет полное глубокое побайтовое сравнение содержимого двух файлов на диске в асинхронном неблокирующем режиме. 
+            Различия в путях или именах файлов игнорируются.
             </summary>
             <param name="file1">Первый сравниваемый файл.</param>
             <param name="file2">Второй сравниваемый файл.</param>
-            <returns><see langword="true"/>, если содержимое файлов абсолютно побайтово совпадает; иначе — <see langword="false"/>.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, результатом которой является <see langword="true"/>, если содержимое файлов абсолютно побайтово совпадает; в противном случае — <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из параметров равен <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.SuppIO.IsFilesEqualLazy(System.IO.FileInfo,System.IO.FileInfo)">
+        <member name="M:Ans.Net10.Common.SuppIO.IsFilesEqualLazyAsync(System.IO.FileInfo,System.IO.FileInfo,System.Threading.CancellationToken)">
             <summary>
-            Выполняет быстрое «ленивое» сравнение двух файлов по их метаданным (размеру и дате изменения). Если они совпадают, возвращает true; иначе перепроверяет побайтово через <see cref="M:Ans.Net10.Common.SuppIO.IsFilesEqualFull(System.IO.FileInfo,System.IO.FileInfo)"/>.
+            Выполняет быстрое «ленивое» асинхронное сравнение двух файлов по их метаданным (размеру и дате изменения). 
+            Если они совпадают, возвращает <see langword="true"/>; иначе перепроверяет побайтово через <see cref="M:Ans.Net10.Common.SuppIO.IsFilesEqualFullAsync(System.IO.FileInfo,System.IO.FileInfo,System.Threading.CancellationToken)"/>.
             </summary>
             <param name="file1">Первый сравниваемый файл.</param>
             <param name="file2">Второй сравниваемый файл.</param>
-            <returns><see langword="true"/>, если файлы идентичны; иначе — <see langword="false"/>.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, результатом которой является <see langword="true"/>, если файлы идентичны по метаданным или содержимому; в противном случае — <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из параметров равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppIO.CreateDirectoryIfNotExists(System.String)">
             <summary>
@@ -8858,13 +8926,14 @@
             <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
             <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonStreamAsync``1(System.IO.Stream,System.Text.Json.JsonSerializerOptions)">
+        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonStreamAsync``1(System.IO.Stream,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)">
             <summary>
             Асинхронно десериализует объект из входящего потока данных JSON.
             </summary>
             <typeparam name="T">Тип результирующего целевого объекта.</typeparam>
             <param name="stream">Входящий асинхронный поток данных.</param>
             <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Структура <see cref="T:System.Threading.Tasks.ValueTask`1"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonFile``1(System.String,System.Text.Json.JsonSerializerOptions)">
@@ -8876,14 +8945,16 @@
             <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
             <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonFileAsync``1(System.String,System.Text.Json.JsonSerializerOptions)">
+        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonFileAsync``1(System.String,System.Text.Json.JsonSerializerOptions,System.Threading.CancellationToken)">
             <summary>
             Асинхронно десериализует объект напрямую из физического JSON-файла с диска в неблокирующем режиме.
             </summary>
             <typeparam name="T">Тип результирующего целевого объекта.</typeparam>
             <param name="filename">Полный или относительный путь к файлу JSON на диске.</param>
             <param name="options">Кастомные параметры сериализации. Если не заданы, применяются настройки по умолчанию.</param>
-            <returns>Поток-задача <see cref="T:System.Threading.Tasks.Task`1"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача-структура <see cref="T:System.Threading.Tasks.ValueTask`1"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppJson.GetJsonStringFromObject(System.Object,System.Text.Json.JsonSerializerOptions)">
             <summary>
@@ -8928,23 +8999,26 @@
             <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
             <returns>Десериализованный объект типа <typeparamref name="T"/> или <see langword="null"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonStreamGenAsync``1(System.IO.Stream,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0})">
+        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonStreamGenAsync``1(System.IO.Stream,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},System.Threading.CancellationToken)">
             <summary>
             (Source Gen) Асинхронно десериализует объект из потока данных JSON без использования рантайм-рефлексии.
             </summary>
             <typeparam name="T">Тип десериализуемого объекта.</typeparam>
             <param name="stream">Входящий асинхронный поток данных.</param>
             <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Структура-задача <see cref="T:System.Threading.Tasks.ValueTask`1"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonFileGenAsync``1(System.String,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0})">
+        <member name="M:Ans.Net10.Common.SuppJson.GetObjectFromJsonFileGenAsync``1(System.String,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},System.Threading.CancellationToken)">
             <summary>
             (Source Gen) Асинхронно десериализует объект напрямую из файла JSON на диске без использования рантайм-рефлексии.
             </summary>
             <typeparam name="T">Тип десериализуемого объекта.</typeparam>
             <param name="filename">Полный или относительный путь к файлу на диске.</param>
             <param name="jsonTypeInfo">Метаданные типа со сценарием Source Generation, сгенерированные компилятором.</param>
-            <returns>Поток-задача <see cref="T:System.Threading.Tasks.Task`1"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача-структура <see cref="T:System.Threading.Tasks.ValueTask`1"/>, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppJson.GetJsonStringFromObjectGen``1(``0,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0})">
             <summary>
@@ -9944,7 +10018,7 @@
         </member>
         <member name="M:Ans.Net10.Common.SuppXml.GetHardObjectFromXmlFileAsync``1(System.String,System.Text.Encoding,System.String)">
             <summary>
-            Асинхронно десериализует большой XML-файл в объект, используя прямую потоковую обработку в выделенном фоновом потоке.
+            Асинхронно десериализует большой XML-файл в объект, используя потоковую неблокирующую обработку файлового дескриптора.
             </summary>
             <remarks>
             Метод рекомендуется использовать для файлов крупного размера (более 10–20 МБ) во избежание 
@@ -9955,7 +10029,7 @@
             <param name="encoding">Кодировка текстового файла. Если передано значение <see langword="null"/>, кодировка определяется автоматически.</param>
             <param name="defaultNamespace">Пространство имен XML по умолчанию.</param>
             <returns>Поток-задача, содержащая десериализованный объект типа <typeparamref name="T"/>.</returns>
-            <exception cref="T:System.ArgumentNullException">Выбрасывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
+            <exception cref="T:System.ArgumentException">Выбрасывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
             <exception cref="T:System.IO.FileNotFoundException">Вызывается, если файл отсутствует по указанному пути на диске.</exception>
         </member>
         <member name="M:Ans.Net10.Common.SuppXml.SaveSoftObjectToXmlFileAsync``1(``0,System.String,System.Text.Encoding,System.Xml.Serialization.XmlSerializerNamespaces,System.Boolean)">
@@ -9976,7 +10050,7 @@
         </member>
         <member name="M:Ans.Net10.Common.SuppXml.SaveHardObjectToXmlFileAsync``1(``0,System.String,System.Text.Encoding,System.Xml.Serialization.XmlSerializerNamespaces,System.Boolean)">
             <summary>
-            Асинхронно сериализует объект в большой XML-файл, используя потоковую запись напрямую на диск в фоновом потоке.
+            Асинхронно сериализует объект в большой XML-файл, используя прямую потоковую запись на устройство ввода-вывода.
             </summary>
             <remarks>
             Рекомендуется применять для тяжелых объектов сложной структуры во избежание 
@@ -9989,6 +10063,7 @@
             <param name="namespaces">Пользовательские пространства имен XML. Если не заданы, пространства имен опускаются.</param>
             <param name="useFormatted">Признак применения структурного форматирования XML-текста.</param>
             <returns>Объект-задача <see cref="T:System.Threading.Tasks.Task"/>, представляющий асинхронную операцию записи.</returns>
+            <exception cref="T:System.ArgumentException">Выбрасывается, если путь к файлу пуст или равен <see langword="null"/>.</exception>
         </member>
         <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_NAME_0">
             <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the G_REGEX_NAME method.</summary>
