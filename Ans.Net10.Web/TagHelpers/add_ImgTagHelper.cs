@@ -12,7 +12,7 @@ namespace Ans.Net10.Web.TagHelpers
 	/// на основе различных уровней изоляции ресурсов (Site, Node, Page).
 	/// </summary>
 	/// <remarks>
-	/// Инициализирует новый экземпляр класса <see cref="Any_ImgTagHelper"/> с внедрением контекста.
+	/// Инициализирует новый экземпляр класса <see cref="add_ImgTagHelper"/> с внедрением контекста.
 	/// </remarks>
 	/// <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
 	/// <example>
@@ -21,7 +21,7 @@ namespace Ans.Net10.Web.TagHelpers
 	/// &lt;img src-page-res="img1.jpg"/&gt;
 	/// </example>
 	[HtmlTargetElement("img", Attributes = _ATTRS)]
-	public partial class Any_ImgTagHelper(
+	public partial class add_ImgTagHelper(
 		CurrentContext current)
 		: _AnsTagHelper_Base(current)
 	{

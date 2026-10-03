@@ -246,13 +246,6 @@ namespace Ans.Net10.Common
 		public static partial Regex G_REGEX_ONLY_NUMBER();
 
 		/// <summary>
-		/// Возвращает скомпилированное регулярное выражение для поиска любых нецифровых символов.
-		/// </summary>
-		/// <returns>Экземпляр <see cref="Regex"/> для сопоставления со всеми символами, кроме цифр.</returns>
-		[GeneratedRegex(@"\D")]
-		public static partial Regex G_REGEX_NOT_NUMBER();
-
-		/// <summary>
 		/// Возвращает скомпилированное регулярное выражение для поиска последовательностей из двух и более пробельных символов.
 		/// </summary>
 		/// <returns>Экземпляр <see cref="Regex"/> для сопоставления со множественными пробелами.</returns>

@@ -14,7 +14,7 @@ namespace Ans.Net10.Web.TagHelpers
 	/// Инициализирует новый экземпляр класса <see cref="InfoVersionTagHelper"/> с внедрением контекста.
 	/// </remarks>
 	/// <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
-	[HtmlTargetElement("info-version")]
+	[HtmlTargetElement("info-version", TagStructure = TagStructure.WithoutEndTag)]
 	public class InfoVersionTagHelper(
 		CurrentContext current)
 		: _AnsTagHelper_Base(current)

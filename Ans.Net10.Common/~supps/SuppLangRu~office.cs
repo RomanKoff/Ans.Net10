@@ -109,54 +109,6 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Заменяет ведущую междугороднюю восьмерку в начале номера телефона на международный префикс семерки (8999... переводит в 7999...).
-		/// </summary>
-		/// <param name="phone">Исходная строка номера телефона для нормализации.</param>
-		/// <returns>Строка номера с замененным начальным кодом страны или исходная строка, если замена не требуется.</returns>
-		public static string FixTelephoneRuCityCode(
-			string phone)
-		{
-			if (string.IsNullOrEmpty(phone))
-				return string.Empty;
-			return phone[0] == '8'
-				? $"7{phone.AsSpan(1)}" : phone;
-		}
-
-
-		/// <summary>
-		/// Форматирует чистую последовательность цифр в удобочитаемый телефонный номер с дефисами. 
-		/// Поддерживает длины от 5 до 11 символов. Префикс "+" добавляется автоматически только для полных 11-значных номеров.
-		/// </summary>
-		/// <param name="number">Строка, содержащая исключительно цифры номера телефона.</param>
-		/// <returns>Форматированная строка телефонного номера (например, <c>"+7-999-123-45-67"</c> или <c>"322-45-67"</c>).</returns>
-		public static string GetTelephoneNumber(
-			string number)
-		{
-			if (string.IsNullOrEmpty(number))
-				return string.Empty;
-			int len1 = number.Length;
-			if (len1 > 11 || len1 < 5)
-				return number;
-			int stop1 = len1 - 2;
-			int stop2 = len1 - 4;
-			int stop3 = len1 - 7;
-			int stop4 = len1 - 10;
-			Span<char> buffer1 = stackalloc char[16];
-			int p1 = 0;
-			if (len1 == 11 && number[0] != '+')
-				buffer1[p1++] = '+';
-			buffer1[p1++] = number[0];
-			for (int i1 = 1; i1 < len1; i1++)
-			{
-				if (i1 == stop1 || i1 == stop2 || i1 == stop3 || i1 == stop4)
-					buffer1[p1++] = '-';
-				buffer1[p1++] = number[i1];
-			}
-			return new string(buffer1[..p1]);
-		}
-
-
-		/// <summary>
 		/// Санитаризует и очищает номер документа, заменяя все нецифровые символы дефисами с последующим рекурсивным схлопыванием дубликатов и очисткой краев.
 		/// </summary>
 		/// <param name="number">Исходный номер документа, содержащий пробелы, спецсимволы или буквы.</param>

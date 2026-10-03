@@ -13,7 +13,7 @@ namespace Ans.Net10.Web.TagHelpers
 	/// Полезен на этапе разработки и тестирования верстки для контроля поведения
 	/// элементов интерфейса на экранах различных разрешений (от XS до XXL).
 	/// </remarks>
-	[HtmlTargetElement("info-display")]
+	[HtmlTargetElement("info-display", TagStructure = TagStructure.WithoutEndTag)]
 	public class InfoDisplayTagHelper
 		: TagHelper
 	{

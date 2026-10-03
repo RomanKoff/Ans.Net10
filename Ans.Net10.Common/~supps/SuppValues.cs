@@ -1,6 +1,8 @@
 ﻿// rev 2026-09-26
 
+using System.Buffers;
 using System.Numerics;
+using System.Text;
 
 namespace Ans.Net10.Common
 {
@@ -35,6 +37,12 @@ namespace Ans.Net10.Common
 	/// </summary>
 	public static class SuppValues
 	{
+
+		private static readonly SearchValues<char> _digitsValues = SearchValues.Create("0123456789");
+
+
+		/* functions */
+
 
 		/// <summary>
 		/// Возвращает исходную строку, если она не пустая; в противном случае возвращает первое непустом значение из списка альтернатив.
@@ -224,16 +232,123 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Извлекает из входящей строки исключительно цифровые символы, полностью удаляя любые буквы, пробелы и знаки препинания.
+		/// Выполняет высокопроизводительное извлечение исключительно цифровых символов из строки.
 		/// </summary>
-		/// <param name="number">Входящая алфавитно-цифровая строка.</param>
-		/// <returns>Строка, состоящая только из последовательности цифр, либо <see cref="string.Empty"/>.</returns>
-		public static string GetDigitalOnly(
-			string number)
+		/// <param name="number">Исходная строка для очистки.</param>
+		/// <returns>Строка, содержащая только цифры. Если входная строка пуста, возвращается пустая строка.</returns>
+		public static string GetDigitsOnly(
+			string? number)
 		{
 			if (string.IsNullOrEmpty(number))
 				return string.Empty;
-			return SuppRegex.G_REGEX_NOT_NUMBER().Replace(number, "");
+			var span1 = number.AsSpan();
+			int firstMatch1 = span1.IndexOfAny(_digitsValues);
+			if (firstMatch1 < 0)
+				return string.Empty;
+			int lastMatch1 = span1.LastIndexOfAny(_digitsValues);
+			if (firstMatch1 == 0
+				&& lastMatch1 == span1.Length - 1
+				&& _digitsCount(span1) == span1.Length)
+				return number;
+			var sb1 = new StringBuilder(span1.Length);
+			for (int i1 = 0; i1 < span1.Length; i1++)
+				if (_digitsValues.Contains(span1[i1]))
+					sb1.Append(span1[i1]);
+			return sb1.ToString();
+		}
+
+
+		/// <summary>
+		/// Выполняет интеллектуальный разбор, нормализацию и форматирование сырой записи телефонного номера 
+		/// с учетом добавочных кодов и строго валидированного цифрового регионального кода по умолчанию.
+		/// </summary>
+		/// <param name="rawPhone">Сырая текстовая запись телефонного номера (допускает наличие пробелов, дефисов, скобок и null).</param>
+		/// <param name="regionCode">Строго цифровой код региона по умолчанию (например, "7812"). Не должен содержать префиксов или мусорных символов.</param>
+		/// <returns>
+		/// Именованный кортеж, содержащий:
+		/// <list type="bullet">
+		/// <item><description><c>Formatted</c> — отформатированная строка для красивого визуального отображения.</description></item>
+		/// <item><description><c>Url</c> — очищенная строка для использования в HTML-ссылках <c>href="tel:..."</c>, либо <see langword="null"/>, если ссылка не требуется.</description></item>
+		/// </list>
+		/// </returns>
+		public static (string Formatted, string? Url) ParsePhoneNumber(
+			string? rawPhone,
+			string regionCode)
+		{
+			if (string.IsNullOrWhiteSpace(rawPhone))
+				return (string.Empty, null);
+			string mainPart1 = rawPhone;
+			string extensionPart1 = string.Empty;
+			int hashIndex1 = rawPhone.IndexOf('#');
+			if (hashIndex1 >= 0)
+			{
+				mainPart1 = rawPhone[..hashIndex1];
+				extensionPart1 = GetDigitsOnly(rawPhone[hashIndex1..]);
+			}
+			bool hasLeadingPlus1 = mainPart1.TrimStart().StartsWith('+');
+			string digits1 = GetDigitsOnly(mainPart1);
+			if (!hasLeadingPlus1 && digits1.StartsWith('8') && digits1.Length == 11)
+				digits1 = "7" + digits1[1..];
+			if (digits1.Length > 11)
+				return (string.Empty, null);
+			if (digits1.Length < 7)
+			{
+				string formattedShort1 = string.Format(
+					Resources.Common.Template_PhoneInternal, digits1);
+				return (formattedShort1, null);
+			}
+			if (digits1.Length == 7)
+				digits1 = regionCode + digits1;
+			else if (digits1.Length == 10)
+				digits1 = '7' + digits1;
+			var formattedBuilder1 = FormatPhoneNumber(digits1);
+			var urlBuilder1 = $"+{digits1}";
+			if (string.IsNullOrEmpty(extensionPart1))
+				return (formattedBuilder1, urlBuilder1);
+			return (
+				string.Format(
+					Resources.Common.Template_PhonePostfix,
+					formattedBuilder1,
+					extensionPart1),
+				$"{urlBuilder1}pp{extensionPart1}");
+		}
+
+
+		/// <summary>
+		/// Преобразует строку из 11 чистых цифр номера телефона в канонический международный формат отображения.
+		/// </summary>
+		/// <param name="digits11">Строка, содержащая ровно 11 цифровых символов (например, "78121234567").</param>
+		/// <returns>Отформатированная строка телефонного номера вида <c>+X-XXX-XXX-XX-XX</c> (например, "+7-812-123-45-67").</returns>
+		/// <exception cref="ArgumentException">
+		/// Вызывается, если длина переданной строки <paramref name="digits11"/> не равна 11 символам.
+		/// </exception>
+		/// <exception cref="ArgumentNullException">
+		/// Вызывается, если параметр <paramref name="digits11"/> равен <see langword="null"/>.
+		/// </exception>		
+		public static string FormatPhoneNumber(
+			string digits11)
+		{
+			ArgumentNullException.ThrowIfNull(digits11);
+			if (digits11.Length != 11)
+			{
+				throw new ArgumentException(
+					"[Ans.Net10.Common] Номер телефона для форматирования должен состоять строго из 11 цифр.",
+					nameof(digits11));
+			}
+			return string.Create(16, digits11, (span1, state1) =>
+			{
+				var src1 = state1.AsSpan();
+				span1[0] = '+';
+				span1[1] = src1[0];
+				span1[2] = '-';
+				src1[1..4].CopyTo(span1[3..6]);
+				span1[6] = '-';
+				src1[4..7].CopyTo(span1[7..10]);
+				span1[10] = '-';
+				src1[7..9].CopyTo(span1[11..13]);
+				span1[13] = '-';
+				src1[9..11].CopyTo(span1[14..16]);
+			});
 		}
 
 
@@ -260,6 +375,20 @@ namespace Ans.Net10.Common
 			long rub1 = (long)amount;
 			long kop1 = Math.Abs((long)Math.Round(amount * 100)) % 100;
 			return string.Format("{0}={1:00}", rub1, kop1);
+		}
+
+
+		/* privates */
+
+
+		private static int _digitsCount(
+			ReadOnlySpan<char> span)
+		{
+			int count1 = 0;
+			foreach (char ch1 in span)
+				if (_digitsValues.Contains(ch1))
+					count1++;
+			return count1;
 		}
 
 	}

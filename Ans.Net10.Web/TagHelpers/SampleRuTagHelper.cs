@@ -9,7 +9,7 @@ namespace Ans.Net10.Web.TagHelpers
 	/// Асинхронный Tag Helper для условного HTML-элемента <c>&lt;sample-ru&gt;</c>,
 	/// предназначенный для генерации оттипографленного демонстрационного «рыба-текста» средней длины на русском языке.
 	/// </summary>
-	[HtmlTargetElement("sample-ru")]
+	[HtmlTargetElement("sample-ru", TagStructure = TagStructure.WithoutEndTag)]
 	public class SampleRuTagHelper
 		: TagHelper
 	{

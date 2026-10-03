@@ -138,8 +138,4 @@
   <data name="Html_ViewTrue" xml:space="preserve">
     <value>Да</value>
   </data>
-  <data name="Template_PhoneAddon" xml:space="preserve">
-    <value>{0}, доб. {1}</value>
-    <comment>{0}, add {1}</comment>
-  </data>
 </root>

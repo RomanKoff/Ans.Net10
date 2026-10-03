@@ -11,7 +11,7 @@ namespace Ans.Net10.Web.TagHelpers
 	/// Асинхронный Tag Helper для элемента <c>&lt;input-hidden&gt;</c>, обеспечивающий автоматическую
 	/// генерацию скрытого поля ввода на основе переданного выражения модели (Model Expression).
 	/// </summary>
-	[HtmlTargetElement("input-hidden", Attributes = _ATTR_FOR)]
+	[HtmlTargetElement("input-hidden", Attributes = _ATTR_FOR, TagStructure = TagStructure.WithoutEndTag)]
 	public class InputHiddenTagHelper
 		: _TagHelper_Base
 	{

@@ -33,7 +33,7 @@ namespace Ans.Net10.Web
 				throw GetExceptionParamRequired("Region");
 			if (string.IsNullOrEmpty(Region.Culture))
 				throw GetExceptionParamRequired("Region.Culture");
-			if (string.IsNullOrEmpty(Region.TelCode))
+			if (string.IsNullOrEmpty(Region.RegionPhoneCode))
 				throw GetExceptionParamRequired("Region.TelCode");
 		}
 
@@ -134,7 +134,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает или задает телефонный код региона по умолчанию.
 		/// </summary>
-		public string TelCode { get; set; } = "+7-812";
+		public string RegionPhoneCode { get; set; } = "7812";
 
 	}
 

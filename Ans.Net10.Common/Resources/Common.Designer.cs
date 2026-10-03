@@ -259,6 +259,24 @@ namespace Ans.Net10.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to внутр. {0}.
+        /// </summary>
+        public static string Template_PhoneInternal {
+            get {
+                return ResourceManager.GetString("Template_PhoneInternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, доб. {1}.
+        /// </summary>
+        public static string Template_PhonePostfix {
+            get {
+                return ResourceManager.GetString("Template_PhonePostfix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to –все–.
         /// </summary>
         public static string Text_AllItems {

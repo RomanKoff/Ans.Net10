@@ -19,7 +19,7 @@ namespace Ans.Net10.Web.TagHelpers
 	[HtmlTargetElement("div", Attributes = _ATTRS)]
 	[HtmlTargetElement("span", Attributes = _ATTRS)]
 	[HtmlTargetElement("img", Attributes = _ATTRS)]
-	public partial class Any__StylerTagHelper
+	public partial class add__StylerTagHelper
 		: TagHelper
 	{
 

@@ -12,7 +12,8 @@ namespace Ans.Net10.Web.TagHelpers
 	/// в стиле CSS-фреймворка Bootstrap 5 на основе объектной модели <see cref="PaginationModel"/>.
 	/// </summary>
 	/// <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
-	[HtmlTargetElement("ans-pagination", Attributes = _ATTRS)]
+	[HtmlTargetElement("ans-pagination", Attributes = _ATTR_MODEL)]
+	[HtmlTargetElement("ans-pagination", Attributes = _ATTR_URL_TEMPLATE)]
 	public class AnsPaginationTagHelper(
 		CurrentContext current)
 		: _AnsTagHelper_Base(current)
@@ -20,7 +21,6 @@ namespace Ans.Net10.Web.TagHelpers
 
 		private const string _ATTR_MODEL = "model";
 		private const string _ATTR_URL_TEMPLATE = "url-template";
-		private const string _ATTRS = $"{_ATTR_MODEL}, {_ATTR_URL_TEMPLATE}";
 
 
 		/* attributes */

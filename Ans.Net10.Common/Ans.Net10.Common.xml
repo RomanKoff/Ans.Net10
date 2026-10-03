@@ -679,6 +679,16 @@
               Looks up a localized string similar to Вышестоящий {0} (в структуре).
             </summary>
         </member>
+        <member name="P:Ans.Net10.Common.Resources.Common.Template_PhoneInternal">
+            <summary>
+              Looks up a localized string similar to внутр. {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Common.Resources.Common.Template_PhonePostfix">
+            <summary>
+              Looks up a localized string similar to {0}, доб. {1}.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Common.Resources.Common.Text_AllItems">
             <summary>
               Looks up a localized string similar to –все–.
@@ -8782,21 +8792,6 @@
             <param name="initials">Строка инициалов.</param>
             <returns>Безопасный латинский идентификатор в нижнем регистре (например, <c>"efendiev_ei"</c>).</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppLangRu.FixTelephoneRuCityCode(System.String)">
-            <summary>
-            Заменяет ведущую междугороднюю восьмерку в начале номера телефона на международный префикс семерки (8999... переводит в 7999...).
-            </summary>
-            <param name="phone">Исходная строка номера телефона для нормализации.</param>
-            <returns>Строка номера с замененным начальным кодом страны или исходная строка, если замена не требуется.</returns>
-        </member>
-        <member name="M:Ans.Net10.Common.SuppLangRu.GetTelephoneNumber(System.String)">
-            <summary>
-            Форматирует чистую последовательность цифр в удобочитаемый телефонный номер с дефисами. 
-            Поддерживает длины от 5 до 11 символов. Префикс "+" добавляется автоматически только для полных 11-значных номеров.
-            </summary>
-            <param name="number">Строка, содержащая исключительно цифры номера телефона.</param>
-            <returns>Форматированная строка телефонного номера (например, <c>"+7-999-123-45-67"</c> или <c>"322-45-67"</c>).</returns>
-        </member>
         <member name="M:Ans.Net10.Common.SuppLangRu.GetDocNumber(System.String)">
             <summary>
             Санитаризует и очищает номер документа, заменяя все нецифровые символы дефисами с последующим рекурсивным схлопыванием дубликатов и очисткой краев.
@@ -9519,16 +9514,6 @@
             </code>
             </remarks>
         </member>
-        <member name="M:Ans.Net10.Common.SuppRegex.G_REGEX_NOT_NUMBER">
-            <remarks>
-            Pattern:<br/>
-            <code>\\D</code><br/>
-            Explanation:<br/>
-            <code>
-            ○ Match any character other than a Unicode digit.<br/>
-            </code>
-            </remarks>
-        </member>
         <member name="M:Ans.Net10.Common.SuppRegex.G_REGEX_MULTISPACE">
             <remarks>
             Pattern:<br/>
@@ -9904,12 +9889,40 @@
             <param name="value">Объект для веб-сериализации.</param>
             <returns>Строковое нормализованное веб-представление объекта, либо <see cref="F:System.String.Empty"/>, если объект равен <see langword="null"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.SuppValues.GetDigitalOnly(System.String)">
+        <member name="M:Ans.Net10.Common.SuppValues.GetDigitsOnly(System.String)">
             <summary>
-            Извлекает из входящей строки исключительно цифровые символы, полностью удаляя любые буквы, пробелы и знаки препинания.
+            Выполняет высокопроизводительное извлечение исключительно цифровых символов из строки.
             </summary>
-            <param name="number">Входящая алфавитно-цифровая строка.</param>
-            <returns>Строка, состоящая только из последовательности цифр, либо <see cref="F:System.String.Empty"/>.</returns>
+            <param name="number">Исходная строка для очистки.</param>
+            <returns>Строка, содержащая только цифры. Если входная строка пуста, возвращается пустая строка.</returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppValues.ParsePhoneNumber(System.String,System.String)">
+            <summary>
+            Выполняет интеллектуальный разбор, нормализацию и форматирование сырой записи телефонного номера 
+            с учетом добавочных кодов и строго валидированного цифрового регионального кода по умолчанию.
+            </summary>
+            <param name="rawPhone">Сырая текстовая запись телефонного номера (допускает наличие пробелов, дефисов, скобок и null).</param>
+            <param name="regionCode">Строго цифровой код региона по умолчанию (например, "7812"). Не должен содержать префиксов или мусорных символов.</param>
+            <returns>
+            Именованный кортеж, содержащий:
+            <list type="bullet">
+            <item><description><c>Formatted</c> — отформатированная строка для красивого визуального отображения.</description></item>
+            <item><description><c>Url</c> — очищенная строка для использования в HTML-ссылках <c>href="tel:..."</c>, либо <see langword="null"/>, если ссылка не требуется.</description></item>
+            </list>
+            </returns>
+        </member>
+        <member name="M:Ans.Net10.Common.SuppValues.FormatPhoneNumber(System.String)">
+            <summary>
+            Преобразует строку из 11 чистых цифр номера телефона в канонический международный формат отображения.
+            </summary>
+            <param name="digits11">Строка, содержащая ровно 11 цифровых символов (например, "78121234567").</param>
+            <returns>Отформатированная строка телефонного номера вида <c>+X-XXX-XXX-XX-XX</c> (например, "+7-812-123-45-67").</returns>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если длина переданной строки <paramref name="digits11"/> не равна 11 символам.
+            </exception>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="digits11"/> равен <see langword="null"/>.
+            </exception>		
         </member>
         <member name="M:Ans.Net10.Common.SuppValues.GetCurrencyLoc(System.Decimal)">
             <summary>
@@ -10581,93 +10594,66 @@
             <param name="inputSpan">The text being scanned by the regular expression.</param>
             <returns>true if a possible match was found; false if no more matches are possible.</returns>
         </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17">
-            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the G_REGEX_NOT_NUMBER method.</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17.Instance">
-            <summary>Cached, thread-safe singleton instance.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17.#ctor">
-            <summary>Initializes the instance.</summary>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17.RunnerFactory">
-            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17.RunnerFactory.CreateInstance">
-            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17.RunnerFactory.Runner">
-            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
-            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_NOT_NUMBER_17.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
-            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
-            <param name="inputSpan">The text being scanned by the regular expression.</param>
-            <returns>true if a possible match was found; false if no more matches are possible.</returns>
-        </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18">
+        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17">
             <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the G_REGEX_MULTISPACE method.</summary>
         </member>
-        <member name="F:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.Instance">
+        <member name="F:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.Instance">
             <summary>Cached, thread-safe singleton instance.</summary>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.#ctor">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.#ctor">
             <summary>Initializes the instance.</summary>
         </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.RunnerFactory">
+        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.RunnerFactory">
             <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.RunnerFactory.CreateInstance">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.RunnerFactory.CreateInstance">
             <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
         </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.RunnerFactory.Runner">
+        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.RunnerFactory.Runner">
             <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
             <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
             <param name="inputSpan">The text being scanned by the regular expression.</param>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
             <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
             <param name="inputSpan">The text being scanned by the regular expression.</param>
             <returns>true if a possible match was found; false if no more matches are possible.</returns>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_18.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_MULTISPACE_17.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
             <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
             <param name="inputSpan">The text being scanned by the regular expression.</param>
             <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
         </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19">
+        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18">
             <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the G_REGEX_SMALLNUMBER method.</summary>
         </member>
-        <member name="F:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.Instance">
+        <member name="F:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.Instance">
             <summary>Cached, thread-safe singleton instance.</summary>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.#ctor">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.#ctor">
             <summary>Initializes the instance.</summary>
         </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.RunnerFactory">
+        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.RunnerFactory">
             <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.RunnerFactory.CreateInstance">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.RunnerFactory.CreateInstance">
             <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
         </member>
-        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.RunnerFactory.Runner">
+        <member name="T:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.RunnerFactory.Runner">
             <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
             <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
             <param name="inputSpan">The text being scanned by the regular expression.</param>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
             <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
             <param name="inputSpan">The text being scanned by the regular expression.</param>
             <returns>true if a possible match was found; false if no more matches are possible.</returns>
         </member>
-        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_19.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+        <member name="M:System.Text.RegularExpressions.Generated.G_REGEX_SMALLNUMBER_18.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
             <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
             <param name="inputSpan">The text being scanned by the regular expression.</param>
             <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
@@ -10683,9 +10669,6 @@
         </member>
         <member name="M:System.Text.RegularExpressions.Generated.Utilities.IndexOfAnyDigit(System.ReadOnlySpan{System.Char})">
             <summary>Finds the next index of any character that matches a Unicode digit.</summary>
-        </member>
-        <member name="M:System.Text.RegularExpressions.Generated.Utilities.IndexOfAnyExceptDigit(System.ReadOnlySpan{System.Char})">
-            <summary>Finds the next index of any character that matches any character other than a Unicode digit.</summary>
         </member>
         <member name="M:System.Text.RegularExpressions.Generated.Utilities.IsBoundaryWordChar(System.Char)">
             <summary>Determines whether the specified index is a boundary word character.</summary>
@@ -10716,9 +10699,6 @@
         </member>
         <member name="P:System.Text.RegularExpressions.Generated.Utilities.WordCharBitmap">
             <summary>Gets a bitmap for whether each character 0 through 127 is in [\w]</summary>
-        </member>
-        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiDigits">
-            <summary>Supports searching for characters in or not in "0123456789".</summary>
         </member>
         <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiExceptDigits">
             <summary>Supports searching for characters in or not in "\0\u0001\u0002\u0003\u0004\u0005\u0006\a\b\t\n\v\f\r\u000e\u000f\u0010\u0011\u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f !\"#$%&amp;'()*+,-./:;&lt;=&gt;?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u007f".</summary>

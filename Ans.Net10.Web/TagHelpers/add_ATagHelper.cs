@@ -1,5 +1,6 @@
 ﻿// rev 2026-10-02
 
+using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -28,12 +29,23 @@ namespace Ans.Net10.Web.TagHelpers
 	/// возможностями автоматического разбора email, телефонов, медиа-объектов и канонических ссылок Ans Core.
 	/// </summary>
 	/// <remarks>
-	/// Инициализирует новый экземпляр класса <see cref="Exts_ATagHelper"/> с внедрением системного генератора и контекста.
+	/// Инициализирует новый экземпляр класса <see cref="add_ATagHelper"/> с внедрением системного генератора и контекста.
 	/// </remarks>
 	/// <param name="generator">Системный генератор HTML-компонентов ASP.NET Core.</param>
 	/// <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
-	[HtmlTargetElement("a", Attributes = _ATTRS)]
-	public partial class Exts_ATagHelper(
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_EMAIL)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_MEDIA)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_NODE)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_NODE_RES)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_PAGE)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_PAGE_RES)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_SITE)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_SITE_RES)]
+	[HtmlTargetElement("a", Attributes = _ATTR_HREF_TEL)]
+	[HtmlTargetElement("a", Attributes = _ATTR_MEDIA_AUTO_TITLE)]
+	[HtmlTargetElement("a", Attributes = _ATTR_MEDIA_VARIANT)]
+	[HtmlTargetElement("a", Attributes = _ATTR_TEL_CODE)]
+	public partial class add_ATagHelper(
 		IHtmlGenerator generator,
 		CurrentContext current)
 		: AnchorTagHelper(generator)
@@ -51,20 +63,6 @@ namespace Ans.Net10.Web.TagHelpers
 		private const string _ATTR_MEDIA_AUTO_TITLE = "media-auto-title";
 		private const string _ATTR_MEDIA_VARIANT = "media-variant";
 		private const string _ATTR_TEL_CODE = "tel-code";
-
-		private const string _ATTRS =
-			$"{_ATTR_HREF_EMAIL}, " +
-			$"{_ATTR_HREF_MEDIA}, " +
-			$"{_ATTR_HREF_NODE}, " +
-			$"{_ATTR_HREF_NODE_RES}, " +
-			$"{_ATTR_HREF_PAGE}, " +
-			$"{_ATTR_HREF_PAGE_RES}, " +
-			$"{_ATTR_HREF_SITE}, " +
-			$"{_ATTR_HREF_SITE_RES}, " +
-			$"{_ATTR_HREF_TEL}, " +
-			$"{_ATTR_MEDIA_AUTO_TITLE}, " +
-			$"{_ATTR_MEDIA_VARIANT}, " +
-			$"{_ATTR_TEL_CODE}";
 
 		private readonly CurrentContext _current = current;
 		private readonly LibWebOptions _options = current.Options;
@@ -112,9 +110,9 @@ namespace Ans.Net10.Web.TagHelpers
 		/// Получает или задает код телефонного региона по умолчанию.
 		/// </summary>
 		[HtmlAttributeName(_ATTR_TEL_CODE)]
-		public string? TelCodeData
+		public string TelCodeData
 		{
-			get => field ?? _options.Region?.TelCode;
+			get => field ?? _options.Region?.RegionPhoneCode ?? "0000";
 			set;
 		}
 
@@ -182,6 +180,8 @@ namespace Ans.Net10.Web.TagHelpers
 			output.TagMode = TagMode.StartTagAndEndTag;
 			if (!string.IsNullOrEmpty(HrefEmailData))
 				await _makeEmailAsync(output, HrefEmailData);
+			if (!string.IsNullOrEmpty(HrefTelData))
+				await _makeTelAsync(output, HrefTelData, TelCodeData);
 			else if (!string.IsNullOrEmpty(HrefSiteResData))
 				await _makeHrefAsync(output, _current.GetResUrl($"site:{HrefSiteResData}"));
 			else if (!string.IsNullOrEmpty(HrefNodeResData))
@@ -219,7 +219,37 @@ namespace Ans.Net10.Web.TagHelpers
 						? email1 : bodyText1);
 			}
 			else
-				_makeError(output, "ERROR EMAIL FORMAT");
+			{
+				output.TagName = "span";
+				output.Content.SetHtmlContent($"<em>{{ERROR EMAIL FORMAT}}</em>");
+			}
+		}
+
+
+		private static async Task _makeTelAsync(
+			TagHelperOutput output,
+			string tel,
+			string code)
+		{
+			var (text1, href1) = SuppValues.ParsePhoneNumber(tel, code);
+			if (string.IsNullOrEmpty(text1))
+			{
+				output.TagName = "span";
+				output.Content.SetHtmlContent($"<em>{{ERROR TELEPHONE NUMBER}}</em>");
+				return;
+			}
+			if (string.IsNullOrEmpty(href1))
+				output.TagName = "span";
+			else
+			{
+				output.Attributes.SetAttribute("href", new HtmlString($"tel:{href1}"));
+				output.Attributes.Add("itemprop", "telephone");
+				output.AddClass("link-telephone", HtmlEncoder.Default);
+			}
+			output.AddClass("text-nowrap", HtmlEncoder.Default);
+			var childContent1 = await output.GetChildContentAsync();
+			var bodyText1 = childContent1.GetContent();
+			output.Content.SetHtmlContent($"{text1}{bodyText1.Make(" {0}")}");
 		}
 
 
@@ -230,14 +260,6 @@ namespace Ans.Net10.Web.TagHelpers
 			output.Attributes.SetAttribute("href", new HtmlString(url1));
 			var childContent1 = await output.GetChildContentAsync();
 			output.Content.SetHtmlContent(childContent1.GetContent());
-		}
-
-
-		private static void _makeError(
-			TagHelperOutput output,
-			string message)
-		{
-			output.Content.SetHtmlContent($"<em>{{{message}}}</em>");
 		}
 
 	}
