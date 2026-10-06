@@ -1,6 +1,7 @@
-﻿// rev 2026-09-29
+﻿// rev 2026-10-05
 
 using Microsoft.Extensions.Caching.Hybrid;
+using Microsoft.Extensions.Logging;
 
 namespace Ans.Net10.Web
 {
@@ -46,8 +47,19 @@ namespace Ans.Net10.Web
 		{
 			ArgumentNullException.ThrowIfNull(cacheKey);
 			ArgumentNullException.ThrowIfNull(getObject);
-			return await _cache.GetOrCreateAsync(
-				cacheKey, getObject, options, cancellationToken: cancellationToken);
+			var isCacheMiss1 = false;
+			var result1 = await _cache.GetOrCreateAsync(
+				cacheKey,
+				async token =>
+				{
+					isCacheMiss1 = true;
+					return await getObject(token);
+				},
+				options,
+				cancellationToken: cancellationToken);
+			if (isCacheMiss1 && current.Logger.IsEnabled(LogLevel.Information))
+				current.Logger.LogInformation("Cache MISS: {Key}", cacheKey);
+			return result1;
 		}
 
 
@@ -64,11 +76,13 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="cacheKey"/> равен <see langword="null"/>.
 		/// </exception>
-		public ValueTask RemoveAsync(
+		public async ValueTask RemoveAsync(
 			string cacheKey)
 		{
 			ArgumentNullException.ThrowIfNull(cacheKey);
-			return _cache.RemoveAsync(cacheKey);
+			await _cache.RemoveAsync(cacheKey);
+			if (current.Logger.IsEnabled(LogLevel.Information))
+				current.Logger.LogInformation("Cache PURGED: {Key}", cacheKey);
 		}
 
 	}

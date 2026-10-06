@@ -1,4 +1,4 @@
-﻿// rev 2026-09-30
+﻿// rev 2026-10-06
 
 namespace Ans.Net10.Web
 {
@@ -23,7 +23,7 @@ namespace Ans.Net10.Web
 			if (string.IsNullOrEmpty(def))
 				return;
 			var tokens1 = def.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-			Catalogs = Array.ConvertAll(tokens1, x => new MvcAccessCatalog(x));
+			Catalogs = Array.ConvertAll(tokens1, x => new MvcCatalogAccess(x));
 		}
 
 
@@ -33,7 +33,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает неизменяемый список распарсенных каталогов доступа.
 		/// </summary>
-		public IReadOnlyList<MvcAccessCatalog> Catalogs { get; } = [];
+		public IReadOnlyList<MvcCatalogAccess> Catalogs { get; } = [];
 
 
 		/* functions */
@@ -77,17 +77,17 @@ namespace Ans.Net10.Web
 	/// <summary>
 	/// Описывает каталог (модуль) доступа, содержащий вложенную структуру MVC-контроллеров.
 	/// </summary>
-	public class MvcAccessCatalog
+	public class MvcCatalogAccess
 	{
 
 		/* ctor */
 
 
 		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="MvcAccessCatalog"/> на основе строкового DSL.
+		/// Инициализирует новый экземпляр класса <see cref="MvcCatalogAccess"/> на основе строкового DSL.
 		/// </summary>
 		/// <param name="def">Строка определения каталога и контроллеров. Пример: <c>"Admin>Home,Users,Settings"</c>.</param>
-		public MvcAccessCatalog(
+		public MvcCatalogAccess(
 			string def)
 		{
 			ArgumentException.ThrowIfNullOrEmpty(def);
@@ -96,7 +96,7 @@ namespace Ans.Net10.Web
 			if (parts1.Length > 1)
 			{
 				var tokens1 = parts1[1].Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-				Controllers = Array.ConvertAll(tokens1, x => new MvcAccessController(x));
+				Controllers = Array.ConvertAll(tokens1, x => new MvcControllerAccess(x));
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает список распарсенных контроллеров, принадлежащих данному каталогу.
 		/// </summary>
-		public IReadOnlyList<MvcAccessController> Controllers { get; } = [];
+		public IReadOnlyList<MvcControllerAccess> Controllers { get; } = [];
 
 	}
 
@@ -122,17 +122,17 @@ namespace Ans.Net10.Web
 	/// <summary>
 	/// Описывает MVC-контроллер доступа, содержащий атомарные списки разрешенных действий (Actions).
 	/// </summary>
-	public class MvcAccessController
+	public class MvcControllerAccess
 	{
 
 		/* ctor */
 
 
 		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="MvcAccessController"/> на основе строкового DSL.
+		/// Инициализирует новый экземпляр класса <see cref="MvcControllerAccess"/> на основе строкового DSL.
 		/// </summary>
 		/// <param name="def">Строка определения контроллера и его экшенов. Пример: <c>"Users=Create+Update+Delete"</c>.</param>
-		public MvcAccessController(
+		public MvcControllerAccess(
 			string def)
 		{
 			ArgumentException.ThrowIfNullOrEmpty(def);

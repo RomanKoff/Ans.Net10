@@ -13,6 +13,7 @@ namespace Ans.Net10.Web
 
 		/* ctors */
 
+
 		/// <summary>
 		/// Инициализирует новый экземпляр класса <see cref="AnsHttpException"/> с указанием HTTP статус-кода.
 		/// </summary>

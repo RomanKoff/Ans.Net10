@@ -39,7 +39,7 @@ namespace Ans.Net10.Common
 		/// </value>
 		public static readonly JsonSerializerOptions DEFAULT_JSON_SERIALIZER_OPTIONS = new()
 		{
-			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault, // .WhenWritingNull
 			PropertyNameCaseInsensitive = true,
 			//WriteIndented = true, // красивая печать
 			Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping

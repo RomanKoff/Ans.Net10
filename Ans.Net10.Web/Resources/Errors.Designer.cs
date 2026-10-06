@@ -61,6 +61,15 @@ namespace Ans.Net10.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ошибка обработки HTTP-запроса {0}!.
+        /// </summary>
+        public static string Template_HttpError {
+            get {
+                return ResourceManager.GetString("Template_HttpError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Доступ запрещен!.
         /// </summary>
         public static string Text_AccessIsDenied {
@@ -75,6 +84,15 @@ namespace Ans.Net10.Web.Resources {
         public static string Text_AddressOfTheRequestedResource {
             get {
                 return ResourceManager.GetString("Text_AddressOfTheRequestedResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Некорректный запрос!.
+        /// </summary>
+        public static string Text_BadRequest {
+            get {
+                return ResourceManager.GetString("Text_BadRequest", resourceCulture);
             }
         }
         

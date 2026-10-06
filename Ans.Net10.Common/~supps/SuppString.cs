@@ -52,6 +52,11 @@ namespace Ans.Net10.Common
 		//		SuppIO.Register_CodePagesEncodingProvider();
 
 
+		private static readonly System.Buffers.SearchValues<char> _invalidSpecChars =
+			System.Buffers.SearchValues.Create(Enumerable.Range(0, 32).Select(i => (char)i).ToArray());
+
+
+
 		/* functions */
 
 
@@ -235,6 +240,10 @@ namespace Ans.Net10.Common
 		{
 			if (string.IsNullOrEmpty(value))
 				return string.Empty;
+			var span1 = value.AsSpan();
+			int firstInvalidIndex1 = span1.IndexOfAny(_invalidSpecChars);
+			if (firstInvalidIndex1 == -1)
+				return value;
 			var sb1 = new StringBuilder(value.Length);
 			foreach (var char1 in value)
 				sb1.Append(char1 < 32 ? ' ' : char1);

@@ -1,0 +1,84 @@
+@page
+@model Ans.Net10.Web.AnsPageErrorModel
+@{
+	Model.Init();
+
+	var errorsOptions1 = HttpContext.RequestServices.GetRequiredService<LibWebOptions>().Errors;
+	var uiOptions1 = HttpContext.RequestServices.GetRequiredService<LibWebOptions>().UI;
+
+	Layout = !string.IsNullOrEmpty(errorsOptions1?.Layout)
+		? errorsOptions1.Layout
+		: (uiOptions1?.DefaultLayout ?? "_Layout");
+
+	ViewData["Title"] = $"{Ans.Net10.Web.Resources.Errors.Text_Error} {Model.HttpCode}";
+
+	string? errorPicture1 = null;
+	if (errorsOptions1 != null)
+	{
+		errorPicture1 = Model.HttpCode switch
+		{
+			400 => errorsOptions1.Picture400,
+			403 => errorsOptions1.Picture403,
+			404 => errorsOptions1.Picture404,
+			500 => errorsOptions1.Picture500,
+			_ => null
+		};
+	}
+}
+
+<div class="@(uiOptions1?.DefaultContainerClasses ?? "container") my-5 text-center">
+	<div class="row justify-content-center">
+		<div class="col-md-8 col-lg-6">
+
+			@if (!string.IsNullOrEmpty(errorPicture1))
+			{
+				<img src="@errorPicture1" class="img-fluid mb-4 mx-auto d-block" alt="HTTP @Model.HttpCode" style="max-height: 300px;" />
+			}
+			else
+			{
+				<h1 class="display-1 text-danger font-monospace fw-bold mb-3">@Model.HttpCode</h1>
+			}
+
+			<h2 class="h3 text-secondary mb-4">@Model.ExceptionMessage</h2>
+
+			@if (Model.ShowInfo)
+			{
+				<div class="card text-start border-warning bg-light mb-4 shadow-sm">
+					<div class="card-header bg-warning text-dark fw-bold py-2 small">
+						<i class="bi-bug-fill me-2"></i>Диагностическая информация (Режим отладки Ans)
+					</div>
+					<div class="card-body p-3 font-monospace small" style="font-size: 0.85rem;">
+						@if (Model.HasOriginalPath)
+						{
+							<div class="mb-1"><strong>@Ans.Net10.Web.Resources.Errors.Text_AddressOfTheRequestedResource:</strong> <code class="text-dark">@Model.OriginalPath</code></div>
+						}
+						@if (Model.HasRequestId)
+						{
+							<div class="mb-1"><strong>@Ans.Net10.Web.Resources.Errors.Text_ErrorID:</strong> <span class="badge bg-secondary">@Model.RequestId</span></div>
+						}
+						@if (Model.HasRefererUri)
+						{
+							<div class="mb-1"><strong>Источник перехода (Referer):</strong> <small class="text-muted">@Model.RefererUri</small></div>
+						}
+						@if (Model.Exception != null)
+						{
+							<hr class="my-2 border-warning" />
+							<div class="fw-bold text-danger mb-1">@Ans.Net10.Web.Resources.Errors.Text_TheTextOfTheErrorMessage:</div>
+							<pre class="bg-dark text-white p-2 rounded overflow-auto mb-0" style="max-height: 250px; font-size: 0.75rem;">@Model.Exception.ToString()</pre>
+						}
+					</div>
+				</div>
+			}
+
+			<div class="d-grid d-sm-inline-block gap-2">
+				<a href="javascript:history.back()" class="btn btn-outline-secondary px-4 py-2">
+					<i class="bi-arrow-left me-2"></i>@Ans.Net10.Web.Resources.Errors.Text_GoBack
+				</a>
+				<a href="/" class="btn btn-primary px-4 py-2">
+					<i class="bi-house-door me-2"></i>На главную
+				</a>
+			</div>
+
+		</div>
+	</div>
+</div>

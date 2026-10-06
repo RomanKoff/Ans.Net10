@@ -120,6 +120,9 @@
   <data name="Text_AccessIsDenied" xml:space="preserve">
     <value>Доступ запрещен!</value>
   </data>
+  <data name="Text_BadRequest" xml:space="preserve">
+    <value>Некорректный запрос!</value>
+  </data>
   <data name="Text_AddressOfTheRequestedResource" xml:space="preserve">
     <value>Адрес запрашиваемого ресурса</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Text_ServerError" xml:space="preserve">
     <value>Серверная ошибка</value>
+  </data>
+  <data name="Template_HttpError" xml:space="preserve">
+    <value>Ошибка обработки HTTP-запроса {0}!</value>
   </data>
   <data name="Text_TheTextOfTheErrorMessage" xml:space="preserve">
     <value>Текст сообщения об ошибке</value>

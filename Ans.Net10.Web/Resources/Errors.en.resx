@@ -120,6 +120,9 @@
   <data name="Text_AccessIsDenied" xml:space="preserve">
     <value>Access is denied!</value>
   </data>
+  <data name="Text_BadRequest" xml:space="preserve">
+    <value>Bad request!</value>
+  </data>
   <data name="Text_AddressOfTheRequestedResource" xml:space="preserve">
     <value>Address of the requested resource</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Text_ServerError" xml:space="preserve">
     <value>Server error</value>
+  </data>
+  <data name="Template_HttpError" xml:space="preserve">
+    <value>Error processing HTTP request {0}!</value>
   </data>
   <data name="Text_TheTextOfTheErrorMessage" xml:space="preserve">
     <value>The text of the error message</value>

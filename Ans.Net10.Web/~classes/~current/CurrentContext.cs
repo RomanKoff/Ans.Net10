@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Globalization;
 
 namespace Ans.Net10.Web
@@ -46,6 +47,7 @@ namespace Ans.Net10.Web
 		/// Вызывается, если любой из входящих инфраструктурных сервисов равен <see langword="null"/>.
 		/// </exception>
 		public CurrentContext(
+			ILoggerFactory loggerFactory,
 			IWebHostEnvironment env,
 			IConfiguration configuration,
 			IHttpContextAccessor httpContextAccessor,
@@ -64,6 +66,7 @@ namespace Ans.Net10.Web
 			ArgumentNullException.ThrowIfNull(mailer);
 			ArgumentNullException.ThrowIfNull(linkGenerator);
 
+			Logger = loggerFactory.CreateLogger("Ans.Net10.Web");
 			Env = env;
 			Configuration = configuration;
 			HttpContext = httpContextAccessor.HttpContext;
@@ -87,6 +90,12 @@ namespace Ans.Net10.Web
 
 
 		/* readonly properties */
+
+
+		/// <summary>
+		/// Централизованная служба логирования Ans-экосистемы.
+		/// </summary>
+		public ILogger Logger { get; }
 
 
 		/// <summary>

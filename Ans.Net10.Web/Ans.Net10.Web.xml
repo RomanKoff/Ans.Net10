@@ -2195,16 +2195,6 @@
             Получает или задает системный токен безопасности приложения.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.SystemLayout">
-            <summary>
-            Получает или задает имя глобального шаблона разметки (Layout) по умолчанию.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.CorsProfile">
-            <summary>
-            Получает или задает имя профиля CORS.
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Mimetypes">
             <summary>
             Получает или задает список переопределений MIME-типов.
@@ -2220,24 +2210,42 @@
             Получает или задает региональные настройки.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.MailService">
+        <member name="P:Ans.Net10.Web.LibWebOptions.UI">
             <summary>
-            Получает или задает параметры службы отправки писем.
+            Получает или задает параметры конфигурации графического пользовательского интерфейса (UI).
             </summary>
+            <remarks>
+            Секция инкапсулирует глобальные настройки визуального отображения веб-приложения, 
+            включая базовые CSS-классы контейнеров и пути к мастер-шаблонам разметки (Layouts).
+            </remarks>
         </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Errors">
             <summary>
             Получает или задает настройки отображения и обработки ошибок.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.Subnets">
-            <summary>
-            Получает или задает списки подсетей для ограничения доступа.
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Proxy">
             <summary>
             Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Cors">
+            <summary>
+            Получает или задает параметры конфигурации политик CORS (Cross-Origin Resource Sharing).
+            </summary>
+            <remarks>
+            Настройки используются сервисом <see cref="T:Ans.Net10.Web.SuppCors"/> для регистрации и последующей 
+            активации именованных профилей междоменной безопасности в конвейере обработки запросов.
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.MailService">
+            <summary>
+            Получает или задает параметры службы отправки писем.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Subnets">
+            <summary>
+            Получает или задает списки подсетей для ограничения доступа.
             </summary>
         </member>
         <member name="T:Ans.Net10.Web.RegionOptions">
@@ -2254,6 +2262,138 @@
             <summary>
             Получает или задает телефонный код региона по умолчанию.
             </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.UIOptions">
+            <summary>
+            Описывает параметры конфигурации графического пользовательского интерфейса 
+            и глобальных шаблонов разметки веб-приложения.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.UIOptions.DefaultLayout">
+            <summary>
+            Получает или задает имя основного файла мастер-шаблона разметки (Layout) по умолчанию.
+            </summary>
+            <value>
+            Строковое имя или относительный путь к файлу представления (например, <c>"_Layout"</c>).
+            Значение по умолчанию: <c>"_Layout"</c>.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.UIOptions.SystemLayout">
+            <summary>
+            Получает или задает имя глобального альтернативного или системного шаблона разметки.
+            </summary>
+            <value>
+            Строковое имя файла шаблона или <see langword="null"/>, если системный шаблон разметки не используется.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.UIOptions.DefaultContainerClasses">
+            <summary>
+            Получает или задает базовый набор CSS-классов для главного оборачивающего HTML-контейнера страниц.
+            </summary>
+            <value>
+            Строка с перечислением CSS-классов (например, в стиле фреймворка Bootstrap 5: <c>"container"</c> или <c>"container-fluid"</c>).
+            Значение по умолчанию: <c>"container"</c>.
+            </value>
+        </member>
+        <member name="T:Ans.Net10.Web.ErrorsOptions">
+            <summary>
+            Параметры конфигурации страниц отображения ошибок и статусных кодов HTTP.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Layout">
+            <summary>
+            Получает или задает кастомный Layout для страниц ошибок.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.RazorPageErrorsPath">
+            <summary>
+            Получает или задает относительный путь к единой универсальной Razor-странице фреймворка 
+            для отображения как фатальных серверных исключений (500), так и HTTP статус-кодов (404, 403, 400).
+            </summary>
+            <value>
+            Строковый виртуальный путь к эндпоинту (например, <c>"/Ans/Errors"</c>).
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.ShowInfo">
+            <summary>
+            Получает или задает флаг вывода детальной технической информации об ошибке.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture400">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 400 Bad Request.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture403">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 403 Forbidden.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture404">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 404 Not Found.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture500">
+            <summary>
+            Получает или задает URL/путь к изображению для ошибки 500 Internal Server Error.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.ProxyOptions">
+            <summary>
+            Параметры конфигурации обработки прокси-заголовков.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ProxyOptions.UseForwardedHeaders">
+            <summary>
+            Флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ProxyOptions.KnownProxies">
+            <summary>
+            Список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
+            Если пустой — по умолчанию доверяется локальной петле (Loopback).
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.CorsOptions">
+            <summary>
+            Описывает параметры конфигурации совместного использования ресурсов между разными источниками (CORS) 
+            для разграничения прав доступа к веб-приложению со стороны браузеров.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CorsOptions.Profile">
+            <summary>
+            Получает или задает имя активного профиля CORS, применяемого ко всему приложению по умолчанию.
+            </summary>
+            <value>
+            Строковое имя профиля (например, <c>"ALLOW ALL"</c>, <c>"ALLOW LOCAL"</c> или <c>"ALLOW CREDENTIALS"</c>).
+            </value>
+            <remarks>
+            Допустимые стандартные константы профилей определены в классе <see cref="T:Ans.Net10.Web.SuppCors"/>. 
+            Если профиль не указан или равен <see langword="null"/>, фреймворк автоматически активирует профиль защиты по умолчанию.
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.CorsOptions.LocalOrigins">
+            <summary>
+            Получает или задает коллекцию локальных адресов источников (Origins) разработчиков, 
+            используемых для междоменной отладки клиентских интерфейсов.
+            </summary>
+            <value>
+            Массив строковых URL-адресов локальных хостов (например, <c>["http://localhost:3000", "http://localhost:5173"]</c>).
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.CorsOptions.TrustedOrigins">
+            <summary>
+            Получает или задает коллекцию доверенных корпоративных или внешних адресов источников (Origins), 
+            которым разрешено выполнять междоменные запросы к ресурсам приложения в режиме Production.
+            </summary>
+            <value>
+            Массив официальных строковых URL-адресов доверенных доменов (например, <c>["https://my-company.ru"]</c>).
+            </value>
+            <remarks>
+            Данный список является обязательным для корректной работы политик безопасности 
+            <see cref="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_TRUSTED"/> и <see cref="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_CREDENTIALS"/>.
+            </remarks>
         </member>
         <member name="T:Ans.Net10.Web.MailServiceOptions">
             <summary>
@@ -2284,51 +2424,6 @@
         </member>
         <member name="P:Ans.Net10.Web.MailServiceOptions.DebugCc">
             <inheritdoc />
-        </member>
-        <member name="T:Ans.Net10.Web.ErrorsOptions">
-            <summary>
-            Параметры конфигурации страниц отображения ошибок и статусных кодов HTTP.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.Layout">
-            <summary>
-            Получает или задает кастомный Layout для страниц ошибок.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.ServerErrorPath">
-            <summary>
-            Получает или задает путь к странице фатальной ошибки сервера (500).
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.HttpErrorPath">
-            <summary>
-            Получает или задает путь к странице ошибок обработки HTTP-статусов.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.ShowInfo">
-            <summary>
-            Получает или задает флаг вывода детальной технической информации об ошибке.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture400">
-            <summary>
-            Получает или задает URL/путь к изображению для ошибки 400 Bad Request.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture403">
-            <summary>
-            Получает или задает URL/путь к изображению для ошибки 403 Forbidden.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture404">
-            <summary>
-            Получает или задает URL/путь к изображению для ошибки 404 Not Found.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.Picture500">
-            <summary>
-            Получает или задает URL/путь к изображению для ошибки 500 Internal Server Error.
-            </summary>
         </member>
         <member name="T:Ans.Net10.Web.SubnetsOptions">
             <summary>
@@ -2385,49 +2480,32 @@
             Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Web.ProxyOptions">
+        <member name="T:Ans.Net10.Web.LibWebStartup">
             <summary>
-            Параметры конфигурации обработки прокси-заголовков.
+            Предоставляет статические методы расширения для автоматической "zero-configuration" 
+            инициализации и настройки инфраструктуры веб-библиотеки Ans в конвейере приложения.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.ProxyOptions.UseForwardedHeaders">
+        <member name="M:Ans.Net10.Web.LibWebStartup.Add_AnsNet10Web(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
-            Флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
+            Выполняет централизованную регистрацию строго типизированных параметров конфигурации, 
+            встроенных оркестровых сервисов, расширенных кодировок, профилей CORS, настроек сессий и компонентов MVC/Razor Pages.
             </summary>
+            <param name="builder">Архитектурный строитель веб-приложения <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/>.</param>
+            <returns>Строитель <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> для последующей кастомизации конвейера MVC фреймворка.</returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если переданный параметр <paramref name="builder"/> равен <see langword="null"/>.
+            </exception>
         </member>
-        <member name="P:Ans.Net10.Web.ProxyOptions.KnownProxies">
+        <member name="M:Ans.Net10.Web.LibWebStartup.Use_AnsNet10Web(Microsoft.AspNetCore.Builder.WebApplication)">
             <summary>
-            Список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
-            Если пустой — по умолчанию доверяется локальной петле (Loopback).
+            Конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline), 
+            активируя кастомные компоненты локализации, сессий, обработки исключений, сетевой безопасности, CORS и динамического роутинга.
             </summary>
-        </member>
-        <member name="T:Ans.Net10.Web.Middlewares.AnsHttpExceptionHandler">
-            <summary>
-            Компонент конвейера (Middleware), обеспечивающий перехват специализированных исключений 
-            <see cref="T:Ans.Net10.Web.AnsHttpException"/> и автоматическую установку соответствующих HTTP-статусов ответа.
-            </summary>
-            <remarks>
-            Регистрируется в методе запуска приложения:
-            <c>app.UseMiddleware&lt;AnsHttpExceptionHandler&gt;();</c>
-            </remarks>
-        </member>
-        <member name="M:Ans.Net10.Web.Middlewares.AnsHttpExceptionHandler.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
-            <summary>
-            Компонент конвейера (Middleware), обеспечивающий перехват специализированных исключений 
-            <see cref="T:Ans.Net10.Web.AnsHttpException"/> и автоматическую установку соответствующих HTTP-статусов ответа.
-            </summary>
-            <remarks>
-            Регистрируется в методе запуска приложения:
-            <c>app.UseMiddleware&lt;AnsHttpExceptionHandler&gt;();</c>
-            </remarks>
-        </member>
-        <member name="M:Ans.Net10.Web.Middlewares.AnsHttpExceptionHandler.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
-            <summary>
-            Точка входа Middleware, перехватывающая управление обработкой текущего HTTP-запроса.
-            </summary>
-            <param name="context">Текущий контекст HTTP-запроса.</param>
-            <returns>Задача асинхронного выполнения операции.</returns>
-            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="context"/> равен <see langword="null"/>.</exception>
+            <param name="app">Экземпляр выполняемого веб-приложения <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/>.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если переданный параметр <paramref name="app"/> равен <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:Ans.Net10.Web.Middlewares.AnsLocalizationMiddleware">
             <summary>
@@ -2463,6 +2541,127 @@
             </summary>
             <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
             <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Nodes.INodePathResolver">
+            <summary>
+            Определяет контракт сервиса для инициализации карты физических представлений 
+            и асинхронного сопоставления входящих URL-запросов с узлами и страницами CMS.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.INodePathResolver.InitializeAsync(System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно сканирует базовый каталог представлений, формируя 
+            первоначальную карту путей в оперативной памяти приложения.
+            </summary>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая процесс асинхронной инициализации.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.INodePathResolver.ResolveAsync(System.String)">
+            <summary>
+            Асинхронно анализирует входящий относительный URL-путь запроса и, на основе матрицы 
+            приоритетов фреймворка, сопоставляет его с конкретным Узлом и Страницей.
+            </summary>
+            <param name="rawPath">Сырой относительный путь запроса, полученный из URL (например, "dep1/about/contacts").</param>
+            <returns>
+            Результат сопоставления в виде объекта <see cref="T:Ans.Net10.Web.Nodes.NodePageResolveResult"/>, 
+            либо <see langword="null"/>, если совпадений в карте физических представлений не найдено.
+            </returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Nodes.AnsNodePathResolver">
+            <summary>
+            Реализация сервиса анализа путей, обеспечивающая асинхронную индексацию структуры 
+            каталогов Razor-представлений в оперативной памяти и реактивное отслеживание изменений.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Nodes.AnsNodePathResolver})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.AnsNodePathResolver"/> 
+            с внедрением необходимых инфраструктурных зависимостей платформы.
+            </summary>
+            <param name="env">Среда веб-хостинга для вычисления корневых путей приложения.</param>
+            <param name="logger">Служба ведения системных логов.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если один из входящих параметров равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.InitializeAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.ResolveAsync(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Nodes.INodePageFeature">
+            <summary>
+            Определяет фичу HTTP-контекста для хранения и передачи результата 
+            сопоставления Узла и Страницы CMS в конвейере обработки запроса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.INodePageFeature.ResolveResult">
+            <summary>
+            Получает результат успешного сопоставления текущего запроса с Узлом и Страницей.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Nodes.NodePageFeature">
+            <summary>
+            Реализация фичи HTTP-контекста для хранения результата сопоставления CMS.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.NodePageFeature.#ctor(Ans.Net10.Web.Nodes.NodePageResolveResult)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.NodePageFeature"/> 
+            с указанием вычисленного результата сопоставления.
+            </summary>
+            <param name="resolveResult">Результат сопоставления Узла и Страницы.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="resolveResult"/> равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodePageFeature.ResolveResult">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Nodes.NodePageResolveResult">
+            <summary>
+            Описывает результат успешного анализа и сопоставления входящего URL-запроса 
+            с конкретным иерархическим узлом и страницей в файловой структуре представлений.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.NodePageResolveResult.#ctor(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.NodePageResolveResult"/> 
+            с указанием параметров сопоставления.
+            </summary>
+            <param name="nodeName">Имя (идентификатор) вычисленного Узла контента.</param>
+            <param name="viewPath">Полный виртуальный путь к файлу представления для движка Razor.</param>
+            <param name="pagePath">Относительный путь к странице внутри дерева страниц Узла.</param>
+            <param name="isStartPage">Признак того, является ли выбранная страница стартовой (start.cshtml).</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если один из обязательных строковых параметров равен <see langword="null"/>.
+            </exception>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.NodeName">
+            <summary>
+            Возвращает имя (идентификатор) вычисленного Узла контента (например, "dep1" или "_main").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.ViewPath">
+            <summary>
+            Возвращает полный виртуальный путь к файлу представления, пригодный для передачи 
+            в движок рендеринга Razor (например, "~/Views/Nodes/dep1/about.cshtml").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.PagePath">
+            <summary>
+            Возвращает относительный путь к странице внутри дерева страниц текущего Узла (например, "about/contacts").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.IsStartPage">
+            <summary>
+            Возвращает признак того, является ли выбранная страница стартовой страницей по умолчанию (start.cshtml) 
+            для корня Узла или одного из его внутренних подразделов (подкаталогов).
+            </summary>
         </member>
         <member name="T:Ans.Net10.Web.Resources.Common">
             <summary>
@@ -2531,6 +2730,11 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Template_HttpError">
+            <summary>
+              Looks up a localized string similar to Ошибка обработки HTTP-запроса {0}!.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.Resources.Errors.Text_AccessIsDenied">
             <summary>
               Looks up a localized string similar to Доступ запрещен!.
@@ -2539,6 +2743,11 @@
         <member name="P:Ans.Net10.Web.Resources.Errors.Text_AddressOfTheRequestedResource">
             <summary>
               Looks up a localized string similar to Адрес запрашиваемого ресурса.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_BadRequest">
+            <summary>
+              Looks up a localized string similar to Некорректный запрос!.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.Resources.Errors.Text_Error">
@@ -2570,6 +2779,29 @@
             <summary>
               Looks up a localized string similar to Текст сообщения об ошибке.
             </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.AnsExceptionHandler">
+            <summary>
+            Компонент конвейера обработки ошибок (Exception Handler) экосистемы Ans, реализующий 
+            стандартный интерфейс .NET 10 <see cref="T:Microsoft.AspNetCore.Diagnostics.IExceptionHandler"/> для перехвата специализированных 
+            исключений <see cref="T:Ans.Net10.Web.AnsHttpException"/> и автоматической установки статус-кодов ответов.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsExceptionHandler.TryHandleAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception,System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно перехватывает возникшее в конвейере исключение, проверяет его тип 
+            и, в случае совпадения с <see cref="T:Ans.Net10.Web.AnsHttpException"/>, фиксирует ассоциированный HTTP статус-код.
+            </summary>
+            <param name="httpContext">Контекст текущего обрабатываемого HTTP-запроса <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>.</param>
+            <param name="exception">Экземпляр возникшего необработанного исключения <see cref="T:System.Exception"/>.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции <see cref="T:System.Threading.CancellationToken"/>.</param>
+            <returns>
+            Задача, результатом которой является <see langword="true"/>, если исключение успешно обработано 
+            данным компонентом и конвейер должен продолжить работу; в противном случае — <see langword="false"/>.
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если переданный параметр <paramref name="httpContext"/> или <paramref name="exception"/> равен <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:Ans.Net10.Web.Services.IViewRenderService">
             <summary>
@@ -3223,10 +3455,6 @@
             Выполняет низкоуровневое извлечение диагностических данных об ошибке из фич HTTP-контекста 
             и параметров конфигурации библиотеки.
             </summary>
-            <remarks>
-            Метод является виртуальным и может быть расширен в производных классах для логирования 
-            или специфичной обработки метаданных.
-            </remarks>
         </member>
         <member name="T:Ans.Net10.Web.AnsPageModel">
             <summary>
@@ -3550,44 +3778,44 @@
             </summary>
             <returns>Массив строк с уникальными именами разрешений. Если структура пуста, возвращает пустой массив.</returns>
         </member>
-        <member name="T:Ans.Net10.Web.MvcAccessCatalog">
+        <member name="T:Ans.Net10.Web.MvcCatalogAccess">
             <summary>
             Описывает каталог (модуль) доступа, содержащий вложенную структуру MVC-контроллеров.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.MvcAccessCatalog.#ctor(System.String)">
+        <member name="M:Ans.Net10.Web.MvcCatalogAccess.#ctor(System.String)">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.MvcAccessCatalog"/> на основе строкового DSL.
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.MvcCatalogAccess"/> на основе строкового DSL.
             </summary>
             <param name="def">Строка определения каталога и контроллеров. Пример: <c>"Admin>Home,Users,Settings"</c>.</param>
         </member>
-        <member name="P:Ans.Net10.Web.MvcAccessCatalog.Name">
+        <member name="P:Ans.Net10.Web.MvcCatalogAccess.Name">
             <summary>
             Получает системное имя каталога доступа.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.MvcAccessCatalog.Controllers">
+        <member name="P:Ans.Net10.Web.MvcCatalogAccess.Controllers">
             <summary>
             Получает список распарсенных контроллеров, принадлежащих данному каталогу.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Web.MvcAccessController">
+        <member name="T:Ans.Net10.Web.MvcControllerAccess">
             <summary>
             Описывает MVC-контроллер доступа, содержащий атомарные списки разрешенных действий (Actions).
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.MvcAccessController.#ctor(System.String)">
+        <member name="M:Ans.Net10.Web.MvcControllerAccess.#ctor(System.String)">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.MvcAccessController"/> на основе строкового DSL.
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.MvcControllerAccess"/> на основе строкового DSL.
             </summary>
             <param name="def">Строка определения контроллера и его экшенов. Пример: <c>"Users=Create+Update+Delete"</c>.</param>
         </member>
-        <member name="P:Ans.Net10.Web.MvcAccessController.Name">
+        <member name="P:Ans.Net10.Web.MvcControllerAccess.Name">
             <summary>
             Получает системное имя MVC-контроллера.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.MvcAccessController.Actions">
+        <member name="P:Ans.Net10.Web.MvcControllerAccess.Actions">
             <summary>
             Получает список имен действий (Actions) текущего контроллера.
             </summary>
@@ -4064,7 +4292,7 @@
             базовые инфраструктурные службы платформы и встроенные прикладные сервисы библиотеки.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.CurrentContext.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Caching.Hybrid.HybridCache,Ans.Net10.Web.Services.IViewRenderService,System.Net.Http.IHttpClientFactory,Ans.Net10.Common.Services.IMailerService,Microsoft.AspNetCore.Routing.LinkGenerator)">
+        <member name="M:Ans.Net10.Web.CurrentContext.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Caching.Hybrid.HybridCache,Ans.Net10.Web.Services.IViewRenderService,System.Net.Http.IHttpClientFactory,Ans.Net10.Common.Services.IMailerService,Microsoft.AspNetCore.Routing.LinkGenerator)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CurrentContext"/> с внедрением всех базовых зависимостей.
             </summary>
@@ -4079,6 +4307,11 @@
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если любой из входящих инфраструктурных сервисов равен <see langword="null"/>.
             </exception>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Logger">
+            <summary>
+            Централизованная служба логирования Ans-экосистемы.
+            </summary>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Env">
             <summary>
@@ -6357,52 +6590,49 @@
         </member>
         <member name="T:Ans.Net10.Web.SuppCors">
             <summary>
-            Вспомогательный класс для обеспечения настройки и конфигурации политик CORS (Cross-Origin Resource Sharing).
+            Вспомогательный класс для централизованного конфигурирования, каталогизации 
+            и регистрации профилей безопасности CORS (Cross-Origin Resource Sharing).
             </summary>
         </member>
         <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_ALL">
             <summary>
             Системное имя CORS-профиля, разрешающего любые входящие междоменные запросы.
             </summary>
-            <value>
-            Имеет фиксированное строковое значение <c>"ALLOW ALL"</c>.
-            </value>
         </member>
         <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_TRUSTED">
             <summary>
             Системное имя CORS-профиля, разрешающего доступ исключительно списку доверенных внутренних 
             или корпоративных доменов (Origins), указанных в конфигурации приложения.
             </summary>
-            <value>
-            Имеет фиксированное строковое значение <c>"ALLOW TRUSTED"</c>.
-            </value>
         </member>
         <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_LOCAL">
             <summary>
             Системное имя CORS-профиля, разрешающего запросы с локальных адресов разработчиков 
-            (например, <c>localhost</c> или <c>127.0.0.1</c>) для обеспечения отладки фронтенд-приложений.
+            (например, localhost или 127.0.0.1) для обеспечения отладки фронтенд-приложений.
             </summary>
-            <value>
-            Имеет фиксированное строковое значение <c>"ALLOW LOCAL"</c>.
-            </value>
         </member>
         <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_CREDENTIALS">
             <summary>
             Системное имя CORS-профиля, активирующего поддержку передачи авторизационных данных 
             (Cookies, заголовки Authorization клиента) между различными доверенными доменами.
             </summary>
-            <value>
-            Имеет фиксированное строковое значение <c>"ALLOW CREDENTIALS"</c>.
-            </value>
         </member>
         <member name="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_READ_ONLY">
             <summary>
             Системное имя CORS-профиля, разрешающего междоменные запросы исключительно 
-            для безопасных HTTP-методов чтения данных (<c>GET</c>, <c>HEAD</c>, <c>OPTIONS</c>).
+            для безопасных HTTP-методов чтения данных (GET, HEAD, OPTIONS).
             </summary>
-            <value>
-            Имеет фиксированное строковое значение <c>"ALLOW READ ONLY"</c>.
-            </value>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppCors.RegisterPolicies(Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions,Ans.Net10.Web.LibWebOptions)">
+            <summary>
+            Выполняет пакетную инкапсулированную регистрацию всех пяти канонических политик CORS 
+            в инфраструктуре ASP.NET Core на основе переданных параметров конфигурации библиотеки.
+            </summary>
+            <param name="corsOptions">Системные параметры конфигурации <see cref="T:Microsoft.AspNetCore.Cors.Infrastructure.CorsOptions"/>.</param>
+            <param name="options">Строго типизированные настройки глобальной конфигурации веб-библиотеки.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="corsOptions"/> или <paramref name="options"/> равен <see langword="null"/>.
+            </exception>
         </member>
         <member name="T:Ans.Net10.Web.SuppForwardedHeaders">
             <summary>
@@ -6490,27 +6720,27 @@
             Вспомогательный класс для работы с HTTP-кэшем.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_NONE">
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_NONE_PROFILE">
             <summary>
             Профиль, полностью запрещающий кэширование HTTP-ответа на стороне клиента и прокси-серверов.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_30SEC">
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_30SEC_PROFILE">
             <summary>
             Профиль кэширования HTTP-ответа на 30 секунд.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_1MIN">
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_1MIN_PROFILE">
             <summary>
             Профиль кэширования HTTP-ответа на 1 минуту.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_5MIN">
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_5MIN_PROFILE">
             <summary>
             Профиль кэширования HTTP-ответа на 5 минут.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_10MIN">
+        <member name="F:Ans.Net10.Web.SuppWebCache.HTTP_CACHE_10MIN_PROFILE">
             <summary>
             Профиль кэширования HTTP-ответа на 10 минут.
             </summary>

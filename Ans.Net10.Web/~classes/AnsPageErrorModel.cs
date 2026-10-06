@@ -1,8 +1,10 @@
-﻿// rev 2026-09-30
+﻿// rev 2026-10-05
 
+using Ans.Net10.Common;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 
 namespace Ans.Net10.Web
@@ -31,31 +33,31 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает или задает уникальный идентификатор текущего запроса для трассировки логов.
 		/// </summary>
-		public string? RequestId { get; set; }
+		public string RequestId { get; set; } = string.Empty;
 
 
 		/// <summary>
 		/// Получает или задает текстовое сообщение об ошибке.
 		/// </summary>
-		public string? ExceptionMessage { get; set; }
+		public string ExceptionMessage { get; set; } = string.Empty;
 
 
 		/// <summary>
 		/// Получает или задает оригинальный URL-путь, на котором произошел сбой до перенаправления.
 		/// </summary>
-		public string? OriginalPath { get; set; }
+		public string OriginalPath { get; set; } = string.Empty;
 
 
 		/// <summary>
 		/// Получает или задает адрес страницы (Referer), с которой пользователь перешел на текущий URL.
 		/// </summary>
-		public Uri? RefererUri { get; set; }
+		public string RefererUri { get; set; } = string.Empty;
 
 
 		/// <summary>
 		/// Получает или задает результирующий HTTP статус-код ошибки.
 		/// </summary>
-		public int HttpCode { get; set; }
+		public int HttpCode { get; set; } = 500;
 
 
 		/// <summary>
@@ -80,7 +82,6 @@ namespace Ans.Net10.Web
 		public bool HasExceptionMessage
 			=> !string.IsNullOrEmpty(ExceptionMessage);
 
-
 		/// <summary>
 		/// Возвращает признак наличия оригинального пути запроса.
 		/// </summary>
@@ -92,7 +93,7 @@ namespace Ans.Net10.Web
 		/// Возвращает признак наличия информации о странице-источнике перехода (Referer).
 		/// </summary>
 		public bool HasRefererUri
-			=> RefererUri != null;
+			=> !string.IsNullOrEmpty(RefererUri);
 
 
 		/* virtuals */
@@ -102,20 +103,58 @@ namespace Ans.Net10.Web
 		/// Выполняет низкоуровневое извлечение диагностических данных об ошибке из фич HTTP-контекста 
 		/// и параметров конфигурации библиотеки.
 		/// </summary>
-		/// <remarks>
-		/// Метод является виртуальным и может быть расширен в производных классах для логирования 
-		/// или специфичной обработки метаданных.
-		/// </remarks>
 		public virtual void Init()
 		{
-			var f1 = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-			var f2 = HttpContext.Features.Get<IExceptionHandlerFeature>();
+			ShowInfo = Current.Options.Errors?.ShowInfo ?? false;
 			RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
-			RefererUri = Request.GetTypedHeaders().Referer;
-			OriginalPath = f1?.OriginalPath;
-			Exception = f2?.Error;
-			ExceptionMessage = f2?.Error?.Message;
-			ShowInfo = Options.Errors?.ShowInfo ?? false;
+			RefererUri = HttpContext.Request.Headers.Referer.ToString();
+
+			// СЦЕНАРИЙ 1: Фатальные ошибки (Исключения / throw), перехваченные app.UseExceptionHandler()
+			var exceptionFeature1 = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+			if (exceptionFeature1 != null)
+			{
+				HttpCode = 500;
+				Exception = exceptionFeature1.Error;
+				OriginalPath = exceptionFeature1.Path;
+				ExceptionMessage = exceptionFeature1.Error.GetExceptionMessage();
+				//if (Current.Logger.IsEnabled(LogLevel.Critical))
+				//	Current.Logger.LogCritical(
+				//		"{Path} {StatusCode} {@Error}",
+				//		OriginalPath, HttpCode, Exception);
+				return;
+			}
+
+			// СЦЕНАРИЙ 2: Статус-коды (404, 403, 400), перехваченные app.UseStatusCodePagesWithReExecute()
+			var statusCodeFeature1 = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+			if (statusCodeFeature1 != null)
+			{
+				HttpCode = HttpContext.Response.StatusCode;
+				OriginalPath = statusCodeFeature1.OriginalPath;
+				if (HttpContext.Request.Query.TryGetValue("code", out var codeStr1)
+					&& int.TryParse(codeStr1, out var parsedCode1))
+					HttpCode = parsedCode1;
+				ExceptionMessage = HttpCode switch
+				{
+					400 => Resources.Errors.Text_BadRequest,
+					403 => Resources.Errors.Text_AccessIsDenied,
+					404 => Resources.Errors.Text_PageNotFound,
+					_ => string.Format(Resources.Errors.Template_HttpError, HttpCode)
+				};
+				if (HttpCode == 404)
+				{
+					if (Current.Logger.IsEnabled(LogLevel.Warning))
+						Current.Logger.LogWarning(
+							"{Path} {StatusCode} {Error}",
+							OriginalPath, HttpCode, ExceptionMessage);
+				}
+				else
+				{
+					if (Current.Logger.IsEnabled(LogLevel.Error))
+						Current.Logger.LogError(
+							"{Path} {StatusCode} {Error}",
+							OriginalPath, HttpCode, ExceptionMessage);
+				}
+			}
 		}
 
 	}

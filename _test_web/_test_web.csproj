@@ -7,8 +7,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
-	  <ProjectReference Include="..\Ans.Net10.Web\Ans.Net10.Web.csproj" />
+		<PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="10.0.1" />
+		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+		<PackageReference Include="Serilog.Sinks.Map" Version="2.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
+		<ProjectReference Include="..\Ans.Net10.Web\Ans.Net10.Web.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="logs\_test_web\" />
 	</ItemGroup>
 
 </Project>

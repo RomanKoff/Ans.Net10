@@ -1,46 +1,57 @@
-using Ans.Net10.Common.Services;
 using Ans.Net10.Web;
-using Ans.Net10.Web.Services;
-using Microsoft.AspNetCore.SignalR;
+using Serilog;
+using Serilog.Events;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
-var webOptions = AppSettingsFactory.GetOptions<LibWebOptions>(builder.Configuration);
+string appName1 = builder.Environment.ApplicationName.ToLower();
 
-builder.Services.Configure<ForwardedHeadersOptions>(o =>
+builder.Host.UseSerilog((context, services, loggerConfiguration) =>
 {
-	SuppForwardedHeaders.Configure(o, webOptions);
+	loggerConfiguration
+		.MinimumLevel.Debug() // .MinimumLevel.Warning()
+		.Enrich.FromLogContext()
+		.WriteTo.Console()
+		.WriteTo.Logger(lc => lc
+			.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Warning)
+			.WriteTo.Map(
+				keySelector: x => x.Timestamp.DateTime,
+				configure: (dateTime1, wt1) => wt1.File(
+					path: $"logs/{appName1}/{dateTime1:yyyy-MM}/warn_{dateTime1:dd-HH}.txt",
+					rollingInterval: RollingInterval.Infinite,
+					retainedFileCountLimit: null,
+					outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}"
+				)))
+		.WriteTo.Logger(lc => lc
+			.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Error)
+			.WriteTo.Map(
+				keySelector: x => x.Timestamp.DateTime,
+				configure: (dateTime1, wt1) => wt1.File(
+					path: $"logs/{appName1}/{dateTime1:yyyy-MM}/err_{dateTime1:dd-HH}.txt",
+					rollingInterval: RollingInterval.Infinite,
+					retainedFileCountLimit: null,
+					outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}"
+				)))
+		.WriteTo.Logger(lc => lc
+			.MinimumLevel.Fatal()
+			.WriteTo.Map(
+				keySelector: x => x.Timestamp.DateTime,
+				configure: (dateTime1, wt1) => wt1.File(
+					path: $"logs/{appName1}/{dateTime1:yyyy-MM}/fatal_{dateTime1:dd-HH}.txt",
+					rollingInterval: RollingInterval.Infinite,
+					retainedFileCountLimit: null,
+					outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}"
+				)));
 });
 
-builder.Services.AddMvc();
-
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddHybridCache();
-builder.Services.AddHttpClient();
-
-if (webOptions.MailService == null)
-	builder.Services.AddSingleton<IMailerService, FakeMailerService>();
-else
-	builder.Services.AddSingleton<IMailerService, AnsMailerService>(
-		_ => new AnsMailerService(webOptions.MailService));
-
-builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
-builder.Services.AddScoped<CurrentContext>();
+builder.Add_AnsNet10Web();
 
 
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-	app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStatusCodePages();
-app.UseStaticFiles();
-app.UseRouting();
-app.MapRazorPages();
-app.MapControllers();
+app.Use_AnsNet10Web();
 
 app.Run();

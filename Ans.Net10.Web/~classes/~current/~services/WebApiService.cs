@@ -1,4 +1,4 @@
-﻿// rev 2026-09-29
+﻿// rev 2026-10-05
 
 using Ans.Net10.Common;
 using Microsoft.Extensions.Caching.Hybrid;
@@ -51,14 +51,16 @@ namespace Ans.Net10.Web
 			CancellationToken cancellationToken = default)
 		{
 			ArgumentException.ThrowIfNullOrEmpty(url);
-			using var client1 = _current.HttpClientFactory.CreateClient();
-			return await client1.GetJsonResultAsync<T>(
-				url,
-				_current.HybridCache,
-				jsonOptions,
+			string cacheKey1 = $"webapi_json_{SuppCrypto.ComputeSha256(url)}";
+			return await _current.Cache.GetAsync(
+				cacheKey1,
+				async token =>
+				{
+					using var client1 = _current.HttpClientFactory.CreateClient();
+					return await client1.GetJsonResultAsync<T>(
+						url, _current.HybridCache, jsonOptions, cacheOptions, encoding, configureRequest, token);
+				},
 				cacheOptions,
-				encoding,
-				configureRequest,
 				cancellationToken);
 		}
 
@@ -89,14 +91,16 @@ namespace Ans.Net10.Web
 		{
 			ArgumentException.ThrowIfNullOrEmpty(url);
 			ArgumentNullException.ThrowIfNull(jsonTypeInfo);
-			using var client1 = _current.HttpClientFactory.CreateClient();
-			return await client1.GetJsonGenResultAsync(
-				url,
-				_current.HybridCache,
-				jsonTypeInfo,
+			string cacheKey1 = $"webapi_jsngen_{SuppCrypto.ComputeSha256(url)}";
+			return await _current.Cache.GetAsync(
+				cacheKey1,
+				async token =>
+				{
+					using var client1 = _current.HttpClientFactory.CreateClient();
+					return await client1.GetJsonGenResultAsync(
+						url, _current.HybridCache, jsonTypeInfo, cacheOptions, encoding, configureRequest, token);
+				},
 				cacheOptions,
-				encoding,
-				configureRequest,
 				cancellationToken);
 		}
 
@@ -125,14 +129,16 @@ namespace Ans.Net10.Web
 			CancellationToken cancellationToken = default)
 		{
 			ArgumentException.ThrowIfNullOrEmpty(url);
-			using var client1 = _current.HttpClientFactory.CreateClient();
-			return await client1.GetXmlResultAsync<T>(
-				url,
-				_current.HybridCache,
-				defaultNamespace,
+			string cacheKey1 = $"webapi_xml_{SuppCrypto.ComputeSha256(url)}";
+			return await _current.Cache.GetAsync(
+				cacheKey1,
+				async token =>
+				{
+					using var client1 = _current.HttpClientFactory.CreateClient();
+					return await client1.GetXmlResultAsync<T>(
+						url, _current.HybridCache, defaultNamespace, cacheOptions, encoding, configureRequest, token);
+				},
 				cacheOptions,
-				encoding,
-				configureRequest,
 				cancellationToken);
 		}
 
@@ -165,15 +171,16 @@ namespace Ans.Net10.Web
 		{
 			ArgumentException.ThrowIfNullOrEmpty(url);
 			ArgumentNullException.ThrowIfNull(selector);
-			using var client1 = _current.HttpClientFactory.CreateClient();
-			return await client1.GetGridResultAsync(
-				url,
-				_current.HybridCache,
-				selector,
-				provider,
-				encoding,
+			string cacheKey1 = $"webapi_grid_{SuppCrypto.ComputeSha256(url)}";
+			return await _current.Cache.GetAsync(
+				cacheKey1,
+				async token =>
+				{
+					using var client1 = _current.HttpClientFactory.CreateClient();
+					return await client1.GetGridResultAsync(
+						url, _current.HybridCache, selector, provider, encoding, cacheOptions, configureRequest, token);
+				},
 				cacheOptions,
-				configureRequest,
 				cancellationToken);
 		}
 
