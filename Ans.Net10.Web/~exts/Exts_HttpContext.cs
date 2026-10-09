@@ -47,7 +47,7 @@ namespace Ans.Net10.Web
 			this HttpContext context)
 		{
 			ArgumentNullException.ThrowIfNull(context);
-			return context.Request.PathBase;
+			return context.Request.PathBase.Value?.TrimEnd('/') ?? string.Empty;
 		}
 
 

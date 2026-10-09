@@ -358,7 +358,7 @@ namespace Ans.Net10.Common
 				return CONTENTINFO_BIN;
 			string key1 = extension[0] == '.'
 				? extension
-				: string.Concat(".", extension);
+				: $".{extension}";
 			return CONTENTINFOS.TryGetValue(key1, out var info1)
 				? info1
 				: CONTENTINFO_BIN;

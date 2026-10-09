@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+
+		<NeutralLanguage>ru</NeutralLanguage>
+		<SatelliteResourceLanguages>ru-RU,en-US</SatelliteResourceLanguages>
+		<CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory>
+
+		<Version>10.0.0</Version>
+		<VersionPrefix>$(Version)</VersionPrefix>
+		<Authors>Roman Koff</Authors>
+		<Copyright>$(Authors)</Copyright>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
+		<ProjectReference Include="..\Ans.Net10.Web\Ans.Net10.Web.csproj" />
+	</ItemGroup>
+
+</Project>

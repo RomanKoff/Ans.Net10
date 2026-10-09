@@ -33,8 +33,9 @@ namespace Ans.Net10.Web
 			ArgumentException.ThrowIfNullOrEmpty(name);
 			ArgumentNullException.ThrowIfNull(value);
 			ArgumentNullException.ThrowIfNull(separator);
-			if (tag.Attributes.TryGetValue(name, out var current1) && !string.IsNullOrEmpty(current1))
-				tag.Attributes[name] = string.Concat(current1, separator, value);
+			if (tag.Attributes.TryGetValue(name, out var current1)
+				&& !string.IsNullOrEmpty(current1))
+				tag.Attributes[name] = $"{current1}{separator}{value}";
 			else
 				tag.Attributes[name] = value;
 		}

@@ -1,4 +1,4 @@
-﻿// rev 2026-10-05
+﻿// rev 2026-10-07
 
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
@@ -13,15 +13,20 @@ namespace Ans.Net10.Web
 	/// <remarks>
 	/// Инициализирует новый экземпляр класса <see cref="CacheService"/> с использованием первичного конструктора C#.
 	/// </remarks>
-	/// <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша.</param>
-	public class CacheService(
+	/// <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша и логгер.</param>
+	public partial class CacheService(
 		CurrentContext current)
 	{
 
-		private readonly HybridCache _cache = current.HybridCache;
+		private readonly HybridCache _cache
+			= current.HybridCache
+				?? throw new ArgumentNullException(nameof(current));
+		private readonly ILogger _logger
+			= current.Logger
+				?? throw new ArgumentNullException(nameof(current));
 
 
-		/* functions */
+		/* methods */
 
 
 		/// <summary>
@@ -34,14 +39,14 @@ namespace Ans.Net10.Web
 		/// <param name="options">Опциональные индивидуальные параметры времени жизни и политик текущей записи кэша.</param>
 		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <returns>
-		/// Значение типа <typeparamref name="T"/>, содержащееся в кэше или созданное фабрикой.
+		/// Значение типа <typeparamref name="T"/>, содержащееся в кэше или созданное фабрикой. Допускает возвращение <see langword="null"/>.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="cacheKey"/> или <paramref name="getObject"/> равен <see langword="null"/>.
 		/// </exception>
-		public async ValueTask<T> GetAsync<T>(
+		public async ValueTask<T?> GetAsync<T>(
 			string cacheKey,
-			Func<CancellationToken, ValueTask<T>> getObject,
+			Func<CancellationToken, ValueTask<T?>> getObject,
 			HybridCacheEntryOptions? options = null,
 			CancellationToken cancellationToken = default)
 		{
@@ -57,13 +62,13 @@ namespace Ans.Net10.Web
 				},
 				options,
 				cancellationToken: cancellationToken);
-			if (isCacheMiss1 && current.Logger.IsEnabled(LogLevel.Information))
-				current.Logger.LogInformation("Cache MISS: {Key}", cacheKey);
+			if (isCacheMiss1)
+				_log.CacheMiss(_logger, cacheKey);
 			return result1;
 		}
 
 
-		/* methods */
+		/* functions */
 
 
 		/// <summary>
@@ -76,13 +81,32 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="cacheKey"/> равен <see langword="null"/>.
 		/// </exception>
-		public async ValueTask RemoveAsync(
+		public ValueTask RemoveAsync(
 			string cacheKey)
 		{
 			ArgumentNullException.ThrowIfNull(cacheKey);
-			await _cache.RemoveAsync(cacheKey);
-			if (current.Logger.IsEnabled(LogLevel.Information))
-				current.Logger.LogInformation("Cache PURGED: {Key}", cacheKey);
+			var task1 = _cache.RemoveAsync(cacheKey);
+			_log.CachePurged(_logger, cacheKey);
+			return task1;
+		}
+
+
+		/* privates */
+
+
+		private static partial class _log
+		{
+			[LoggerMessage(
+				EventId = 20,
+				Level = LogLevel.Information,
+				Message = "[Cache] Промах кэша (Cache MISS) для ключа: {Key}")]
+			public static partial void CacheMiss(ILogger logger, string key);
+
+			[LoggerMessage(
+				EventId = 21,
+				Level = LogLevel.Information,
+				Message = "[Cache] Запись принудительно удалена из кэша (Cache PURGED): {Key}")]
+			public static partial void CachePurged(ILogger logger, string key);
 		}
 
 	}

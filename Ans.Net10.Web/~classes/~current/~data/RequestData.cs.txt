@@ -1,0 +1,231 @@
+﻿using Ans.Net10.Common;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Routing;
+using System.Text;
+
+namespace Ans.Net10.Web
+{
+
+	public class RequestData
+	{
+
+		private readonly CurrentContext _current;
+
+
+		/* ctor */
+
+
+		public RequestData(
+			CurrentContext current)
+		{
+			_current = current;
+			RelativeUrl = _current.HttpContext.Request.Path.ToString().ToLower().TrimEnd('/');
+			AbsoluteUrl = $"{_current.Host.ApplicationUrl}{RelativeUrl}";
+			Params = _current.HttpContext.Request.QueryString.Value;
+			AreaName = current.HttpContext.GetRouteValue("Area")?.ToString();
+			RazorPage = current.HttpContext.GetRouteValue("Page")?.ToString();
+			ControllerName = current.HttpContext.GetRouteValue("Controller")?.ToString();
+			ActionName = current.HttpContext.GetRouteValue("Action")?.ToString();
+			ActionUniqueID = _getActionUID();
+			IsController = !string.IsNullOrEmpty(ControllerName);
+			IsRazorPage = !string.IsNullOrEmpty(RazorPage);
+		}
+
+
+		/* readonly properties */
+
+
+		public string RelativeUrl { get; }
+		public string AbsoluteUrl { get; }
+		public string Params { get; }
+		public string AreaName { get; }
+		public string ControllerName { get; }
+		public string ActionName { get; }
+		public string RazorPage { get; }
+		public string ActionUniqueID { get; }
+		public bool IsController { get; }
+		public bool IsRazorPage { get; }
+
+
+
+
+
+		/* functions */
+
+
+		/// <summary>
+		/// Определяет узел и путь к странице
+		/// </summary>
+		/// <param name="request">Запрос</param>
+		/// <returns>
+		///		"" — нормальный запрос;
+		///		"path" — редирект на исправленный путь;
+		///		null — запрос не найден.
+		/// </returns>
+		public string ParseRequest(
+			string request)
+		{
+			_current.Sitemap.PrepareNodes();
+
+			ViewEngineResult engine1;
+			if (string.IsNullOrEmpty(request))
+			{
+				// стартовая страница сайта:
+				//		"" ==> Views/Nodes/_main/start.cshtml
+				_initPaths(null, "_main/start");
+			}
+			else
+			{
+				var fix1 = _fixPath(request);
+				if (fix1 != request)
+				{
+					// исправление пути запроса
+					return $"{_current.Host.VirtualPath}/{fix1}{Params}";
+				}
+				engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{request}");
+				if (engine1.View != null)
+				{
+					// страница узла сайта:
+					//		node1/page1 ==> Views/Nodes/node1/page1.cshtml
+					//		node1/*path1/page1 ==> Views/Nodes/node1/*path1/page1.cshtml
+					_initPaths(null, request);
+				}
+				else
+				{
+					var view1 = $"{request}/start";
+					engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view1}");
+					if (engine1.View != null)
+					{
+						// стартовая страница узла или каталога узла:
+						//		node1 ==> Views/Nodes/node1/start.cshtml
+						//		node1/*path1 ==> Views/Nodes/node1/*path1/start.cshtml
+						_initPaths(request, view1);
+					}
+					else
+					{
+						var view2 = $"_main/{request}";
+						engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view2}");
+						if (engine1.View != null)
+						{
+							// страница узла по умолчанию _main:
+							//		page1 ==> Views/Nodes/_main/page1.cshtml
+							//		*path1/page1 ==> Views/Nodes/_main/*path1/page1.cshtml
+							_initPaths(request, view2);
+						}
+						else
+						{
+							var view3 = $"_main/{request}/start";
+							engine1 = _current.ViewRender.GetViewEngineResult($"Nodes/{view3}");
+							if (engine1.View != null)
+							{
+								// стартовая страница каталога узла по умолчанию _main:
+								//		*path1 ==> Views/Nodes/_main/*path1/start.cshtml
+								_initPaths(request, view3);
+							}
+							else
+								// страница не найдена
+								return null;
+						}
+					}
+				}
+			}			
+			_nodeRelease();
+			_pageRelease();
+			IsStartSite = string.IsNullOrEmpty(RelativeUrl);
+			IsStartNode = RelativeUrl == _current.Node.Url;
+			IsStartPage = ViewPath.EndsWith("/start");
+			return "";
+		}
+
+
+		/* privates */
+
+
+		private void _initPaths(
+			string queryPath,
+			string viewPath)
+		{
+			ViewPath = $"/{viewPath}";
+
+			var first1 = viewPath.IndexOf('/');
+			var hasFirst1 = first1 > -1;
+			var last2 = hasFirst1 ? viewPath.LastIndexOf('/') : -1;
+			var hasLast2 = last2 > -1;
+			NodeName = hasFirst1 ? viewPath[..first1] : viewPath;
+			PageName = hasLast2 ? viewPath[(last2 + 1)..] : viewPath;
+			PageResources = hasFirst1 ? viewPath[(first1 + 1)..] : null;
+			PagePath = PageResources == "start" ? null : PageResources.GetTrimEnd("/start");
+
+			var path1 = (queryPath ?? viewPath).ReplaceIfEqual("start", "");
+			QueryPath = path1 == "_main/start"
+				? _current.Host.VirtualPath
+				: $"{_current.Host.VirtualPath}/{path1}";
+		}
+
+
+		private void _nodeRelease()
+		{
+			if (_current.Site.MapNodes == null)
+				return;
+			_current.Site.MapNodes.ClearActives();
+			var node1 = _current.Site.MapNodes.GetItem(NodeName);
+			if (node1 == null)
+				return;
+			node1.SetActive();
+			_current.Node.NodeItem = node1;
+			if (node1.HasMasters)
+				foreach (var item1 in node1.Masters
+					.Where(x => x.Type != MapItemTypeEnum.Group)
+					.Reverse())
+					_current.Node.InsertParent(item1.Link);
+		}
+
+
+		private void _pageRelease()
+		{
+			if (_current.Node.MapPages == null)
+				return;
+			_current.Node.MapPages.ClearActives();
+			var page1 = _current.Node.MapPages.GetItem(QueryPath);
+			if (page1 == null)
+				return;
+			page1.SetActive();
+			_current.Page.PageItem = page1;
+			if (page1.HasMasters)
+				foreach (var item1 in page1.Masters
+					.Reverse())
+					_current.Page.InsertParent(item1.Link);
+		}
+
+
+		private static string _fixPath(
+			string path)
+		{
+			var s1 = path.Replace("//", "/").Trim('/');
+			if (s1 == "start")
+				return null;
+			if (s1.EndsWith("/start"))
+				return s1[..^5];
+			return s1;
+		}
+
+
+		private string _getActionUID()
+		{
+			var sb1 = new StringBuilder();
+			if (AreaName != null)
+				sb1.Append($"/{AreaName}");
+			if (RazorPage != null)
+				sb1.Append($"{RazorPage}");
+			if (ControllerName != null)
+				sb1.Append($"/{ControllerName}");
+			if (ActionName != null)
+				sb1.Append($"/{ActionName}");
+			return sb1.ToString().ToLower();
+		}
+
+	}
+
+}
+
+

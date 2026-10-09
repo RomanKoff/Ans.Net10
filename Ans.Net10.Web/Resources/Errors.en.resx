@@ -135,6 +135,15 @@
   <data name="Text_GoBack" xml:space="preserve">
     <value>Go back</value>
   </data>
+  <data name="Text_Referer" xml:space="preserve">
+    <value>Referral Source</value>
+  </data>
+  <data name="Text_Info" xml:space="preserve">
+    <value>Diagnostic information</value>
+  </data>
+  <data name="Text_GoHome" xml:space="preserve">
+    <value>To the main page</value>
+  </data>
   <data name="Text_PageNotFound" xml:space="preserve">
     <value>Page not found!</value>
   </data>

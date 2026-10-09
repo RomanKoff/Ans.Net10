@@ -5622,6 +5622,20 @@
             <param name="count">Требуемое фиксированное количество элементов в возвращаемом массиве.</param>
             <returns>Массив строк строго заданной длины <paramref name="count"/>.</returns>
         </member>
+        <member name="M:Ans.Net10.Common.Exts_String.SplitFix(System.String,System.Char,System.Int32)">
+            <summary>
+            Разделяет строку на фиксированное количество элементов по указанному символу-разделителю.
+            Выполняет очистку краев сегментов от пробелов. Недостающие элементы заполняются пустой строкой, лишние — отсекаются.
+            </summary>
+            <remarks>
+            Данная перегрузка оптимизирована для платформ .NET 10 и не выделяет в куче временных 
+            промежуточных массивов строк, выполняя трансформацию сегментов по месту.
+            </remarks>
+            <param name="instance">Исходная строка для разделения. Допускает значение <see langword="null"/>.</param>
+            <param name="separator">Символ-разделитель сегментов.</param>
+            <param name="count">Требуемое фиксированное количество элементов в возвращаемом массиве.</param>
+            <returns>Массив строк строго заданной длины <paramref name="count"/>.</returns>
+        </member>
         <member name="M:Ans.Net10.Common.Exts_String.GetTrimStart(System.String,System.String,System.String)">
             <summary>
             Удаляет повторяющуюся подстроку в НАЧАЛЕ строки или заменяет её на альтернативную подстроку.

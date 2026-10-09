@@ -1,4 +1,4 @@
-﻿// rev 2026-09-29
+﻿// rev 2026-10-07
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
@@ -11,30 +11,21 @@ namespace Ans.Net10.Web
 	/// Служба для работы со строкой запроса (Query String) текущего HTTP-запроса, 
 	/// предоставляющая инструменты фильтрации, маппинга и генерации элементов управления интерфейса.
 	/// </summary>
-	public class QueryStringService
-		: QueryStringHelper
+	/// <remarks>
+	/// Инициализирует новый экземпляр класса <see cref="QueryStringService"/> на основе первичного конструктора C#.
+	/// </remarks>
+	/// <param name="current">Текущий контекст обработки запроса.</param>
+	/// <exception cref="ArgumentNullException">
+	/// Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.
+	/// </exception>
+	public class QueryStringService(
+		CurrentContext current)
+		: QueryStringHelper(
+			(current ?? throw new ArgumentNullException(nameof(current)))
+				.HttpContext?.Request.Query ?? QueryCollection.Empty)
 	{
 
-		private readonly CurrentContext _current;
-
-
-		/* ctor */
-
-
-		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="QueryStringService"/> на основе текущего контекста запроса.
-		/// </summary>
-		/// <param name="current">Текущий контекст обработки запроса.</param>
-		/// <exception cref="ArgumentNullException">
-		/// Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.
-		/// </exception>
-		public QueryStringService(
-			CurrentContext current)
-			: base(current?.HttpContext?.Request.Query ?? QueryCollection.Empty)
-		{
-			ArgumentNullException.ThrowIfNull(current);
-			_current = current;
-		}
+		private readonly CurrentContext _current = current;
 
 
 		/* functions */
@@ -79,7 +70,7 @@ namespace Ans.Net10.Web
 			ArgumentNullException.ThrowIfNull(name);
 			ArgumentNullException.ThrowIfNull(innerHtml);
 			var queryHelper1 = GetHelper();
-			var nameDesc1 = $"-{name}";
+			string nameDesc1 = $"-{name}";
 			if (useTypograf)
 				innerHtml = SuppTypograph.GetTypografMin(innerHtml) ?? string.Empty;
 			var cssBuilder1 = new TagClassesBuilder("text-nowrap sorting");
@@ -102,8 +93,8 @@ namespace Ans.Net10.Web
 				queryHelper1.AppendString("order", name);
 				finalInnerHtml1 = $"<span class=\"text-wrap\">{innerHtml}</span>";
 			}
-			return new HtmlString(
-				$"<a class=\"{cssBuilder1}\" href=\"{queryHelper1.MakeQueryString("")}\">{finalInnerHtml1}</a>");
+			string resultHtml1 = $"<a class=\"{cssBuilder1}\" href=\"{queryHelper1.MakeQueryString(string.Empty)}\">{finalInnerHtml1}</a>";
+			return new HtmlString(resultHtml1);
 		}
 
 	}

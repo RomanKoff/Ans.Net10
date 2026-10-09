@@ -135,6 +135,15 @@
   <data name="Text_GoBack" xml:space="preserve">
     <value>Вернуться назад</value>
   </data>
+  <data name="Text_Referer" xml:space="preserve">
+    <value>Источник перехода (Referer)</value>
+  </data>
+  <data name="Text_Info" xml:space="preserve">
+    <value>Диагностическая информация</value>
+  </data>
+  <data name="Text_GoHome" xml:space="preserve">
+    <value>На главную</value>
+  </data>
   <data name="Text_PageNotFound" xml:space="preserve">
     <value>Страница не найдена!</value>
   </data>

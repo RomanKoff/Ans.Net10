@@ -1,10 +1,10 @@
-﻿// rev 2026-10-06
+﻿// rev 2026-10-09
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
+using Ans.Net10.Web.Middlewares;
 using Ans.Net10.Web.Services;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,8 +21,7 @@ namespace Ans.Net10.Web
 	{
 
 		/// <summary>
-		/// Выполняет централизованную регистрацию строго типизированных параметров конфигурации, 
-		/// встроенных оркестровых сервисов, расширенных кодировок, профилей CORS, настроек сессий и компонентов MVC/Razor Pages.
+		/// Выполняет централизованную регистрацию сервисов библиотеки.
 		/// </summary>
 		/// <param name="builder">Архитектурный строитель веб-приложения <see cref="WebApplicationBuilder"/>.</param>
 		/// <returns>Строитель <see cref="IMvcBuilder"/> для последующей кастомизации конвейера MVC фреймворка.</returns>
@@ -39,13 +38,13 @@ namespace Ans.Net10.Web
 			var options1 = AppSettingsFactory.GetOptions<LibWebOptions>(builder.Configuration);
 			builder.Services.AddSingleton(options1);
 
-			var defaultCultureName1 = options1.Region!.Culture;
+			var defaultCultureName1 = options1.DefaultCulture;
 			builder.Services.Configure<RequestLocalizationOptions>(o =>
 			{
 				var defaultCulture1 = new CultureInfo(defaultCultureName1);
-				o.DefaultRequestCulture = new RequestCulture(defaultCulture1);
-				o.SupportedCultures = new List<CultureInfo> { defaultCulture1 };
-				o.SupportedUICultures = new List<CultureInfo> { defaultCulture1 };
+				o.DefaultRequestCulture = new(defaultCulture1);
+				o.SupportedCultures = [defaultCulture1];
+				o.SupportedUICultures = [defaultCulture1];
 			});
 
 			builder.Services.AddHttpContextAccessor();
@@ -59,11 +58,14 @@ namespace Ans.Net10.Web
 
 			builder.Services.AddCors(o => SuppCors.RegisterPolicies(o, options1));
 
-			if (!options1.UseContentDrivenMode)
+			if (options1.UseSession)
 			{
 				builder.Services.AddDistributedMemoryCache();
 				builder.Services.AddSession();
 			}
+
+			//builder.Services.AddSingleton<Nodes.INodePathResolver, Nodes.AnsNodePathResolver>();
+			//builder.Services.AddSingleton<ISiteProfileProvider, AnsXmlSiteProfileProvider>();
 
 			if (options1.MailService == null)
 				builder.Services.AddSingleton<IMailerService, FakeMailerService>();
@@ -71,9 +73,8 @@ namespace Ans.Net10.Web
 				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
 					_ => new AnsMailerService(options1.MailService));
 
-			builder.Services.AddSingleton<Nodes.INodePathResolver, Nodes.AnsNodePathResolver>();
-
 			builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
+			//builder.Services.AddScoped<ICmsProfileResolver, AnsCmsProfileResolver>();
 			builder.Services.AddScoped<CurrentContext>();
 
 			builder.Services.AddRazorPages();
@@ -85,7 +86,7 @@ namespace Ans.Net10.Web
 						_ => Common.Resources.Form.Text_ValueIsRequired);
 					foreach (var profile1 in SuppWebCache.HTTP_CACHE_PROFILES)
 						o.CacheProfiles.Add(profile1.Key, profile1.Value);
-					if (!options1.UseContentDrivenMode)
+					if (options1.UseSession)
 						o.Filters.Add(new ResponseCacheAttribute
 						{
 							CacheProfileName = SuppWebCache.HTTP_CACHE_NONE_NAME
@@ -109,19 +110,31 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline), 
-		/// активируя кастомные компоненты локализации, сессий, обработки исключений, сетевой безопасности, CORS и динамического роутинга.
+		/// Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline).
 		/// </summary>
 		/// <param name="app">Экземпляр выполняемого веб-приложения <see cref="WebApplication"/>.</param>
+		/// <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если переданный параметр <paramref name="app"/> равен <see langword="null"/>.
 		/// </exception>
-		public static void Use_AnsNet10Web(
+		public static async Task Use_AnsNet10WebAsync(
 			this WebApplication app)
 		{
 			ArgumentNullException.ThrowIfNull(app);
 
 			var options1 = app.Services.GetRequiredService<LibWebOptions>();
+
+			if (options1.UseDeveloperMode)
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseStatusCodePages();
+			}
+			else
+			{
+				var path1 = options1.Errors.RazorPageErrorsPath;
+				app.UseExceptionHandler(path1);
+				app.UseStatusCodePagesWithReExecute(path1, "?code={0}");
+			}
 
 			if (!options1.UseDeveloperMode)
 				app.UseHsts();
@@ -134,22 +147,12 @@ namespace Ans.Net10.Web
 				app.UseForwardedHeaders(forwardedOptions1);
 			}
 
-			if (options1.UseDeveloperMode)
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseStatusCodePages();
-			}
-			else
-			{
-				var path1 = options1.Errors?.RazorPageErrorsPath ?? "/Ans/Errors";
-				app.UseExceptionHandler(path1);
-				app.UseStatusCodePagesWithReExecute(path1, "?code={0}");
-			}
+			app.UseMiddleware<AnsTrailingSlashMiddleware>();
 
 			app.UseResponseCaching();
 			app.UseRequestLocalization();
 
-			if (!options1.UseContentDrivenMode)
+			if (options1.UseSession)
 				app.UseSession();
 
 			if (options1.Mimetypes != null && options1.Mimetypes.Length > 0)
@@ -157,23 +160,23 @@ namespace Ans.Net10.Web
 				var mimeProvider1 = new FileExtensionContentTypeProvider();
 				foreach (var mime1 in options1.Mimetypes)
 				{
-					if (string.IsNullOrWhiteSpace(mime1))
+					if (string.IsNullOrEmpty(mime1))
 						continue;
-					var parts1 = Exts_String.SplitFix(mime1, "|", 2);
+					var parts1 = mime1.Split("|");
 					if (parts1.Length == 2
 						&& !string.IsNullOrWhiteSpace(parts1[0])
 						&& !string.IsNullOrWhiteSpace(parts1[1]))
 						mimeProvider1.Mappings[parts1[0]] = parts1[1];
 				}
-				app.UseStaticFiles(new StaticFileOptions
-				{
-					ContentTypeProvider = mimeProvider1
-				});
+				app.UseStaticFiles(
+					new StaticFileOptions { ContentTypeProvider = mimeProvider1 });
 			}
 			else
 				app.UseStaticFiles();
 
 			app.UseRouting();
+
+			//app.UseMiddleware<AnsCmsProfileMiddleware>();
 
 			if (string.IsNullOrWhiteSpace(options1.Cors?.Profile))
 				app.UseCors(SuppCors.CORS_ALLOW_ALL);
@@ -186,9 +189,9 @@ namespace Ans.Net10.Web
 			app.MapControllers();
 			app.MapRazorPages();
 
-			using var scope1 = app.Services.CreateScope();
-			var resolver1 = scope1.ServiceProvider.GetRequiredService<Nodes.INodePathResolver>();
-			_ = resolver1.InitializeAsync(app.Lifetime.ApplicationStopping);
+			//using var scope = app.Services.CreateScope();
+			//var resolver = scope.ServiceProvider.GetRequiredService<INodePathResolver>();
+			//await resolver.InitializeAsync(app.Lifetime.ApplicationStopping);
 		}
 
 	}

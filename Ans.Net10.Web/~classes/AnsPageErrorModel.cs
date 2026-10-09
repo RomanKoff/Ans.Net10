@@ -1,4 +1,4 @@
-﻿// rev 2026-10-05
+﻿// rev 2026-10-09
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Diagnostics;
@@ -119,8 +119,9 @@ namespace Ans.Net10.Web
 				ExceptionMessage = exceptionFeature1.Error.GetExceptionMessage();
 				//if (Current.Logger.IsEnabled(LogLevel.Critical))
 				//	Current.Logger.LogCritical(
-				//		"{Path} {StatusCode} {@Error}",
-				//		OriginalPath, HttpCode, Exception);
+				//		500,
+				//		"Server{HttpCode} {OriginalPath} {RefererUri} {@Exception}",
+				//		HttpCode, OriginalPath, RefererUri, Exception);
 				return;
 			}
 
@@ -144,15 +145,17 @@ namespace Ans.Net10.Web
 				{
 					if (Current.Logger.IsEnabled(LogLevel.Warning))
 						Current.Logger.LogWarning(
-							"{Path} {StatusCode} {Error}",
-							OriginalPath, HttpCode, ExceptionMessage);
+							404,
+							"Http{HttpCode} {OriginalPath} {RefererUri} {@Exception}",
+							HttpCode, OriginalPath, RefererUri, ExceptionMessage);
 				}
 				else
 				{
 					if (Current.Logger.IsEnabled(LogLevel.Error))
 						Current.Logger.LogError(
-							"{Path} {StatusCode} {Error}",
-							OriginalPath, HttpCode, ExceptionMessage);
+							400,
+							"Http{HttpCode} {OriginalPath} {RefererUri} {@Exception}",
+							HttpCode, OriginalPath, RefererUri, ExceptionMessage);
 				}
 			}
 		}

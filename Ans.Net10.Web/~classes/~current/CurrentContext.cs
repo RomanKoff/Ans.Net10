@@ -1,9 +1,10 @@
-﻿// rev 2026-09-29
+﻿// rev 2026-10-09
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
 using Ans.Net10.Web.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Hybrid;
@@ -13,14 +14,6 @@ using System.Globalization;
 
 namespace Ans.Net10.Web
 {
-
-	/*
-	Регистрация в контейнере зависимостей (DI):
-		LibWebStartup.Add_AnsNet10Web()
-			-> builder.Services.AddScoped<CurrentContext>();
-	*/
-
-
 
 	/// <summary>
 	/// Единый оркестровый контекст текущего HTTP-запроса (Context Hub), инкапсулирующий 
@@ -69,7 +62,8 @@ namespace Ans.Net10.Web
 			Logger = loggerFactory.CreateLogger("Ans.Net10.Web");
 			Env = env;
 			Configuration = configuration;
-			HttpContext = httpContextAccessor.HttpContext;
+			HttpContext = httpContextAccessor.HttpContext
+				?? throw new Exception("HttpContext is busy!");
 			HybridCache = hybridCache;
 			ViewRender = viewRender;
 			HttpClientFactory = httpClientFactory;
@@ -80,12 +74,21 @@ namespace Ans.Net10.Web
 			Culture = CultureInfo.CurrentCulture;
 			DateTimeHelper = new();
 
+			// datas
+			Host = new(this);
+
+			// services
 			Cache = new(this);
 			Cookies = new(this);
 			Network = new(this);
 			QueryString = new(this);
 			Send = new(this);
 			WebApi = new(this);
+
+			// profiles
+			Site = new();
+			Node = new();
+			Page = new();
 		}
 
 
@@ -117,7 +120,7 @@ namespace Ans.Net10.Web
 		/// Объект <see cref="HttpContext"/> для текущего запроса, или <see langword="null"/>, 
 		/// если контекст недоступен (например, при вызове вне контекста веб-сервера).
 		/// </value>
-		public HttpContext? HttpContext { get; }
+		public HttpContext HttpContext { get; }
 
 
 		/// <summary>
@@ -168,6 +171,15 @@ namespace Ans.Net10.Web
 		public DateTimeHelper DateTimeHelper { get; }
 
 
+		/* datas */
+
+
+		public HostData Host { get; }
+
+
+		/* services */
+
+
 		/// <summary>
 		/// Получает прикладную службу гибридного кэширования текущего контекста.
 		/// </summary>
@@ -204,6 +216,72 @@ namespace Ans.Net10.Web
 		public WebApiService WebApi { get; }
 
 
+		/* profiles */
+
+
+		/// <summary>
+		/// Профиль сайта.
+		/// </summary>
+		public SiteProfile Site { get; }
+
+
+		/// <summary>
+		/// Профиль узла.
+		/// </summary>
+		public NodeProfile Node { get; }
+
+
+		/// <summary>
+		/// Профиль страницы.
+		/// </summary>
+		public PageProfile Page { get; }
+
+
+		/* functions */
+
+
+		public string GetAbsoluteUrl(
+			string? target)
+		{
+			if (string.IsNullOrWhiteSpace(target))
+				return string.Empty;
+			if (target.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+				target.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+				return target;
+			return $"{Host.VirtualPath}/{target.TrimStart('/')}";
+		}
+
+
+		/// <summary>
+		/// Автоматически собранный человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
+		/// Объединяет иерархию узлов и название текущей страницы с использованием интерполяции .NET 10.
+		/// </summary>
+		/// <remarks>
+		/// Формирует строку вида: "Название страницы | Кафедра -> Факультет -> Название сайта".
+		/// Если страница или узел не определены, возвращает базовое название сайта или пустую строку.
+		/// </remarks>
+		public string BrowserTitle
+			=> field ??= _getCalculatedBrowserTitle();
+
+
+		/// <summary>
+		/// Получает безопасное HTML-представление человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
+		/// </summary>		
+		public HtmlString BrowserTitleHtml
+			=> field ??= BrowserTitle.ToHtml(false);
+
+
+		/// <summary>
+		/// Возвращает ленивое перечисление элементов навигационной цепочки ("хлебных крошек") 
+		/// от текущей страницы/узла вверх до корня сайта.
+		/// </summary>
+		public IEnumerable<string> Breadcrumbs
+			=> _getCalculatedBreadcrumbs();
+
+
+		/* todo */
+
+
 		internal string GetResUrl(string v)
 		{
 			throw new NotImplementedException();
@@ -213,6 +291,21 @@ namespace Ans.Net10.Web
 		internal string GetUrl(string v)
 		{
 			throw new NotImplementedException();
+		}
+
+
+		/* privates */
+
+
+		private string _getCalculatedBrowserTitle()
+		{
+			return string.Empty;
+		}
+
+
+		private IEnumerable<string> _getCalculatedBreadcrumbs()
+		{
+			return [];
 		}
 
 	}

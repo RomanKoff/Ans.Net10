@@ -113,7 +113,7 @@ namespace Ans.Net10.Common
 				|| span1.EndsWith("x")
 				|| span1.EndsWith("z")
 				|| span1.EndsWith("s"))
-				return _getMatchCase(word, string.Concat(word, "es"));
+				return _getMatchCase(word, $"{word}es");
 
 			if (span1.EndsWith("y"))
 			{
@@ -121,20 +121,20 @@ namespace Ans.Net10.Common
 					|| span1.EndsWith("ey")
 					|| span1.EndsWith("oy")
 					|| span1.EndsWith("uy"))
-					return _getMatchCase(word, string.Concat(word, "s"));
-				return _getMatchCase(word, string.Concat(word.AsSpan(0, word.Length - 1), "ies"));
+					return _getMatchCase(word, $"{word}s");
+				return _getMatchCase(word, $"{word.AsSpan(0, word.Length - 1)}ies");
 			}
 
 			if (span1.EndsWith("o"))
-				return _getMatchCase(word, string.Concat(word, "es"));
+				return _getMatchCase(word, $"{word}es");
 
 			if (span1.EndsWith("fe"))
-				return _getMatchCase(word, string.Concat(word.AsSpan(0, word.Length - 2), "ves"));
+				return _getMatchCase(word, $"{word.AsSpan(0, word.Length - 2)}ves");
 
 			if (span1.EndsWith("f"))
-				return _getMatchCase(word, string.Concat(word.AsSpan(0, word.Length - 1), "ves"));
+				return _getMatchCase(word, $"{word.AsSpan(0, word.Length - 1)}ves");
 
-			return _getMatchCase(word, string.Concat(word, "s"));
+			return _getMatchCase(word, $"{word}s");
 		}
 
 
@@ -166,9 +166,9 @@ namespace Ans.Net10.Common
 		}
 
 
-				private static string _getMatchCase(
-			string original,
-			string result)
+		private static string _getMatchCase(
+	string original,
+	string result)
 		{
 			if (string.IsNullOrEmpty(original) || string.IsNullOrEmpty(result))
 				return result;

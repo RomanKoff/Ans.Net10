@@ -2175,9 +2175,49 @@
             Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
             </remarks>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.UseContentDrivenMode">
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultCulture">
             <summary>
-            Получает или задает флаг работы приложения в режиме Content-driven.
+            Получает или задает культуру по умолчанию (например, "ru", "en").
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultLayout">
+            <summary>
+            Получает или задает имя основного файла мастер-шаблона разметки (Layout) по умолчанию.
+            </summary>
+            <value>
+            Строковое имя или относительный путь к файлу представления (например, <c>"_Layout"</c>).
+            Значение по умолчанию: <c>"/Areas/Ans/Layouts/_Layout.cshtml"</c>.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultContainerClasses">
+            <summary>
+            Получает или задает базовый набор CSS-классов для главного оборачивающего HTML-контейнера страниц.
+            </summary>
+            <value>
+            Строка с перечислением CSS-классов (например, в стиле фреймворка Bootstrap 5: <c>"container"</c> или <c>"container-fluid"</c>).
+            Значение по умолчанию: <c>"container"</c>.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultRegionPhoneCode">
+            <summary>
+            Получает или задает телефонный код региона по умолчанию.
+            </summary>
+            /// <value>
+            Строковое телефонный код региона без начального '+' (например, <c>"7812"</c>).
+            Значение по умолчанию: <c>"7812"</c>.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.SystemLayout">
+            <summary>
+            Получает или задает имя глобального альтернативного или системного шаблона разметки.
+            </summary>
+            <value>
+            Строковое имя файла шаблона или <see langword="null"/>, если системный шаблон разметки не используется.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.UseDeveloperMode">
+            <summary>
+            Получает или задает флаг режима разработки.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.UseRuntimeCompilation">
@@ -2185,9 +2225,9 @@
             Получает или задает флаг включения Runtime-компиляции для представлений Razor.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.UseDeveloperMode">
+        <member name="P:Ans.Net10.Web.LibWebOptions.UseSession">
             <summary>
-            Получает или задает флаг режима разработки.
+            Получает или задает флаг использования серверных пользовательских сессий.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.SystemToken">
@@ -2204,20 +2244,6 @@
             <summary>
             Получает или задает список кастомных маршрутов роутинга.
             </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.Region">
-            <summary>
-            Получает или задает региональные настройки.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.UI">
-            <summary>
-            Получает или задает параметры конфигурации графического пользовательского интерфейса (UI).
-            </summary>
-            <remarks>
-            Секция инкапсулирует глобальные настройки визуального отображения веб-приложения, 
-            включая базовые CSS-классы контейнеров и пути к мастер-шаблонам разметки (Layouts).
-            </remarks>
         </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Errors">
             <summary>
@@ -2238,71 +2264,19 @@
             активации именованных профилей междоменной безопасности в конвейере обработки запросов.
             </remarks>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.MailService">
-            <summary>
-            Получает или задает параметры службы отправки писем.
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Subnets">
             <summary>
             Получает или задает списки подсетей для ограничения доступа.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Web.RegionOptions">
+        <member name="P:Ans.Net10.Web.LibWebOptions.MailService">
             <summary>
-            Региональные настройки.
+            Получает или задает параметры службы отправки писем.
             </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.RegionOptions.Culture">
-            <summary>
-            Получает или задает культуру по умолчанию (например, "ru", "en").
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.RegionOptions.RegionPhoneCode">
-            <summary>
-            Получает или задает телефонный код региона по умолчанию.
-            </summary>
-        </member>
-        <member name="T:Ans.Net10.Web.UIOptions">
-            <summary>
-            Описывает параметры конфигурации графического пользовательского интерфейса 
-            и глобальных шаблонов разметки веб-приложения.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.UIOptions.DefaultLayout">
-            <summary>
-            Получает или задает имя основного файла мастер-шаблона разметки (Layout) по умолчанию.
-            </summary>
-            <value>
-            Строковое имя или относительный путь к файлу представления (например, <c>"_Layout"</c>).
-            Значение по умолчанию: <c>"_Layout"</c>.
-            </value>
-        </member>
-        <member name="P:Ans.Net10.Web.UIOptions.SystemLayout">
-            <summary>
-            Получает или задает имя глобального альтернативного или системного шаблона разметки.
-            </summary>
-            <value>
-            Строковое имя файла шаблона или <see langword="null"/>, если системный шаблон разметки не используется.
-            </value>
-        </member>
-        <member name="P:Ans.Net10.Web.UIOptions.DefaultContainerClasses">
-            <summary>
-            Получает или задает базовый набор CSS-классов для главного оборачивающего HTML-контейнера страниц.
-            </summary>
-            <value>
-            Строка с перечислением CSS-классов (например, в стиле фреймворка Bootstrap 5: <c>"container"</c> или <c>"container-fluid"</c>).
-            Значение по умолчанию: <c>"container"</c>.
-            </value>
         </member>
         <member name="T:Ans.Net10.Web.ErrorsOptions">
             <summary>
             Параметры конфигурации страниц отображения ошибок и статусных кодов HTTP.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.ErrorsOptions.Layout">
-            <summary>
-            Получает или задает кастомный Layout для страниц ошибок.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.ErrorsOptions.RazorPageErrorsPath">
@@ -2313,6 +2287,11 @@
             <value>
             Строковый виртуальный путь к эндпоинту (например, <c>"/Ans/Errors"</c>).
             </value>
+        </member>
+        <member name="P:Ans.Net10.Web.ErrorsOptions.Layout">
+            <summary>
+            Получает или задает кастомный Layout для страниц ошибок.
+            </summary>
         </member>
         <member name="P:Ans.Net10.Web.ErrorsOptions.ShowInfo">
             <summary>
@@ -2395,36 +2374,6 @@
             <see cref="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_TRUSTED"/> и <see cref="F:Ans.Net10.Web.SuppCors.CORS_ALLOW_CREDENTIALS"/>.
             </remarks>
         </member>
-        <member name="T:Ans.Net10.Web.MailServiceOptions">
-            <summary>
-            Параметры конфигурации почтовой службы, реализующие интерфейс <see cref="T:Ans.Net10.Common.Services.IMailerServiceOptions"/> 
-            из инфраструктуры библиотеки <c>Ans.Net10.Common</c>.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpServer">
-            <inheritdoc />
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpPort">
-            <inheritdoc />
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpUseSsl">
-            <inheritdoc />
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpUsername">
-            <inheritdoc />
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpPassword">
-            <inheritdoc />
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.DefaultFromAddress">
-            <inheritdoc />
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.DefaultFromTitle">
-            <inheritdoc />
-        </member>
-        <member name="P:Ans.Net10.Web.MailServiceOptions.DebugCc">
-            <inheritdoc />
-        </member>
         <member name="T:Ans.Net10.Web.SubnetsOptions">
             <summary>
             Конфигурация списков IP-подсетей с ленивой инициализацией типизированных CIDR-структур.
@@ -2480,6 +2429,36 @@
             Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.MailServiceOptions">
+            <summary>
+            Параметры конфигурации почтовой службы, реализующие интерфейс <see cref="T:Ans.Net10.Common.Services.IMailerServiceOptions"/> 
+            из инфраструктуры библиотеки <c>Ans.Net10.Common</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpServer">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpPort">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpUseSsl">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpUsername">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.SmtpPassword">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.DefaultFromAddress">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.DefaultFromTitle">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.MailServiceOptions.DebugCc">
+            <inheritdoc />
+        </member>
         <member name="T:Ans.Net10.Web.LibWebStartup">
             <summary>
             Предоставляет статические методы расширения для автоматической "zero-configuration" 
@@ -2488,8 +2467,7 @@
         </member>
         <member name="M:Ans.Net10.Web.LibWebStartup.Add_AnsNet10Web(Microsoft.AspNetCore.Builder.WebApplicationBuilder)">
             <summary>
-            Выполняет централизованную регистрацию строго типизированных параметров конфигурации, 
-            встроенных оркестровых сервисов, расширенных кодировок, профилей CORS, настроек сессий и компонентов MVC/Razor Pages.
+            Выполняет централизованную регистрацию сервисов библиотеки.
             </summary>
             <param name="builder">Архитектурный строитель веб-приложения <see cref="T:Microsoft.AspNetCore.Builder.WebApplicationBuilder"/>.</param>
             <returns>Строитель <see cref="T:Microsoft.Extensions.DependencyInjection.IMvcBuilder"/> для последующей кастомизации конвейера MVC фреймворка.</returns>
@@ -2497,12 +2475,12 @@
             Вызывается, если переданный параметр <paramref name="builder"/> равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Web.LibWebStartup.Use_AnsNet10Web(Microsoft.AspNetCore.Builder.WebApplication)">
+        <member name="M:Ans.Net10.Web.LibWebStartup.Use_AnsNet10WebAsync(Microsoft.AspNetCore.Builder.WebApplication)">
             <summary>
-            Конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline), 
-            активируя кастомные компоненты локализации, сессий, обработки исключений, сетевой безопасности, CORS и динамического роутинга.
+            Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline).
             </summary>
             <param name="app">Экземпляр выполняемого веб-приложения <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/>.</param>
+            <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если переданный параметр <paramref name="app"/> равен <see langword="null"/>.
             </exception>
@@ -2542,126 +2520,26 @@
             <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
             <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
         </member>
-        <member name="T:Ans.Net10.Web.Nodes.INodePathResolver">
+        <member name="T:Ans.Net10.Web.Middlewares.AnsTrailingSlashMiddleware">
             <summary>
-            Определяет контракт сервиса для инициализации карты физических представлений 
-            и асинхронного сопоставления входящих URL-запросов с узлами и страницами CMS.
+            Инфраструктурный компонент конвейера (Middleware), обеспечивающий автоматический 
+            перманентный редирект (HTTP 301) для URL-адресов, заканчивающихся на закрывающий слэш, 
+            исключая дублирование контента для поисковых систем (SEO).
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.Nodes.INodePathResolver.InitializeAsync(System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Web.Middlewares.AnsTrailingSlashMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Middlewares.AnsTrailingSlashMiddleware})">
             <summary>
-            Асинхронно сканирует базовый каталог представлений, формируя 
-            первоначальную карту путей в оперативной памяти приложения.
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Middlewares.AnsTrailingSlashMiddleware"/>.
             </summary>
-            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
-            <returns>Задача, представляющая процесс асинхронной инициализации.</returns>
-        </member>
-        <member name="M:Ans.Net10.Web.Nodes.INodePathResolver.ResolveAsync(System.String)">
-            <summary>
-            Асинхронно анализирует входящий относительный URL-путь запроса и, на основе матрицы 
-            приоритетов фреймворка, сопоставляет его с конкретным Узлом и Страницей.
-            </summary>
-            <param name="rawPath">Сырой относительный путь запроса, полученный из URL (например, "dep1/about/contacts").</param>
-            <returns>
-            Результат сопоставления в виде объекта <see cref="T:Ans.Net10.Web.Nodes.NodePageResolveResult"/>, 
-            либо <see langword="null"/>, если совпадений в карте физических представлений не найдено.
-            </returns>
-        </member>
-        <member name="T:Ans.Net10.Web.Nodes.AnsNodePathResolver">
-            <summary>
-            Реализация сервиса анализа путей, обеспечивающая асинхронную индексацию структуры 
-            каталогов Razor-представлений в оперативной памяти и реактивное отслеживание изменений.
-            </summary>
-        </member>
-        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Nodes.AnsNodePathResolver})">
-            <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.AnsNodePathResolver"/> 
-            с внедрением необходимых инфраструктурных зависимостей платформы.
-            </summary>
-            <param name="env">Среда веб-хостинга для вычисления корневых путей приложения.</param>
+            <param name="next">Делегат, представляющий следующую функцию обработки в конвейере HTTP.</param>
             <param name="logger">Служба ведения системных логов.</param>
-            <exception cref="T:System.ArgumentNullException">
-            Вызывается, если один из входящих параметров равен <see langword="null"/>.
-            </exception>
         </member>
-        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.InitializeAsync(System.Threading.CancellationToken)">
-            <inheritdoc />
-        </member>
-        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.Dispose">
-            <inheritdoc />
-        </member>
-        <member name="M:Ans.Net10.Web.Nodes.AnsNodePathResolver.ResolveAsync(System.String)">
-            <inheritdoc />
-        </member>
-        <member name="T:Ans.Net10.Web.Nodes.INodePageFeature">
+        <member name="M:Ans.Net10.Web.Middlewares.AnsTrailingSlashMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
-            Определяет фичу HTTP-контекста для хранения и передачи результата 
-            сопоставления Узла и Страницы CMS в конвейере обработки запроса.
+            Перехватывает контекст HTTP-запроса и выполняет валидацию структуры URL.
             </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.Nodes.INodePageFeature.ResolveResult">
-            <summary>
-            Получает результат успешного сопоставления текущего запроса с Узлом и Страницей.
-            </summary>
-        </member>
-        <member name="T:Ans.Net10.Web.Nodes.NodePageFeature">
-            <summary>
-            Реализация фичи HTTP-контекста для хранения результата сопоставления CMS.
-            </summary>
-        </member>
-        <member name="M:Ans.Net10.Web.Nodes.NodePageFeature.#ctor(Ans.Net10.Web.Nodes.NodePageResolveResult)">
-            <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.NodePageFeature"/> 
-            с указанием вычисленного результата сопоставления.
-            </summary>
-            <param name="resolveResult">Результат сопоставления Узла и Страницы.</param>
-            <exception cref="T:System.ArgumentNullException">
-            Вызывается, если параметр <paramref name="resolveResult"/> равен <see langword="null"/>.
-            </exception>
-        </member>
-        <member name="P:Ans.Net10.Web.Nodes.NodePageFeature.ResolveResult">
-            <inheritdoc />
-        </member>
-        <member name="T:Ans.Net10.Web.Nodes.NodePageResolveResult">
-            <summary>
-            Описывает результат успешного анализа и сопоставления входящего URL-запроса 
-            с конкретным иерархическим узлом и страницей в файловой структуре представлений.
-            </summary>
-        </member>
-        <member name="M:Ans.Net10.Web.Nodes.NodePageResolveResult.#ctor(System.String,System.String,System.String,System.Boolean)">
-            <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.NodePageResolveResult"/> 
-            с указанием параметров сопоставления.
-            </summary>
-            <param name="nodeName">Имя (идентификатор) вычисленного Узла контента.</param>
-            <param name="viewPath">Полный виртуальный путь к файлу представления для движка Razor.</param>
-            <param name="pagePath">Относительный путь к странице внутри дерева страниц Узла.</param>
-            <param name="isStartPage">Признак того, является ли выбранная страница стартовой (start.cshtml).</param>
-            <exception cref="T:System.ArgumentNullException">
-            Вызывается, если один из обязательных строковых параметров равен <see langword="null"/>.
-            </exception>
-        </member>
-        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.NodeName">
-            <summary>
-            Возвращает имя (идентификатор) вычисленного Узла контента (например, "dep1" или "_main").
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.ViewPath">
-            <summary>
-            Возвращает полный виртуальный путь к файлу представления, пригодный для передачи 
-            в движок рендеринга Razor (например, "~/Views/Nodes/dep1/about.cshtml").
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.PagePath">
-            <summary>
-            Возвращает относительный путь к странице внутри дерева страниц текущего Узла (например, "about/contacts").
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.Nodes.NodePageResolveResult.IsStartPage">
-            <summary>
-            Возвращает признак того, является ли выбранная страница стартовой страницей по умолчанию (start.cshtml) 
-            для корня Узла или одного из его внутренних подразделов (подкаталогов).
-            </summary>
+            <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
+            <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Resources.Common">
             <summary>
@@ -2765,9 +2643,24 @@
               Looks up a localized string similar to Вернуться назад.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_GoHome">
+            <summary>
+              Looks up a localized string similar to На главную.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_Info">
+            <summary>
+              Looks up a localized string similar to Диагностическая информация.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.Resources.Errors.Text_PageNotFound">
             <summary>
               Looks up a localized string similar to Страница не найдена!.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.Errors.Text_Referer">
+            <summary>
+              Looks up a localized string similar to Источник перехода (Referer).
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.Resources.Errors.Text_ServerError">
@@ -4402,6 +4295,164 @@
             Получает службу выполнения запросов к внешним Web API с поддержкой гибридного кэширования.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Site">
+            <summary>
+            Профиль сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Node">
+            <summary>
+            Профиль узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Page">
+            <summary>
+            Профиль страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.BrowserTitle">
+            <summary>
+            Автоматически собранный человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
+            Объединяет иерархию узлов и название текущей страницы с использованием интерполяции .NET 10.
+            </summary>
+            <remarks>
+            Формирует строку вида: "Название страницы | Кафедра -> Факультет -> Название сайта".
+            Если страница или узел не определены, возвращает базовое название сайта или пустую строку.
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.BrowserTitleHtml">
+            <summary>
+            Получает безопасное HTML-представление человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
+            </summary>		
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Breadcrumbs">
+            <summary>
+            Возвращает ленивое перечисление элементов навигационной цепочки ("хлебных крошек") 
+            от текущей страницы/узла вверх до корня сайта.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.NodeProfileType">
+            <summary>
+            Перечисление семантических типов профилей узлов.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodeProfileType.Normal">
+            <summary>
+            Стандартный узел, имеющий физическое представление и контент на сайте.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodeProfileType.Group">
+            <summary>
+            Узел группировки. Служит исключительно в качестве визуального контейнера для других узлов в навигации и не имеет собственной ссылки.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodeProfileType.InternalLink">
+            <summary>
+            Внутренняя ссылка. Перенаправляет навигацию на другой узел или страницу этого же сайта.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodeProfileType.ExternalLink">
+            <summary>
+            Внешняя ссылка. Ведет на сторонний интернет-ресурс.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeProfile.Type">
+            <summary>
+            Получает или задает семантический тип информационного узла, определяющий его поведение в навигации.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeProfile.ParentNode">
+            <summary>
+            Получает или задает вышестоящий (родительский) информационный узел в структуре сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeProfile.ChildNodes">
+            <summary>
+            Получает или задает коллекцию прямых подчиненных (дочерних) информационных узлов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeProfile.Pages">
+            <summary>
+            Получает или задает коллекцию корневых страниц, принадлежащих данному узлу.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.PageProfileType">
+            <summary>
+            Перечисление семантических типов профилей страниц.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PageProfileType.Normal">
+            <summary>
+            Стандартная страница контента (может быть как изолированной, так и иметь дочерние страницы).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PageProfileType.InternalLink">
+            <summary>
+            Внутренняя ссылка. Перенаправляет навигацию на другой узел или страницу этого же сайта.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PageProfileType.ExternalLink">
+            <summary>
+            Внешняя ссылка. Ведет на сторонний интернет-ресурс.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageProfile.Type">
+            <summary>
+            Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageProfile.ParentPage">
+            <summary>
+            Получает или задает вышестоящую (родительскую) страницу в иерархическом дереве контента узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageProfile.ChildPages">
+            <summary>
+            Получает или задает коллекцию прямых подчиненных (дочерних) контентных страниц.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SiteProfile.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SiteProfile"/> со значениями по умолчанию.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SiteProfile.RootNodes">
+            <summary>
+            Получает или задает коллекцию корневых информационных узлов первого уровня, принадлежащих сайту.
+            </summary>
+            <value>Список объектов <see cref="T:Ans.Net10.Web.NodeProfile"/>, у которых отсутствует родительский узел.</value>
+        </member>
+        <member name="P:Ans.Net10.Web._Profile_Proto.Title">
+            <summary>
+            Получает или задает основной заголовок элемента контента.
+            </summary>
+            <value>Строковое значение заголовка. Не может быть равен <see langword="null"/>.</value>
+        </member>
+        <member name="P:Ans.Net10.Web._Profile_Proto.ShortTitle">
+            <summary>
+            Получает или задает сокращенный заголовок элемента контента для компактных представлений.
+            </summary>
+            <value>Сокращенный текст заголовка. Если сокращенная форма не задана явно, возвращает значение свойства <see cref="P:Ans.Net10.Web._Profile_Proto.Title"/>.</value>
+        </member>
+        <member name="P:Ans.Net10.Web._Profile_Proto.TitleHtml">
+            <summary>
+            Получает безопасное HTML-представление основного заголовка с примененными правилами типографики.
+            </summary>
+            <value>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>, готовый к выводу в Razor-представлениях без экранирования.</value>
+        </member>
+        <member name="P:Ans.Net10.Web._Profile_Proto.ShortTitleHtml">
+            <summary>
+            Получает безопасное HTML-представление сокращенного заголовка с примененными правилами типографики. 
+            Если сокращенный заголовок не задан, возвращает HTML-представление основного заголовка.
+            </summary>
+            <value>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> для вывода в компактных блоках интерфейса.</value>
+        </member>
+        <member name="P:Ans.Net10.Web._Profile_Proto.IsShortTitleUnique">
+            <summary>
+            Возвращает признак того, является ли сокращенный заголовок уникальным (установлен отличным от <see cref="P:Ans.Net10.Web._Profile_Proto.Title"/>).
+            </summary>
+            <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
+        </member>
         <member name="T:Ans.Net10.Web.CacheService">
             <summary>
             Служба кэширования, предоставляющая высокоуровневую обертку над 
@@ -4410,7 +4461,7 @@
             <remarks>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CacheService"/> с использованием первичного конструктора C#.
             </remarks>
-            <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша.</param>
+            <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша и логгер.</param>
         </member>
         <member name="M:Ans.Net10.Web.CacheService.#ctor(Ans.Net10.Web.CurrentContext)">
             <summary>
@@ -4420,7 +4471,7 @@
             <remarks>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CacheService"/> с использованием первичного конструктора C#.
             </remarks>
-            <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша.</param>
+            <param name="current">Текущий контекст обработки запроса, содержащий базовую службу кэша и логгер.</param>
         </member>
         <member name="M:Ans.Net10.Web.CacheService.GetAsync``1(System.String,System.Func{System.Threading.CancellationToken,System.Threading.Tasks.ValueTask{``0}},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Threading.CancellationToken)">
             <summary>
@@ -4433,7 +4484,7 @@
             <param name="options">Опциональные индивидуальные параметры времени жизни и политик текущей записи кэша.</param>
             <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>
-            Значение типа <typeparamref name="T"/>, содержащееся в кэше или созданное фабрикой.
+            Значение типа <typeparamref name="T"/>, содержащееся в кэше или созданное фабрикой. Допускает возвращение <see langword="null"/>.
             </returns>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметр <paramref name="cacheKey"/> или <paramref name="getObject"/> равен <see langword="null"/>.
@@ -4527,18 +4578,21 @@
             удаленного IP-адреса клиента на вхождение в сконфигурированные CIDR-подсети.
             </summary>
             <remarks>
-            Позволяет определять принадлежность клиента к административным, 
-            безопасным, разрешенным или заблокированным сетевым зонам.
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NetworkService"/> на основе первичного конструктора C#.
+            Позволяет определять принадлежность клиента к административным, безопасным, разрешенным или заблокированным сетевым зонам.
             </remarks>
+            <param name="current">Текущий оркестровый контекст обработки запроса, содержащий настройки подсетей и HTTP-контекст.</param>
         </member>
         <member name="M:Ans.Net10.Web.NetworkService.#ctor(Ans.Net10.Web.CurrentContext)">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NetworkService"/> на основе текущего контекста запроса.
+            Служба сетевого анализа текущего подключения, обеспечивающая валидацию 
+            удаленного IP-адреса клиента на вхождение в сконфигурированные CIDR-подсети.
             </summary>
-            <param name="current">Текущий контекст обработки запроса, содержащий настройки подсетей и HTTP-контекст.</param>
-            <exception cref="T:System.ArgumentNullException">
-            Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.
-            </exception>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NetworkService"/> на основе первичного конструктора C#.
+            Позволяет определять принадлежность клиента к административным, безопасным, разрешенным или заблокированным сетевым зонам.
+            </remarks>
+            <param name="current">Текущий оркестровый контекст обработки запроса, содержащий настройки подсетей и HTTP-контекст.</param>
         </member>
         <member name="P:Ans.Net10.Web.NetworkService.RemoteIpAddress">
             <summary>
@@ -4614,7 +4668,7 @@
             </summary>
             <param name="subnets">Проверяемый список IP-подсетей.</param>
             <returns>
-            Значение <see langword="true"/>, если удаленный IP-адрес не входит ни в одну подсеть из списка; 
+            Значение <see langword="true"/>, if удаленный IP-адрес не входит ни в одну подсеть из списка; 
             в противном случае — <see langword="false"/>.
             </returns>
         </member>
@@ -4623,11 +4677,22 @@
             Служба для работы со строкой запроса (Query String) текущего HTTP-запроса, 
             предоставляющая инструменты фильтрации, маппинга и генерации элементов управления интерфейса.
             </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.QueryStringService"/> на основе первичного конструктора C#.
+            </remarks>
+            <param name="current">Текущий контекст обработки запроса.</param>
+            <exception cref="T:System.ArgumentNullException">
+            Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.
+            </exception>
         </member>
         <member name="M:Ans.Net10.Web.QueryStringService.#ctor(Ans.Net10.Web.CurrentContext)">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.QueryStringService"/> на основе текущего контекста запроса.
+            Служба для работы со строкой запроса (Query String) текущего HTTP-запроса, 
+            предоставляющая инструменты фильтрации, маппинга и генерации элементов управления интерфейса.
             </summary>
+            <remarks>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.QueryStringService"/> на основе первичного конструктора C#.
+            </remarks>
             <param name="current">Текущий контекст обработки запроса.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.
@@ -4667,7 +4732,7 @@
             <remarks>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SendService"/> с использованием первичного конструктора C#.
             </remarks>
-            <param name="current">Текущий контекст обработки запроса.</param>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
         </member>
         <member name="M:Ans.Net10.Web.SendService.#ctor(Ans.Net10.Web.CurrentContext)">
             <summary>
@@ -4677,7 +4742,7 @@
             <remarks>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SendService"/> с использованием первичного конструктора C#.
             </remarks>
-            <param name="current">Текущий контекст обработки запроса.</param>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
         </member>
         <member name="M:Ans.Net10.Web.SendService.EmailAsync(System.String,System.String,System.String,System.String,System.Object,System.String)">
             <summary>
@@ -4693,10 +4758,13 @@
             <param name="model">Объект доменной модели данных, передаваемый внутрь Razor-шаблона для рендеринга.</param>
             <param name="bcc">Опциональный список адресов скрытой копии (BCC), разделенных точкой с запятой (;).</param>
             <returns>
-            Поток-задача <see cref="T:System.Threading.Tasks.Task"/>, представляющая асинхронную операцию подготовки и отправки письма.
+            Поток-задача, представляющая асинхронную операцию подготовки и отправки письма.
             </returns>
             <exception cref="T:System.ArgumentNullException">
-            Вызывается, если любой из обязательных строковых параметров или модель равны <see langword="null"/>.
+            Вызывается, если любой из обязательных строковых параметров или параметр <paramref name="model"/> равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.ArgumentException">
+            Вызывается, если переданный адрес имеет некорректный формат или является пустой строкой.
             </exception>
         </member>
         <member name="T:Ans.Net10.Web.WebApiService">
@@ -4707,7 +4775,8 @@
             <remarks>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.WebApiService"/> с использованием первичного конструктора C#.
             </remarks>
-            <param name="current">Текущий контекст обработки запроса.</param>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.WebApiService.#ctor(Ans.Net10.Web.CurrentContext)">
             <summary>
@@ -4717,7 +4786,8 @@
             <remarks>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.WebApiService"/> с использованием первичного конструктора C#.
             </remarks>
-            <param name="current">Текущий контекст обработки запроса.</param>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.WebApiService.GetJsonAsync``1(System.String,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>

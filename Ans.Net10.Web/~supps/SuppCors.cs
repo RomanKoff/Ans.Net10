@@ -1,7 +1,5 @@
 ﻿// rev 2026-09-30
 
-using Microsoft.AspNetCore.Cors.Infrastructure;
-
 namespace Ans.Net10.Web
 {
 

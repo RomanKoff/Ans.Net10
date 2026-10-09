@@ -1,0 +1,56 @@
+@*
+Компонент библиотеки Ans.Net10.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@model object
+@{
+    if (Model == null)
+        return;
+
+    var info1 = new ObjInfoBuilder(Model.GetType(), Model);
+    var name1 = info1.InfoType.GetCSharpTypeName();
+}
+
+<h4 id="@name1">@name1</h4>
+
+@if (info1.HasReadWriteProperties)
+{
+    OutProps(info1.ReadWriteProperties, "Get/Set");
+}
+@if (info1.HasReadonlyProperties)
+{
+    OutProps(info1.ReadOnlyProperties, "Get");
+}
+@if (info1.HasWriteonlyProperties)
+{
+    OutProps(info1.WriteOnlyProperties, "Set");
+}
+
+@functions {
+
+    void OutProps(IEnumerable<ObjInfoProperty> props, string title)
+    {
+        <div class="my-3 lh-sm">
+            <div class="my-1 fw-bold text-dark fs-8">@(title):</div>
+            @foreach (var group1 in props
+                .GroupBy(x => x.TypeName)
+                .OrderBy(x => x.Key, StringComparer.Ordinal))
+            {
+                foreach (var item1 in group1.OrderBy(x => x.Name))
+                {
+                    OutInfo(item1);
+                }
+            }
+        </div>
+    }
+
+    void OutInfo(ObjInfoProperty item)
+    {
+        <div class="my-2 lh-1 fs-7">
+            @item.Name
+            @item.Value.ToHtml("=&nbsp;<code>{0}</code>")
+            <small class="fs-9 text-light">:&nbsp;@item.TypeName</small>
+        </div>
+    }
+
+}

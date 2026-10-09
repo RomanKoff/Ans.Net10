@@ -112,7 +112,7 @@ namespace Ans.Net10.Web.TagHelpers
 		[HtmlAttributeName(_ATTR_TEL_CODE)]
 		public string TelCodeData
 		{
-			get => field ?? _options.Region?.RegionPhoneCode ?? "0000";
+			get => field ?? _options.DefaultRegionPhoneCode;
 			set;
 		}
 

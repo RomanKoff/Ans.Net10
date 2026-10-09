@@ -1,0 +1,87 @@
+﻿using Ans.Net10.Common;
+using Ans.Net10.Web.Services;
+using Microsoft.AspNetCore.Html;
+
+namespace Ans.Net10.Web
+{
+
+	public class SitemapData
+	{
+
+		private readonly CurrentContext _current;
+
+
+		/* ctor */
+
+
+		public SitemapData(
+			CurrentContext current)
+		{
+			_current = current;
+			_loadNodemap();
+		}
+
+
+		/* readonly properties */
+
+
+		public NodemapItem Nodemap { get; } = new(null, null);
+
+
+		/* methods */
+
+
+		public void PrepareNodes()
+		{
+			_prepare(Nodemap.Childs);
+		}
+
+
+		/* privates */
+
+
+		private void _loadNodemap()
+		{
+			var file1 = Path.Combine(_current.Env.ContentRootPath, "Views/Nodes", "_map-nodes.xml");
+			var data1 = SuppXml.GetObjectFromXmlFile<MapNodesXmlRoot>(
+					file1, Common._Consts.ENCODING_UTF8,
+					"http://tempuri.org/Ans.Net10.Web.MapNodes.xsd");
+			Nodemap.AppendChilds(_getBranch(data1.Items));
+		}
+
+
+		private static ITreeItem[] _getBranch(
+			IEnumerable<MapNodeXmlElement> elements)
+		{
+			if (!(elements?.Count() > 0))
+				return null;
+			var items1 = new List<NodemapItem>();
+			foreach (var element1 in elements)
+			{
+				var item1 = new NodemapItem(
+					element1.IsHidden,
+					element1.Target,
+					element1.Face);
+				item1.AppendChilds(_getBranch(element1.Items));
+				items1.Add(item1);
+			}
+			return [.. items1];
+		}
+
+
+		private void _prepare(
+			IEnumerable<ITreeItem> items)
+		{
+			if (items == null)
+				return;
+			foreach (var item1 in items)
+			{
+				var node1 = (NodemapItem)item1;
+				node1.MakeLink(_current.Host.VirtualPath);
+				_prepare(item1.Childs);
+			}
+		}
+
+	}
+
+}

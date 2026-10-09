@@ -1,4 +1,4 @@
-﻿// rev 2026-09-29
+﻿// rev 2026-10-07
 
 using Ans.Net10.Common;
 using MimeKit;
@@ -13,12 +13,14 @@ namespace Ans.Net10.Web
 	/// <remarks>
 	/// Инициализирует новый экземпляр класса <see cref="SendService"/> с использованием первичного конструктора C#.
 	/// </remarks>
-	/// <param name="current">Текущий контекст обработки запроса.</param>
+	/// <param name="current">Текущий оркестровый контекст обработки запроса.</param>
 	public class SendService(
 		CurrentContext current)
 	{
 
-		private readonly CurrentContext _current = current;
+		private readonly CurrentContext _current
+			= current
+				?? throw new ArgumentNullException(nameof(current));
 
 
 		/* methods */
@@ -37,10 +39,13 @@ namespace Ans.Net10.Web
 		/// <param name="model">Объект доменной модели данных, передаваемый внутрь Razor-шаблона для рендеринга.</param>
 		/// <param name="bcc">Опциональный список адресов скрытой копии (BCC), разделенных точкой с запятой (;).</param>
 		/// <returns>
-		/// Поток-задача <see cref="Task"/>, представляющая асинхронную операцию подготовки и отправки письма.
+		/// Поток-задача, представляющая асинхронную операцию подготовки и отправки письма.
 		/// </returns>
 		/// <exception cref="ArgumentNullException">
-		/// Вызывается, если любой из обязательных строковых параметров или модель равны <see langword="null"/>.
+		/// Вызывается, если любой из обязательных строковых параметров или параметр <paramref name="model"/> равен <see langword="null"/>.
+		/// </exception>
+		/// <exception cref="ArgumentException">
+		/// Вызывается, если переданный адрес имеет некорректный формат или является пустой строкой.
 		/// </exception>
 		public async Task EmailAsync(
 			string name,
@@ -55,6 +60,8 @@ namespace Ans.Net10.Web
 			ArgumentNullException.ThrowIfNull(subject);
 			ArgumentNullException.ThrowIfNull(viewName);
 			ArgumentNullException.ThrowIfNull(model);
+			if (string.IsNullOrWhiteSpace(address))
+				throw new ArgumentException("[SendService] Адрес получателя не может быть пустым.", nameof(address));
 			var toAddress1 = new MailboxAddress(name, address);
 			var htmlContent1 = await _current.ViewRender.RenderViewToStringAsync(viewName, model);
 			var message1 = new MailMessageModel
@@ -67,6 +74,7 @@ namespace Ans.Net10.Web
 			{
 				var bccAddresses1 = bcc
 					.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+					.Where(addr => !string.IsNullOrWhiteSpace(addr))
 					.Select(addr => new MailboxAddress(string.Empty, addr));
 				message1.Bcc = [.. bccAddresses1];
 			}

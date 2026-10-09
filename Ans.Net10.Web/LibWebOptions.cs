@@ -1,4 +1,4 @@
-﻿// rev 2026-10-04
+﻿// rev 2026-10-09
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -29,152 +29,40 @@ namespace Ans.Net10.Web
 		/// </remarks>
 		public override void Test()
 		{
-			if (Region == null)
-				throw GetExceptionParamRequired("Region");
-			if (string.IsNullOrEmpty(Region.Culture))
-				throw GetExceptionParamRequired("Region.Culture");
-			if (string.IsNullOrEmpty(Region.RegionPhoneCode))
-				throw GetExceptionParamRequired("Region.TelCode");
-
-			if (UI == null)
-				throw GetExceptionParamRequired(nameof(UI));
-			if (string.IsNullOrEmpty(UI.DefaultLayout))
-				throw GetExceptionParamRequired("UI.DefaultLayout");
+			if (string.IsNullOrEmpty(DefaultCulture))
+				throw GetExceptionParamRequired("DefaultCulture");
+			if (MailService != null)
+			{
+				if (string.IsNullOrEmpty(MailService.SmtpServer))
+					throw GetExceptionParamRequired("MailService.SmtpServer");
+				if (string.IsNullOrEmpty(MailService.SmtpUsername))
+					throw GetExceptionParamRequired("MailService.SmtpUsername");
+				if (string.IsNullOrEmpty(MailService.SmtpPassword))
+					throw GetExceptionParamRequired("MailService.SmtpPassword");
+				if (string.IsNullOrEmpty(MailService.DefaultFromAddress))
+					throw GetExceptionParamRequired("MailService.DefaultFromAddress");
+			}
 		}
 
 
-		/// <summary>
-		/// Получает или задает флаг работы приложения в режиме Content-driven.
-		/// </summary>
-		public bool UseContentDrivenMode { get; set; } = false;
+		/* options */
 
-
-		/// <summary>
-		/// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
-		/// </summary>
-		public bool UseRuntimeCompilation { get; set; } = false;
-
-
-		/// <summary>
-		/// Получает или задает флаг режима разработки.
-		/// </summary>
-		public bool UseDeveloperMode { get; set; } = false;
-
-
-		/// <summary>
-		/// Получает или задает системный токен безопасности приложения.
-		/// </summary>
-		public string? SystemToken { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает список переопределений MIME-типов.
-		/// </summary>
-		public string[]? Mimetypes { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает список кастомных маршрутов роутинга.
-		/// </summary>
-		public string[]? Routes { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает региональные настройки.
-		/// </summary>
-		public RegionOptions? Region { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает параметры конфигурации графического пользовательского интерфейса (UI).
-		/// </summary>
-		/// <remarks>
-		/// Секция инкапсулирует глобальные настройки визуального отображения веб-приложения, 
-		/// включая базовые CSS-классы контейнеров и пути к мастер-шаблонам разметки (Layouts).
-		/// </remarks>
-		public UIOptions? UI { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает настройки отображения и обработки ошибок.
-		/// </summary>
-		public ErrorsOptions? Errors { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
-		/// </summary>
-		public ProxyOptions? Proxy { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает параметры конфигурации политик CORS (Cross-Origin Resource Sharing).
-		/// </summary>
-		/// <remarks>
-		/// Настройки используются сервисом <see cref="SuppCors"/> для регистрации и последующей 
-		/// активации именованных профилей междоменной безопасности в конвейере обработки запросов.
-		/// </remarks>
-		public CorsOptions? Cors { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает параметры службы отправки писем.
-		/// </summary>
-		public MailServiceOptions? MailService { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает списки подсетей для ограничения доступа.
-		/// </summary>
-		public SubnetsOptions? Subnets { get; set; }
-
-	}
-
-
-
-	/// <summary>
-	/// Региональные настройки.
-	/// </summary>
-	public class RegionOptions
-	{
 
 		/// <summary>
 		/// Получает или задает культуру по умолчанию (например, "ru", "en").
 		/// </summary>
-		public string Culture { get; set; } = "ru";
+		public string DefaultCulture { get; set; } = string.Empty;
 
 
-		/// <summary>
-		/// Получает или задает телефонный код региона по умолчанию.
-		/// </summary>
-		public string RegionPhoneCode { get; set; } = "7812";
-
-	}
-
-
-
-	/// <summary>
-	/// Описывает параметры конфигурации графического пользовательского интерфейса 
-	/// и глобальных шаблонов разметки веб-приложения.
-	/// </summary>
-	public class UIOptions
-	{
 		/// <summary>
 		/// Получает или задает имя основного файла мастер-шаблона разметки (Layout) по умолчанию.
 		/// </summary>
 		/// <value>
 		/// Строковое имя или относительный путь к файлу представления (например, <c>"_Layout"</c>).
-		/// Значение по умолчанию: <c>"_Layout"</c>.
+		/// Значение по умолчанию: <c>"/Areas/Ans/Layouts/_Layout.cshtml"</c>.
 		/// </value>
-		public string DefaultLayout { get; set; } = "_Layout";
+		public string DefaultLayout { get; set; } = "/Areas/Ans/Layouts/_Layout.cshtml";
 
-		/// <summary>
-		/// Получает или задает имя глобального альтернативного или системного шаблона разметки.
-		/// </summary>
-		/// <value>
-		/// Строковое имя файла шаблона или <see langword="null"/>, если системный шаблон разметки не используется.
-		/// </value>
-		public string? SystemLayout { get; set; }
 
 		/// <summary>
 		/// Получает или задает базовый набор CSS-классов для главного оборачивающего HTML-контейнера страниц.
@@ -184,7 +72,101 @@ namespace Ans.Net10.Web
 		/// Значение по умолчанию: <c>"container"</c>.
 		/// </value>
 		public string DefaultContainerClasses { get; set; } = "container";
+
+
+		/// <summary>
+		/// Получает или задает телефонный код региона по умолчанию.
+		/// </summary>
+		/// /// <value>
+		/// Строковое телефонный код региона без начального '+' (например, <c>"7812"</c>).
+		/// Значение по умолчанию: <c>"7812"</c>.
+		/// </value>
+		public string DefaultRegionPhoneCode { get; set; } = "7812";
+
+
+		/// <summary>
+		/// Получает или задает имя глобального альтернативного или системного шаблона разметки.
+		/// </summary>
+		/// <value>
+		/// Строковое имя файла шаблона или <see langword="null"/>, если системный шаблон разметки не используется.
+		/// </value>
+		public string? SystemLayout { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает флаг режима разработки.
+		/// </summary>
+		public bool UseDeveloperMode { get; set; } = false;
+
+
+		/// <summary>
+		/// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
+		/// </summary>
+		public bool UseRuntimeCompilation { get; set; } = false;
+
+
+		/// <summary>
+		/// Получает или задает флаг использования серверных пользовательских сессий.
+		/// </summary>
+		public bool UseSession { get; set; } = false;
+
+
+		/// <summary>
+		/// Получает или задает системный токен безопасности приложения.
+		/// </summary>
+		public string? SystemToken { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает список переопределений MIME-типов.
+		/// </summary>
+		public string[]? Mimetypes { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает список кастомных маршрутов роутинга.
+		/// </summary>
+		public string[]? Routes { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает настройки отображения и обработки ошибок.
+		/// </summary>
+		public ErrorsOptions Errors { get; set; } = new();
+
+
+		/// <summary>
+		/// Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
+		/// </summary>
+		public ProxyOptions? Proxy { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает параметры конфигурации политик CORS (Cross-Origin Resource Sharing).
+		/// </summary>
+		/// <remarks>
+		/// Настройки используются сервисом <see cref="SuppCors"/> для регистрации и последующей 
+		/// активации именованных профилей междоменной безопасности в конвейере обработки запросов.
+		/// </remarks>
+		public CorsOptions? Cors { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает списки подсетей для ограничения доступа.
+		/// </summary>
+		public SubnetsOptions? Subnets { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает параметры службы отправки писем.
+		/// </summary>
+		public MailServiceOptions? MailService { get; set; } = null;
+
 	}
+
+
+
+	/*---*/
 
 
 
@@ -194,43 +176,43 @@ namespace Ans.Net10.Web
 	public class ErrorsOptions
 	{
 		/// <summary>
-		/// Получает или задает кастомный Layout для страниц ошибок.
-		/// </summary>
-		public string? Layout { get; set; }
-
-		/// <summary>
 		/// Получает или задает относительный путь к единой универсальной Razor-странице фреймворка 
 		/// для отображения как фатальных серверных исключений (500), так и HTTP статус-кодов (404, 403, 400).
 		/// </summary>
 		/// <value>
 		/// Строковый виртуальный путь к эндпоинту (например, <c>"/Ans/Errors"</c>).
 		/// </value>
-		public string? RazorPageErrorsPath { get; set; }
+		public string RazorPageErrorsPath { get; set; } = "/Ans/Errors";
+
+		/// <summary>
+		/// Получает или задает кастомный Layout для страниц ошибок.
+		/// </summary>
+		public string? Layout { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает флаг вывода детальной технической информации об ошибке.
 		/// </summary>
-		public bool ShowInfo { get; set; }
+		public bool ShowInfo { get; set; } = true;
 
 		/// <summary>
 		/// Получает или задает URL/путь к изображению для ошибки 400 Bad Request.
 		/// </summary>
-		public string? Picture400 { get; set; }
+		public string? Picture400 { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает URL/путь к изображению для ошибки 403 Forbidden.
 		/// </summary>
-		public string? Picture403 { get; set; }
+		public string? Picture403 { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает URL/путь к изображению для ошибки 404 Not Found.
 		/// </summary>
-		public string? Picture404 { get; set; }
+		public string? Picture404 { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает URL/путь к изображению для ошибки 500 Internal Server Error.
 		/// </summary>
-		public string? Picture500 { get; set; }
+		public string? Picture500 { get; set; } = null;
 	}
 
 
@@ -249,7 +231,7 @@ namespace Ans.Net10.Web
 		/// Список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
 		/// Если пустой — по умолчанию доверяется локальной петле (Loopback).
 		/// </summary>
-		public string KnownProxies { get; set; } = string.Empty;
+		public string? KnownProxies { get; set; } = null;
 	}
 
 
@@ -271,7 +253,7 @@ namespace Ans.Net10.Web
 		/// Допустимые стандартные константы профилей определены в классе <see cref="SuppCors"/>. 
 		/// Если профиль не указан или равен <see langword="null"/>, фреймворк автоматически активирует профиль защиты по умолчанию.
 		/// </remarks>
-		public string? Profile { get; set; }
+		public string? Profile { get; set; } = null;
 
 
 		/// <summary>
@@ -281,7 +263,7 @@ namespace Ans.Net10.Web
 		/// <value>
 		/// Массив строковых URL-адресов локальных хостов (например, <c>["http://localhost:3000", "http://localhost:5173"]</c>).
 		/// </value>
-		public string[]? LocalOrigins { get; set; }
+		public string[]? LocalOrigins { get; set; } = null;
 
 
 		/// <summary>
@@ -295,42 +277,8 @@ namespace Ans.Net10.Web
 		/// Данный список является обязательным для корректной работы политик безопасности 
 		/// <see cref="SuppCors.CORS_ALLOW_TRUSTED"/> и <see cref="SuppCors.CORS_ALLOW_CREDENTIALS"/>.
 		/// </remarks>
-		public string[]? TrustedOrigins { get; set; }
+		public string[]? TrustedOrigins { get; set; } = null;
 
-	}
-
-
-
-	/// <summary>
-	/// Параметры конфигурации почтовой службы, реализующие интерфейс <see cref="IMailerServiceOptions"/> 
-	/// из инфраструктуры библиотеки <c>Ans.Net10.Common</c>.
-	/// </summary>
-	public class MailServiceOptions
-		: IMailerServiceOptions
-	{
-		/// <inheritdoc />
-		public string SmtpServer { get; set; } = string.Empty;
-
-		/// <inheritdoc />
-		public int SmtpPort { get; set; }
-
-		/// <inheritdoc />
-		public bool SmtpUseSsl { get; set; }
-
-		/// <inheritdoc />
-		public string SmtpUsername { get; set; } = string.Empty;
-
-		/// <inheritdoc />
-		public string SmtpPassword { get; set; } = string.Empty;
-
-		/// <inheritdoc />
-		public string DefaultFromAddress { get; set; } = string.Empty;
-
-		/// <inheritdoc />
-		public string DefaultFromTitle { get; set; } = string.Empty;
-
-		/// <inheritdoc />
-		public string DebugCc { get; set; } = string.Empty;
 	}
 
 
@@ -347,27 +295,27 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает или задает сырую CIDR-строку подсетей администраторов.
 		/// </summary>
-		public string Admin { get; set; } = string.Empty;
+		public string? Admin { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает сырую CIDR-строку безопасных подсетей.
 		/// </summary>
-		public string Safe { get; set; } = string.Empty;
+		public string? Safe { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает сырую CIDR-строку небезопасных подсетей.
 		/// </summary>
-		public string Unsafe { get; set; } = string.Empty;
+		public string? Unsafe { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает сырую CIDR-строку разрешенных подсетей.
 		/// </summary>
-		public string Allow { get; set; } = string.Empty;
+		public string? Allow { get; set; } = null;
 
 		/// <summary>
 		/// Получает или задает сырую CIDR-строку запрещенных подсетей.
 		/// </summary>
-		public string Deny { get; set; } = string.Empty;
+		public string? Deny { get; set; } = null;
 
 
 		/* readonly properties */
@@ -408,7 +356,7 @@ namespace Ans.Net10.Web
 
 
 		private static IPSubnetsList? _getSubnets(
-			string value,
+			string? value,
 			ref IPSubnetsList? cache)
 		{
 			return string.IsNullOrEmpty(value)
@@ -416,6 +364,40 @@ namespace Ans.Net10.Web
 				: cache ??= new IPSubnetsList(value);
 		}
 
+	}
+
+
+
+	/// <summary>
+	/// Параметры конфигурации почтовой службы, реализующие интерфейс <see cref="IMailerServiceOptions"/> 
+	/// из инфраструктуры библиотеки <c>Ans.Net10.Common</c>.
+	/// </summary>
+	public class MailServiceOptions
+		: IMailerServiceOptions
+	{
+		/// <inheritdoc />
+		public string SmtpServer { get; set; } = string.Empty;
+
+		/// <inheritdoc />
+		public int SmtpPort { get; set; } = 0;
+
+		/// <inheritdoc />
+		public bool SmtpUseSsl { get; set; } = false;
+
+		/// <inheritdoc />
+		public string SmtpUsername { get; set; } = string.Empty;
+
+		/// <inheritdoc />
+		public string SmtpPassword { get; set; } = string.Empty;
+
+		/// <inheritdoc />
+		public string DefaultFromAddress { get; set; } = string.Empty;
+
+		/// <inheritdoc />
+		public string? DefaultFromTitle { get; set; } = null;
+
+		/// <inheritdoc />
+		public string? DebugCc { get; set; } = null;
 	}
 
 }

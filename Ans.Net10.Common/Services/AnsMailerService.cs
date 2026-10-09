@@ -1,6 +1,7 @@
-﻿// rev 2026-09-19
+﻿// rev 2026-10-09
 
 using MailKit.Net.Smtp;
+using Microsoft.Extensions.Logging;
 using MimeKit;
 using MimeKit.Text;
 using System.Text;
@@ -54,11 +55,11 @@ namespace Ans.Net10.Common.Services
 
 		/// <summary>Отображаемое имя (заголовок) отправителя, используемое по умолчанию.</summary>
 		/// <value>Строка с именем отправителя.</value>
-		string DefaultFromTitle { get; }
+		string? DefaultFromTitle { get; }
 
 		/// <summary>Почтовый адрес для принудительной отправки отладочных скрытых копий писем (CC).</summary>
 		/// <value>Строка с email-адресом отладки.</value>
-		string DebugCc { get; }
+		string? DebugCc { get; }
 	}
 
 
@@ -67,7 +68,7 @@ namespace Ans.Net10.Common.Services
 	/// Заглушка службы отправки писем для использования в средах разработки или тестирования.
 	/// Не выполняет реальную сетевую отправку.
 	/// </summary>
-	public class FakeMailerService
+	public partial class FakeMailerService
 		: IMailerService
 	{
 		/// <inheritdoc />
@@ -84,7 +85,7 @@ namespace Ans.Net10.Common.Services
 	/// Реализация службы отправки писем через SMTP-протокол с использованием библиотеки MailKit.
 	/// </summary>
 	/// <param name="options">Параметры конфигурации подключения к SMTP-серверу.</param>
-	public class AnsMailerService(
+	public partial class AnsMailerService(
 		IMailerServiceOptions options)
 		: IMailerService
 	{
@@ -102,7 +103,7 @@ namespace Ans.Net10.Common.Services
 		/// <param name="address">Электронный почтовый адрес.</param>
 		/// <returns>Готовый объект адреса <see cref="MailboxAddress"/>.</returns>
 		public static MailboxAddress GetMailboxAddress(
-			string title,
+			string? title,
 			string address)
 		{
 			return new MailboxAddress(Encoding.UTF8, title, address);
@@ -126,8 +127,10 @@ namespace Ans.Net10.Common.Services
 			MailMessageModel message)
 		{
 			var mimeMessage1 = new MimeMessage();
-			mimeMessage1.From.Add(message.From ?? GetMailboxAddress(
-				_options.DefaultFromTitle, _options.DefaultFromAddress));
+			var fromAddress1 = message.From ?? GetMailboxAddress(
+				_options.DefaultFromTitle,
+				_options.DefaultFromAddress);
+			mimeMessage1.From.Add(fromAddress1);
 			if (message.To != null)
 				mimeMessage1.To.Add(message.To);
 			if (message.Cc.Length > 0)

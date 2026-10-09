@@ -274,7 +274,7 @@ namespace Ans.Net10.Common
 			var span1 = instance.AsSpan();
 			int cutIndex1 = maxTextLength1;
 			if (char.IsWhiteSpace(span1[cutIndex1]) || char.IsPunctuation(span1[cutIndex1]))
-				return string.Concat(span1[..cutIndex1].TrimEnd(), ellipsis);
+				return $"{span1[..cutIndex1].TrimEnd()}{ellipsis}";
 			while (cutIndex1 > 0)
 			{
 				char ch1 = span1[cutIndex1 - 1];
@@ -284,7 +284,7 @@ namespace Ans.Net10.Common
 			}
 			if (cutIndex1 == 0)
 				cutIndex1 = maxTextLength1;
-			return string.Concat(span1[..cutIndex1].TrimEnd(), ellipsis);
+			return $"{span1[..cutIndex1].TrimEnd()}{ellipsis}";
 		}
 
 
@@ -316,10 +316,9 @@ namespace Ans.Net10.Common
 			var s1 = instance.AsSpan(startIndex, len3);
 			string maskStart1 = beginCropMask ?? "…";
 			string maskEnd1 = endCropMask ?? beginCropMask ?? "…";
-			return string.Concat(
-				hasBeginCrop1 ? maskStart1 : string.Empty,
-				s1,
-				hasEndCrop1 ? maskEnd1 : string.Empty);
+			var b1 = hasBeginCrop1 ? maskStart1 : string.Empty;
+			var e1 = hasEndCrop1 ? maskEnd1 : string.Empty;
+			return $"{b1}{s1}{e1}";
 		}
 
 	}

@@ -1,0 +1,25 @@
+@*
+Компонент библиотеки Ans.Net10.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+
+<div class="row my-5">
+    <div class="col">
+        <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current' />
+    </div>
+    <div class="col">
+        <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Host' />        
+    </div>
+</div>
+
+<div class="row my-5">
+    <div class="col">
+        <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Site' />        
+    </div>
+    <div class="col">
+        <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Node' />        
+    </div>
+    <div class="col">
+        <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model='Current.Page' />        
+    </div>
+</div>

@@ -1,4 +1,6 @@
-﻿// rev 2026-09-29
+﻿// rev 2026-10-07
+
+using Microsoft.AspNetCore.Http;
 
 namespace Ans.Net10.Web
 {
@@ -9,12 +11,14 @@ namespace Ans.Net10.Web
 	/// <remarks>
 	/// Инициализирует новый экземпляр класса <see cref="CookiesService"/> с использованием первичного конструктора C#.
 	/// </remarks>
-	/// <param name="current">Текущий контекст обработки запроса, предоставляющий доступ к <see cref="Microsoft.AspNetCore.Http.HttpContext"/>.</param>
+	/// <param name="current">Текущий контекст обработки запроса, предоставляющий доступ к <see cref="HttpContext"/>.</param>
 	public class CookiesService(
 		CurrentContext current)
 	{
 
-		private readonly CurrentContext _current = current;
+		private readonly CurrentContext _current
+			= current
+				?? throw new ArgumentNullException(nameof(current));
 
 
 		/* functions */
@@ -54,10 +58,7 @@ namespace Ans.Net10.Web
 			string key)
 		{
 			ArgumentNullException.ThrowIfNull(key);
-			if (_current.HttpContext == null)
-				return null;
-			return _current.HttpContext.Request.Cookies.TryGetValue(key, out var value1)
-				? value1 : null;
+			return _current.HttpContext?.Request.Cookies[key];
 		}
 
 

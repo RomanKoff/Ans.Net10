@@ -124,11 +124,38 @@ namespace Ans.Net10.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to На главную.
+        /// </summary>
+        public static string Text_GoHome {
+            get {
+                return ResourceManager.GetString("Text_GoHome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Диагностическая информация.
+        /// </summary>
+        public static string Text_Info {
+            get {
+                return ResourceManager.GetString("Text_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Страница не найдена!.
         /// </summary>
         public static string Text_PageNotFound {
             get {
                 return ResourceManager.GetString("Text_PageNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Источник перехода (Referer).
+        /// </summary>
+        public static string Text_Referer {
+            get {
+                return ResourceManager.GetString("Text_Referer", resourceCulture);
             }
         }
         
