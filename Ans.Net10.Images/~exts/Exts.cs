@@ -1,4 +1,6 @@
-﻿using Ans.Net10.Common;
+﻿// rev 2026-10-11
+
+using Ans.Net10.Common;
 using ImageMagick;
 
 namespace Ans.Net10.Images
@@ -72,7 +74,8 @@ namespace Ans.Net10.Images
 			ArgumentNullException.ThrowIfNull(image);
 			var r1 = image.GetResizer();
 			r1.ScaleInside(width, height, noIncrease);
-			var clone1 = image.Clone();
+			var clone1 = (MagickImage)image.CloneArea(
+				new MagickGeometry(0, 0, image.Width, image.Height));
 			clone1.Resize(r1.NewWidth, r1.NewHeight);
 			if (useMaskBackground)
 			{
@@ -110,7 +113,8 @@ namespace Ans.Net10.Images
 			ArgumentNullException.ThrowIfNull(image);
 			var r1 = image.GetResizer();
 			r1.ScaleAround(width, height);
-			var clone1 = image.Clone();
+			var clone1 = (MagickImage)image.CloneArea(
+				new MagickGeometry(0, 0, image.Width, image.Height));
 			clone1.Resize(r1.NewWidth, r1.NewHeight);
 			return clone1;
 		}
@@ -138,7 +142,8 @@ namespace Ans.Net10.Images
 			ArgumentNullException.ThrowIfNull(image);
 			var r1 = image.GetResizer();
 			r1.ScaleAverage(side);
-			var clone1 = image.Clone();
+			var clone1 = (MagickImage)image.CloneArea(
+				new MagickGeometry(0, 0, image.Width, image.Height));
 			clone1.Resize(r1.NewWidth, r1.NewHeight);
 			return clone1;
 		}
@@ -185,11 +190,11 @@ namespace Ans.Net10.Images
 			uint cropHeight)
 		{
 			ArgumentNullException.ThrowIfNull(image);
-			var clone1 = image.Clone();
-			clone1.Resize(width, height);
-			var geometry1 = new MagickGeometry((int)cropX, (int)cropY, cropWidth, cropHeight);
-			clone1.Crop(geometry1);
-			return clone1;
+			using var сlone1 = (MagickImage)image.CloneArea(
+				new MagickGeometry(0, 0, image.Width, image.Height));
+			сlone1.Resize(width, height);
+			return сlone1.CloneArea(
+				new MagickGeometry((int)cropX, (int)cropY, cropWidth, cropHeight));
 		}
 
 
@@ -237,8 +242,7 @@ namespace Ans.Net10.Images
 			var r1 = image.GetResizer();
 			r1.ScaleAround(width, height);
 			return image.GetResizeAndCrop(
-				r1.NewWidth, r1.NewHeight,
-				cropX, cropY, cropWidth, cropHeight);
+				r1.NewWidth, r1.NewHeight, cropX, cropY, cropWidth, cropHeight);
 		}
 
 
@@ -286,11 +290,12 @@ namespace Ans.Net10.Images
 			ArgumentNullException.ThrowIfNull(image);
 			var r1 = image.GetResizer();
 			r1.ScaleAround(width, height);
-			var cropX1 = ImageResizeHelper.GetCropStart(r1.NewWidth, cropWidth, shiftHorizontal);
-			var cropY1 = ImageResizeHelper.GetCropStart(r1.NewHeight, cropHeight, shiftVertical);
+			var cropX1 = ImageResizeHelper.GetCropStart(
+				r1.NewWidth, cropWidth, shiftHorizontal);
+			var cropY1 = ImageResizeHelper.GetCropStart(
+				r1.NewHeight, cropHeight, shiftVertical);
 			return image.GetResizeAndCrop(
-				r1.NewWidth, r1.NewHeight,
-				cropX1, cropY1, cropWidth, cropHeight);
+				r1.NewWidth, r1.NewHeight, cropX1, cropY1, cropWidth, cropHeight);
 		}
 
 
@@ -339,7 +344,8 @@ namespace Ans.Net10.Images
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentException.ThrowIfNullOrEmpty(filename);
-			using var copy1 = image.GetResizeInside(width, height, noIncrease, useMaskBackground);
+			using var copy1 = image.GetResizeInside(
+				width, height, noIncrease, useMaskBackground);
 			copy1.Quality = quality;
 			copy1.Write(filename);
 		}
@@ -529,10 +535,64 @@ namespace Ans.Net10.Images
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentException.ThrowIfNullOrEmpty(filename);
 			using var copy1 = image.GetResizeAroundAndCrop(
-				width, height,
-				cropWidth, cropHeight, shiftVertical, shiftHorizontal);
+				width, height, cropWidth, cropHeight, shiftVertical, shiftHorizontal);
 			copy1.Quality = quality;
 			copy1.Write(filename);
+		}
+
+
+		/// <summary>
+		/// Безопасно вычисляет перцептивный хэш изображения. 
+		/// В случае повреждения структуры файла или невозможности рассчитать хэш, 
+		/// возвращает null вместо генерации исключения.
+		/// </summary>
+		/// <param name="image">Исходное изображение Magick.NET.</param>
+		/// <returns>Строковое представление визуального хэша или null.</returns>
+		public static string? GetPerceptualHashSafe(
+			this MagickImage image)
+		{
+			if (image == null)
+				return null;
+			try
+			{
+				var pHash1 = image.PerceptualHash();
+				return pHash1?.ToString();
+			}
+			catch (Exception)
+			{
+				return null;
+			}
+		}
+
+
+		/// <summary>
+		/// Вычисляет степень визуального различия между двумя хэшами (расстояние Хэмминга).
+		/// Чем ближе результат к 0, тем более похожи изображения.
+		/// </summary>
+		/// <param name="hash1">Перцептивный хэш первого изображения.</param>
+		/// <param name="hash2">Перцептивный хэш второго изображения.</param>
+		/// <returns>
+		/// Числовое значение разницы. 
+		/// 0 — полные дубликаты; 
+		/// до 5–10 — картинки похожи (ресайз, вотермарка, сильное сжатие); 
+		/// больше 15 — изображения визуально разные.
+		/// </returns>
+		public static double ComparePerceptualDifference(
+			string hash1,
+			string hash2)
+		{
+			if (string.IsNullOrEmpty(hash1) || string.IsNullOrEmpty(hash2))
+				return double.MaxValue;
+			try
+			{
+				var ph1 = new PerceptualHash(hash1);
+				var ph2 = new PerceptualHash(hash2);
+				return ph1.SumSquaredDistance(ph2);
+			}
+			catch (Exception)
+			{
+				return double.MaxValue;
+			}
 		}
 
 	}

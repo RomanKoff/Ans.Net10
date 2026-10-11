@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MapNodes"
+		   targetNamespace="urn:ans:net10:web:map-nodes"
+		   elementFormDefault="qualified"
+		   xmlns="urn:ans:net10:web:map-nodes"
+           xmlns:xs="http://w3.org">
+
+	<xs:element name="nodes">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="item" type="ItemType" minOccurs="1" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ItemType">
+		<xs:sequence>
+			<xs:element name="item" type="ItemType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="target" type="xs:string" use="optional" />
+		<xs:attribute name="face" type="xs:string" use="required" />
+	</xs:complexType>
+
+</xs:schema>

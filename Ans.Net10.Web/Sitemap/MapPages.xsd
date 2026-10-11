@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="MapPages"
+           targetNamespace="urn:ans:net10:web:map-pages"
+           elementFormDefault="qualified"
+           xmlns="urn:ans:net10:web:map-pages"
+           xmlns:xs="http://w3.org">
+
+	<xs:element name="pages">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="item" type="ItemType" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="ItemType">
+		<xs:sequence>
+			<xs:element name="item" type="ItemType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
+		<xs:attribute name="target" type="xs:string" use="optional" />
+		<xs:attribute name="face" type="xs:string" use="optional" />
+		<xs:attribute name="start" type="xs:boolean" use="optional" default="true" />
+	</xs:complexType>
+
+</xs:schema>

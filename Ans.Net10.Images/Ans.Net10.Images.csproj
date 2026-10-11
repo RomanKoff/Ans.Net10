@@ -19,11 +19,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.17.2" />
+		<PackageReference Include="Magick.NET-Q16-AnyCPU" Version="15.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="_Dev\**" />
+		<None Include="_Dev\**">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

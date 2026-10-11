@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿// rev 2026-10-10
 
 namespace Ans.Net10.Web
 {
@@ -26,6 +26,9 @@ namespace Ans.Net10.Web
 
 
 
+	/// <summary>
+	/// Описывает профиль текущей страницы.
+	/// </summary>
 	public sealed class PageProfile
 		: _Profile_Proto
 	{
@@ -33,6 +36,9 @@ namespace Ans.Net10.Web
 		/* ctor */
 
 
+		/// <summary>
+		/// Инициализирует новый экземпляр класса <see cref="PageProfile"/> со значениями по умолчанию.
+		/// </summary>
 		public PageProfile()
 		{
 			Type = PageProfileType.Normal;
@@ -43,10 +49,6 @@ namespace Ans.Net10.Web
 		/* properties */
 
 
-		public string? Name { get; set; } = null;
-		public string? Path { get; set; } = null;
-
-
 		/// <summary>
 		/// Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
 		/// </summary>
@@ -55,6 +57,7 @@ namespace Ans.Net10.Web
 
 		/// <summary>
 		/// Получает или задает вышестоящую (родительскую) страницу в иерархическом дереве контента узла.
+		/// Если страница находится на корневом уровне информационного узла, возвращает <see langword="null"/>.
 		/// </summary>
 		public PageProfile? ParentPage { get; set; }
 
@@ -62,7 +65,21 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает или задает коллекцию прямых подчиненных (дочерних) контентных страниц.
 		/// </summary>
-		public ICollection<PageProfile> ChildPages { get; set; }
+		/// <value>Коллекция дочерних объектов <see cref="PageProfile"/>. Гарантированно не возвращает <see langword="null"/>.</value>
+		public ICollection<PageProfile>? ChildPages { get; set; }
+
+
+		/* methods */
+
+
+		/// <summary>
+		/// Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
+		/// для текущего профиля страницы.
+		/// </summary>	
+		public override void CalcPartNavigation()
+		{
+			throw new NotImplementedException();
+		}
 
 	}
 

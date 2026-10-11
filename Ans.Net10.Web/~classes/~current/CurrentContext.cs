@@ -28,6 +28,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Инициализирует новый экземпляр класса <see cref="CurrentContext"/> с внедрением всех базовых зависимостей.
 		/// </summary>
+		/// <param name="loggerFactory">Фабрика для создания системных регистраторов логов.</param>
 		/// <param name="env">Среда выполнения веб-приложения.</param>
 		/// <param name="configuration">Конфигурация приложения.</param>
 		/// <param name="httpContextAccessor">Служба доступа к текущему контексту HTTP-запроса.</param>
@@ -38,6 +39,9 @@ namespace Ans.Net10.Web
 		/// <param name="linkGenerator">Компонент генерации URL-адресов на основе зарегистрированных маршрутов приложения.</param>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если любой из входящих инфраструктурных сервисов равен <see langword="null"/>.
+		/// </exception>
+		/// <exception cref="Exception">
+		/// Вызывается при критическом сбое системы, если текущий контекст <see cref="HttpContext"/> недоступен через аксессор.
 		/// </exception>
 		public CurrentContext(
 			ILoggerFactory loggerFactory,
@@ -50,6 +54,7 @@ namespace Ans.Net10.Web
 			IMailerService mailer,
 			LinkGenerator linkGenerator)
 		{
+			ArgumentNullException.ThrowIfNull(loggerFactory);
 			ArgumentNullException.ThrowIfNull(env);
 			ArgumentNullException.ThrowIfNull(configuration);
 			ArgumentNullException.ThrowIfNull(httpContextAccessor);
@@ -114,17 +119,13 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает контекст текущего HTTP-запроса.
+		/// Получает гарантированно доступный контекст текущего HTTP-запроса.
 		/// </summary>
-		/// <value>
-		/// Объект <see cref="HttpContext"/> для текущего запроса, или <see langword="null"/>, 
-		/// если контекст недоступен (например, при вызове вне контекста веб-сервера).
-		/// </value>
 		public HttpContext HttpContext { get; }
 
 
 		/// <summary>
-		/// Получает службу гибридного кэширования данных <see cref="Microsoft.Extensions.Caching.Hybrid.HybridCache"/>.
+		/// Получает службу гибридного кэширования данных <see cref="HybridCache"/>.
 		/// </summary>
 		public HybridCache HybridCache { get; }
 
@@ -174,6 +175,9 @@ namespace Ans.Net10.Web
 		/* datas */
 
 
+		/// <summary>
+		/// Получает структурированные данные о сетевом адресе хоста и виртуальных путях приложения.
+		/// </summary>
 		public HostData Host { get; }
 
 
@@ -220,19 +224,19 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Профиль сайта.
+		/// Профиль текущего сайта.
 		/// </summary>
 		public SiteProfile Site { get; }
 
 
 		/// <summary>
-		/// Профиль узла.
+		/// Профиль текущего информационного узла.
 		/// </summary>
 		public NodeProfile Node { get; }
 
 
 		/// <summary>
-		/// Профиль страницы.
+		/// Профиль текущей контентной страницы.
 		/// </summary>
 		public PageProfile Page { get; }
 
@@ -240,6 +244,11 @@ namespace Ans.Net10.Web
 		/* functions */
 
 
+		/// <summary>
+		/// Формирует абсолютный URL-адрес для указанного относительного пути с учетом виртуального каталога хоста.
+		/// </summary>
+		/// <param name="target">Целевой относительный путь или URL.</param>
+		/// <returns>Полный абсолютный путь, готовый для использования в ссылках.</returns>
 		public string GetAbsoluteUrl(
 			string? target)
 		{
@@ -261,11 +270,11 @@ namespace Ans.Net10.Web
 		/// Если страница или узел не определены, возвращает базовое название сайта или пустую строку.
 		/// </remarks>
 		public string BrowserTitle
-			=> field ??= _getCalculatedBrowserTitle();
+			=> field ??= $"{Page.ShortTitle} - {Node.ShortTitle} - {Site.ShortTitle}";
 
 
 		/// <summary>
-		/// Получает безопасное HTML-представление человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
+		/// Получает безопасное HTML-представление человекочитаемого заголовка веб-страницы для тега &lt;title&gt; браузера.
 		/// </summary>		
 		public HtmlString BrowserTitleHtml
 			=> field ??= BrowserTitle.ToHtml(false);
@@ -275,37 +284,38 @@ namespace Ans.Net10.Web
 		/// Возвращает ленивое перечисление элементов навигационной цепочки ("хлебных крошек") 
 		/// от текущей страницы/узла вверх до корня сайта.
 		/// </summary>
+		/// <value>Коллекция строк элементов навигации.</value>
+		/// <exception cref="NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
 		public IEnumerable<string> Breadcrumbs
-			=> _getCalculatedBreadcrumbs();
+			=> throw new NotImplementedException();
 
 
 		/* todo */
 
 
-		internal string GetResUrl(string v)
+		/// <summary>
+		/// Возвращает URL-адрес изолированного ресурса на основе переданного идентификатора.
+		/// </summary>
+		/// <param name="target">Идентификатор или путь ресурса.</param>
+		/// <returns>Строка сформированного URL-адреса ресурса.</returns>
+		/// <exception cref="NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
+		internal string GetResUrl(
+			string target)
 		{
 			throw new NotImplementedException();
 		}
 
 
-		internal string GetUrl(string v)
+		/// <summary>
+		/// Возвращает внутренний маршрут на основе переданного строкового кода.
+		/// </summary>
+		/// <param name="target">Строковое определение целевого пути.</param>
+		/// <returns>Строка сформированного внутреннего URL.</returns>
+		/// <exception cref="NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
+		internal string GetUrl(
+			string target)
 		{
 			throw new NotImplementedException();
-		}
-
-
-		/* privates */
-
-
-		private string _getCalculatedBrowserTitle()
-		{
-			return string.Empty;
-		}
-
-
-		private IEnumerable<string> _getCalculatedBreadcrumbs()
-		{
-			return [];
 		}
 
 	}

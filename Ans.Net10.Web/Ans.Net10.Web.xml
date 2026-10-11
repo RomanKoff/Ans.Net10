@@ -2773,6 +2773,74 @@
             Исполняет непосредственный запуск движка рендеринга Razor в выделенный текстовый поток StreamWriter.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.Sitemap.NodemapItem">
+            <summary>
+            Описывает иммутабельные данные информационного узла в карте сайта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.NodemapItem.#ctor(System.String,System.String,System.Collections.Generic.ICollection{Ans.Net10.Web.Sitemap.PagemapItem},System.Collections.Frozen.FrozenDictionary{System.String,Ans.Net10.Web.Sitemap.PagemapItem})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.NodemapItem"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.Target">
+            <summary>
+            Получает целевой идентификатор или адрес узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.Face">
+            <summary>
+            Получает сырую строку автотипографики и заголовков.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.PagesTree">
+            <summary>
+            Получает локальное иерархическое дерево страниц, принадлежащих данному узлу.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.PagesIndex">
+            <summary>
+            Получает плоский индекс для мгновенного поиска страниц узла по их ЧПУ-пути.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Sitemap.PagemapItem">
+            <summary>
+            Описывает иммутабельные данные контентной страницы в карте сайта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.PagemapItem.#ctor(System.String,System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.PagemapItem"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PagemapItem.Target">
+            <summary>
+            Получает сегмент ЧПУ-пути или адрес ссылки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PagemapItem.Face">
+            <summary>
+            Получает сырую строку автотипографики и заголовков страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PagemapItem.HasStart">
+            <summary>
+            Получает признак наличия индексной страницы для текущего уровня.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Sitemap.ISitemapProvider">
+            <summary>
+            Определяет контракт для поставщика данных карты сайта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.Xml_SitemapProvider.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Sitemap.Xml_SitemapProvider})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.Xml_SitemapProvider"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.Xml_SitemapProvider.Dispose">
+            <inheritdoc />
+        </member>
         <member name="T:Ans.Net10.Web.TagHelpers.add_ATagHelper">
             <summary>
             Асинхронный Tag Helper для элемента <c>&lt;a&gt;</c>, расширяющий стандартный <see cref="T:Microsoft.AspNetCore.Mvc.TagHelpers.AnchorTagHelper"/>
@@ -4189,6 +4257,7 @@
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CurrentContext"/> с внедрением всех базовых зависимостей.
             </summary>
+            <param name="loggerFactory">Фабрика для создания системных регистраторов логов.</param>
             <param name="env">Среда выполнения веб-приложения.</param>
             <param name="configuration">Конфигурация приложения.</param>
             <param name="httpContextAccessor">Служба доступа к текущему контексту HTTP-запроса.</param>
@@ -4199,6 +4268,9 @@
             <param name="linkGenerator">Компонент генерации URL-адресов на основе зарегистрированных маршрутов приложения.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если любой из входящих инфраструктурных сервисов равен <see langword="null"/>.
+            </exception>
+            <exception cref="T:System.Exception">
+            Вызывается при критическом сбое системы, если текущий контекст <see cref="P:Ans.Net10.Web.CurrentContext.HttpContext"/> недоступен через аксессор.
             </exception>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Logger">
@@ -4218,16 +4290,12 @@
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.HttpContext">
             <summary>
-            Получает контекст текущего HTTP-запроса.
+            Получает гарантированно доступный контекст текущего HTTP-запроса.
             </summary>
-            <value>
-            Объект <see cref="P:Ans.Net10.Web.CurrentContext.HttpContext"/> для текущего запроса, или <see langword="null"/>, 
-            если контекст недоступен (например, при вызове вне контекста веб-сервера).
-            </value>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.HybridCache">
             <summary>
-            Получает службу гибридного кэширования данных <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>.
+            Получает службу гибридного кэширования данных <see cref="P:Ans.Net10.Web.CurrentContext.HybridCache"/>.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.ViewRender">
@@ -4265,6 +4333,11 @@
             Получает экземпляр помощника для работы с форматированием дат и времени.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Host">
+            <summary>
+            Получает структурированные данные о сетевом адресе хоста и виртуальных путях приложения.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Cache">
             <summary>
             Получает прикладную службу гибридного кэширования текущего контекста.
@@ -4297,18 +4370,25 @@
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Site">
             <summary>
-            Профиль сайта.
+            Профиль текущего сайта.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Node">
             <summary>
-            Профиль узла.
+            Профиль текущего информационного узла.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Page">
             <summary>
-            Профиль страницы.
+            Профиль текущей контентной страницы.
             </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetAbsoluteUrl(System.String)">
+            <summary>
+            Формирует абсолютный URL-адрес для указанного относительного пути с учетом виртуального каталога хоста.
+            </summary>
+            <param name="target">Целевой относительный путь или URL.</param>
+            <returns>Полный абсолютный путь, готовый для использования в ссылках.</returns>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.BrowserTitle">
             <summary>
@@ -4322,7 +4402,7 @@
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.BrowserTitleHtml">
             <summary>
-            Получает безопасное HTML-представление человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
+            Получает безопасное HTML-представление человекочитаемого заголовка веб-страницы для тега &lt;title&gt; браузера.
             </summary>		
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Breadcrumbs">
@@ -4330,6 +4410,57 @@
             Возвращает ленивое перечисление элементов навигационной цепочки ("хлебных крошек") 
             от текущей страницы/узла вверх до корня сайта.
             </summary>
+            <value>Коллекция строк элементов навигации.</value>
+            <exception cref="T:System.NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetResUrl(System.String)">
+            <summary>
+            Возвращает URL-адрес изолированного ресурса на основе переданного идентификатора.
+            </summary>
+            <param name="target">Идентификатор или путь ресурса.</param>
+            <returns>Строка сформированного URL-адреса ресурса.</returns>
+            <exception cref="T:System.NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetUrl(System.String)">
+            <summary>
+            Возвращает внутренний маршрут на основе переданного строкового кода.
+            </summary>
+            <param name="target">Строковое определение целевого пути.</param>
+            <returns>Строка сформированного внутреннего URL.</returns>
+            <exception cref="T:System.NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
+        </member>
+        <member name="T:Ans.Net10.Web.HostData">
+            <summary>
+            Предоставляет структурированные данные о сетевом адресе хоста, виртуальном пути 
+            и полном URL-адресе запущенного веб-приложения на основе текущего контекста запроса.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.HostData.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.HostData"/> на основе текущего контекста приложения.
+            </summary>
+            <param name="current">Единый оркестровый контекст текущего HTTP-запроса.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.HostData.BaseUrl">
+            <summary>
+            Возвращает базовый URL-адрес веб-приложения (протокол, хост и порт).
+            Если контекст запроса недоступен, возвращает пустую строку.
+            </summary>
+            <value>Строка вида <c>https://mysite.com</c> или <c>http://localhost:5173</c>.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.HostData.VirtualPath">
+            <summary>
+            Возвращает базовый виртуальный путь приложения, если оно развернуто в подкаталоге.
+            Если контекст запроса недоступен, возвращает пустую строку.
+            </summary>
+            <value>Строка пути или пустая строка, если приложение запущено в корне домена.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.HostData.ApplicationUrl">
+            <summary>
+            Возвращает полный абсолютный URL-адрес корня веб-приложения, 
+            включая протокол, хост, порт и виртуальный путь подкаталога.
+            </summary>
+            <value>Строка вида <c>https://mysite.com</c>.</value>
         </member>
         <member name="T:Ans.Net10.Web.NodeProfileType">
             <summary>
@@ -4356,6 +4487,16 @@
             Внешняя ссылка. Ведет на сторонний интернет-ресурс.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.NodeProfile">
+            <summary>
+            Описывает профиль текущего узла.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NodeProfile.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NodeProfile"/> со значениями по умолчанию.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.NodeProfile.Type">
             <summary>
             Получает или задает семантический тип информационного узла, определяющий его поведение в навигации.
@@ -4364,17 +4505,26 @@
         <member name="P:Ans.Net10.Web.NodeProfile.ParentNode">
             <summary>
             Получает или задает вышестоящий (родительский) информационный узел в структуре сайта.
+            Если узел находится на самом верхнем (корневом) уровне, возвращает <see langword="null"/>.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.NodeProfile.ChildNodes">
             <summary>
             Получает или задает коллекцию прямых подчиненных (дочерних) информационных узлов.
             </summary>
+            <value>Коллекция дочерних объектов <see cref="T:Ans.Net10.Web.NodeProfile"/>. Гарантированно не возвращает <see langword="null"/>.</value>
         </member>
         <member name="P:Ans.Net10.Web.NodeProfile.Pages">
             <summary>
             Получает или задает коллекцию корневых страниц, принадлежащих данному узлу.
             </summary>
+            <value>Коллекция объектов <see cref="T:Ans.Net10.Web.PageProfile"/>, привязанных к узлу. Гарантированно не возвращает <see langword="null"/>.</value>
+        </member>
+        <member name="M:Ans.Net10.Web.NodeProfile.CalcPartNavigation">
+            <summary>
+            Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
+            для текущего профиля узла.
+            </summary>		
         </member>
         <member name="T:Ans.Net10.Web.PageProfileType">
             <summary>
@@ -4396,6 +4546,16 @@
             Внешняя ссылка. Ведет на сторонний интернет-ресурс.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.PageProfile">
+            <summary>
+            Описывает профиль текущей страницы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.PageProfile.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.PageProfile"/> со значениями по умолчанию.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.PageProfile.Type">
             <summary>
             Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
@@ -4404,11 +4564,24 @@
         <member name="P:Ans.Net10.Web.PageProfile.ParentPage">
             <summary>
             Получает или задает вышестоящую (родительскую) страницу в иерархическом дереве контента узла.
+            Если страница находится на корневом уровне информационного узла, возвращает <see langword="null"/>.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.PageProfile.ChildPages">
             <summary>
             Получает или задает коллекцию прямых подчиненных (дочерних) контентных страниц.
+            </summary>
+            <value>Коллекция дочерних объектов <see cref="T:Ans.Net10.Web.PageProfile"/>. Гарантированно не возвращает <see langword="null"/>.</value>
+        </member>
+        <member name="M:Ans.Net10.Web.PageProfile.CalcPartNavigation">
+            <summary>
+            Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
+            для текущего профиля страницы.
+            </summary>	
+        </member>
+        <member name="T:Ans.Net10.Web.SiteProfile">
+            <summary>
+            Описывает профиль текущего сайта.
             </summary>
         </member>
         <member name="M:Ans.Net10.Web.SiteProfile.#ctor">
@@ -4420,19 +4593,40 @@
             <summary>
             Получает или задает коллекцию корневых информационных узлов первого уровня, принадлежащих сайту.
             </summary>
-            <value>Список объектов <see cref="T:Ans.Net10.Web.NodeProfile"/>, у которых отсутствует родительский узел.</value>
+            <value>Список объектов <see cref="T:Ans.Net10.Web.NodeProfile"/>, у которых отсутствует родительский узел. Гарантированно не возвращает <see langword="null"/>.</value>
+        </member>
+        <member name="M:Ans.Net10.Web.SiteProfile.CalcPartNavigation">
+            <summary>
+            Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
+            для текущего профиля сайта.
+            </summary>		
+        </member>
+        <member name="T:Ans.Net10.Web._Profile_Proto">
+            <summary>
+            Абстрактный прототип класса для профилей контента (Сайт, Узел, Страница).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.CalcPartNavigation">
+            <summary>
+            Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
+            для текущего профиля контента.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.#ctor">
+            <summary>
+            Инициализирует базовые параметры прототипа профиля контента.
+            </summary>
         </member>
         <member name="P:Ans.Net10.Web._Profile_Proto.Title">
             <summary>
             Получает или задает основной заголовок элемента контента.
             </summary>
-            <value>Строковое значение заголовка. Не может быть равен <see langword="null"/>.</value>
         </member>
         <member name="P:Ans.Net10.Web._Profile_Proto.ShortTitle">
             <summary>
             Получает или задает сокращенный заголовок элемента контента для компактных представлений.
+            Если сокращенная форма не задана явно, возвращает значение свойства <see cref="P:Ans.Net10.Web._Profile_Proto.Title"/>.
             </summary>
-            <value>Сокращенный текст заголовка. Если сокращенная форма не задана явно, возвращает значение свойства <see cref="P:Ans.Net10.Web._Profile_Proto.Title"/>.</value>
         </member>
         <member name="P:Ans.Net10.Web._Profile_Proto.TitleHtml">
             <summary>
@@ -4452,6 +4646,16 @@
             Возвращает признак того, является ли сокращенный заголовок уникальным (установлен отличным от <see cref="P:Ans.Net10.Web._Profile_Proto.Title"/>).
             </summary>
             <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.SetFace(System.String)">
+            <summary>
+            Декларативно устанавливает основной и сокращенный заголовки профиля на основе переданной форматированной строки.
+            </summary>
+            <param name="face">
+            Строка разметки заголовков. Может содержать разделитель <c>'|'</c> в форматах: 
+            <c>"Заголовок"</c>, <c>"Сокр|ПолноеНазвание"</c> или <c>"Сокр|Шаблон с {0}"</c> 
+            (например: <c>"УЦР|Управление цифрового развития"</c> или <c>"Ученый совет|{0} университета"</c>).
+            </param>
         </member>
         <member name="T:Ans.Net10.Web.CacheService">
             <summary>

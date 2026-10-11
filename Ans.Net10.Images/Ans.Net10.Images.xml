@@ -43,6 +43,9 @@
             Возвращает профиль EXIF-метаданных изображения. 
             Равен <see langword="null"/>, если у изображения отсутствуют метаданные или формат их не поддерживает.
             </summary>
+            <remarks>
+            Внимание: обращение к профилю после вызова метода Dispose() вызовет ObjectDisposedException.
+            </remarks>
         </member>
         <member name="P:Ans.Net10.Images.ImageHelper.ExifOrientation">
             <summary>
@@ -268,6 +271,12 @@
         <member name="P:Ans.Net10.Images.MediaFileInfo.IsNearSquare">
             <summary>
             Возвращает признак того, что геометрическая форма изображения близка к квадрату.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Images.MediaFileInfo.PerceptualHash">
+            <summary>
+            Возвращает уникальный перцептивный хэш изображения для поиска визуальных дубликатов.
+            Равен <see langword="null"/>, если файл не является изображением или поврежден.
             </summary>
         </member>
         <member name="T:Ans.Net10.Images.Exts">
@@ -619,6 +628,29 @@
             <exception cref="T:System.ArgumentException">
             Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
             </exception>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.GetPerceptualHashSafe(ImageMagick.MagickImage)">
+            <summary>
+            Безопасно вычисляет перцептивный хэш изображения. 
+            В случае повреждения структуры файла или невозможности рассчитать хэш, 
+            возвращает null вместо генерации исключения.
+            </summary>
+            <param name="image">Исходное изображение Magick.NET.</param>
+            <returns>Строковое представление визуального хэша или null.</returns>
+        </member>
+        <member name="M:Ans.Net10.Images.Exts.ComparePerceptualDifference(System.String,System.String)">
+            <summary>
+            Вычисляет степень визуального различия между двумя хэшами (расстояние Хэмминга).
+            Чем ближе результат к 0, тем более похожи изображения.
+            </summary>
+            <param name="hash1">Перцептивный хэш первого изображения.</param>
+            <param name="hash2">Перцептивный хэш второго изображения.</param>
+            <returns>
+            Числовое значение разницы. 
+            0 — полные дубликаты; 
+            до 5–10 — картинки похожи (ресайз, вотермарка, сильное сжатие); 
+            больше 15 — изображения визуально разные.
+            </returns>
         </member>
     </members>
 </doc>

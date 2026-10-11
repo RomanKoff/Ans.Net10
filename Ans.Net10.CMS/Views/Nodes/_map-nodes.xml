@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<nodes xmlns="urn:ans:net10:web:map-nodes"
+       xmlns:xsi="http://w3.org"
+       xsi:schemaLocation="urn:ans:net10:web:map-nodes MapNodes.xsd">
+
+	<item face="Подразделения, подчиненные проректору по учебной деятельности">
+
+		<item target="https://priem.guap.ru/" face="Приемная комиссия">
+			<item target="mag" face="Ответы на вопросы о магистратуре" />
+		</item>
+
+		<item target="uch" face="Учебное управление">
+			<item target="umo" face="Учебно-методический отдел" />
+			<item target="quality" face="Отдел управления качеством образования" />
+			<item target="ooup" face="Отдел организации учебного процесса" />
+		</item>
+
+		<item target="it" face="УЦР|Управление цифрового развития">
+			<item target="/it/struct/oris" face="Отдел разработки информационных систем" />
+			<item target="/it/struct/oiak" face="Отдел информационной архитектуры и кибербезопасности" />
+			<item target="/it/struct/octs" face="Отдел цифровой трансформации и сервисов" />
+			<item target="/it/struct/oib" face="Отдел информационной безопасности" />
+			<item target="/it/struct/mfc" face="Отдел сопровождения обучающихся (МФЦ)" />
+			<item target="ittime" face="Время IT|«{0}» — мероприятия для студентов">
+				<item target="itcomp" face="Конкурс «Время IТ»|Конкурс университетских технологических проектов" />
+				<item target="itforum" face="Форум «Время IТ»|Региональный цифровой форум" />
+			</item>
+		</item>
+
+		<item target="it2" face="УЦР|Управление цифрового развития"></item>
+
+	</item>
+
+</nodes>

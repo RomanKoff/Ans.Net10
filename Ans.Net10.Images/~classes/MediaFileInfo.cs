@@ -1,4 +1,4 @@
-﻿// rev 2026-010-01
+﻿// rev 2026-010-11
 
 using Ans.Net10.Common;
 using ImageMagick;
@@ -74,32 +74,27 @@ namespace Ans.Net10.Images
 			ContentInfo = SuppIO.GetContentInfoFromExtension(Extension);
 			Mimetype = ContentInfo.ContentType;
 			Format = string.Empty;
-			if (ContentInfo.IsWebImage)
+			if (!ContentInfo.IsWebImage)
+				return;
+			try
 			{
-				try
+				MagickImageInfo = new MagickImageInfo(info.FullName);
+				Format = MagickImageInfo.Format.ToString().ToLowerInvariant();
+				var inferredMime1 = $"image/{Format}";
+				if (Mimetype == "image/jpeg" && inferredMime1 != "image/jpeg")
+					_setInvalidImageState();
+				else
 				{
-					MagickImageInfo = new MagickImageInfo(info.FullName);
-					Format = MagickImageInfo.Format.ToString().ToLowerInvariant();
-					var inferredMime1 = $"image/{Format}";
-					if (Mimetype == "image/jpeg" && inferredMime1 != "image/jpeg")
-					{
-						Mimetype = SuppIO.CONTENTINFO_BIN.ContentType;
-						IsInvalidImage = true;
-					}
-					else
-					{
-						IsWebImage = true;
-						IsJpeg = Format == "jpeg";
-						Mimetype = inferredMime1;
-						ResizeHelper = new ImageResizeHelper(MagickImageInfo.Width, MagickImageInfo.Height);
-						_calcSize();
-					}
+					IsWebImage = true;
+					IsJpeg = Format == "jpeg";
+					Mimetype = inferredMime1;
+					ResizeHelper = new ImageResizeHelper(MagickImageInfo.Width, MagickImageInfo.Height);
+					_calcSize();
 				}
-				catch (Exception)
-				{
-					Mimetype = SuppIO.CONTENTINFO_BIN.ContentType;
-					IsInvalidImage = true;
-				}
+			}
+			catch (Exception)
+			{
+				_setInvalidImageState();
 			}
 		}
 
@@ -139,14 +134,14 @@ namespace Ans.Net10.Images
 		/// Возвращает низкоуровневые метаданные заголовка изображения движка Magick.NET. 
 		/// Равен <see langword="null"/>, если файл не является валидным веб-изображением.
 		/// </summary>
-		public MagickImageInfo? MagickImageInfo { get; }
+		public MagickImageInfo? MagickImageInfo { get; private set; }
 
 
 		/// <summary>
 		/// Возвращает хелпер расчёта пропорций и изменения размеров изображения. 
 		/// Равен <see langword="null"/>, если файл не является веб-изображением.
 		/// </summary>
-		public ImageResizeHelper? ResizeHelper { get; }
+		public ImageResizeHelper? ResizeHelper { get; private set; }
 
 
 		/// <summary>
@@ -311,6 +306,24 @@ namespace Ans.Net10.Images
 		}
 
 
+		/// <summary>
+		/// Возвращает уникальный перцептивный хэш изображения для поиска визуальных дубликатов.
+		/// Равен <see langword="null"/>, если файл не является изображением или поврежден.
+		/// </summary>
+		public string? PerceptualHash
+		{
+			get
+			{
+				if (!_isHashCalculated)
+				{
+					field = _getPerceptualHash();
+					_isHashCalculated = true;
+				}
+				return field;
+			}
+		}
+
+
 		/* privates */
 
 
@@ -344,6 +357,34 @@ namespace Ans.Net10.Images
 			MaxSize = ImageSizeEnum.Extrasmall;
 			SizeIndex = 1;
 		}
+
+
+		private void _setInvalidImageState()
+		{
+			Mimetype = SuppIO.CONTENTINFO_BIN.ContentType;
+			IsInvalidImage = true;
+			IsWebImage = false;
+			IsJpeg = false;
+			MagickImageInfo = null;
+			ResizeHelper = null;
+		}
+
+
+		private string? _getPerceptualHash()
+		{
+			if (!IsWebImage || IsInvalidImage)
+				return null;
+			try
+			{
+				using var image1 = new MagickImage(FileInfo.FullName);
+				return image1.GetPerceptualHashSafe();
+			}
+			catch (Exception)
+			{
+				return null;
+			}
+		}
+		private bool _isHashCalculated = false;
 
 	}
 

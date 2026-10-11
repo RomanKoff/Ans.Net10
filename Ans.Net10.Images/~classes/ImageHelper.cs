@@ -62,16 +62,19 @@ namespace Ans.Net10.Images
 		/// Возвращает профиль EXIF-метаданных изображения. 
 		/// Равен <see langword="null"/>, если у изображения отсутствуют метаданные или формат их не поддерживает.
 		/// </summary>
-		public IExifProfile? Exif { get; }
+		/// <remarks>
+		/// Внимание: обращение к профилю после вызова метода Dispose() вызовет ObjectDisposedException.
+		/// </remarks>
+		public IExifProfile? Exif { get; private set; }
 
 
 		/// <summary>
 		/// Возвращает строковое представление тега пространственной ориентации из EXIF-метаданных файла.
 		/// </summary>
 		public string? ExifOrientation
-		{
-						get => Exif?.GetValue(ExifTag.Orientation)?.ToString();
-		}
+			=> _disposedValue
+				? throw new ObjectDisposedException(nameof(ImageHelper))
+				: (Exif?.GetValue(ExifTag.Orientation)?.ToString());
 
 
 		/// <summary>
@@ -103,7 +106,10 @@ namespace Ans.Net10.Images
 			if (!_disposedValue)
 			{
 				if (disposing)
+				{
+					Exif = null;
 					Image?.Dispose();
+				}
 				_disposedValue = true;
 			}
 		}
