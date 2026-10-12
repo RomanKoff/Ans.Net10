@@ -2773,59 +2773,163 @@
             Исполняет непосредственный запуск движка рендеринга Razor в выделенный текстовый поток StreamWriter.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Web.Sitemap.NodemapItem">
+        <member name="T:Ans.Net10.Web.Sitemap.NodeItem">
             <summary>
-            Описывает иммутабельные данные информационного узла в карте сайта.
+            Описывает данные информационного узла в карте сайта.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.Sitemap.NodemapItem.#ctor(System.String,System.String,System.Collections.Generic.ICollection{Ans.Net10.Web.Sitemap.PagemapItem},System.Collections.Frozen.FrozenDictionary{System.String,Ans.Net10.Web.Sitemap.PagemapItem})">
+        <member name="M:Ans.Net10.Web.Sitemap.NodeItem.#ctor(System.String,System.String)">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.NodemapItem"/>.
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.NodeItem"/>.
+            </summary>
+            <param name="target">Целевой идентификатор или адрес узла.</param>
+            <param name="face">Сырая строка автотипографики и заголовков.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="target"/> или <paramref name="face"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.NodeItem.Name">
+            <summary>
+            Получает имя, уникально идентифицирующее узел в карте узлов.
+            </summary>
+            <value>Строковый идентификатор или <see langword="null"/> для ссылочных узлов.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.NodeItem.Target">
+            <summary>
+            Получает целевой идентификатор или адрес ссылки узла.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.Target">
-            <summary>
-            Получает целевой идентификатор или адрес узла.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.Face">
+        <member name="P:Ans.Net10.Web.Sitemap.NodeItem.Face">
             <summary>
             Получает сырую строку автотипографики и заголовков.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.PagesTree">
+        <member name="P:Ans.Net10.Web.Sitemap.NodeItem.ParentNode">
             <summary>
-            Получает локальное иерархическое дерево страниц, принадлежащих данному узлу.
+            Получает родительский информационный узел текущего элемента.
+            </summary>
+            <value>Ссылка на родительский узел или <see langword="null"/>, если узел является корневым.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.NodeItem.ChildNodes">
+            <summary>
+            Получает коллекцию прямых подчиненных (дочерних) информационных узлов.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.Sitemap.NodemapItem.PagesIndex">
+        <member name="P:Ans.Net10.Web.Sitemap.NodeItem.TopPages">
             <summary>
-            Получает плоский индекс для мгновенного поиска страниц узла по их ЧПУ-пути.
+            Получает коллекцию корневых страниц, принадлежащих данному узлу.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Web.Sitemap.PagemapItem">
+        <member name="P:Ans.Net10.Web.Sitemap.NodeItem.ParentNodes">
             <summary>
-            Описывает иммутабельные данные контентной страницы в карте сайта.
+            Получает ленивое перечисление всех вышестоящих родительских узлов по цепочке вверх до корня дерева.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.Sitemap.PagemapItem.#ctor(System.String,System.String,System.Boolean)">
+        <member name="T:Ans.Net10.Web.Sitemap.PageItem">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.PagemapItem"/>.
+            Описывает данные контентной страницы в карте сайта.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.Sitemap.PagemapItem.Target">
+        <member name="M:Ans.Net10.Web.Sitemap.PageItem.#ctor(System.String,System.String,System.Boolean,Ans.Net10.Web.Sitemap.NodeItem)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.PageItem"/>.
+            </summary>
+            <param name="target">Сегмент ЧПУ-пути или адрес ссылки.</param>
+            <param name="face">Сырая строка автотипографики и заголовков страницы.</param>
+            <param name="hasStart">Признак наличия индексной страницы для текущего уровня.</param>
+            <param name="node">Информационный узел, к которому жестко привязана страница.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="target"/>, <paramref name="face"/> или <paramref name="node"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.Target">
             <summary>
             Получает сегмент ЧПУ-пути или адрес ссылки.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.Sitemap.PagemapItem.Face">
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.Name">
+            <summary>
+            Получает имя, идентифицирующее страницу в пределах ветки.
+            </summary>
+            <value>Строковый идентификатор или <see langword="null"/> для ссылочных страниц.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.Face">
             <summary>
             Получает сырую строку автотипографики и заголовков страницы.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.Sitemap.PagemapItem.HasStart">
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.HasStart">
             <summary>
             Получает признак наличия индексной страницы для текущего уровня.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.Node">
+            <summary>
+            Получает информационный узел, к которому жестко привязана текущая страница.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.ParentPage">
+            <summary>
+            Получает родительскую контентную страницу в иерархическом дереве текущего узла.
+            </summary>
+            <value>Ссылка на родительскую страницу или <see langword="null"/>, если страница является корневой в рамках узла.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.ChildPages">
+            <summary>
+            Получает коллекцию прямых подчиненных (дочерних) контентных страниц.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.Path">
+            <summary>
+            Получает полный путь страницы, сформированный на основе ее имени и имен страниц-предков.
+            </summary>
+            <remarks>
+            В соответствии с правилами .NET 10 используется оптимизированная интерполяция строк.
+            Если страница ссылочная (имя отсутствует), возвращает <see langword="null"/>.
+            </remarks>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.PageItem.ParentPages">
+            <summary>
+            Получает ленивое перечисление всех вышестоящих родительских страниц по цепочке вверх до корня текущего узла.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Sitemap.SitemapBuilder">
+            <summary>
+            Обеспечивает сборку, индексацию и быстрый доступ к карте узлов и страниц сайта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.SitemapBuilder.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Sitemap.SitemapBuilder"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Sitemap.SitemapBuilder.TopNodes">
+            <summary>
+            Получает коллекцию корневых (наивысших) узлов карты сайта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.SitemapBuilder.GetNode(System.String)">
+            <summary>
+            Возвращает информационный узел по его уникальному имени.
+            </summary>
+            <param name="nodeName">Уникальное имя-идентификатор узла.</param>
+            <returns>Найденный узел <see cref="T:Ans.Net10.Web.Sitemap.NodeItem"/> или <see langword="null"/>, если узел не найден.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.SitemapBuilder.GetPage(System.String)">
+            <summary>
+            Возвращает контентную страницу по ее комбинированному пути (имя_узла/путь_страницы).
+            </summary>
+            <param name="combinedPath">Полный ЧПУ-маршрут в формате "nodeName/path".</param>
+            <returns>Найденная страница <see cref="T:Ans.Net10.Web.Sitemap.PageItem"/> или <see langword="null"/>, если страница не найдена.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.SitemapBuilder.GetPageFromNode(Ans.Net10.Web.Sitemap.NodeItem,System.String)">
+            <summary>
+            Возвращает контентную страницу конкретного узла по ее локальному пути.
+            </summary>
+            <param name="node">Информационный узел, в рамках которого производится поиск.</param>
+            <param name="pagePath">Локальный путь страницы (без имени узла).</param>
+            <returns>Найденная страница <see cref="T:Ans.Net10.Web.Sitemap.PageItem"/> или <see langword="null"/>, если страница не найдена.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="node"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Sitemap.SitemapBuilder.BuildIndexes">
+            <summary>
+            Фиксирует структуру карты сайта, рекурсивно собирает данные и строит высокопроизводительные Frozen-индексы.
             </summary>
         </member>
         <member name="T:Ans.Net10.Web.Sitemap.ISitemapProvider">

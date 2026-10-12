@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="MapPages"
-           targetNamespace="urn:ans:net10:web:map-pages"
-           elementFormDefault="qualified"
-           xmlns="urn:ans:net10:web:map-pages"
-           xmlns:xs="http://w3.org">
+<xs:schema id="Ans_Net10_Web_MapPages"
+		   targetNamespace="urn:ans:net10:web:map-pages"
+		   attributeFormDefault="unqualified"
+		   elementFormDefault="qualified"
+		   xmlns="urn:ans:net10:web:map-pages"
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 	<xs:element name="pages">
 		<xs:complexType>

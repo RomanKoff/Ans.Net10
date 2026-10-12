@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="MapNodes"
+<xs:schema id="Ans_Net10_Web_MapNodes"
 		   targetNamespace="urn:ans:net10:web:map-nodes"
+		   attributeFormDefault="unqualified"
 		   elementFormDefault="qualified"
 		   xmlns="urn:ans:net10:web:map-nodes"
-           xmlns:xs="http://w3.org">
+		   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 	<xs:element name="nodes">
 		<xs:complexType>
