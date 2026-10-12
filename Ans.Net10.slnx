@@ -1,14 +1,35 @@
 <Solution>
   <Folder Name="/Ans.Net10/">
     <File Path=".gitattributes" />
+    <File Path=".github/workflows/docfx.yml" />
     <File Path=".gitignore" />
     <File Path="LICENSE" />
     <File Path="README.md" />
-    <File Path="_docs/docfx.json" />
   </Folder>
   <Project Path="Ans.Net10.CMS/Ans.Net10.CMS.csproj" Id="54575d76-471a-4a5e-8d74-453fb76e6814" />
   <Project Path="Ans.Net10.Common/Ans.Net10.Common.csproj" />
   <Project Path="Ans.Net10.Images/Ans.Net10.Images.csproj" Id="dbb5d3e5-7981-4857-a7d4-d3405c117cbd" />
   <Project Path="Ans.Net10.Psql/Ans.Net10.Psql.csproj" Id="946904c0-933e-41ed-92ef-3dada53de89e" />
   <Project Path="Ans.Net10.Web/Ans.Net10.Web.csproj" Id="cb9e22c5-b7db-413b-bec5-177a04f95673" />
+  <Project Path="_docs/" Type="Website" DisplayName="_docs">
+    <BuildType Project="Debug" />
+    <Properties Name="WebsiteProperties">
+      <Property Name="Debug.AspNetCompiler.Debug" Value="&quot;True&quot;" />
+      <Property Name="Debug.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
+      <Property Name="Debug.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
+      <Property Name="Debug.AspNetCompiler.PhysicalPath" Value="&quot;_docs\&quot;" />
+      <Property Name="Debug.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_63455\&quot;" />
+      <Property Name="Debug.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
+      <Property Name="Debug.AspNetCompiler.VirtualPath" Value="&quot;/localhost_63455&quot;" />
+      <Property Name="Release.AspNetCompiler.Debug" Value="&quot;False&quot;" />
+      <Property Name="Release.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
+      <Property Name="Release.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
+      <Property Name="Release.AspNetCompiler.PhysicalPath" Value="&quot;_docs\&quot;" />
+      <Property Name="Release.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_63455\&quot;" />
+      <Property Name="Release.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
+      <Property Name="Release.AspNetCompiler.VirtualPath" Value="&quot;/localhost_63455&quot;" />
+      <Property Name="TargetFrameworkMoniker" Value="&quot;.NETFramework,Version%3Dv4.8&quot;" />
+      <Property Name="VWDPort" Value="&quot;63455&quot;" />
+    </Properties>
+  </Project>
 </Solution>

@@ -303,7 +303,7 @@ namespace Ans.Net10.Images
 
 
 		/// <summary>
-		/// Пропорционально масштабирует изображение внутрь заданной прямоугольной рамки 
+		/// Асинхронно пропорционально масштабирует изображение внутрь заданной прямоугольной рамки 
 		/// и сохраняет полученный результат в файл на диске с указанием уровня качества.
 		/// </summary>
 		/// <param name="image">
@@ -327,32 +327,34 @@ namespace Ans.Net10.Images
 		/// <param name="useMaskBackground">
 		/// Признак необходимости наложения шахматной текстуры под прозрачные области.
 		/// </param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
 		/// Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
 		/// </exception>
-		public static void SaveResizeInside(
+		public static async Task SaveResizeInsideAsync(
 			this MagickImage image,
 			string filename,
 			uint width,
 			uint height,
 			uint quality,
 			bool noIncrease,
-			bool useMaskBackground)
+			bool useMaskBackground,
+			CancellationToken cancellationToken = default)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentException.ThrowIfNullOrEmpty(filename);
 			using var copy1 = image.GetResizeInside(
 				width, height, noIncrease, useMaskBackground);
 			copy1.Quality = quality;
-			copy1.Write(filename);
+			await copy1.WriteAsync(filename, cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Пропорционально масштабирует изображение так, чтобы оно полностью заполнило указанную рамку снаружи, 
+		/// Асинхронно пропорционально масштабирует изображение так, чтобы оно полностью заполнило указанную рамку снаружи, 
 		/// и сохраняет полученный результат в файл на диске с указанием уровня качества.
 		/// </summary>
 		/// <param name="image">
@@ -370,29 +372,31 @@ namespace Ans.Net10.Images
 		/// <param name="quality">
 		/// Уровень сжатия/качества результирующего изображения (от 1 до 100).
 		/// </param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
 		/// Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
 		/// </exception>
-		public static void SaveResizeAround(
+		public static async Task SaveResizeAroundAsync(
 			this MagickImage image,
 			string filename,
 			uint width,
 			uint height,
-			uint quality)
+			uint quality,
+			CancellationToken cancellationToken = default)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentException.ThrowIfNullOrEmpty(filename);
 			using var copy1 = image.GetResizeAround(width, height);
 			copy1.Quality = quality;
-			copy1.Write(filename);
+			await copy1.WriteAsync(filename, cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Масштабирует изображение методом усреднения пропорций вокруг заданной стороны квадрата 
+		/// Асинхронно масштабирует изображение методом усреднения пропорций вокруг заданной стороны квадрата 
 		/// и сохраняет полученный результат в файл на диске с указанием уровня качества.
 		/// </summary>
 		/// <param name="image">
@@ -407,28 +411,30 @@ namespace Ans.Net10.Images
 		/// <param name="quality">
 		/// Уровень сжатия/качества результирующего изображения (от 1 до 100).
 		/// </param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
 		/// Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
 		/// </exception>
-		public static void SaveResizeAverage(
+		public static async Task SaveResizeAverageAsync(
 			this MagickImage image,
 			string filename,
 			uint side,
-			uint quality)
+			uint quality,
+			CancellationToken cancellationToken = default)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentException.ThrowIfNullOrEmpty(filename);
 			using var copy1 = image.GetResizeAverage(side);
 			copy1.Quality = quality;
-			copy1.Write(filename);
+			await copy1.WriteAsync(filename, cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
+		/// Асинхронно изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
 		/// по строго заданным координатам и сохраняет итоговый результат в файл на диске.
 		/// </summary>
 		/// <param name="image">
@@ -458,13 +464,14 @@ namespace Ans.Net10.Images
 		/// <param name="quality">
 		/// Уровень сжатия/качества результирующего изображения (от 1 до 100).
 		/// </param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
 		/// Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
 		/// </exception>
-		public static void SaveResizeAroundAndCrop(
+		public static async Task SaveResizeAroundAndCropAsync(
 			this MagickImage image,
 			string filename,
 			uint width,
@@ -473,19 +480,20 @@ namespace Ans.Net10.Images
 			uint cropY,
 			uint cropWidth,
 			uint cropHeight,
-			uint quality)
+			uint quality,
+			CancellationToken cancellationToken = default)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentException.ThrowIfNullOrEmpty(filename);
 			using var copy1 = image.GetResizeAroundAndCrop(
 				width, height, cropX, cropY, cropWidth, cropHeight);
 			copy1.Quality = quality;
-			copy1.Write(filename);
+			await copy1.WriteAsync(filename, cancellationToken);
 		}
 
 
 		/// <summary>
-		/// Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
+		/// Асинхронно изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
 		/// на основе режимов смещения и сохраняет итоговый результат в файл на диске.
 		/// </summary>
 		/// <param name="image">
@@ -515,13 +523,14 @@ namespace Ans.Net10.Images
 		/// <param name="quality">
 		/// Уровень сжатия/качества результирующего изображения (от 1 до 100).
 		/// </param>
+		/// <param name="cancellationToken">Токен отмены асинхронной операции.</param>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
 		/// </exception>
 		/// <exception cref="ArgumentException">
 		/// Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
 		/// </exception>
-		public static void SaveResizeAroundAndCrop(
+		public static async Task SaveResizeAroundAndCropAsync(
 			this MagickImage image,
 			string filename,
 			uint width,
@@ -530,14 +539,15 @@ namespace Ans.Net10.Images
 			uint cropHeight,
 			ImageShiftEnum shiftVertical,
 			ImageShiftEnum shiftHorizontal,
-			uint quality)
+			uint quality,
+			CancellationToken cancellationToken = default)
 		{
 			ArgumentNullException.ThrowIfNull(image);
 			ArgumentException.ThrowIfNullOrEmpty(filename);
 			using var copy1 = image.GetResizeAroundAndCrop(
 				width, height, cropWidth, cropHeight, shiftVertical, shiftHorizontal);
 			copy1.Quality = quality;
-			copy1.Write(filename);
+			await copy1.WriteAsync(filename, cancellationToken);
 		}
 
 

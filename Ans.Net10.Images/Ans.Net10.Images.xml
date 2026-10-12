@@ -467,9 +467,9 @@
             Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Images.Exts.SaveResizeInside(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.Boolean,System.Boolean)">
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeInsideAsync(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.Boolean,System.Boolean,System.Threading.CancellationToken)">
             <summary>
-            Пропорционально масштабирует изображение внутрь заданной прямоугольной рамки 
+            Асинхронно пропорционально масштабирует изображение внутрь заданной прямоугольной рамки 
             и сохраняет полученный результат в файл на диске с указанием уровня качества.
             </summary>
             <param name="image">
@@ -493,6 +493,7 @@
             <param name="useMaskBackground">
             Признак необходимости наложения шахматной текстуры под прозрачные области.
             </param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
             </exception>
@@ -500,9 +501,9 @@
             Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Images.Exts.SaveResizeAround(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32)">
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAroundAsync(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.Threading.CancellationToken)">
             <summary>
-            Пропорционально масштабирует изображение так, чтобы оно полностью заполнило указанную рамку снаружи, 
+            Асинхронно пропорционально масштабирует изображение так, чтобы оно полностью заполнило указанную рамку снаружи, 
             и сохраняет полученный результат в файл на диске с указанием уровня качества.
             </summary>
             <param name="image">
@@ -520,6 +521,7 @@
             <param name="quality">
             Уровень сжатия/качества результирующего изображения (от 1 до 100).
             </param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
             </exception>
@@ -527,9 +529,9 @@
             Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Images.Exts.SaveResizeAverage(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32)">
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAverageAsync(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.Threading.CancellationToken)">
             <summary>
-            Масштабирует изображение методом усреднения пропорций вокруг заданной стороны квадрата 
+            Асинхронно масштабирует изображение методом усреднения пропорций вокруг заданной стороны квадрата 
             и сохраняет полученный результат в файл на диске с указанием уровня качества.
             </summary>
             <param name="image">
@@ -544,6 +546,7 @@
             <param name="quality">
             Уровень сжатия/качества результирующего изображения (от 1 до 100).
             </param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
             </exception>
@@ -551,9 +554,9 @@
             Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Images.Exts.SaveResizeAroundAndCrop(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32)">
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAroundAndCropAsync(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.UInt32,System.Threading.CancellationToken)">
             <summary>
-            Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
+            Асинхронно изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
             по строго заданным координатам и сохраняет итоговый результат в файл на диске.
             </summary>
             <param name="image">
@@ -583,6 +586,7 @@
             <param name="quality">
             Уровень сжатия/качества результирующего изображения (от 1 до 100).
             </param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
             </exception>
@@ -590,9 +594,9 @@
             Вызывается, если путь <paramref name="filename"/> пуст или равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Images.Exts.SaveResizeAroundAndCrop(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.UInt32,Ans.Net10.Common.ImageShiftEnum,Ans.Net10.Common.ImageShiftEnum,System.UInt32)">
+        <member name="M:Ans.Net10.Images.Exts.SaveResizeAroundAndCropAsync(ImageMagick.MagickImage,System.String,System.UInt32,System.UInt32,System.UInt32,System.UInt32,Ans.Net10.Common.ImageShiftEnum,Ans.Net10.Common.ImageShiftEnum,System.UInt32,System.Threading.CancellationToken)">
             <summary>
-            Изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
+            Асинхронно изменяет размер изображения так, чтобы оно заполнило рамку снаружи, выполняет кадрирование 
             на основе режимов смещения и сохраняет итоговый результат в файл на диске.
             </summary>
             <param name="image">
@@ -622,6 +626,7 @@
             <param name="quality">
             Уровень сжатия/качества результирующего изображения (от 1 до 100).
             </param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если параметр <paramref name="image"/> равен <see langword="null"/>.
             </exception>
