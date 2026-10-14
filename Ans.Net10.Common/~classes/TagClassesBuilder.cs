@@ -35,6 +35,21 @@ namespace Ans.Net10.Common
 		}
 
 
+		/// <summary>
+		/// Инициализирует новый экземпляр класса <see cref="TagClassesBuilder"/>
+		/// и добавляет CSS-классы в текущую коллекцию только в том случае, если переданное логическое условие истинно.
+		/// </summary>
+		/// <param name="check">Логический флаг (условие), управляющий добавлением классов.</param>
+		/// <param name="cssClasses">Строка CSS-классов, разделенная пробелами.</param>
+		public TagClassesBuilder(
+			bool check,
+			string? cssClasses)
+			: this()
+		{
+			AppendIf(check, cssClasses);
+		}
+
+
 		/* readonly properties */
 
 
@@ -152,7 +167,7 @@ namespace Ans.Net10.Common
 		/* privates */
 
 
-				private static string[] _getItems(
+		private static string[] _getItems(
 			string cssClasses)
 		{
 			return cssClasses.Split(

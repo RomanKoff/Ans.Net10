@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<nodes xmlns="urn:ans:net10:web:map-nodes"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="urn:ans:net10:web:map-nodes https://raw.githubusercontent.com/RomanKoff/Ans.Net10/refs/heads/main/Ans.Net10.Web/Sitemap/MapNodes.xsd">
+<nodes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="urn:ans:net10:web:map-nodes"
+	   xsi:schemaLocation="urn:ans:net10:web:map-nodes https://raw.githubusercontent.com/RomanKoff/Ans.Net10/refs/heads/main/Ans.Net10.Web/_Docs/MapNodes.xsd">
 
 	<item face="Подразделения, подчиненные проректору по учебной деятельности">
 

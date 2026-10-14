@@ -13,11 +13,7 @@ namespace Ans.Net10.Web
 		/* abstracts */
 
 
-		/// <summary>
-		/// Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
-		/// для текущего профиля контента.
-		/// </summary>
-		public abstract void CalcPartNavigation();
+
 
 
 		/* ctor */
@@ -52,7 +48,7 @@ namespace Ans.Net10.Web
 		/// Получает или задает сокращенный заголовок элемента контента для компактных представлений.
 		/// Если сокращенная форма не задана явно, возвращает значение свойства <see cref="Title"/>.
 		/// </summary>
-		public string? ShortTitle
+		public string ShortTitle
 		{
 			get => field ?? Title;
 			set

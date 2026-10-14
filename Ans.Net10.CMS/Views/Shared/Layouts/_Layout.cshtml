@@ -31,6 +31,7 @@
 
 	<main role="main" class="py-3 mb-5">
 		<div class="container">
+			<partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
 			@RenderBody()
 		</div>
 	</main>
@@ -43,7 +44,8 @@
 	<footer class="py-3 bg-light border-top">
 		<div class="container">
 			SITE FOOTER
-			@* <partial name="/Areas/Ans/Helpers/DebugCurrent.cshtml" /> *@
+			<partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
+			<partial name="/Areas/Ans/Helpers/DebugCurrent.cshtml" />
 		</div>
 	</footer>
 

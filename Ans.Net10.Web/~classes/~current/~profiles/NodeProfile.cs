@@ -1,4 +1,4 @@
-﻿// rev 2026-10-10
+﻿// rev 2026-10-14
 
 namespace Ans.Net10.Web
 {
@@ -56,6 +56,13 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
+		/// Получает или задает уникальное имя, идентифицирующее информационный узел в рамках карты сайта.
+		/// </summary>
+		/// <value>Строковый идентификатор узла или <see langword="null"/> для виртуальных/ссылочных узлов.</value>
+		public string? Name { get; set; }
+
+
+		/// <summary>
 		/// Получает или задает семантический тип информационного узла, определяющий его поведение в навигации.
 		/// </summary>
 		public NodeProfileType Type { get; set; }
@@ -85,14 +92,19 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
-		/// <summary>
-		/// Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
-		/// для текущего профиля узла.
-		/// </summary>		
-		public override void CalcPartNavigation()
-		{
-			throw new NotImplementedException();
-		}
+		///// <summary>
+		///// Инициализирует профиль узла на основе элемента карты сайта.
+		///// </summary>
+		///// <param name="item">Элемент карты сайта, содержащий исходные метаданные узла.</param>
+		///// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="item"/> равен <see langword="null"/>.</exception>
+		//public void Init(
+		//	NodemapItem item)
+		//{
+		//	ArgumentNullException.ThrowIfNull(item);
+		//	Name = item.Name;
+		//	Type = (NodeProfileType)item.Type;
+		//	SetFace(item.Face);
+		//}
 
 	}
 

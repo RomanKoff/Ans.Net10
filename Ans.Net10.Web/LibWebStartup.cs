@@ -1,4 +1,4 @@
-﻿// rev 2026-10-09
+﻿// rev 2026-10-14
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -65,7 +65,9 @@ namespace Ans.Net10.Web
 			}
 
 			//builder.Services.AddSingleton<Nodes.INodePathResolver, Nodes.AnsNodePathResolver>();
-			//builder.Services.AddSingleton<ISiteProfileProvider, AnsXmlSiteProfileProvider>();
+
+			//if (options1.UseSitemap)
+			//	builder.Services.AddSingleton<ISitemapProvider, Xml_SitemapProvider>();
 
 			if (options1.MailService == null)
 				builder.Services.AddSingleton<IMailerService, FakeMailerService>();
@@ -147,7 +149,7 @@ namespace Ans.Net10.Web
 				app.UseForwardedHeaders(forwardedOptions1);
 			}
 
-			app.UseMiddleware<AnsTrailingSlashMiddleware>();
+			app.UseMiddleware<AnsUrlCanonicalizationMiddleware>();
 
 			app.UseResponseCaching();
 			app.UseRequestLocalization();
@@ -189,9 +191,11 @@ namespace Ans.Net10.Web
 			app.MapControllers();
 			app.MapRazorPages();
 
-			//using var scope = app.Services.CreateScope();
-			//var resolver = scope.ServiceProvider.GetRequiredService<INodePathResolver>();
-			//await resolver.InitializeAsync(app.Lifetime.ApplicationStopping);
+			//if (options1.UseSitemap)
+			//{
+			//	var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
+			//	sitemapProvider1.Initialize();
+			//}
 		}
 
 	}

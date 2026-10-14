@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<pages xmlns="urn:ans:net10:web:map-pages"
-	   xmlns:xsi="http://w3.org"
-	   xsi:schemaLocation="urn:ans:net10:web:map-pages MapPages.xsd">
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="urn:ans:net10:web:map-pages"
+	   xsi:schemaLocation="urn:ans:net10:web:map-pages https://raw.githubusercontent.com/RomanKoff/Ans.Net10/refs/heads/main/Ans.Net10.Web/_Docs/MapPages.xsd">
 
 	<item target="brand" face="Фирстиль">
 		<item target="colors" face="Цвета|Основные {0}" />

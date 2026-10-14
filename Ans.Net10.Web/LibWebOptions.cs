@@ -100,6 +100,15 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
+		/// Получает или задает флаг автоматического включения и инициализации реактивной карты сайта Sitemap.
+		/// </summary>
+		/// <value>
+		/// Значение по умолчанию: <see langword="false"/>.
+		/// </value>
+		public bool UseSitemap { get; set; } = false;
+
+
+		/// <summary>
 		/// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
 		/// </summary>
 		public bool UseRuntimeCompilation { get; set; } = false;

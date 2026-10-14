@@ -1,4 +1,4 @@
-﻿// rev 2026-10-09
+﻿// rev 2026-10-14
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -34,7 +34,7 @@ namespace Ans.Net10.Web
 		/// <param name="httpContextAccessor">Служба доступа к текущему контексту HTTP-запроса.</param>
 		/// <param name="hybridCache">Служба двухслойного гибридного кэширования платформы.</param>
 		/// <param name="viewRender">Служба изолированного рендеринга представлений Razor в строковые буферы.</param>
-		/// <param name="httpClientFactory">Фабрика для создания экземпляров HTTP-клиентов.</param>
+		/// <param name="httpClientFactory">Фабрика для создания экземпляров HTTP-клиентов.</param>		
 		/// <param name="mailer">Служба асинхронной отправки электронных писем.</param>
 		/// <param name="linkGenerator">Компонент генерации URL-адресов на основе зарегистрированных маршрутов приложения.</param>
 		/// <exception cref="ArgumentNullException">
@@ -43,6 +43,7 @@ namespace Ans.Net10.Web
 		/// <exception cref="Exception">
 		/// Вызывается при критическом сбое системы, если текущий контекст <see cref="HttpContext"/> недоступен через аксессор.
 		/// </exception>
+		// <param name="sitemap">Поставщик данных и управления жизненным циклом карты сайта.</param>
 		public CurrentContext(
 			ILoggerFactory loggerFactory,
 			IWebHostEnvironment env,
@@ -51,6 +52,7 @@ namespace Ans.Net10.Web
 			HybridCache hybridCache,
 			IViewRenderService viewRender,
 			IHttpClientFactory httpClientFactory,
+			//ISitemapProvider sitemap,
 			IMailerService mailer,
 			LinkGenerator linkGenerator)
 		{
@@ -72,6 +74,7 @@ namespace Ans.Net10.Web
 			HybridCache = hybridCache;
 			ViewRender = viewRender;
 			HttpClientFactory = httpClientFactory;
+			//Sitemap = sitemap;
 			Mailer = mailer;
 			LinkGenerator = linkGenerator;
 
@@ -81,6 +84,7 @@ namespace Ans.Net10.Web
 
 			// datas
 			Host = new(this);
+			Request = new(this);
 
 			// services
 			Cache = new(this);
@@ -142,6 +146,12 @@ namespace Ans.Net10.Web
 		public IHttpClientFactory HttpClientFactory { get; }
 
 
+		///// <summary>
+		///// Получает поставщик данных и управления жизненным циклом карты сайта.
+		///// </summary>
+		//public ISitemapProvider Sitemap { get; }
+
+
 		/// <summary>
 		/// Получает службу отправки электронной почты SMTP.
 		/// </summary>
@@ -179,6 +189,13 @@ namespace Ans.Net10.Web
 		/// Получает структурированные данные о сетевом адресе хоста и виртуальных путях приложения.
 		/// </summary>
 		public HostData Host { get; }
+
+
+		/// <summary>
+		/// Получает структурированные данные о параметрах роутинга текущего входящего HTTP-запроса,
+		/// включая информацию об областях (Areas), контроллерах, экшенах и страницах Razor.
+		/// </summary>
+		public RequestData Request { get; }
 
 
 		/* services */
@@ -241,6 +258,30 @@ namespace Ans.Net10.Web
 		public PageProfile Page { get; }
 
 
+		/* readonly properties */
+
+
+		/// <summary>
+		/// Получает безопасное HTML-представление человекочитаемого заголовка веб-страницы для тега &lt;title&gt; браузера.
+		/// </summary>		
+		/// <value>Объект <see cref="HtmlString"/>, готовый к выводу в мастер-шаблоне без повторного экранирования.</value>
+		public HtmlString BrowserTitleHtml
+			=> field ??= new HtmlString(GetBrowserTitle());
+
+
+		/// <summary>
+		/// Возвращает последовательность элементов навигационной цепочки («хлебных крошек») 
+		/// от главной страницы сайта до текущего активного элемента контента.
+		/// </summary>
+		/// <value>
+		/// Коллекция объектов <see cref="LinkBuilder"/>, представляющих элементы навигации, 
+		/// или <see langword="null"/>, если сайт не инициализирован.
+		/// </value>
+		public IEnumerable<LinkBuilder>? Breadcrumbs
+			=> field ??= Site is null
+				? null : _getBreadcrumbsLazy();
+
+
 		/* functions */
 
 
@@ -254,40 +295,31 @@ namespace Ans.Net10.Web
 		{
 			if (string.IsNullOrWhiteSpace(target))
 				return string.Empty;
-			if (target.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
-				target.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+			if (target.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
+				|| target.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
 				return target;
 			return $"{Host.VirtualPath}/{target.TrimStart('/')}";
 		}
 
 
 		/// <summary>
-		/// Автоматически собранный человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
-		/// Объединяет иерархию узлов и название текущей страницы с использованием интерполяции .NET 10.
+		/// Формирует собранный человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
+		/// Объединяет иерархию сокращенных названий страницы, узла и сайта.
 		/// </summary>
-		/// <remarks>
-		/// Формирует строку вида: "Название страницы | Кафедра -> Факультет -> Название сайта".
-		/// Если страница или узел не определены, возвращает базовое название сайта или пустую строку.
-		/// </remarks>
-		public string BrowserTitle
-			=> field ??= $"{Page.ShortTitle} - {Node.ShortTitle} - {Site.ShortTitle}";
-
-
-		/// <summary>
-		/// Получает безопасное HTML-представление человекочитаемого заголовка веб-страницы для тега &lt;title&gt; браузера.
-		/// </summary>		
-		public HtmlString BrowserTitleHtml
-			=> field ??= BrowserTitle.ToHtml(false);
-
-
-		/// <summary>
-		/// Возвращает ленивое перечисление элементов навигационной цепочки ("хлебных крошек") 
-		/// от текущей страницы/узла вверх до корня сайта.
-		/// </summary>
-		/// <value>Коллекция строк элементов навигации.</value>
-		/// <exception cref="NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
-		public IEnumerable<string> Breadcrumbs
-			=> throw new NotImplementedException();
+		/// <value>Строка готового заголовка окна браузера.</value>
+		public string GetBrowserTitle()
+		{
+			if (Page is not null && !string.IsNullOrWhiteSpace(Page.CustomBrowserTitle))
+				return Page.CustomBrowserTitle;
+			string pageTitle1 = Page?.ShortTitle ?? string.Empty;
+			string nodeTitle1 = Node?.ShortTitle ?? string.Empty;
+			string siteTitle1 = Site?.ShortTitle ?? string.Empty;
+			if (!string.IsNullOrEmpty(pageTitle1) && !string.IsNullOrEmpty(nodeTitle1))
+				return $"{pageTitle1} – {nodeTitle1} – {siteTitle1}";
+			if (!string.IsNullOrEmpty(nodeTitle1))
+				return $"{nodeTitle1} – {siteTitle1}";
+			return siteTitle1;
+		}
 
 
 		/* todo */
@@ -316,6 +348,65 @@ namespace Ans.Net10.Web
 			string target)
 		{
 			throw new NotImplementedException();
+		}
+
+
+		/* privates */
+
+
+
+		private IEnumerable<LinkBuilder> _getBreadcrumbsLazy()
+		{
+			var rootLink1 = new LinkBuilder(Site.HomeUrl, Site.ShortTitle);
+			if (Node is null && Page is null)
+			{
+				rootLink1.IsDisabled = true;
+				yield return rootLink1;
+				yield break;
+			}
+			yield return rootLink1;
+			if (Node is not null)
+			{
+				var nodesChain1 = new List<NodeProfile>();
+				var currentNode1 = Node;
+				while (currentNode1 is not null)
+				{
+					nodesChain1.Add(currentNode1);
+					currentNode1 = currentNode1.ParentNode;
+				}
+				for (int i1 = nodesChain1.Count - 1; i1 >= 0; i1--)
+				{
+					var node1 = nodesChain1[i1];
+					string? nodeHref1 = node1.Type == NodeProfileType.Group
+						? null : node1.Name;
+					var nodeLink1 = new LinkBuilder(nodeHref1, node1.ShortTitle);
+					if (Page is null && i1 == 0)
+					{
+						nodeLink1.IsDisabled = true;
+						yield return nodeLink1;
+						yield break;
+					}
+					yield return nodeLink1;
+				}
+			}
+			if (Page is not null)
+			{
+				var pagesChain1 = new List<PageProfile>();
+				var currentPage1 = Page;
+				while (currentPage1 is not null)
+				{
+					pagesChain1.Add(currentPage1);
+					currentPage1 = currentPage1.ParentPage;
+				}
+				for (int i1 = pagesChain1.Count - 1; i1 >= 0; i1--)
+				{
+					var page1 = pagesChain1[i1];
+					var pageLink1 = new LinkBuilder(page1.Path, page1.ShortTitle);
+					if (i1 == 0)
+						pageLink1.IsDisabled = true;
+					yield return pageLink1;
+				}
+			}
 		}
 
 	}

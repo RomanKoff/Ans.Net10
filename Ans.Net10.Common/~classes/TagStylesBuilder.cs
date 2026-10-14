@@ -35,6 +35,21 @@ namespace Ans.Net10.Common
 		}
 
 
+		/// <summary>
+		/// Инициализирует новый экземпляр класса <see cref="TagStylesBuilder"/>
+		/// и разбирает переданную строку стилей.
+		/// </summary>
+		/// <param name="check">Логический флаг (условие), управляющий добавлением инлайновых стилей.</param>
+		/// <param name="cssStyles">Строка CSS-стилей, элементы которой разделены точкой с запятой.</param>
+		public TagStylesBuilder(
+			bool check,
+			string? cssStyles)
+			: this()
+		{
+			AppendIf(check, cssStyles);
+		}
+
+
 		/* readonly properties */
 
 

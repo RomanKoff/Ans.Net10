@@ -4306,6 +4306,14 @@
             </summary>
             <param name="cssClasses">Строка CSS-классов, разделенная пробелами.</param>
         </member>
+        <member name="M:Ans.Net10.Common.TagClassesBuilder.#ctor(System.Boolean,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.TagClassesBuilder"/>
+            и добавляет CSS-классы в текущую коллекцию только в том случае, если переданное логическое условие истинно.
+            </summary>
+            <param name="check">Логический флаг (условие), управляющий добавлением классов.</param>
+            <param name="cssClasses">Строка CSS-классов, разделенная пробелами.</param>
+        </member>
         <member name="P:Ans.Net10.Common.TagClassesBuilder.Items">
             <summary>
             Возвращает внутренний словарь сгруппированных префиксов классов и их суффиксов.
@@ -4426,6 +4434,14 @@
             и разбирает переданную строку стилей.
             </summary>
             <param name="cssStyles">Строка CSS-стилей (например, <c>"color:red;padding:10px;"</c>).</param>
+        </member>
+        <member name="M:Ans.Net10.Common.TagStylesBuilder.#ctor(System.Boolean,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Common.TagStylesBuilder"/>
+            и разбирает переданную строку стилей.
+            </summary>
+            <param name="check">Логический флаг (условие), управляющий добавлением инлайновых стилей.</param>
+            <param name="cssStyles">Строка CSS-стилей, элементы которой разделены точкой с запятой.</param>
         </member>
         <member name="P:Ans.Net10.Common.TagStylesBuilder.Items">
             <summary>

@@ -1,4 +1,4 @@
-﻿// rev 2026-10-10
+﻿// rev 2026-10-14
 
 namespace Ans.Net10.Web
 {
@@ -50,12 +50,6 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
-		/// </summary>
-		public PageProfileType Type { get; set; }
-
-
-		/// <summary>
 		/// Получает или задает вышестоящую (родительскую) страницу в иерархическом дереве контента узла.
 		/// Если страница находится на корневом уровне информационного узла, возвращает <see langword="null"/>.
 		/// </summary>
@@ -69,17 +63,56 @@ namespace Ans.Net10.Web
 		public ICollection<PageProfile>? ChildPages { get; set; }
 
 
-		/* methods */
+		/// <summary>
+		/// Получает или задает имя страницы, уникально идентифицирующее её в пределах текущей ветки контента.
+		/// </summary>
+		/// <value>Строковый идентификатор страницы или <see langword="null"/> для виртуальных/ссылочных страниц.</value>
+		public string? Name { get; set; }
 
 
 		/// <summary>
-		/// Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
-		/// для текущего профиля страницы.
-		/// </summary>	
-		public override void CalcPartNavigation()
-		{
-			throw new NotImplementedException();
-		}
+		/// Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
+		/// </summary>
+		public PageProfileType Type { get; set; }
+
+
+		/// <summary>
+		/// Получает или задает настраиваемый (перегруженный) заголовок страницы для браузера.
+		/// Если свойство заполнено, оно имеет наивысший приоритет при формировании заголовка окна.
+		/// </summary>
+		/// <value>Строка кастомного заголовка или <see langword="null"/>, если заголовок должен строиться по умолчанию.</value>
+		public string? CustomBrowserTitle { get; set; }
+
+
+
+		/* readonly properties */
+
+
+		/// <summary>
+		/// Получает полный относительный ЧПУ-путь страницы контента, сформированный с учетом родительских страниц-предков.
+		/// </summary>
+		/// <value>Строка ЧПУ-маршрута страницы или <see langword="null"/>, если это виртуальная ссылочная страница.</value>
+		public string? Path { get; internal set; }
+
+
+		/* methods */
+
+
+		///// <summary>
+		///// Инициализирует профиль страницы на основе элемента карты сайта.
+		///// </summary>
+		///// <param name="item">Элемент карты сайта, содержащий исходные метаданные страницы.</param>
+		///// <exception cref="ArgumentNullException">Вызывается, if параметр <paramref name="item"/> равен <see langword="null"/>.</exception>
+		//public void Init(
+		//	PagemapItem item)
+		//{
+		//	ArgumentNullException.ThrowIfNull(item);
+
+		//	Name = item.Name;
+		//	Type = (PageProfileType)item.Type;
+		//	Path = item.Path;
+		//	SetFace(item.Face);
+		//}
 
 	}
 

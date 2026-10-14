@@ -1,4 +1,4 @@
-﻿// rev 2026-10-10
+﻿// rev 2026-10-14
 
 namespace Ans.Net10.Web
 {
@@ -32,17 +32,11 @@ namespace Ans.Net10.Web
 		public ICollection<NodeProfile> RootNodes { get; set; }
 
 
-		/* methods */
-
-
 		/// <summary>
-		/// Выполняет расчет иерархической навигации, хлебных крошек и заголовков браузера 
-		/// для текущего профиля сайта.
-		/// </summary>		
-		public override void CalcPartNavigation()
-		{
-			throw new NotImplementedException();
-		}
+		/// Получает или задает базовый абсолютный или относительный URL-адрес главной страницы сайта.
+		/// </summary>
+		/// <value>Строка адреса главной страницы. По умолчанию инициализируется пустой строкой.</value>
+		public string HomeUrl { get; set; } = string.Empty;
 
 	}
 
