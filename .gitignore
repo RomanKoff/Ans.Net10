@@ -401,7 +401,8 @@ FodyWeavers.xsd
 *.sln.iml
 
 
-**/_Dev
+**/_Dev/
+**/Views/Nodes/
 
 _docs/_site
 _docs/api

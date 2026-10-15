@@ -20,4 +20,8 @@
 		<ProjectReference Include="..\Ans.Net10.Web\Ans.Net10.Web.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="_Dev\" />
+	</ItemGroup>
+
 </Project>
