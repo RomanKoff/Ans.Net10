@@ -28,12 +28,13 @@ namespace Ans.Net10.Web
 		public PagemapItem(
 			NodemapItem node,
 			string target,
-			string face,
+			string? face,
 			bool hasNoIndex)
 		{
 			Node = node ?? throw new ArgumentNullException(nameof(node));
 			Target = target ?? throw new ArgumentNullException(nameof(target));
-			Face = face ?? throw new ArgumentNullException(nameof(face));
+			Face = string.IsNullOrEmpty(face)
+				? Target : face;
 			HasNoIndex = hasNoIndex;
 			if (target.StartsWith('/'))
 			{
