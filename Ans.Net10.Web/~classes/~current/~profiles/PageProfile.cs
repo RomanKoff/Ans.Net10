@@ -94,26 +94,6 @@ namespace Ans.Net10.Web
 		/// <value>Строка ЧПУ-маршрута страницы или <see langword="null"/>, если это виртуальная ссылочная страница.</value>
 		public string? Path { get; internal set; }
 
-
-		/* methods */
-
-
-		///// <summary>
-		///// Инициализирует профиль страницы на основе элемента карты сайта.
-		///// </summary>
-		///// <param name="item">Элемент карты сайта, содержащий исходные метаданные страницы.</param>
-		///// <exception cref="ArgumentNullException">Вызывается, if параметр <paramref name="item"/> равен <see langword="null"/>.</exception>
-		//public void Init(
-		//	PagemapItem item)
-		//{
-		//	ArgumentNullException.ThrowIfNull(item);
-
-		//	Name = item.Name;
-		//	Type = (PageProfileType)item.Type;
-		//	Path = item.Path;
-		//	SetFace(item.Face);
-		//}
-
 	}
 
 }

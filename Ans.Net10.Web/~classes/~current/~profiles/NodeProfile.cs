@@ -88,24 +88,6 @@ namespace Ans.Net10.Web
 		/// <value>Коллекция объектов <see cref="PageProfile"/>, привязанных к узлу. Гарантированно не возвращает <see langword="null"/>.</value>
 		public ICollection<PageProfile> Pages { get; set; }
 
-
-		/* methods */
-
-
-		///// <summary>
-		///// Инициализирует профиль узла на основе элемента карты сайта.
-		///// </summary>
-		///// <param name="item">Элемент карты сайта, содержащий исходные метаданные узла.</param>
-		///// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="item"/> равен <see langword="null"/>.</exception>
-		//public void Init(
-		//	NodemapItem item)
-		//{
-		//	ArgumentNullException.ThrowIfNull(item);
-		//	Name = item.Name;
-		//	Type = (NodeProfileType)item.Type;
-		//	SetFace(item.Face);
-		//}
-
 	}
 
 }
