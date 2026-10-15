@@ -11,7 +11,12 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Стандартная страница контента (может быть как изолированной, так и иметь дочерние страницы).
 		/// </summary>
-		Normal,
+		Page,
+
+		/// <summary>
+		/// Каталог страниц. Содержит дочерние страницы.
+		/// </summary>
+		Catalog,
 
 		/// <summary>
 		/// Внутренняя ссылка. Перенаправляет навигацию на другой узел или страницу этого же сайта.
@@ -41,7 +46,7 @@ namespace Ans.Net10.Web
 		/// </summary>
 		public PageProfile()
 		{
-			Type = PageProfileType.Normal;
+			Type = PageProfileType.Page;
 			ChildPages = new List<PageProfile>();
 		}
 
@@ -71,12 +76,6 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
-		/// </summary>
-		public PageProfileType Type { get; set; }
-
-
-		/// <summary>
 		/// Получает или задает настраиваемый (перегруженный) заголовок страницы для браузера.
 		/// Если свойство заполнено, оно имеет наивысший приоритет при формировании заголовка окна.
 		/// </summary>
@@ -86,6 +85,12 @@ namespace Ans.Net10.Web
 
 
 		/* readonly properties */
+
+
+		/// <summary>
+		/// Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
+		/// </summary>
+		public PageProfileType Type { get; }
 
 
 		/// <summary>

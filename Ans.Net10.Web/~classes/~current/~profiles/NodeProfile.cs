@@ -11,7 +11,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Стандартный узел, имеющий физическое представление и контент на сайте.
 		/// </summary>
-		Normal,
+		Node,
 
 		/// <summary>
 		/// Узел группировки. Служит исключительно в качестве визуального контейнера для других узлов в навигации и не имеет собственной ссылки.
@@ -46,7 +46,7 @@ namespace Ans.Net10.Web
 		/// </summary>
 		public NodeProfile()
 		{
-			Type = NodeProfileType.Normal;
+			Type = NodeProfileType.Node;
 			ChildNodes = new List<NodeProfile>();
 			Pages = new List<PageProfile>();
 		}
@@ -60,12 +60,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <value>Строковый идентификатор узла или <see langword="null"/> для виртуальных/ссылочных узлов.</value>
 		public string? Name { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает семантический тип информационного узла, определяющий его поведение в навигации.
-		/// </summary>
-		public NodeProfileType Type { get; set; }
 
 
 		/// <summary>
@@ -87,6 +81,15 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <value>Коллекция объектов <see cref="PageProfile"/>, привязанных к узлу. Гарантированно не возвращает <see langword="null"/>.</value>
 		public ICollection<PageProfile> Pages { get; set; }
+
+
+		/* readonly properties */
+
+
+		/// <summary>
+		/// Получает семантический тип информационного узла, определяющий его поведение в навигации.
+		/// </summary>
+		public NodeProfileType Type { get; }
 
 	}
 

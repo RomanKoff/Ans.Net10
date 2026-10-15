@@ -18,22 +18,26 @@
 		<xs:sequence>
 			<xs:element name="item" type="ItemType" minOccurs="0" maxOccurs="unbounded" />
 		</xs:sequence>
-		<xs:attribute name="target" type="xs:string" use="optional">
+		<xs:attribute name="target" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>
-					1. null -> Catalog;
-					2. "/*" -> InternalPath;
-					3. "^([0-9a-z_-]+)$" -> Page;
-					4. ExternalUrl.
+					1. Если начинается с '/', то InternalPath.
+					2. Иначе, если соответствует "^([0-9a-z_-]+)$", то Page или Catalog, если имеет дочерние страницы.
+					3. Иначе ExternalUrl.
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="face" type="xs:string" use="optional">
+		<xs:attribute name="face" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>
-					1. "full_title";
-					2. "short_title|full_title_template"
+					1. "Полное название";
+					2. "Короткое название|Шаблон полного названия ({0} для подстановки короткого названия)"
 				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="no-index" type="xs:boolean" use="optional" default="false">
+			<xs:annotation>
+				<xs:documentation>Не имеет стартовой страницы.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="hide" type="xs:string" use="optional">

@@ -3,7 +3,7 @@
 namespace Ans.Net10.Web
 {
 
-	public enum PageTypesEnum
+	public enum PagemapTypesEnum
 	{
 		Page,
 		Catalog,
@@ -29,30 +29,25 @@ namespace Ans.Net10.Web
 			NodemapItem node,
 			string target,
 			string face,
-			bool hasStart)
+			bool hasNoIndex)
 		{
 			Node = node ?? throw new ArgumentNullException(nameof(node));
 			Target = target ?? throw new ArgumentNullException(nameof(target));
 			Face = face ?? throw new ArgumentNullException(nameof(face));
-			HasStart = hasStart;
-			if (string.IsNullOrEmpty(target))
+			HasNoIndex = hasNoIndex;
+			if (target.StartsWith('/'))
 			{
-				Type = PageTypesEnum.Catalog;
-				Name = null;
-			}
-			else if (target.StartsWith('/'))
-			{
-				Type = PageTypesEnum.InternalPath;
+				Type = PagemapTypesEnum.InternalPath;
 				Name = null;
 			}
 			else if (_normalTargetRegex().IsMatch(target))
 			{
-				Type = PageTypesEnum.Page;
+				Type = PagemapTypesEnum.Page;
 				Name = target;
 			}
 			else
 			{
-				Type = PageTypesEnum.ExternalUrl;
+				Type = PagemapTypesEnum.ExternalUrl;
 				Name = null;
 			}
 			ChildPages = _childPages.AsReadOnly();
@@ -62,25 +57,25 @@ namespace Ans.Net10.Web
 		/* readonly properties */
 
 
+		public NodemapItem Node { get; }
+
+
 		public string Target { get; }
 
 
 		public string Face { get; }
 
 
-		public bool HasStart { get; }
+		public bool HasNoIndex { get; }
 
 
 		public string? Name { get; }
 
 
-		public PageTypesEnum Type { get; }
+		public PagemapTypesEnum Type { get; private set; }
 
 
-		public NodemapItem Node { get; }
-
-
-		public PagemapItem? ParentPage { get; internal set; }
+		public PagemapItem? ParentPage { get; private set; }
 
 
 		public IReadOnlyCollection<PagemapItem> ChildPages { get; }
@@ -110,6 +105,9 @@ namespace Ans.Net10.Web
 		internal void _AddChildPage(
 			PagemapItem child)
 		{
+			if (Type != PagemapTypesEnum.Page)
+				return;
+			Type = PagemapTypesEnum.Catalog;
 			child.ParentPage = this;
 			_childPages.Add(child);
 		}

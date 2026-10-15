@@ -21,18 +21,18 @@
 		<xs:attribute name="target" type="xs:string" use="optional">
 			<xs:annotation>
 				<xs:documentation>
-					1. null -> Group;
-					2. "/*" -> InternalPath;
-					3. "^([0-9a-z_-]+)$" -> Node;
-					4. ExternalUrl.
+					1. Если пустой, то Group.
+					2. Если начинается с '/', то InternalPath.
+					3. Иначе, если соответствует "^([0-9a-z_-]+)$", то Node.
+					4. Иначе ExternalUrl.
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="face" type="xs:string" use="optional">
+		<xs:attribute name="face" type="xs:string" use="required">
 			<xs:annotation>
 				<xs:documentation>
-					1. "full_title";
-					2. "short_title|full_title_template"
+					1. "Полное название";
+					2. "Короткое название|Шаблон полного названия ({0} для подстановки короткого названия)"
 				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>

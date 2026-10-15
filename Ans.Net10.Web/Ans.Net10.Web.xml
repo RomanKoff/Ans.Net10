@@ -4481,7 +4481,7 @@
             Перечисление семантических типов профилей узлов.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Web.NodeProfileType.Normal">
+        <member name="F:Ans.Net10.Web.NodeProfileType.Node">
             <summary>
             Стандартный узел, имеющий физическое представление и контент на сайте.
             </summary>
@@ -4517,11 +4517,6 @@
             </summary>
             <value>Строковый идентификатор узла или <see langword="null"/> для виртуальных/ссылочных узлов.</value>
         </member>
-        <member name="P:Ans.Net10.Web.NodeProfile.Type">
-            <summary>
-            Получает или задает семантический тип информационного узла, определяющий его поведение в навигации.
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.NodeProfile.ParentNode">
             <summary>
             Получает или задает вышестоящий (родительский) информационный узел в структуре сайта.
@@ -4540,14 +4535,24 @@
             </summary>
             <value>Коллекция объектов <see cref="T:Ans.Net10.Web.PageProfile"/>, привязанных к узлу. Гарантированно не возвращает <see langword="null"/>.</value>
         </member>
+        <member name="P:Ans.Net10.Web.NodeProfile.Type">
+            <summary>
+            Получает семантический тип информационного узла, определяющий его поведение в навигации.
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.PageProfileType">
             <summary>
             Перечисление семантических типов профилей страниц.
             </summary>
         </member>
-        <member name="F:Ans.Net10.Web.PageProfileType.Normal">
+        <member name="F:Ans.Net10.Web.PageProfileType.Page">
             <summary>
             Стандартная страница контента (может быть как изолированной, так и иметь дочерние страницы).
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PageProfileType.Catalog">
+            <summary>
+            Каталог страниц. Содержит дочерние страницы.
             </summary>
         </member>
         <member name="F:Ans.Net10.Web.PageProfileType.InternalLink">
@@ -4588,17 +4593,17 @@
             </summary>
             <value>Строковый идентификатор страницы или <see langword="null"/> для виртуальных/ссылочных страниц.</value>
         </member>
-        <member name="P:Ans.Net10.Web.PageProfile.Type">
-            <summary>
-            Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.PageProfile.CustomBrowserTitle">
             <summary>
             Получает или задает настраиваемый (перегруженный) заголовок страницы для браузера.
             Если свойство заполнено, оно имеет наивысший приоритет при формировании заголовка окна.
             </summary>
             <value>Строка кастомного заголовка или <see langword="null"/>, если заголовок должен строиться по умолчанию.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.PageProfile.Type">
+            <summary>
+            Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
+            </summary>
         </member>
         <member name="P:Ans.Net10.Web.PageProfile.Path">
             <summary>

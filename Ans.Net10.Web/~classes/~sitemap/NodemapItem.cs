@@ -3,7 +3,7 @@
 namespace Ans.Net10.Web
 {
 
-	public enum NodeTypesEnum
+	public enum NodemapTypesEnum
 	{
 		Node,
 		Group,
@@ -27,32 +27,32 @@ namespace Ans.Net10.Web
 
 
 		public NodemapItem(
-			string target,
+			string? target,
 			string face)
 		{
-			Target = target ?? throw new ArgumentNullException(nameof(target));
+			Target = target;
 			Face = face ?? throw new ArgumentNullException(nameof(face));
 			Name = Target;
 			ChildNodes = _childNodes.AsReadOnly();
 			TopPages = _topPages.AsReadOnly();
 			if (string.IsNullOrEmpty(target))
 			{
-				Type = NodeTypesEnum.Group;
+				Type = NodemapTypesEnum.Group;
 				Name = null;
 			}
 			else if (target.StartsWith('/'))
 			{
-				Type = NodeTypesEnum.InternalPath;
+				Type = NodemapTypesEnum.InternalPath;
 				Name = null;
 			}
 			else if (_normalTargetRegex().IsMatch(target))
 			{
-				Type = NodeTypesEnum.Node;
+				Type = NodemapTypesEnum.Node;
 				Name = target;
 			}
 			else
 			{
-				Type = NodeTypesEnum.ExternalUrl;
+				Type = NodemapTypesEnum.ExternalUrl;
 				Name = null;
 			}
 		}
@@ -61,7 +61,7 @@ namespace Ans.Net10.Web
 		/* readonly properties */
 
 
-		public string Target { get; }
+		public string? Target { get; }
 
 
 		public string Face { get; }
@@ -70,7 +70,7 @@ namespace Ans.Net10.Web
 		public string? Name { get; }
 
 
-		public NodeTypesEnum Type { get; }
+		public NodemapTypesEnum Type { get; }
 
 
 		public NodemapItem? ParentNode { get; internal set; }
