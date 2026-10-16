@@ -96,11 +96,13 @@ namespace Ans.Net10.Common
 		/// Заменяет спецсимволы разметки их безопасными HTML-сущностями.
 		/// </summary>
 		/// <param name="value">Исходная строка.</param>
-		/// <returns>Строка с экранированными символами или <see langword="null"/>.</returns>
-		public static string? GetHtml2Text(
+		/// <returns>Строка с экранированными символами.</returns>
+		public static string GetHtml2Text(
 			string? value)
 		{
-			return value?.ReplaceFromDict(_DICT_HTML2TEXT);
+			if (string.IsNullOrWhiteSpace(value))
+				return string.Empty;
+			return value.ReplaceFromDict(_DICT_HTML2TEXT);
 		}
 
 
@@ -108,11 +110,13 @@ namespace Ans.Net10.Common
 		/// Восстанавливает экранированные HTML-сущности в их исходные символы.
 		/// </summary>
 		/// <param name="value">Строка с HTML-сущностями.</param>
-		/// <returns>Декодированная строка или <see langword="null"/>.</returns>
-		public static string? GetText2Html(
+		/// <returns>Декодированная строка.</returns>
+		public static string GetText2Html(
 			string? value)
 		{
-			return value?.ReplaceFromDict(_DICT_TEXT2HTML);
+			if (string.IsNullOrWhiteSpace(value))
+				return string.Empty;
+			return value.ReplaceFromDict(_DICT_TEXT2HTML);
 		}
 
 
@@ -121,22 +125,22 @@ namespace Ans.Net10.Common
 		/// заменяя ведущие пробелы табуляцией.
 		/// </summary>
 		/// <param name="value">Исходный текст.</param>
-		/// <returns>Форматированная строка или <see langword="null"/>.</returns>
-		public static string? GetHtml2TextAndSaveStruct(
+		/// <returns>Форматированная строка.</returns>
+		public static string GetHtml2TextAndSaveStruct(
 			string? value)
 		{
 			if (string.IsNullOrWhiteSpace(value))
-				return null;
+				return string.Empty;
 			var content1 = GetHtml2Text(value.TrimEnd());
 			if (string.IsNullOrEmpty(content1))
-				return null;
+				return string.Empty;
 			var lines1 = content1
 				.Split(["\r\n", "\r", "\n"], StringSplitOptions.None)
 				.SkipWhile(string.IsNullOrWhiteSpace)
 				.ToList();
 			var firstLine1 = lines1.FirstOrDefault();
 			if (firstLine1 == null)
-				return null;
+				return string.Empty;
 			var len1 = firstLine1.TakeWhile(char.IsWhiteSpace).Count();
 			var tab1 = len1 > 0
 				? firstLine1[..len1] : " ";
@@ -155,14 +159,14 @@ namespace Ans.Net10.Common
 		/// Выполняет первичное наложение правил автотипографики на строку (замена дефисов на тире, привязка союзов).
 		/// </summary>
 		/// <param name="value">Исходная строка.</param>
-		/// <returns>Строка с примененными заменами или <see langword="null"/>.</returns>
-		public static string? GetTypografFix(
+		/// <returns>Строка с примененными заменами.</returns>
+		public static string GetTypografFix(
 			string? value)
 		{
 			if (string.IsNullOrEmpty(value))
-				return null;
+				return string.Empty;
 			var cleanSpaces1 = SuppRegex.G_REGEX_MULTISPACE().Replace(value, " ");
-			return cleanSpaces1?.ReplaceFromDict(_DICT_TYPOGRAFFIX);
+			return cleanSpaces1.ReplaceFromDict(_DICT_TYPOGRAFFIX);
 		}
 
 
@@ -171,15 +175,15 @@ namespace Ans.Net10.Common
 		/// с последующими через неразрывный пробел (&amp;nbsp;).
 		/// </summary>
 		/// <param name="value">Исходное текстовое поле.</param>
-		/// <returns>Текст с расставленными неразрывными пробелами или <see langword="null"/>.</returns>
-		public static string? GetTypografElem(
+		/// <returns>Текст с расставленными неразрывными пробелами.</returns>
+		public static string GetTypografElem(
 			string? value)
 		{
 			if (string.IsNullOrEmpty(value))
-				return null;
+				return string.Empty;
 			var fixedText1 = GetTypografFix(value);
 			if (string.IsNullOrEmpty(fixedText1) || fixedText1 == " ")
-				return null;
+				return string.Empty;
 			var fStartSpace1 = fixedText1.StartsWith(' ');
 			var fEndSpace1 = fixedText1.Length > 1 && fixedText1.EndsWith(' ');
 			var words1 = fixedText1.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -211,12 +215,12 @@ namespace Ans.Net10.Common
 		/// Запускает полный цикл экранной типографики текста с изоляцией разметки HTML.
 		/// </summary>
 		/// <param name="value">Исходный HTML или простой текст.</param>
-		/// <returns>Обработанный текст или <see langword="null"/>.</returns>
-		public static string? GetTypografMin(
+		/// <returns>Обработанный текст.</returns>
+		public static string GetTypografMin(
 			string? value)
 		{
 			if (string.IsNullOrEmpty(value))
-				return null;
+				return string.Empty;
 			var helper1 = new TypografHelper(value);
 			return helper1.Result;
 		}

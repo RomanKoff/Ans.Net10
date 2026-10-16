@@ -91,6 +91,38 @@ namespace Ans.Net10.Web
 		/// </summary>
 		public NodeProfileType Type { get; }
 
+
+		/* methods */
+
+
+		public void Init(
+			NodemapItem source)
+		{
+			Name = source.Name;
+			SetFace(source.Face);
+			if (source.ParentNode is not null)
+			{
+				ParentNode = new NodeProfile();
+				ParentNode.Init(source.ParentNode);
+			}
+		}
+
+
+		/* overrides */
+
+
+		public override IEnumerable<LinkBuilder>? GetParentsLinks()
+		{
+			if (Name is null)
+				return null;
+			var items1 = new List<LinkBuilder>();
+			var parents1 = ParentNode?.GetParentsLinks();
+			if (parents1 is not null)
+				items1.AddRange();
+			items1.Add(new LinkBuilder($"/{Name}", ShortTitle));
+			return items1;
+		}
+
 	}
 
 }

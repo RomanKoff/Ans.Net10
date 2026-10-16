@@ -1,0 +1,27 @@
+@*
+Компонент библиотеки Ans.Net10.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+
+@{
+	var crumbs1 = Current.Breadcrumbs;
+}
+
+@if (crumbs1 is not null && crumbs1.Any())
+{
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			@foreach (var link1 in crumbs1)
+			{
+				if (link1.IsDisabled)
+				{
+					<li class="breadcrumb-item active" aria-current="page">@link1.InnerHtml.ToHtml(true)</li>
+				}
+				else
+				{
+					<li class="breadcrumb-item">@link1.GetTag().ToHtml()</li>
+				}
+			}
+		</ol>
+	</nav>
+}

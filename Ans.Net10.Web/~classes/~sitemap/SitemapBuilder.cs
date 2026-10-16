@@ -1,8 +1,14 @@
-﻿using System.Collections.Frozen;
+﻿// rev 2026-10-16
+
+using System.Collections.Frozen;
 
 namespace Ans.Net10.Web
 {
 
+	/// <summary>
+	/// Строитель и контейнер графа навигации, обеспечивающий индексацию и быстрый 
+	/// регистронезависимый поиск узлов и страниц карты сайта в оперативной памяти.
+	/// </summary>
 	public sealed class SitemapBuilder
 	{
 
@@ -15,6 +21,9 @@ namespace Ans.Net10.Web
 		/* ctor */
 
 
+		/// <summary>
+		/// Инициализирует новый экземпляр класса <see cref="SitemapBuilder"/>.
+		/// </summary>
 		public SitemapBuilder()
 		{
 			TopNodes = _topNodes.AsReadOnly();
@@ -24,12 +33,20 @@ namespace Ans.Net10.Web
 		/* readonly properties */
 
 
+		/// <summary>
+		/// Получает коллекцию корневых (наивысших) информационных узлов карты сайта.
+		/// </summary>
 		public IReadOnlyCollection<NodemapItem> TopNodes { get; }
 
 
 		/* functions */
 
 
+		/// <summary>
+		/// Возвращает информационный узел из индекса по его системному имени.
+		/// </summary>
+		/// <param name="nodeName">Системное имя искомого информационного узла.</param>
+		/// <returns>Найденный экземпляр <see cref="NodemapItem"/> или <see langword="null"/>, если узел не найден или имя пусто.</returns>
 		public NodemapItem? GetNode(
 			string? nodeName)
 		{
@@ -40,6 +57,11 @@ namespace Ans.Net10.Web
 		}
 
 
+		/// <summary>
+		/// Возвращает контентную страницу из индекса по её полному составному пути.
+		/// </summary>
+		/// <param name="combinedPath">Составной ЧПУ-путь страницы в формате "ИмяУзла/ПутьСтраницы".</param>
+		/// <returns>Найденный экземпляр <see cref="PagemapItem"/> или <see langword="null"/>, если страница не найдена.</returns>
 		public PagemapItem? GetPage(
 			string? combinedPath)
 		{
@@ -53,6 +75,10 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
+		/// <summary>
+		/// Добавляет готовый информационный узел в конец коллекции корневых элементов.
+		/// </summary>
+		/// <param name="node">Добавляемый информационный узел.</param>
 		public void AddTopNode(
 			NodemapItem node)
 		{
@@ -61,6 +87,11 @@ namespace Ans.Net10.Web
 		}
 
 
+		/// <summary>
+		/// Вставляет информационный узел в коллекцию корневых элементов по строго указанному порядковому индексу.
+		/// </summary>
+		/// <param name="index">Порядковый индекс позиции вставки (начиная с 0).</param>
+		/// <param name="node">Вставляемый информационный узел.</param>
 		public void InsertTopNode(
 			int index,
 			NodemapItem node)
@@ -70,6 +101,10 @@ namespace Ans.Net10.Web
 		}
 
 
+		/// <summary>
+		/// Выполняет рекурсивный обход текущего графа элементов и компилирует 
+		/// высокопроизводительные неизменяемые словари (Frozen) для быстрого поиска узлов и страниц.
+		/// </summary>
 		public void BuildIndexes()
 		{
 			var nodesDict1 = new Dictionary<string, NodemapItem>(StringComparer.OrdinalIgnoreCase);
@@ -92,7 +127,7 @@ namespace Ans.Net10.Web
 			if (!string.IsNullOrEmpty(node.Name))
 				nodesDict[node.Name] = node;
 			foreach (var page1 in node.TopPages)
-				_indexPageRecursive(page1, node.Name, pagesDict);
+				_indexPageRecursive(page1, pagesDict);
 			foreach (var childNode1 in node.ChildNodes)
 				_indexNodeRecursive(childNode1, nodesDict, pagesDict);
 		}
@@ -100,16 +135,12 @@ namespace Ans.Net10.Web
 
 		private static void _indexPageRecursive(
 			PagemapItem page,
-			string? nodeName,
 			Dictionary<string, PagemapItem> pagesDict)
-		{
-			if (!string.IsNullOrEmpty(nodeName) && !string.IsNullOrEmpty(page.Path))
-			{
-				string fullKey1 = $"{nodeName}/{page.Path}";
-				pagesDict[fullKey1] = page;
-			}
+		{			
+			if (page.Path is not null)
+				pagesDict[page.Path] = page;
 			foreach (var childPage1 in page.ChildPages)
-				_indexPageRecursive(childPage1, nodeName, pagesDict);
+				_indexPageRecursive(childPage1, pagesDict);
 		}
 
 	}

@@ -10,6 +10,9 @@ namespace Ans.Net10.Web
 		: _Profile_Proto
 	{
 
+		private List<LinkBuilder>? _parentLinks;
+
+
 		/* ctor */
 
 
@@ -37,6 +40,41 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <value>Строка адреса главной страницы. По умолчанию инициализируется пустой строкой.</value>
 		public string HomeUrl { get; set; } = string.Empty;
+
+
+		/* overrides */
+
+
+		public override IEnumerable<LinkBuilder>? GetParentsLinks()
+		{
+			var items1 = new List<LinkBuilder>();
+			if (_parentLinks?.Count > 0)
+				items1.AddRange(_parentLinks);
+			items1.Add(new LinkBuilder(HomeUrl, ShortTitle));
+			return items1;
+		}
+
+
+		/* methods */
+
+
+		public void AddParent(
+			string url,
+			string title)
+		{
+			_parentLinks ??= [];
+			_parentLinks.Add(new LinkBuilder(url, title));
+		}
+
+
+		public void InsertParent(
+			int index,
+			string url,
+			string title)
+		{
+			_parentLinks ??= [];
+			_parentLinks.Insert(index, new LinkBuilder(url, title));
+		}
 
 	}
 

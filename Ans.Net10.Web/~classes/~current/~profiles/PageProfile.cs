@@ -99,6 +99,38 @@ namespace Ans.Net10.Web
 		/// <value>Строка ЧПУ-маршрута страницы или <see langword="null"/>, если это виртуальная ссылочная страница.</value>
 		public string? Path { get; internal set; }
 
+
+		/* methods */
+
+
+		public void Init(
+			PagemapItem source)
+		{
+			Path = source.Path;
+			SetFace(source.Face);
+			if (source.ParentPage is not null)
+			{
+				ParentPage = new PageProfile();
+				ParentPage.Init(source.ParentPage);
+			}
+		}
+
+
+		/* overrides */
+
+
+		public override IEnumerable<LinkBuilder>? GetParentsLinks()
+		{
+			if (Name is null)
+				return null;
+			var items1 = new List<LinkBuilder>();
+			var parents1 = ParentPage?.GetParentsLinks();
+			if (parents1 is not null)
+				items1.AddRange();
+			items1.Add(new LinkBuilder(Path, ShortTitle));
+			return items1;
+		}
+
 	}
 
 }

@@ -13,7 +13,7 @@ namespace Ans.Net10.Web
 		/* abstracts */
 
 
-
+		public abstract IEnumerable<LinkBuilder>? GetParentsLinks();
 
 
 		/* ctor */

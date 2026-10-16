@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// rev 2026-010-15
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -10,13 +12,6 @@ using Microsoft.AspNetCore.Routing;
 
 namespace Ans.Net10.Web.Services
 {
-
-	/*
-	 *	LibStartup.Add_AnsNet10Web()
-	 *		builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
-     */
-
-
 
 	/// <summary>
 	/// Интерфейс сервиса для изолированного рендеринга представлений (Views) 
@@ -64,7 +59,7 @@ namespace Ans.Net10.Web.Services
 	/// Рекомендуется регистрировать в контейнере зависимостей как Scoped:
 	/// <c>builder.Services.AddScoped&lt;IViewRenderService, AnsViewRenderService&gt;();</c>
 	/// </remarks>
-	public class AnsViewRenderService(
+	public class Ans_ViewRenderService(
 		IRazorViewEngine razorViewEngine,
 		ITempDataProvider tempDataProvider,
 		IServiceProvider serviceProvider)

@@ -1,4 +1,4 @@
-﻿// rev 2026-10-14
+﻿// rev 2026-10-15
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -54,7 +54,7 @@ namespace Ans.Net10.Web
 			});
 			builder.Services.AddHttpClient();
 			builder.Services.AddResponseCaching();
-			builder.Services.AddExceptionHandler<AnsExceptionHandler>();
+			builder.Services.AddExceptionHandler<Ans_ExceptionHandler>();
 
 			builder.Services.AddCors(o => SuppCors.RegisterPolicies(o, options1));
 
@@ -64,19 +64,20 @@ namespace Ans.Net10.Web
 				builder.Services.AddSession();
 			}
 
-			//builder.Services.AddSingleton<Nodes.INodePathResolver, Nodes.AnsNodePathResolver>();
+			builder.Services.AddSingleton<Nodes.NodesResolver>();
 
-			//if (options1.UseSitemap)
-			//	builder.Services.AddSingleton<ISitemapProvider, Xml_SitemapProvider>();
-
-			if (options1.MailService == null)
-				builder.Services.AddSingleton<IMailerService, FakeMailerService>();
+			if (options1.XmlSitemap is not null)
+				builder.Services.AddSingleton<ISitemapProvider, Xml_SitemapProvider>();
 			else
-				builder.Services.AddSingleton<IMailerService, AnsMailerService>(
-					_ => new AnsMailerService(options1.MailService));
+				builder.Services.AddSingleton<ISitemapProvider, Fake_SitemapProvider>();
 
-			builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
-			//builder.Services.AddScoped<ICmsProfileResolver, AnsCmsProfileResolver>();
+			if (options1.MailService is not null)
+				builder.Services.AddSingleton<IMailerService, Ans_MailerService>(
+					_ => new Ans_MailerService(options1.MailService));
+			else
+				builder.Services.AddSingleton<IMailerService, Fake_MailerService>();
+
+			builder.Services.AddScoped<IViewRenderService, Ans_ViewRenderService>();
 			builder.Services.AddScoped<CurrentContext>();
 
 			builder.Services.AddRazorPages();
@@ -142,7 +143,7 @@ namespace Ans.Net10.Web
 				app.UseHsts();
 			app.UseHttpsRedirection();
 
-			if (options1.Proxy != null && options1.Proxy.UseForwardedHeaders)
+			if (options1.Proxy is not null && options1.Proxy.UseForwardedHeaders)
 			{
 				var forwardedOptions1 = new ForwardedHeadersOptions();
 				SuppForwardedHeaders.Configure(forwardedOptions1, options1);
@@ -150,6 +151,7 @@ namespace Ans.Net10.Web
 			}
 
 			app.UseMiddleware<AnsUrlCanonicalizationMiddleware>();
+			app.UseMiddleware<AnsSitemapProfilerMiddleware>();
 
 			app.UseResponseCaching();
 			app.UseRequestLocalization();
@@ -157,7 +159,7 @@ namespace Ans.Net10.Web
 			if (options1.UseSession)
 				app.UseSession();
 
-			if (options1.Mimetypes != null && options1.Mimetypes.Length > 0)
+			if (options1.Mimetypes is not null && options1.Mimetypes.Length > 0)
 			{
 				var mimeProvider1 = new FileExtensionContentTypeProvider();
 				foreach (var mime1 in options1.Mimetypes)
@@ -178,8 +180,6 @@ namespace Ans.Net10.Web
 
 			app.UseRouting();
 
-			//app.UseMiddleware<AnsCmsProfileMiddleware>();
-
 			if (string.IsNullOrWhiteSpace(options1.Cors?.Profile))
 				app.UseCors(SuppCors.CORS_ALLOW_ALL);
 			else
@@ -191,11 +191,14 @@ namespace Ans.Net10.Web
 			app.MapControllers();
 			app.MapRazorPages();
 
-			//if (options1.UseSitemap)
-			//{
-			//	var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
-			//	sitemapProvider1.Initialize();
-			//}
+			if (options1.XmlSitemap is not null)
+			{
+				var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
+				await sitemapProvider1.InitializeAsync();
+			}
+
+			var nodesResolver1 = app.Services.GetRequiredService<Nodes.NodesResolver>();
+			await nodesResolver1.InitializeAsync();
 		}
 
 	}

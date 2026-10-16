@@ -1336,28 +1336,28 @@
             <summary>Почтовый адрес для принудительной отправки отладочных скрытых копий писем (CC).</summary>
             <value>Строка с email-адресом отладки.</value>
         </member>
-        <member name="T:Ans.Net10.Common.Services.FakeMailerService">
+        <member name="T:Ans.Net10.Common.Services.Fake_MailerService">
             <summary>
             Заглушка службы отправки писем для использования в средах разработки или тестирования.
             Не выполняет реальную сетевую отправку.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Common.Services.FakeMailerService.SendAsync(Ans.Net10.Common.MailMessageModel)">
+        <member name="M:Ans.Net10.Common.Services.Fake_MailerService.SendAsync(Ans.Net10.Common.MailMessageModel)">
             <inheritdoc />
         </member>
-        <member name="T:Ans.Net10.Common.Services.AnsMailerService">
+        <member name="T:Ans.Net10.Common.Services.Ans_MailerService">
             <summary>
             Реализация службы отправки писем через SMTP-протокол с использованием библиотеки MailKit.
             </summary>
             <param name="options">Параметры конфигурации подключения к SMTP-серверу.</param>
         </member>
-        <member name="M:Ans.Net10.Common.Services.AnsMailerService.#ctor(Ans.Net10.Common.Services.IMailerServiceOptions)">
+        <member name="M:Ans.Net10.Common.Services.Ans_MailerService.#ctor(Ans.Net10.Common.Services.IMailerServiceOptions)">
             <summary>
             Реализация службы отправки писем через SMTP-протокол с использованием библиотеки MailKit.
             </summary>
             <param name="options">Параметры конфигурации подключения к SMTP-серверу.</param>
         </member>
-        <member name="M:Ans.Net10.Common.Services.AnsMailerService.GetMailboxAddress(System.String,System.String)">
+        <member name="M:Ans.Net10.Common.Services.Ans_MailerService.GetMailboxAddress(System.String,System.String)">
             <summary>
             Создает объект адреса <see cref="T:MimeKit.MailboxAddress"/> с поддержкой UTF-8.
             </summary>
@@ -1365,14 +1365,14 @@
             <param name="address">Электронный почтовый адрес.</param>
             <returns>Готовый объект адреса <see cref="T:MimeKit.MailboxAddress"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Services.AnsMailerService.GetMailboxAddress(System.String)">
+        <member name="M:Ans.Net10.Common.Services.Ans_MailerService.GetMailboxAddress(System.String)">
             <summary>
             Создает объект адреса <see cref="T:MimeKit.MailboxAddress"/>, где имя совпадает с электронным адресом.
             </summary>
             <param name="address">Электронный почтовый адрес.</param>
             <returns>Готовый объект адреса <see cref="T:MimeKit.MailboxAddress"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Common.Services.AnsMailerService.SendAsync(Ans.Net10.Common.MailMessageModel)">
+        <member name="M:Ans.Net10.Common.Services.Ans_MailerService.SendAsync(Ans.Net10.Common.MailMessageModel)">
             <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Common.ClassIdWrapper`1">
@@ -9766,14 +9766,14 @@
             Заменяет спецсимволы разметки их безопасными HTML-сущностями.
             </summary>
             <param name="value">Исходная строка.</param>
-            <returns>Строка с экранированными символами или <see langword="null"/>.</returns>
+            <returns>Строка с экранированными символами.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppTypograph.GetText2Html(System.String)">
             <summary>
             Восстанавливает экранированные HTML-сущности в их исходные символы.
             </summary>
             <param name="value">Строка с HTML-сущностями.</param>
-            <returns>Декодированная строка или <see langword="null"/>.</returns>
+            <returns>Декодированная строка.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppTypograph.GetHtml2TextAndSaveStruct(System.String)">
             <summary>
@@ -9781,14 +9781,14 @@
             заменяя ведущие пробелы табуляцией.
             </summary>
             <param name="value">Исходный текст.</param>
-            <returns>Форматированная строка или <see langword="null"/>.</returns>
+            <returns>Форматированная строка.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppTypograph.GetTypografFix(System.String)">
             <summary>
             Выполняет первичное наложение правил автотипографики на строку (замена дефисов на тире, привязка союзов).
             </summary>
             <param name="value">Исходная строка.</param>
-            <returns>Строка с примененными заменами или <see langword="null"/>.</returns>
+            <returns>Строка с примененными заменами.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppTypograph.GetTypografElem(System.String)">
             <summary>
@@ -9796,14 +9796,14 @@
             с последующими через неразрывный пробел (&amp;nbsp;).
             </summary>
             <param name="value">Исходное текстовое поле.</param>
-            <returns>Текст с расставленными неразрывными пробелами или <see langword="null"/>.</returns>
+            <returns>Текст с расставленными неразрывными пробелами.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppTypograph.GetTypografMin(System.String)">
             <summary>
             Запускает полный цикл экранной типографики текста с изоляцией разметки HTML.
             </summary>
             <param name="value">Исходный HTML или простой текст.</param>
-            <returns>Обработанный текст или <see langword="null"/>.</returns>
+            <returns>Обработанный текст.</returns>
         </member>
         <member name="M:Ans.Net10.Common.SuppTypograph.GetFixTextLine(System.String)">
             <summary>

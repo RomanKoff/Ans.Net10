@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿// rev 2026-10-15
+
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 
 namespace Ans.Net10.Web.Services
@@ -9,7 +11,7 @@ namespace Ans.Net10.Web.Services
 	/// стандартный интерфейс .NET 10 <see cref="IExceptionHandler"/> для перехвата специализированных 
 	/// исключений <see cref="AnsHttpException"/> и автоматической установки статус-кодов ответов.
 	/// </summary>
-	public class AnsExceptionHandler
+	public class Ans_ExceptionHandler
 		: IExceptionHandler
 	{
 

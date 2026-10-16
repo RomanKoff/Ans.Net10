@@ -1,4 +1,4 @@
-﻿// rev 2026-09-28
+﻿// rev 2026-10-16
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
@@ -41,17 +41,18 @@ namespace Ans.Net10.Web
 			var processed1 = useTypograf
 				? SuppTypograph.GetTypografMin(value)
 				: value;
-			return new HtmlString(processed1 ?? string.Empty);
+			return new HtmlString(processed1);
 		}
 
 
 		/// <summary>
-		/// Форматирует строку по указанному шаблону с опциональной типографикой и преобразует результат в объект <see cref="HtmlString"/>.
+		/// Форматирует строку по указанному шаблону и преобразует результат в структуру <see cref="HtmlString"/> 
+		/// с опциональным применением экранной типографики.
 		/// </summary>
-		/// <param name="value">Исходная строка.</param>
-		/// <param name="template">Строковый шаблон обертки результата (например, <c>"&lt;div&gt;{0}&lt;/div&gt;"</c>).</param>
-		/// <param name="useTypograf">Признак необходимости применения типографа к исходной строке.</param>
-		/// <returns>Отформатированный объект <see cref="HtmlString"/> или <see cref="HtmlString.Empty"/>, если исходная строка пуста или состоит из пробелов.</returns>
+		/// <param name="value">Исходное строковое значение.</param>
+		/// <param name="template">Шаблон форматирования (например, "Значение: {0}").</param>
+		/// <param name="useTypograf">Признак необходимости применения типографа к результирующей строке.</param>
+		/// <returns>Объект <see cref="HtmlString"/> с отформатированным контентом, либо <see cref="HtmlString.Empty"/>.</returns>
 		public static HtmlString ToHtml(
 			this string? value,
 			string? template,
@@ -59,10 +60,28 @@ namespace Ans.Net10.Web
 		{
 			if (string.IsNullOrWhiteSpace(value))
 				return HtmlString.Empty;
-			var processed1 = useTypograf
-				? SuppTypograph.GetTypografMin(value)
-				: value;
-			return processed1.Make(template).ToHtml();
+			return value.Make(template).ToHtml(useTypograf);
+		}
+
+
+		/// <summary>
+		/// Выполняет сложное составное форматирование строки по шаблону с поддержкой дополнительных аргументов 
+		/// и преобразует результат в безопасную структуру <see cref="HtmlString"/> с применением типографики.
+		/// </summary>
+		/// <param name="value">Исходное строковое значение.</param>
+		/// <param name="template">Шаблон форматирования, поддерживающий подстановку множества аргументов.</param>
+		/// <param name="useTypograf">Признак необходимости применения типографа к результирующей строке.</param>
+		/// <param name="args">Дополнительный массив аргументов для подстановки в сложный шаблон.</param>
+		/// <returns>Объект <see cref="HtmlString"/> с отформатированным и оттипографленным контентом, либо <see cref="HtmlString.Empty"/>.</returns>
+		public static HtmlString ToHtmlMore(
+			this string? value,
+			string? template,
+			bool useTypograf,
+			params object?[] args)
+		{
+			if (string.IsNullOrWhiteSpace(value))
+				return HtmlString.Empty;
+			return value.MakeMore(template, args).ToHtml(useTypograf);
 		}
 
 	}

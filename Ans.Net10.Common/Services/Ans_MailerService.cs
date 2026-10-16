@@ -68,7 +68,7 @@ namespace Ans.Net10.Common.Services
 	/// Заглушка службы отправки писем для использования в средах разработки или тестирования.
 	/// Не выполняет реальную сетевую отправку.
 	/// </summary>
-	public partial class FakeMailerService
+	public partial class Fake_MailerService
 		: IMailerService
 	{
 		/// <inheritdoc />
@@ -85,7 +85,7 @@ namespace Ans.Net10.Common.Services
 	/// Реализация службы отправки писем через SMTP-протокол с использованием библиотеки MailKit.
 	/// </summary>
 	/// <param name="options">Параметры конфигурации подключения к SMTP-серверу.</param>
-	public partial class AnsMailerService(
+	public partial class Ans_MailerService(
 		IMailerServiceOptions options)
 		: IMailerService
 	{

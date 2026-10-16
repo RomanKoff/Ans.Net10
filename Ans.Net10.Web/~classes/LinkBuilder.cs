@@ -1,4 +1,4 @@
-﻿// rev 2026-10-01
+﻿// rev 2026-10-16
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -29,8 +29,8 @@ namespace Ans.Net10.Web
 			bool isDisabled = false)
 		{
 			ArgumentNullException.ThrowIfNull(title);
-			Href = href ?? string.Empty;
-			InnerHtml = SuppTypograph.GetTypografMin(title) ?? Href;
+			Href = href;
+			InnerHtml = SuppTypograph.GetTypografMin(title);
 			IsDisabled = isDisabled;
 		}
 
@@ -53,7 +53,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Целевой URL-адрес гиперссылки (атрибут <c>href</c>).
 		/// </summary>
-		public string Href { get; set; }
+		public string? Href { get; set; }
 
 
 		/// <summary>
@@ -93,7 +93,7 @@ namespace Ans.Net10.Web
 		/// Формирует и возвращает настроенный экземпляр HTML-компонента <see cref="TagBuilderExt"/> на основе текущего состояния свойств.
 		/// </summary>
 		/// <remarks>
-		/// Если ссылка заблокирована (<see cref="IsDisabled"/> или <see cref="Href"/> пуста), генерируется тег <c>&lt;span&gt;</c> с атрибутами доступности 
+		/// Если ссылка заблокирована (<see cref="IsDisabled"/> или <see cref="Href"/> равен <see langword="null"/>), генерируется тег <c>&lt;span&gt;</c> с атрибутами доступности 
 		/// <c>aria-disabled="true"</c> и <c>tabindex="-1"</c>. В противном случае генерируется стандартный тег <c>&lt;a&gt;</c>.
 		/// </remarks>
 		/// <param name="innerHtml">Опциональное кастомное HTML-содержимое для переопределения значения <see cref="InnerHtml"/>.</param>
@@ -102,7 +102,7 @@ namespace Ans.Net10.Web
 			string? innerHtml = null)
 		{
 			TagBuilderExt tag1;
-			if (IsDisabled || string.IsNullOrEmpty(Href))
+			if (IsDisabled || Href is null)
 			{
 				tag1 = new("span", TagRenderMode.Normal);
 				tag1.AddCssClass("link-disabled disabled opacity-75");

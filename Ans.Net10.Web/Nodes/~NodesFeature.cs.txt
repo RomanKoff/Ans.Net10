@@ -1,0 +1,18 @@
+﻿namespace Ans.Net10.Web.Nodes
+{
+
+	public interface INodesFeature
+	{
+		NodesResolveResult ResolveResult { get; }
+	}
+
+
+
+	public sealed class NodesFeature(
+		NodesResolveResult resolveResult)
+		: INodesFeature
+	{
+		public NodesResolveResult ResolveResult { get; } = resolveResult;
+	}
+
+}

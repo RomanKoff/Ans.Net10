@@ -2175,6 +2175,18 @@
             Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
             </remarks>
         </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.SiteFace">
+            <summary>
+            Получает или задает определение заголовка сайта. 
+            Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.SiteHomeUrl">
+            <summary>
+            Получает или задает базовый адрес главной страницы сайта.
+            Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.DefaultCulture">
             <summary>
             Получает или задает культуру по умолчанию (например, "ru", "en").
@@ -2219,14 +2231,6 @@
             <summary>
             Получает или задает флаг режима разработки.
             </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.UseSitemap">
-            <summary>
-            Получает или задает флаг автоматического включения и инициализации реактивной карты сайта Sitemap.
-            </summary>
-            <value>
-            Значение по умолчанию: <see langword="false"/>.
-            </value>
         </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.UseRuntimeCompilation">
             <summary>
@@ -2528,6 +2532,30 @@
             <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
             <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
         </member>
+        <member name="T:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware">
+            <summary>
+            Инфраструктурный компонент конвейера (Middleware), обеспечивающий сопряжение данных 
+            проиндексированной карты сайта с Триадой профилей оркеструющего контекста <see cref="T:Ans.Net10.Web.CurrentContext"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware"/>.
+            </summary>
+            <param name="next">Делегат, представляющий следующую функцию обработки в конвейере HTTP.</param>
+            <param name="logger">Служба ведения системных логов.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из входящих параметров равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Выполняет перехват канонического URL-адреса запроса, извлекает метаданные из индекса 
+            карты сайта O(1) и наполняет Триаду профилей текущего контекста.
+            </summary>
+            <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
+            <param name="currentContext">Оркестровый контекст текущего запроса (Scoped-сервис).</param>
+            <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="context"/> или <paramref name="currentContext"/> равен <see langword="null"/>.</exception>
+        </member>
         <member name="T:Ans.Net10.Web.Middlewares.AnsUrlCanonicalizationMiddleware">
             <summary>
             Инфраструктурный компонент конвейера (Middleware), обеспечивающий автоматический 
@@ -2548,6 +2576,107 @@
             </summary>
             <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
             <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Nodes.NodesResolveResult">
+            <summary>
+            Представляет детерминированный результат разрешения виртуального URL-пути запроса 
+            в физическое Razor-представление внутри контентной структуры CMS.
+            </summary>
+            <param name="IsMatched">Возвращает значение, указывающее, было ли найдено подходящее представление.</param>
+            <param name="NodeName">Имя (идентификатор) определенного информационного узла.</param>
+            <param name="PagePath">Логический относительный путь к странице внутри узла.</param>
+            <param name="ViewPath">Полный канонический виртуальный путь к файлу представления, готовый для Razor Engine (например, ~/Views/Nodes/...).</param>
+            <param name="IsStartPage">Возвращает значение, указывающее, является ли страница индексной (start.cshtml).</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.NodesResolveResult.#ctor(System.Boolean,System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Представляет детерминированный результат разрешения виртуального URL-пути запроса 
+            в физическое Razor-представление внутри контентной структуры CMS.
+            </summary>
+            <param name="IsMatched">Возвращает значение, указывающее, было ли найдено подходящее представление.</param>
+            <param name="NodeName">Имя (идентификатор) определенного информационного узла.</param>
+            <param name="PagePath">Логический относительный путь к странице внутри узла.</param>
+            <param name="ViewPath">Полный канонический виртуальный путь к файлу представления, готовый для Razor Engine (например, ~/Views/Nodes/...).</param>
+            <param name="IsStartPage">Возвращает значение, указывающее, является ли страница индексной (start.cshtml).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesResolveResult.IsMatched">
+            <summary>Возвращает значение, указывающее, было ли найдено подходящее представление.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesResolveResult.NodeName">
+            <summary>Имя (идентификатор) определенного информационного узла.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesResolveResult.PagePath">
+            <summary>Логический относительный путь к странице внутри узла.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesResolveResult.ViewPath">
+            <summary>Полный канонический виртуальный путь к файлу представления, готовый для Razor Engine (например, ~/Views/Nodes/...).</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesResolveResult.IsStartPage">
+            <summary>Возвращает значение, указывающее, является ли страница индексной (start.cshtml).</summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Nodes.NodesResolver">
+            <summary>
+            Высокопроизводительный реактивный сервис анализа и разрешения ЧПУ-маршрутов CMS, 
+            обеспечивающий мгновенное сопоставление запросов с картой Razor-представлений в памяти.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Nodes.NodesResolver.BASE_NODES_DIR">
+            <summary>
+            Базовый виртуальный каталог размещения контента CMS.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Nodes.NodesResolver.VIEW_EXTENSION">
+            <summary>
+            Расширение файлов представлений Razor.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Nodes.NodesResolver.VIEW_FILTER">
+            <summary>
+            Маска фильтрации для поиска файлов представлений.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Nodes.NodesResolver.START_PAGE_NAME">
+            <summary>
+            Имя индексной (стартовой) страницы по умолчанию.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Nodes.NodesResolver.MAIN_NODE_NAME">
+            <summary>
+            Системное имя главного контентного узла по умолчанию.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.NodesResolver.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Nodes.NodesResolver})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.NodesResolver"/>.
+            </summary>
+            <param name="env">Среда выполнения веб-приложения.</param>
+            <param name="logger">Служба ведения системных логов.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из входящих параметров равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesResolver.ViewFilesMap">
+            <summary>
+            Возвращает текущую, полностью скомпилированную карту соответствия путей в памяти.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.NodesResolver.InitializeAsync(System.Threading.CancellationToken)">
+            <summary>
+            Выполняет первоначальное асинхронное сканирование файлов контента, строит карту 
+            представлений в памяти и активирует систему реактивного отслеживания изменений.
+            </summary>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая операцию инициализации сервиса.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.NodesResolver.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Nodes.NodesResolver.Resolve(System.String)">
+            <summary>
+            Выполняет мгновенное и детерминированное разрешение виртуального пути запроса 
+            в физическое представление на основе матрицы приоритетов в памяти приложения.
+            </summary>
+            <param name="rawPath">Сырой относительный URL-путь входящего HTTP-запроса.</param>
+            <returns>Структура <see cref="T:Ans.Net10.Web.Nodes.NodesResolveResult"/>, содержащая результаты анализа пути.</returns>
+            <exception cref="T:System.InvalidOperationException">Вызывается, если метод вызван до инициализации сервиса.</exception>
         </member>
         <member name="T:Ans.Net10.Web.Resources.Common">
             <summary>
@@ -2681,14 +2810,14 @@
               Looks up a localized string similar to Текст сообщения об ошибке.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Web.Services.AnsExceptionHandler">
+        <member name="T:Ans.Net10.Web.Services.Ans_ExceptionHandler">
             <summary>
             Компонент конвейера обработки ошибок (Exception Handler) экосистемы Ans, реализующий 
             стандартный интерфейс .NET 10 <see cref="T:Microsoft.AspNetCore.Diagnostics.IExceptionHandler"/> для перехвата специализированных 
             исключений <see cref="T:Ans.Net10.Web.AnsHttpException"/> и автоматической установки статус-кодов ответов.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsExceptionHandler.TryHandleAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception,System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ExceptionHandler.TryHandleAsync(Microsoft.AspNetCore.Http.HttpContext,System.Exception,System.Threading.CancellationToken)">
             <summary>
             Асинхронно перехватывает возникшее в конвейере исключение, проверяет его тип 
             и, в случае совпадения с <see cref="T:Ans.Net10.Web.AnsHttpException"/>, фиксирует ассоциированный HTTP статус-код.
@@ -2740,7 +2869,7 @@
             Асинхронно компилирует и рендерит частичное представление Razor в строку с передачей модели данных.
             </summary>
         </member>
-        <member name="T:Ans.Net10.Web.Services.AnsViewRenderService">
+        <member name="T:Ans.Net10.Web.Services.Ans_ViewRenderService">
             <summary>
             Реализация сервиса компиляции и рендеринга Razor-шаблонов в текстовые строки.
             </summary>
@@ -2749,7 +2878,7 @@
             <c>builder.Services.AddScoped&lt;IViewRenderService, AnsViewRenderService&gt;();</c>
             </remarks>
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.#ctor(Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine,Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider,System.IServiceProvider)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.#ctor(Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine,Microsoft.AspNetCore.Mvc.ViewFeatures.ITempDataProvider,System.IServiceProvider)">
             <summary>
             Реализация сервиса компиляции и рендеринга Razor-шаблонов в текстовые строки.
             </summary>
@@ -2758,25 +2887,25 @@
             <c>builder.Services.AddScoped&lt;IViewRenderService, AnsViewRenderService&gt;();</c>
             </remarks>
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetActionContext">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.GetActionContext">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetViewEngineResult(Microsoft.AspNetCore.Mvc.ActionContext,System.String)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.GetViewEngineResult(Microsoft.AspNetCore.Mvc.ActionContext,System.String)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetViewEngineResult(System.String)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.GetViewEngineResult(System.String)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.GetPartialEngineResult(System.String)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.GetPartialEngineResult(System.String)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.RenderViewToStringAsync(System.String,System.Object)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.RenderViewToStringAsync(System.String,System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.RenderPartialToStringAsync(System.String,System.Object)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.RenderPartialToStringAsync(System.String,System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:Ans.Net10.Web.Services.AnsViewRenderService.ExecuteRenderAsync(Microsoft.AspNetCore.Mvc.ActionContext,Microsoft.AspNetCore.Mvc.ViewEngines.IView,System.Object)">
+        <member name="M:Ans.Net10.Web.Services.Ans_ViewRenderService.ExecuteRenderAsync(Microsoft.AspNetCore.Mvc.ActionContext,Microsoft.AspNetCore.Mvc.ViewEngines.IView,System.Object)">
             <summary>
             Исполняет непосредственный запуск движка рендеринга Razor в выделенный текстовый поток StreamWriter.
             </summary>
@@ -3650,7 +3779,7 @@
             Формирует и возвращает настроенный экземпляр HTML-компонента <see cref="T:Ans.Net10.Web.TagBuilderExt"/> на основе текущего состояния свойств.
             </summary>
             <remarks>
-            Если ссылка заблокирована (<see cref="P:Ans.Net10.Web.LinkBuilder.IsDisabled"/> или <see cref="P:Ans.Net10.Web.LinkBuilder.Href"/> пуста), генерируется тег <c>&lt;span&gt;</c> с атрибутами доступности 
+            Если ссылка заблокирована (<see cref="P:Ans.Net10.Web.LinkBuilder.IsDisabled"/> или <see cref="P:Ans.Net10.Web.LinkBuilder.Href"/> равен <see langword="null"/>), генерируется тег <c>&lt;span&gt;</c> с атрибутами доступности 
             <c>aria-disabled="true"</c> и <c>tabindex="-1"</c>. В противном случае генерируется стандартный тег <c>&lt;a&gt;</c>.
             </remarks>
             <param name="innerHtml">Опциональное кастомное HTML-содержимое для переопределения значения <see cref="P:Ans.Net10.Web.LinkBuilder.InnerHtml"/>.</param>
@@ -4193,7 +4322,7 @@
             базовые инфраструктурные службы платформы и встроенные прикладные сервисы библиотеки.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.CurrentContext.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Caching.Hybrid.HybridCache,Ans.Net10.Web.Services.IViewRenderService,System.Net.Http.IHttpClientFactory,Ans.Net10.Common.Services.IMailerService,Microsoft.AspNetCore.Routing.LinkGenerator)">
+        <member name="M:Ans.Net10.Web.CurrentContext.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Caching.Hybrid.HybridCache,Ans.Net10.Web.Services.IViewRenderService,System.Net.Http.IHttpClientFactory,Ans.Net10.Web.ISitemapProvider,Ans.Net10.Common.Services.IMailerService,Microsoft.AspNetCore.Routing.LinkGenerator)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CurrentContext"/> с внедрением всех базовых зависимостей.
             </summary>
@@ -4204,6 +4333,7 @@
             <param name="hybridCache">Служба двухслойного гибридного кэширования платформы.</param>
             <param name="viewRender">Служба изолированного рендеринга представлений Razor в строковые буферы.</param>
             <param name="httpClientFactory">Фабрика для создания экземпляров HTTP-клиентов.</param>		
+            <param name="sitemap">Поставщик данных и управления жизненным циклом карты сайта.</param>
             <param name="mailer">Служба асинхронной отправки электронных писем.</param>
             <param name="linkGenerator">Компонент генерации URL-адресов на основе зарегистрированных маршрутов приложения.</param>
             <exception cref="T:System.ArgumentNullException">
@@ -5581,6 +5711,40 @@
             Возвращает начальное текстовое значение многострочного поля ввода.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.NodemapTypesEnum">
+            <summary>
+            Перечисление семантических типов организации информационных узлов в рамках карты сайта.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodemapTypesEnum.Node">
+            <summary>
+            Стандартный функциональный узел структуры. Обладает выделенным системным именем ЧПУ 
+            и выступает в роли физического контейнера для собственной иерархии страниц.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodemapTypesEnum.Group">
+            <summary>
+            Визуальный узел группировки. Не обладает собственной ссылкой назначения или системным именем. 
+            Служит исключительно в качестве декоративного контейнера/заголовка для объединения дочерних узлов в меню.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodemapTypesEnum.InternalPath">
+            <summary>
+            Ссылочный узел, указывающий на произвольный внутренний относительный путь текущего сайта. 
+            Не участвует в автоматическом иерархическом построении ЧПУ-маршрутов страниц.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.NodemapTypesEnum.ExternalUrl">
+            <summary>
+            Внешний узел-ссылка, перенаправляющий навигацию на сторонний интернет-ресурс по абсолютному URL-адресу.
+            Не участвует в автоматическом иерархическом построении ЧПУ-маршрутов страниц.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.NodemapItem">
+            <summary>
+            Представляет информационный узел карты сайта, определяющий элемент структуры навигации.
+            </summary>
+        </member>
         <member name="M:Ans.Net10.Web.NodemapItem._normalTargetRegex">
             <remarks>
             Pattern:<br/>
@@ -5596,6 +5760,93 @@
             </code>
             </remarks>
         </member>
+        <member name="M:Ans.Net10.Web.NodemapItem.#ctor(System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NodemapItem"/>.
+            </summary>
+            <param name="target">Строка назначения (идентификатор узла, внутренний или внешний URL).</param>
+            <param name="face">Отображаемое человекочитаемое наименование узла.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.Target">
+            <summary>
+            Получает оригинальную строку назначения узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.Face">
+            <summary>
+            Получает определение заголовка узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.Name">
+            <summary>
+            Получает очищенное системное имя узла, если он относится к типу <see cref="F:Ans.Net10.Web.NodemapTypesEnum.Node"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.Type">
+            <summary>
+            Получает семантический тип узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.Path">
+            <summary>
+            Получает относительный ЧПУ-путь узла. Возвращает <see langword="null"/>, если имя отсутствует.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.ParentNode">
+            <summary>
+            Получает ссылку на родительский узел-контейнер.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.ChildNodes">
+            <summary>
+            Получает коллекцию прямых дочерних узлов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.TopPages">
+            <summary>
+            Получает коллекцию корневых страниц, принадлежащих данному узлу.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.ParentNodes">
+            <summary>
+            Получает ленивое перечисление всех вышестоящих родительских узлов по цепочке вверх до корня.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.PagemapTypesEnum">
+            <summary>
+            Перечисление семантических типов контентных страниц в рамках информационного узла карты сайта.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PagemapTypesEnum.Page">
+            <summary>
+            Стандартная изолированная контентная страница. Обладает системным ЧПУ-именем, 
+            не содержит вложенных дочерних страниц.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PagemapTypesEnum.Catalog">
+            <summary>
+            Каталог (структурный раздел). Является контентной страницей, которая дополнительно 
+            содержит вложенную иерархию подчиненных дочерних страниц.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PagemapTypesEnum.InternalPath">
+            <summary>
+            Ссылочный элемент страницы, указывающий на произвольный внутренний относительный путь сайта. 
+            Не генерирует собственный иерархический ЧПУ-путь на основе предков.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.PagemapTypesEnum.ExternalUrl">
+            <summary>
+            Внешний элемент-ссылка, перенаправляющий пользователя на сторонний интернет-ресурс по абсолютному URL-адресу.
+            Не генерирует собственный иерархический ЧПУ-путь на основе предков.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.PagemapItem">
+            <summary>
+            Представляет отдельную контентную страницу карты сайта, связанную с конкретным информационным узлом.
+            </summary>
+        </member>
         <member name="M:Ans.Net10.Web.PagemapItem._normalTargetRegex">
             <remarks>
             Pattern:<br/>
@@ -5610,6 +5861,239 @@
             ○ Match if at the end of the string or if before an ending newline.<br/>
             </code>
             </remarks>
+        </member>
+        <member name="M:Ans.Net10.Web.PagemapItem.#ctor(Ans.Net10.Web.NodemapItem,System.String,System.String,System.Boolean)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.PagemapItem"/>.
+            </summary>
+            <param name="node">Родительский информационный узел, к которому относится страница.</param>
+            <param name="target">Строка назначения страницы (ЧПУ-имя, внутренний или внешний URL).</param>
+            <param name="face">Отображаемое наименование страницы. Если пустой — подставляется значение назначения.</param>
+            <param name="hasNoIndex">Признак отсутствия индексной страницы в потомках.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="node"/> или <paramref name="target"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.Node">
+            <summary>
+            Получает родительский информационный узел текущей страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.Target">
+            <summary>
+            Получает оригинальную строку назначения страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.Face">
+            <summary>
+            Получает определение заголовка страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.HasNoIndex">
+            <summary>
+            Получает значение, указывающее на отсутсвие индексной страницы в потомках данной страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.Name">
+            <summary>
+            Получает системное ЧПУ-имя страницы, если тип относится к <see cref="F:Ans.Net10.Web.PagemapTypesEnum.Page"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.Type">
+            <summary>
+            Получает семантический тип страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.Path">
+            <summary>
+            Получает относительный ЧПУ-путь страницы, сформированный с учетом предков. Возвращает <see langword="null"/>, если имя отсутствует.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.ParentPage">
+            <summary>
+            Получает ссылку на родительскую страницу в иерархическом дереве контента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.ChildPages">
+            <summary>
+            Получает коллекцию прямых дочерних страниц.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.ParentPages">
+            <summary>
+            Получает ленивое перечисление всех родительских страниц по цепочке навигации вверх до корня.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.SitemapBuilder">
+            <summary>
+            Строитель и контейнер графа навигации, обеспечивающий индексацию и быстрый 
+            регистронезависимый поиск узлов и страниц карты сайта в оперативной памяти.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SitemapBuilder"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SitemapBuilder.TopNodes">
+            <summary>
+            Получает коллекцию корневых (наивысших) информационных узлов карты сайта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.GetNode(System.String)">
+            <summary>
+            Возвращает информационный узел из индекса по его системному имени.
+            </summary>
+            <param name="nodeName">Системное имя искомого информационного узла.</param>
+            <returns>Найденный экземпляр <see cref="T:Ans.Net10.Web.NodemapItem"/> или <see langword="null"/>, если узел не найден или имя пусто.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.GetPage(System.String)">
+            <summary>
+            Возвращает контентную страницу из индекса по её полному составному пути.
+            </summary>
+            <param name="combinedPath">Составной ЧПУ-путь страницы в формате "ИмяУзла/ПутьСтраницы".</param>
+            <returns>Найденный экземпляр <see cref="T:Ans.Net10.Web.PagemapItem"/> или <see langword="null"/>, если страница не найдена.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.AddTopNode(Ans.Net10.Web.NodemapItem)">
+            <summary>
+            Добавляет готовый информационный узел в конец коллекции корневых элементов.
+            </summary>
+            <param name="node">Добавляемый информационный узел.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.InsertTopNode(System.Int32,Ans.Net10.Web.NodemapItem)">
+            <summary>
+            Вставляет информационный узел в коллекцию корневых элементов по строго указанному порядковому индексу.
+            </summary>
+            <param name="index">Порядковый индекс позиции вставки (начиная с 0).</param>
+            <param name="node">Вставляемый информационный узел.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.BuildIndexes">
+            <summary>
+            Выполняет рекурсивный обход текущего графа элементов и компилирует 
+            высокопроизводительные неизменяемые словари (Frozen) для быстрого поиска узлов и страниц.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.ISitemapProvider">
+            <summary>
+            Определяет контракт поставщика данных и управления жизненным циклом карты сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.ISitemapProvider.Current">
+            <summary>
+            Получает актуальный, полностью проиндексированный экземпляр сборщика карты сайта.
+            </summary>
+            <value>Экземпляр <see cref="T:Ans.Net10.Web.SitemapBuilder"/>, содержащий текущий граф навигации.</value>
+        </member>
+        <member name="M:Ans.Net10.Web.ISitemapProvider.InitializeAsync(System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно выполняет первичную инициализацию поставщика и запускает процессы отслеживания изменений.
+            </summary>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая асинхронную операцию инициализации.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Fake_SitemapProvider">
+            <summary>
+            Фиктивная пустая реализация поставщика карты сайта, используемая в качестве 
+            Null-object паттерна, когда функционал реактивной карты сайта отключен в конфигурации.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Fake_SitemapProvider.Current">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Fake_SitemapProvider.InitializeAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Xml_SitemapProvider">
+            <summary>
+            Реализация файлового XML-поставщика карты сайта, осуществляющая реактивный 
+            мониторинг каталога и атомарное асинхронное обновление навигационного графа в памяти.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Xml_SitemapProvider.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Xml_SitemapProvider})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Xml_SitemapProvider"/>.
+            </summary>
+            <param name="env">Среда выполнения веб-приложения.</param>
+            <param name="configuration">Конфигурация приложения для извлечения настроек.</param>
+            <param name="logger">Служба ведения системных логов.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="env"/> или <paramref name="logger"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.Xml_SitemapProvider.Current">
+            <inheritdoc />
+        </member>
+        <member name="P:Ans.Net10.Web.Xml_SitemapProvider.SourcePath">
+            <summary>
+            Получает настроенный относительный путь к каталогу с XML-картами.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Xml_SitemapProvider.InitializeAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ans.Net10.Web.Xml_SitemapProvider.Dispose">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.NodesXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для корневого корневого элемента конфигурации дерева информационных узлов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodesXmlDto.Items">
+            <summary>
+            Получает или задает список корневых элементов навигационных узлов.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.NodeItemXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для конкретного элемента информационного узла в XML-файле.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeItemXmlDto.ChildItems">
+            <summary>
+            Получает или задает список дочерних элементов информационных узлов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeItemXmlDto.Target">
+            <summary>
+            Получает или задает строку назначения (идентификатор узла, внутренний или внешний URL).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeItemXmlDto.Face">
+            <summary>
+            Получает или задает человекочитаемое наименование (интерфейс) или шаблон названия элемента.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.PagesXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для корневого элемента конфигурации дерева страниц конкретного узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagesXmlDto.Items">
+            <summary>
+            Получает или задает список корневых элементов контентных страниц.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.PageItemXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для конкретного элемента контентной страницы в XML-файле.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.ChildItems">
+            <summary>
+            Получает или задает список дочерних элементов контентных страниц.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.Target">
+            <summary>
+            Получает или задает строку назначения страницы (ЧПУ-имя, внутренний или внешний URL).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.Face">
+            <summary>
+            Получает или задает человекочитаемое наименование страницы.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.HasNoIndex">
+            <summary>
+            Получает или задает флаг, указывающий на отсутствие у данного элемента стартовой страницы.
+            </summary>
         </member>
         <member name="T:Ans.Net10.Web.Exts_ClaimsPrincipal">
             <summary>
@@ -6840,12 +7324,24 @@
         </member>
         <member name="M:Ans.Net10.Web.Exts__to.ToHtml(System.String,System.String,System.Boolean)">
             <summary>
-            Форматирует строку по указанному шаблону с опциональной типографикой и преобразует результат в объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.
+            Форматирует строку по указанному шаблону и преобразует результат в структуру <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> 
+            с опциональным применением экранной типографики.
             </summary>
-            <param name="value">Исходная строка.</param>
-            <param name="template">Строковый шаблон обертки результата (например, <c>"&lt;div&gt;{0}&lt;/div&gt;"</c>).</param>
-            <param name="useTypograf">Признак необходимости применения типографа к исходной строке.</param>
-            <returns>Отформатированный объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> или <see cref="F:Microsoft.AspNetCore.Html.HtmlString.Empty"/>, если исходная строка пуста или состоит из пробелов.</returns>
+            <param name="value">Исходное строковое значение.</param>
+            <param name="template">Шаблон форматирования (например, "Значение: {0}").</param>
+            <param name="useTypograf">Признак необходимости применения типографа к результирующей строке.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> с отформатированным контентом, либо <see cref="F:Microsoft.AspNetCore.Html.HtmlString.Empty"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Exts__to.ToHtmlMore(System.String,System.String,System.Boolean,System.Object[])">
+            <summary>
+            Выполняет сложное составное форматирование строки по шаблону с поддержкой дополнительных аргументов 
+            и преобразует результат в безопасную структуру <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> с применением типографики.
+            </summary>
+            <param name="value">Исходное строковое значение.</param>
+            <param name="template">Шаблон форматирования, поддерживающий подстановку множества аргументов.</param>
+            <param name="useTypograf">Признак необходимости применения типографа к результирующей строке.</param>
+            <param name="args">Дополнительный массив аргументов для подстановки в сложный шаблон.</param>
+            <returns>Объект <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/> с отформатированным и оттипографленным контентом, либо <see cref="F:Microsoft.AspNetCore.Html.HtmlString.Empty"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.SuppClaims">
             <summary>

@@ -31,7 +31,7 @@ namespace Ans.Net10.Web
 		{
 			if (string.IsNullOrEmpty(DefaultCulture))
 				throw GetExceptionParamRequired("DefaultCulture");
-			if (MailService != null)
+			if (MailService is not null)
 			{
 				if (string.IsNullOrEmpty(MailService.SmtpServer))
 					throw GetExceptionParamRequired("MailService.SmtpServer");
@@ -42,10 +42,29 @@ namespace Ans.Net10.Web
 				if (string.IsNullOrEmpty(MailService.DefaultFromAddress))
 					throw GetExceptionParamRequired("MailService.DefaultFromAddress");
 			}
+			if (XmlSitemap is not null)
+			{
+				if (string.IsNullOrEmpty(XmlSitemap.Path))
+					throw GetExceptionParamRequired("XmlSitemap.Path");
+			}
 		}
 
 
 		/* options */
+
+
+		/// <summary>
+		/// Получает или задает определение заголовка сайта. 
+		/// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
+		/// </summary>
+		public string? SiteFace { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает базовый адрес главной страницы сайта.
+		/// Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
+		/// </summary>
+		public string? SiteHomeUrl { get; set; } = null;
 
 
 		/// <summary>
@@ -100,15 +119,6 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает или задает флаг автоматического включения и инициализации реактивной карты сайта Sitemap.
-		/// </summary>
-		/// <value>
-		/// Значение по умолчанию: <see langword="false"/>.
-		/// </value>
-		public bool UseSitemap { get; set; } = false;
-
-
-		/// <summary>
 		/// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
 		/// </summary>
 		public bool UseRuntimeCompilation { get; set; } = false;
@@ -142,6 +152,9 @@ namespace Ans.Net10.Web
 		/// Получает или задает настройки отображения и обработки ошибок.
 		/// </summary>
 		public ErrorsOptions Errors { get; set; } = new();
+
+
+		public XmlSitemapOptions? XmlSitemap { get; set; } = null;
 
 
 		/// <summary>
@@ -222,6 +235,13 @@ namespace Ans.Net10.Web
 		/// Получает или задает URL/путь к изображению для ошибки 500 Internal Server Error.
 		/// </summary>
 		public string? Picture500 { get; set; } = null;
+	}
+
+
+
+	public class XmlSitemapOptions
+	{
+		public string Path { get; set; } = string.Empty;
 	}
 
 

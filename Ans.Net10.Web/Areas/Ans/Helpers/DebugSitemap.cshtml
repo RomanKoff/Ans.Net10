@@ -1,0 +1,83 @@
+@*
+Компонент библиотеки Ans.Net10.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+
+@{
+	var TopNodes = Current.Sitemap.Current.TopNodes;
+	OutNodes(TopNodes);
+}
+
+@functions {
+
+	void OutNodes(IReadOnlyCollection<NodemapItem> items)
+	{
+		if (!items.Any())
+			return;
+		<ul>
+			@foreach (var item in items)
+			{
+				var url1 = item.Type switch
+				{
+					NodemapTypesEnum.Group => null,
+					NodemapTypesEnum.Node => $"/{item.Path}",
+					_ => item.Target
+				};
+				var s1 = item.Type is NodemapTypesEnum.Node ? item.Name : item.Target;
+				<li>
+					<span><b>@item.Type</b> @url1.ToHtmlMore("<a href=\"{0}\">{1}</a>", false, s1) @item.Face.ToHtml()</span>
+					@{
+						OutPages(item.TopPages);
+						OutNodes(item.ChildNodes);
+					}
+				</li>
+			}
+		</ul>
+	}
+
+	void OutPages(IReadOnlyCollection<PagemapItem> items)
+	{
+		if (!items.Any())
+			return;
+		<ul style="font-size:.8rem;">
+			@foreach (var item in items)
+			{
+				string url1;
+				string s1;
+				switch (item.Type)
+				{
+					case PagemapTypesEnum.Page:
+						url1 = $"/{item.Path}";
+						s1 = $"{item.Name}";
+						break;
+					case PagemapTypesEnum.Catalog:
+						url1 = $"/{item.Path}";
+						s1 = $"{item.Name}/";
+						break;
+					default:
+						url1 = item.Target;
+						s1 = item.Target;
+						break;
+				}
+				<li>
+					<span>
+						<i>@item.Type</i>
+						@if (item.HasNoIndex)
+						{
+							<span>@s1</span>
+						}
+						else
+						{
+							@url1.ToHtmlMore("<a href=\"{0}\">{1}</a>", false, s1)
+						}
+						@item.Face.ToHtml()
+					</span>
+					@{
+						OutPages(item.ChildPages);
+					}
+				</li>
+			}
+		</ul>
+	}
+
+}
