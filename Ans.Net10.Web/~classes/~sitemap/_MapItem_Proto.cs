@@ -23,6 +23,15 @@ namespace Ans.Net10.Web
 		public abstract string Path { get; }
 
 
+		/// <summary>
+		/// Формирует полный виртуальный URL-адрес элемента с учетом базового пути приложения.
+		/// </summary>
+		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
+		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
+		public abstract string GetUrl(HttpContext httpContext);
+		internal string? _url = null;
+
+
 		/* ctor */
 
 
@@ -70,23 +79,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
 		public bool IsShortTitleUnique { get; private set; }
-
-
-		/* functions */
-
-
-		/// <summary>
-		/// Формирует полный виртуальный URL-адрес элемента с учетом базового пути приложения.
-		/// </summary>
-		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
-		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
-		public string GetUrl(
-			HttpContext httpContext)
-		{
-			ArgumentNullException.ThrowIfNull(httpContext);
-			return _url ??= $"{httpContext.GetVirtualPath()}{Path}";
-		}
-		private string? _url;
 
 
 		/* methods */

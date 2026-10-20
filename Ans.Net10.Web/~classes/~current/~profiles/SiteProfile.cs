@@ -1,4 +1,4 @@
-﻿// rev 2026-10-17
+﻿// rev 2026-10-20
 
 namespace Ans.Net10.Web
 {
@@ -26,6 +26,20 @@ namespace Ans.Net10.Web
 		{
 			get => field ??= _Current.Options.CustomHomeUrl;
 			set;
+		}
+
+
+		/* overrides */
+
+
+		/// <summary>
+		/// Возвращает объект ссылки <see cref="LinkBuilder"/> для текущего профиля сайта.
+		/// </summary>
+		/// <returns>Экземпляр <see cref="LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+		public override LinkBuilder? GetLink()
+		{
+			var url1 = CustomHomeUrl ?? _Current.Host.VirtualPath ?? "/";
+			return new LinkBuilder(url1, ShortTitle);
 		}
 
 	}

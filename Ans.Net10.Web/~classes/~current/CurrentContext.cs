@@ -11,6 +11,7 @@ using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Net;
 
@@ -277,7 +278,7 @@ namespace Ans.Net10.Web
 		/// </summary>		
 		/// <value>Объект <see cref="HtmlString"/>, готовый к выводу в мастер-шаблоне без повторного экранирования.</value>
 		public HtmlString BrowserTitleHtml
-			=> field ??= new HtmlString(GetBrowserTitle());
+			=> field ??= new HtmlString(_getBrowserTitle());
 
 
 		/// <summary>
@@ -285,10 +286,9 @@ namespace Ans.Net10.Web
 		/// от главной страницы сайта до текущего активного элемента контента.
 		/// </summary>
 		/// <value>
-		/// Коллекция объектов <see cref="LinkBuilder"/>, представляющих элементы навигации, 
-		/// или <see langword="null"/>, если сайт не инициализирован.
+		/// Неизменяемая коллекция объектов <see cref="LinkBuilder"/>, представляющих элементы навигации.
 		/// </value>
-		public IEnumerable<LinkBuilder>? Breadcrumbs
+		public IReadOnlyCollection<LinkBuilder> Breadcrumbs
 			=> field ??= _getBreadcrumbsLazy();
 
 
@@ -349,19 +349,6 @@ namespace Ans.Net10.Web
 			return baseVirtual1 is { Length: > 0 }
 				? $"{baseVirtual1}/{cleanTarget1}"
 				: $"/{cleanTarget1}";
-		}
-
-
-		/// <summary>
-		/// Формирует собранный человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
-		/// Объединяет иерархию сокращенных названий страницы, узла и сайта.
-		/// </summary>
-		/// <value>Строка готового заголовка окна браузера.</value>
-		public string GetBrowserTitle()
-		{
-			if (!string.IsNullOrWhiteSpace(Page.CustomBrowserTitle))
-				return Page.CustomBrowserTitle;
-			return $"{Page.ShortTitle.Make("{0} – ")}{Node.ShortTitle.Make("{0} – ")}{Site.ShortTitle}";
 		}
 
 
@@ -445,10 +432,21 @@ namespace Ans.Net10.Web
 		/* privates */
 
 
-		private static List<LinkBuilder> _getBreadcrumbsLazy()
+		private string _getBrowserTitle()
+		{
+			if (!string.IsNullOrWhiteSpace(Page.CustomBrowserTitle))
+				return Page.CustomBrowserTitle;
+			return $"{Page.GetParentsTitles()}{Page.ShortTitle.Make("{0} – ")}{Node.ShortTitle.Make("{0} – ")}{Site.ShortTitle}";
+		}
+
+
+		private ReadOnlyCollection<LinkBuilder> _getBreadcrumbsLazy()
 		{
 			var items1 = new List<LinkBuilder>();
-			return items1;
+			items1.AddRange(Site.GetBreadcrumbsPart());
+			items1.AddRange(Node.GetBreadcrumbsPart());
+			items1.AddRange(Page.GetBreadcrumbsPart());
+			return items1.AsReadOnly();
 		}
 
 	}

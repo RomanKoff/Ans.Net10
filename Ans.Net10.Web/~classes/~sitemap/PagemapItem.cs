@@ -1,5 +1,6 @@
 ﻿// rev 2026-10-20
 
+using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 
 namespace Ans.Net10.Web
@@ -37,7 +38,7 @@ namespace Ans.Net10.Web
 		{
 			Node = node ?? throw new ArgumentNullException(nameof(node));
 			Target = target ?? throw new ArgumentNullException(nameof(target));
-			SetFace(string.IsNullOrEmpty(face) ? Target : face);
+			SetFace(string.IsNullOrEmpty(face) ? target == "start" ? null : target : face);
 			HasNoIndex = hasNoIndex;
 			if (target.StartsWith('/'))
 			{
@@ -55,6 +56,34 @@ namespace Ans.Net10.Web
 				Name = null;
 			}
 			ChildPages = _childPages.AsReadOnly();
+		}
+
+
+		/* overrides */
+
+
+		/// <summary>
+		/// Получает относительный ЧПУ-путь страницы, сформированный с учетом предков.
+		/// </summary>
+		public override string Path
+			=> field ??= _buildPath();
+
+
+		/// <summary>
+		/// Формирует полный виртуальный URL-адрес страницы с учетом базового пути приложения.
+		/// </summary>
+		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
+		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
+		public override string GetUrl(
+			HttpContext httpContext)
+		{
+			ArgumentNullException.ThrowIfNull(httpContext);
+			return _url ??= Type switch
+			{
+				PagemapTypesEnum.InternalPath => $"{httpContext.GetVirtualPath()}{Target}",
+				PagemapTypesEnum.ExternalUrl => Target,
+				_ => $"{httpContext.GetVirtualPath()}{Path}"
+			};
 		}
 
 
@@ -93,13 +122,6 @@ namespace Ans.Net10.Web
 		/// изолированным элементом, каталогом контента, внутренней ссылкой или внешним URL.
 		/// </value>
 		public PagemapTypesEnum Type { get; private set; }
-
-
-		/// <summary>
-		/// Получает относительный ЧПУ-путь страницы, сформированный с учетом предков.
-		/// </summary>
-		public override string Path
-			=> field ??= _buildPath();
 
 
 		/// <summary>

@@ -7,15 +7,24 @@
 	var crumbs1 = Current.Breadcrumbs;
 }
 
-@if (crumbs1 is not null && crumbs1.Any())
+@if (crumbs1 is { Count: > 0 })
 {
 	<nav aria-label="breadcrumb">
 		<ol class="breadcrumb">
-			@foreach (var link1 in crumbs1)
+			@{
+				var count1 = crumbs1.Count;
+				var items1 = crumbs1 is List<LinkBuilder> l1 ? l1 : crumbs1.ToList();
+			}
+			@for (int i1 = 0; i1 < count1; i1++)
 			{
-				if (link1.IsDisabled)
+				var link1 = items1[i1];
+				if (i1 == count1 - 1)
 				{
 					<li class="breadcrumb-item active" aria-current="page">@link1.InnerHtml.ToHtml(true)</li>
+				}
+				else if (link1.IsDisabled)
+				{
+					<li class="breadcrumb-item">@link1.InnerHtml.ToHtml(true)</li>
 				}
 				else
 				{

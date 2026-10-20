@@ -14,24 +14,32 @@
 		if (!items.Any())
 			return;
 		<ul>
-			@foreach (var item in items)
+			@foreach (var item1 in items)
 			{
-				var url1 = item.Type switch
-				{
-					NodemapTypesEnum.Group => null,
-					NodemapTypesEnum.Node => item.GetUrl(Context),
-					_ => item.Target
-				};
-				var s1 = item.Type is NodemapTypesEnum.Node ? item.Name : item.Target;
+				var url1 = item1.GetUrl(Context);
 				<li>
 					<span>
-						<b>@item.Type</b>
-						@url1.ToHtmlMore("<a href=\"{0}\">{1}</a>", false, s1)
-						@item.IsShortTitleUnique.ToHtml($"({item.ShortTitleHtml})&nbsp;")@item.TitleHtml
+						<b>@item1.Type</b>
+						@switch (item1.Type)
+						{
+							case NodemapTypesEnum.Group:
+								<tt>@(item1.Name)</tt>
+								break;
+							case NodemapTypesEnum.Node:
+								<a class="font-monospace" href="@url1">@item1.Name</a>
+								break;
+							case NodemapTypesEnum.InternalPath:
+								<a class="font-monospace" href="@url1">@item1.Target</a>
+								break;
+							default:
+								<a class="font-monospace" target="_blank" href="@url1">@item1.Target</a>
+								break;
+						}
+						@item1.IsShortTitleUnique.ToHtml($"({item1.ShortTitleHtml})&nbsp;")@item1.TitleHtml
 					</span>
 					@{
-						OutPages(item.TopPages);
-						OutNodes(item.ChildNodes);
+						OutPages(item1.TopPages);
+						OutNodes(item1.ChildNodes);
 					}
 				</li>
 			}
@@ -43,40 +51,38 @@
 		if (!items.Any())
 			return;
 		<ul style="font-size:.8rem;">
-			@foreach (var item in items)
+			@foreach (var item1 in items)
 			{
-				string url1;
-				string s1;
-				switch (item.Type)
-				{
-					case PagemapTypesEnum.Page:
-						url1 = item.GetUrl(Context);
-						s1 = $"{item.Name}";
-						break;
-					case PagemapTypesEnum.Catalog:
-						url1 = item.GetUrl(Context);
-						s1 = $"{item.Name}/";
-						break;
-					default:
-						url1 = item.Target;
-						s1 = item.Target;
-						break;
-				}
+				var url1 = item1.GetUrl(Context);
 				<li>
 					<span>
-						<i>@item.Type</i>
-						@if (item.HasNoIndex)
+						<i>@item1.Type</i>
+						@switch (item1.Type)
 						{
-							<span>@s1</span>
+							case PagemapTypesEnum.Catalog:
+								@if (item1.HasNoIndex)
+								{
+									<tt>@(item1.Name)/</tt>
+								}
+								else
+								{
+									<a class="font-monospace" href="@url1">@item1.Name</a>
+								}
+								break;
+							case PagemapTypesEnum.Page:
+								<a class="font-monospace" href="@url1">@item1.Name</a>
+								break;
+							case PagemapTypesEnum.InternalPath:
+								<a class="font-monospace" href="@url1">@item1.Target</a>
+								break;
+							default:
+								<a class="font-monospace" target="_blank" href="@url1">@item1.Target</a>
+								break;
 						}
-						else
-						{
-							@url1.ToHtmlMore("<a href=\"{0}\">{1}</a>", false, s1)
-						}
-						@item.IsShortTitleUnique.ToHtml($"({item.ShortTitleHtml})&nbsp;")@item.TitleHtml
+						@item1.IsShortTitleUnique.ToHtml($"({item1.ShortTitleHtml})&nbsp;")@item1.TitleHtml
 					</span>
 					@{
-						OutPages(item.ChildPages);
+						OutPages(item1.ChildPages);
 					}
 				</li>
 			}

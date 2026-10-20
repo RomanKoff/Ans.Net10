@@ -45,10 +45,10 @@
 
 
 		/// <summary>
-		/// Возвращает базовый виртуальный путь (PathBase) подстраиваемого приложения, если оно развернуто в подкаталоге IIS/Nginx.
+		/// Возвращает базовый виртуальный путь (PathBase) веб-приложения, если оно развернуто в подкаталоге IIS/Nginx.
 		/// </summary>
-		/// <returns>Строка вида <c>""</c> или <c>"/app_name"</c>.</returns>
-		public string VirtualPath { get; }
+		/// <returns>Строка виртуального пути вида <c>"/app_name"</c>, или <see langword="null"/>, если приложение запущено в корне.</returns>
+		public string? VirtualPath { get; }
 
 
 		/// <summary>

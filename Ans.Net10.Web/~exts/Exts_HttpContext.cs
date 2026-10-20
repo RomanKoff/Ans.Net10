@@ -28,7 +28,6 @@ namespace Ans.Net10.Web
 		/// </remarks>
 		/// <param name="context">Текущий контекст HTTP-запроса.</param>
 		/// <returns>Строка вида <c>"https://mysite.com"</c> или <c>"http://localhost:5173"</c>.</returns>
-		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="context"/> равен <see langword="null"/>.</exception>
 		public static string GetBaseUrl(
 			this HttpContext context)
 		{
@@ -38,16 +37,23 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Возвращает базовый виртуальный путь (PathBase) подстраиваемого приложения, если оно развернуто в подкаталоге IIS/Nginx.
+		/// Возвращает базовый виртуальный путь (PathBase) веб-приложения, если оно развернуто в подкаталоге IIS/Nginx.
 		/// </summary>
-		/// <param name="context">Текущий контекст HTTP-запроса.</param>
-		/// <returns>Строка вида <c>""</c> или <c>"/app_name"</c>.</returns>
-		public static string GetVirtualPath(
+		/// <param name="context">Текущий контекст HTTP-запроса <see cref="HttpContext"/>.</param>
+		/// <returns>Строка виртуального пути вида <c>"/app_name"</c>, или <see langword="null"/>, если приложение запущено в корне.</returns>
+		public static string? GetVirtualPath(
 			this HttpContext context)
 		{
-			return _virtualPath ??= context.Request.PathBase.Value ?? string.Empty;
+			if (!_isVirtualPathInitialized)
+			{
+				var s1 = context.Request.PathBase.Value;
+				_virtualPath = s1 is { Length: > 0 } ? s1 : null;
+				_isVirtualPathInitialized = true;
+			}
+			return _virtualPath;
 		}
 		private static string? _virtualPath;
+		private static bool _isVirtualPathInitialized;
 
 
 		/// <summary>

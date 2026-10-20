@@ -2175,9 +2175,9 @@
             Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
             </remarks>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.SiteFace">
+        <member name="P:Ans.Net10.Web.LibWebOptions.Title">
             <summary>
-            Получает или задает определение заголовка сайта. 
+            Получает или задает заголовок сайта. 
             Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
             </summary>
         </member>
@@ -4478,8 +4478,7 @@
             от главной страницы сайта до текущего активного элемента контента.
             </summary>
             <value>
-            Коллекция объектов <see cref="T:Ans.Net10.Web.LinkBuilder"/>, представляющих элементы навигации, 
-            или <see langword="null"/>, если сайт не инициализирован.
+            Неизменяемая коллекция объектов <see cref="T:Ans.Net10.Web.LinkBuilder"/>, представляющих элементы навигации.
             </value>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.DefaultLayout">
@@ -4506,13 +4505,6 @@
             </summary>
             <param name="target">Целевой относительный путь или URL.</param>
             <returns>Полный абсолютный путь, готовый для использования в ссылках.</returns>
-        </member>
-        <member name="M:Ans.Net10.Web.CurrentContext.GetBrowserTitle">
-            <summary>
-            Формирует собранный человекочитаемый заголовок веб-страницы для тега &lt;title&gt; браузера.
-            Объединяет иерархию сокращенных названий страницы, узла и сайта.
-            </summary>
-            <value>Строка готового заголовка окна браузера.</value>
         </member>
         <member name="M:Ans.Net10.Web.CurrentContext.GetResUrl(System.String)">
             <summary>
@@ -4574,9 +4566,9 @@
         </member>
         <member name="P:Ans.Net10.Web.HostData.VirtualPath">
             <summary>
-            Возвращает базовый виртуальный путь (PathBase) подстраиваемого приложения, если оно развернуто в подкаталоге IIS/Nginx.
+            Возвращает базовый виртуальный путь (PathBase) веб-приложения, если оно развернуто в подкаталоге IIS/Nginx.
             </summary>
-            <returns>Строка вида <c>""</c> или <c>"/app_name"</c>.</returns>
+            <returns>Строка виртуального пути вида <c>"/app_name"</c>, или <see langword="null"/>, если приложение запущено в корне.</returns>
         </member>
         <member name="P:Ans.Net10.Web.HostData.ApplicationUrl">
             <summary>
@@ -4678,6 +4670,12 @@
             или <see langword="null"/>, если узел не привязан к структуре.
             </value>
         </member>
+        <member name="M:Ans.Net10.Web.NodeProfile.GetLink">
+            <summary>
+            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля узла.
+            </summary>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+        </member>
         <member name="T:Ans.Net10.Web.PageProfile">
             <summary>
             Описывает профиль текущей страницы.
@@ -4714,6 +4712,12 @@
             если должен использоваться автоматически рассчитываемый заголовок.
             </value>
         </member>
+        <member name="M:Ans.Net10.Web.PageProfile.GetLink">
+            <summary>
+            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля страницы.
+            </summary>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+        </member>
         <member name="T:Ans.Net10.Web.SiteProfile">
             <summary>
             Описывает профиль текущего сайта.
@@ -4737,10 +4741,22 @@
             если конфигурационный fallback-адрес еще не запрашивался.
             </value>
         </member>
+        <member name="M:Ans.Net10.Web.SiteProfile.GetLink">
+            <summary>
+            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля сайта.
+            </summary>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+        </member>
         <member name="T:Ans.Net10.Web._Profile_Proto">
             <summary>
             Абстрактный прототип класса для профилей контента (Сайт, Узел, Страница).
             </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.GetLink">
+            <summary>
+            При переопределении в производном классе формирует объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля.
+            </summary>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
         </member>
         <member name="M:Ans.Net10.Web._Profile_Proto.#ctor(Ans.Net10.Web.CurrentContext)">
             <summary>
@@ -4776,6 +4792,72 @@
             Возвращает признак того, является ли сокращенный заголовок уникальным (установлен отличным от <see cref="P:Ans.Net10.Web._Profile_Proto.Title"/>).
             </summary>
             <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
+        </member>
+        <member name="P:Ans.Net10.Web._Profile_Proto.ParentsLinks">
+            <summary>
+            Получает список ссылок на вышестоящие родительские элементы текущего профиля.
+            </summary>
+            <value>Коллекция объектов <see cref="T:Ans.Net10.Web.LinkBuilder"/>.</value>
+        </member>
+        <member name="P:Ans.Net10.Web._Profile_Proto.HasParents">
+            <summary>
+            Получает признак наличия зарегистрированных родительских элементов.
+            </summary>
+            <value>Значение <see langword="true"/>, если список родителей содержит элементы; иначе — <see langword="false"/>.</value>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.AddParent(Ans.Net10.Web.LinkBuilder)">
+            <summary>
+            Добавляет готовый объект ссылки родительского элемента в конец текущей коллекции.
+            </summary>
+            <param name="link">Объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.AddParent(System.String,System.String)">
+            <summary>
+            Формирует и добавляет ссылку родительского элемента по указанному URL и заголовку.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.AddParentFromAction(System.String,System.String,System.Object,System.String)">
+            <summary>
+            Формирует и добавляет ссылку родительского элемента на основе MVC-действия (Action).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.InsertParent(System.Int32,Ans.Net10.Web.LinkBuilder)">
+            <summary>
+            Вставляет готовый объект ссылки родительского элемента в указанную позицию списка.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.InsertParent(System.Int32,System.String,System.String)">
+            <summary>
+            Формирует и вставляет ссылку родительского элемента в указанную позицию списка по URL и заголовку.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.InsertParentFromAction(System.Int32,System.String,System.String,System.Object,System.String)">
+            <summary>
+            Формирует и вставляет ссылку родительского элемента на основе MVC-действия в указанную позицию.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.RemoveParent(System.Int32)">
+            <summary>
+            Удаляет родительский элемент из коллекции по его порядковому индексу.
+            </summary>
+            <param name="index">Порядковый индекс удаляемого элемента.</param>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.RemoveParentLast">
+            <summary>
+            Удаляет последний родительский элемент из коллекции.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.GetParentsTitles">
+            <summary>
+            Возвращает объединенную строку из оттипографленных заголовков всех родительских элементов.
+            </summary>
+            <returns>Строка текстовой иерархии предков с разделителем.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web._Profile_Proto.GetBreadcrumbsPart">
+            <summary>
+            Формирует и возвращает ленивую локальную часть коллекции элементов цепочки навигации («хлебных крошек»).
+            </summary>
+            <returns>Перечисление объектов <see cref="T:Ans.Net10.Web.LinkBuilder"/>, включающее родителей и текущий элемент.</returns>
         </member>
         <member name="T:Ans.Net10.Web.CacheService">
             <summary>
@@ -5703,6 +5785,18 @@
             <param name="face">Отображаемое человекочитаемое наименование узла.</param>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
         </member>
+        <member name="P:Ans.Net10.Web.NodemapItem.Path">
+            <summary>
+            Получает относительный ЧПУ-путь узла.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NodemapItem.GetUrl(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Формирует полный виртуальный URL-адрес узла с учетом базового пути приложения.
+            </summary>
+            <param name="httpContext">Контекст текущего HTTP-запроса.</param>
+            <returns>Абсолютный относительный путь к элементу навигации.</returns>
+        </member>
         <member name="P:Ans.Net10.Web.NodemapItem.Target">
             <summary>
             Получает оригинальную строку назначения узла.
@@ -5716,11 +5810,6 @@
         <member name="P:Ans.Net10.Web.NodemapItem.Type">
             <summary>
             Получает семантический тип узла.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.NodemapItem.Path">
-            <summary>
-            Получает относительный ЧПУ-путь узла.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.NodemapItem.StartPage">
@@ -5814,6 +5903,18 @@
             <param name="hasNoIndex">Признак отсутствия индексной страницы в потомках.</param>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="node"/> или <paramref name="target"/> равен <see langword="null"/>.</exception>
         </member>
+        <member name="P:Ans.Net10.Web.PagemapItem.Path">
+            <summary>
+            Получает относительный ЧПУ-путь страницы, сформированный с учетом предков.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.PagemapItem.GetUrl(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Формирует полный виртуальный URL-адрес страницы с учетом базового пути приложения.
+            </summary>
+            <param name="httpContext">Контекст текущего HTTP-запроса.</param>
+            <returns>Абсолютный относительный путь к элементу навигации.</returns>
+        </member>
         <member name="P:Ans.Net10.Web.PagemapItem.Node">
             <summary>
             Получает родительский информационный узел текущей страницы.
@@ -5842,11 +5943,6 @@
             Одно из значений перечисления <see cref="T:Ans.Net10.Web.PagemapTypesEnum"/>, указывающее, является ли страница 
             изолированным элементом, каталогом контента, внутренней ссылкой или внешним URL.
             </value>
-        </member>
-        <member name="P:Ans.Net10.Web.PagemapItem.Path">
-            <summary>
-            Получает относительный ЧПУ-путь страницы, сформированный с учетом предков.
-            </summary>
         </member>
         <member name="P:Ans.Net10.Web.PagemapItem.ParentPage">
             <summary>
@@ -6022,6 +6118,13 @@
             </summary>
             <value>Строка канонического относительного пути, используемая для сопоставления маршрутов и индексации.</value>
         </member>
+        <member name="M:Ans.Net10.Web._MapItem_Proto.GetUrl(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            Формирует полный виртуальный URL-адрес элемента с учетом базового пути приложения.
+            </summary>
+            <param name="httpContext">Контекст текущего HTTP-запроса.</param>
+            <returns>Абсолютный относительный путь к элементу навигации.</returns>
+        </member>
         <member name="M:Ans.Net10.Web._MapItem_Proto.#ctor">
             <summary>
             Инициализирует базовые параметры прототипа элемента карты сайта.
@@ -6056,13 +6159,6 @@
             Возвращает признак того, является ли сокращенный заголовок элемента уникальным (установлен отличным от <see cref="P:Ans.Net10.Web._MapItem_Proto.Title"/>).
             </summary>
             <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
-        </member>
-        <member name="M:Ans.Net10.Web._MapItem_Proto.GetUrl(Microsoft.AspNetCore.Http.HttpContext)">
-            <summary>
-            Формирует полный виртуальный URL-адрес элемента с учетом базового пути приложения.
-            </summary>
-            <param name="httpContext">Контекст текущего HTTP-запроса.</param>
-            <returns>Абсолютный относительный путь к элементу навигации.</returns>
         </member>
         <member name="M:Ans.Net10.Web._MapItem_Proto.SetFace(System.String)">
             <summary>
@@ -6405,14 +6501,13 @@
             </remarks>
             <param name="context">Текущий контекст HTTP-запроса.</param>
             <returns>Строка вида <c>"https://mysite.com"</c> или <c>"http://localhost:5173"</c>.</returns>
-            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="context"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.Exts_HttpContext.GetVirtualPath(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
-            Возвращает базовый виртуальный путь (PathBase) подстраиваемого приложения, если оно развернуто в подкаталоге IIS/Nginx.
+            Возвращает базовый виртуальный путь (PathBase) веб-приложения, если оно развернуто в подкаталоге IIS/Nginx.
             </summary>
-            <param name="context">Текущий контекст HTTP-запроса.</param>
-            <returns>Строка вида <c>""</c> или <c>"/app_name"</c>.</returns>
+            <param name="context">Текущий контекст HTTP-запроса <see cref="T:Microsoft.AspNetCore.Http.HttpContext"/>.</param>
+            <returns>Строка виртуального пути вида <c>"/app_name"</c>, или <see langword="null"/>, если приложение запущено в корне.</returns>
         </member>
         <member name="M:Ans.Net10.Web.Exts_HttpContext.GetApplicationUrl(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>

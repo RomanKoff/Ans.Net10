@@ -54,10 +54,10 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает или задает определение заголовка сайта. 
+		/// Получает или задает заголовок сайта. 
 		/// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
 		/// </summary>
-		public string? SiteFace { get; set; } = null;
+		public string? Title { get; set; } = null;
 
 
 		/// <summary>

@@ -32,7 +32,21 @@
 	<main role="main" class="py-3 mb-5">
 		<div class="container">
 			<partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
+			<partial name="/Areas/Ans/Helpers/PageTitle.cshtml" />
 			@RenderBody()
+			<hr />
+			<div class="row">				
+				<div class="col">
+					<h4>Sitemap</h4>
+					<partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
+				</div>
+				<div class="col">
+					<h4>Pages indexes</h4>
+					<partial name="/Areas/Ans/Helpers/DebugSitemapPages.cshtml" />
+					<h4>Nodes indexes</h4>
+					<partial name="/Areas/Ans/Helpers/DebugSitemapNodes.cshtml" />
+				</div>
+			</div>
 			<hr />
 			<div class="row">
 				<div class="col">
@@ -61,20 +75,7 @@
 					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Host" />
 					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Request" />
 				</div>
-			</div>
-			<hr />
-			<div class="row">
-				<div class="col">
-					<h4>Pages indexes</h4>
-					<partial name="/Areas/Ans/Helpers/DebugSitemapPages.cshtml" />
-					<h4>Nodes indexes</h4>
-					<partial name="/Areas/Ans/Helpers/DebugSitemapNodes.cshtml" />
-				</div>
-				<div class="col">
-					<h4>Sitemap</h4>
-					<partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
-				</div>
-			</div>
+			</div>			
 		</div>
 	</main>
 

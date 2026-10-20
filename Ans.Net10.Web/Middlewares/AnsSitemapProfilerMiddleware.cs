@@ -1,5 +1,6 @@
 ﻿// rev 2026-10-19
 
+using Ans.Net10.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -55,8 +56,7 @@ namespace Ans.Net10.Web.Middlewares
 
 			var requestPath1 = current.Request.RelativeUrl;
 
-			//current.Site.HomeUrl = 
-			//current.Site.SetFace(current.Options.SiteFace ?? SuppApp.CallingAssembly?.Name ?? "Site");
+			current.Site.Title = current.Options.Title ?? SuppApp.CallingAssembly?.Name ?? string.Empty;
 
 			var pageMapItem1 = current.Sitemap.Current.GetPage(requestPath1);
 

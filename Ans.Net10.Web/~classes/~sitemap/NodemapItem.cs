@@ -1,5 +1,6 @@
 ﻿// rev 2026-10-20
 
+using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 
 namespace Ans.Net10.Web
@@ -50,7 +51,7 @@ namespace Ans.Net10.Web
 			{
 				Type = NodemapTypesEnum.Node;
 				Name = target;
-				var startPage1 = new PagemapItem(this, LibWebConsts.INDEX_PAGE_NAME, face, false);
+				var startPage1 = new PagemapItem(this, LibWebConsts.INDEX_PAGE_NAME, null, false);
 				_AddTopPage(startPage1);
 				StartPage = startPage1;
 			}
@@ -59,6 +60,35 @@ namespace Ans.Net10.Web
 				Type = NodemapTypesEnum.ExternalUrl;
 				Name = null;
 			}
+		}
+
+
+		/* overrides */
+
+
+		/// <summary>
+		/// Получает относительный ЧПУ-путь узла.
+		/// </summary>
+		public override string Path
+			=> field ??= _buildPath();
+
+
+		/// <summary>
+		/// Формирует полный виртуальный URL-адрес узла с учетом базового пути приложения.
+		/// </summary>
+		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
+		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
+		public override string GetUrl(
+			HttpContext httpContext)
+		{
+			ArgumentNullException.ThrowIfNull(httpContext);
+			return _url ??= Type switch
+			{
+				NodemapTypesEnum.Node => $"{httpContext.GetVirtualPath()}{Path}",
+				NodemapTypesEnum.Group => string.Empty,
+				NodemapTypesEnum.InternalPath => $"{httpContext.GetVirtualPath()}{Target}",
+				_ => Target ?? string.Empty
+			};
 		}
 
 
@@ -81,13 +111,6 @@ namespace Ans.Net10.Web
 		/// Получает семантический тип узла.
 		/// </summary>
 		public NodemapTypesEnum Type { get; }
-
-
-		/// <summary>
-		/// Получает относительный ЧПУ-путь узла.
-		/// </summary>
-		public override string Path
-			=> field ??= _buildPath();
 
 
 		/// <summary>
@@ -160,7 +183,7 @@ namespace Ans.Net10.Web
 
 
 		/* privates */
-
+		
 
 		private string _buildPath()
 		{
