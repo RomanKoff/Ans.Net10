@@ -1,4 +1,5 @@
-﻿using Ans.Net10.Common;
+﻿// rev 2026-10-19
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -42,33 +43,32 @@ namespace Ans.Net10.Web.Middlewares
 		/// карты сайта O(1) и наполняет Триаду профилей текущего контекста.
 		/// </summary>
 		/// <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
-		/// <param name="currentContext">Оркестровый контекст текущего запроса (Scoped-сервис).</param>
+		/// <param name="current">Оркестровый контекст текущего запроса (Scoped-сервис).</param>
 		/// <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
-		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="context"/> или <paramref name="currentContext"/> равен <see langword="null"/>.</exception>
+		/// <exception cref="ArgumentNullException">Вызывается, если <paramref name="context"/> или <paramref name="current"/> равен <see langword="null"/>.</exception>
 		public async Task InvokeAsync(
 			HttpContext context,
-			CurrentContext currentContext)
+			CurrentContext current)
 		{
 			ArgumentNullException.ThrowIfNull(context);
-			ArgumentNullException.ThrowIfNull(currentContext);
+			ArgumentNullException.ThrowIfNull(current);
 
-			currentContext.Site.HomeUrl = currentContext.Options.SiteHomeUrl
-				?? context.Request.PathBase.Value ?? "/";
-			currentContext.Site.SetFace(currentContext.Options.SiteFace
-				?? SuppApp.CallingAssembly?.Name ?? "Site");
+			var requestPath1 = current.Request.RelativeUrl;
 
-			string cleanPath1 = (context.Request.Path.Value ?? string.Empty).Trim('/');
-			var pageMapItem1 = currentContext.Sitemap.Current.GetPage(cleanPath1);
+			//current.Site.HomeUrl = 
+			//current.Site.SetFace(current.Options.SiteFace ?? SuppApp.CallingAssembly?.Name ?? "Site");
+
+			var pageMapItem1 = current.Sitemap.Current.GetPage(requestPath1);
 
 			if (pageMapItem1 is not null)
-			{				
-				currentContext.Page.Init(pageMapItem1);
-				currentContext.Node.Init(pageMapItem1.Node);
-				_log.SitemapContextMatched(_logger, cleanPath1);
+			{
+				current.Page.MapItem = pageMapItem1;
+				current.Node.MapItem = pageMapItem1.Node;
+				_log.SitemapContextMatched(_logger, requestPath1);
 			}
 			else
 			{
-				_log.SitemapContextNotFound(_logger, cleanPath1);
+				_log.SitemapContextNotFound(_logger, requestPath1);
 			}
 
 			await _next(context);

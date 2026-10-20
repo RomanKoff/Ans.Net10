@@ -1,4 +1,6 @@
-﻿using Ans.Net10.Common;
+﻿// rev 2026-10-20
+
+using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Collections.Frozen;
@@ -13,8 +15,8 @@ namespace Ans.Net10.Web.Nodes
 	/// <param name="IsMatched">Возвращает значение, указывающее, было ли найдено подходящее представление.</param>
 	/// <param name="NodeName">Имя (идентификатор) определенного информационного узла.</param>
 	/// <param name="PagePath">Логический относительный путь к странице внутри узла.</param>
-	/// <param name="ViewPath">Полный канонический виртуальный путь к файлу представления, готовый для Razor Engine (например, ~/Views/Nodes/...).</param>
-	/// <param name="IsStartPage">Возвращает значение, указывающее, является ли страница индексной (start.cshtml).</param>
+	/// <param name="ViewPath">Полный канонический виртуальный путь к файлу представления, готовый для Razor Engine (например, <c>~/Views/Nodes/...</c>).</param>
+	/// <param name="IsStartPage">Возвращает значение, указывающее, является ли страница индексной (<c>start.cshtml</c>).</param>
 	public readonly record struct NodesResolveResult(
 		bool IsMatched,
 		string? NodeName,
@@ -64,12 +66,12 @@ namespace Ans.Net10.Web.Nodes
 		/// <summary>
 		/// Имя индексной (стартовой) страницы по умолчанию.
 		/// </summary>
-		public const string START_PAGE_NAME = "start";
+		public const string START_PAGE_NAME = LibWebConsts.INDEX_PAGE_NAME;
 
 		/// <summary>
 		/// Системное имя главного контентного узла по умолчанию.
 		/// </summary>
-		public const string MAIN_NODE_NAME = "_main";
+		public const string MAIN_NODE_NAME = LibWebConsts.INDEX_NODE_NAME;
 
 
 		/* ctor */
@@ -109,6 +111,7 @@ namespace Ans.Net10.Web.Nodes
 		/// <summary>
 		/// Возвращает текущую, полностью скомпилированную карту соответствия путей в памяти.
 		/// </summary>
+		/// <value>Неизменяемый словарь высокопроизводительного поиска путей.</value>
 		public FrozenDictionary<string, string> ViewFilesMap => _viewFilesMap;
 
 
@@ -168,8 +171,8 @@ namespace Ans.Net10.Web.Nodes
 		/// в физическое представление на основе матрицы приоритетов в памяти приложения.
 		/// </summary>
 		/// <param name="rawPath">Сырой относительный URL-путь входящего HTTP-запроса.</param>
-		/// <returns>Структура <see cref="NodesResolveResult"/>, содержащая результаты анализа пути.</returns>
-		/// <exception cref="InvalidOperationException">Вызывается, если метод вызван до инициализации сервиса.</exception>
+		/// <returns>Структура <see cref="NodesResolveResult"/>, содержащая результаты анализа пути и метаданные найденного представления.</returns>
+		/// <exception cref="InvalidOperationException">Вызывается, если метод вызван до полной инициализации и сканирования каталога сервисом.</exception>
 		public NodesResolveResult Resolve(
 			string? rawPath)
 		{
@@ -201,7 +204,7 @@ namespace Ans.Net10.Web.Nodes
 			int firstSlashIndex1 = searchSpan1.IndexOf('/');
 
 			// МАТРИЦА ПРИОРИТЕТОВ 2: Односегментный запрос (name1)
-			if (firstSlashIndex1 == -1)
+			if (firstSlashIndex1 is -1)
 			{
 				string name1 = searchSpan1.ToString();
 
@@ -359,7 +362,7 @@ namespace Ans.Net10.Web.Nodes
 		private void _scheduleRebuild()
 		{
 			CancellationTokenSource cts1;
-			lock (_lock1)
+			using (_lock1.EnterScope())
 			{
 				_debounceCts1?.Cancel();
 				_debounceCts1?.Dispose();

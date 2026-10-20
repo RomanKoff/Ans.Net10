@@ -32,35 +32,41 @@ namespace Ans.Net10.Web
 		public static string GetBaseUrl(
 			this HttpContext context)
 		{
-			ArgumentNullException.ThrowIfNull(context);
-			var request1 = context.Request;
-			return $"{request1.Scheme}://{request1.Host.Value}";
+			return _baseUrl ??= $"{context.Request.Scheme}://{context.Request.Host.Value}";
 		}
+		private static string? _baseUrl;
 
 
 		/// <summary>
 		/// Возвращает базовый виртуальный путь (PathBase) подстраиваемого приложения, если оно развернуто в подкаталоге IIS/Nginx.
 		/// </summary>
 		/// <param name="context">Текущий контекст HTTP-запроса.</param>
-		/// <returns>Строковая строка пути или пустая строка, если приложение запущено в корне домена.</returns>
+		/// <returns>Строка вида <c>""</c> или <c>"/app_name"</c>.</returns>
 		public static string GetVirtualPath(
 			this HttpContext context)
 		{
-			ArgumentNullException.ThrowIfNull(context);
-			return context.Request.PathBase.Value?.TrimEnd('/') ?? string.Empty;
+			return _virtualPath ??= context.Request.PathBase.Value ?? string.Empty;
 		}
+		private static string? _virtualPath;
 
 
 		/// <summary>
 		/// Возвращает полный абсолютный URL-адрес корня веб-приложения, включая виртуальный путь подкаталога.
 		/// </summary>
 		/// <param name="context">Текущий контекст HTTP-запроса.</param>
-		/// <returns>Строка вида <c>"https://mysite.com"</c>.</returns>
+		/// <returns>
+		/// Строка вида
+		/// <c>"https://mysite.com"</c>,
+		/// <c>"https://mysite.com/app_name"</c>,
+		/// <c>"http://localhost:5173"</c> или
+		/// <c>"http://localhost:5173/app_name"</c>.
+		/// </returns>
 		public static string GetApplicationUrl(
 			this HttpContext context)
 		{
-			return context.GetBaseUrl() + context.GetVirtualPath();
+			return _applicationUrl ??= $"{context.GetBaseUrl()}{context.GetVirtualPath()}";
 		}
+		private static string? _applicationUrl;
 
 
 		/// <summary>

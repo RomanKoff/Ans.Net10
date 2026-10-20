@@ -1,4 +1,4 @@
-﻿// rev 2026-10-16
+﻿// rev 2026-10-20
 
 using System.Collections.Frozen;
 
@@ -13,9 +13,6 @@ namespace Ans.Net10.Web
 	{
 
 		private readonly List<NodemapItem> _topNodes = [];
-
-		private FrozenDictionary<string, NodemapItem> _nodesIndex = FrozenDictionary<string, NodemapItem>.Empty;
-		private FrozenDictionary<string, PagemapItem> _pagesIndex = FrozenDictionary<string, PagemapItem>.Empty;
 
 
 		/* ctor */
@@ -34,9 +31,23 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает коллекцию корневых (наивысших) информационных узлов карты сайта.
+		/// Получает коллекцию корневых информационных узлов карты сайта.
 		/// </summary>
 		public IReadOnlyCollection<NodemapItem> TopNodes { get; }
+
+
+		/// <summary>
+		/// Получает индексный словарь информационных узлов карты сайта.
+		/// </summary>
+		public FrozenDictionary<string, NodemapItem> NodesIndex { get; private set; }
+			= FrozenDictionary<string, NodemapItem>.Empty;
+
+
+		/// <summary>
+		/// Получает индексный словарь информационных страниц карты сайта.
+		/// </summary>
+		public FrozenDictionary<string, PagemapItem> PagesIndex { get; private set; }
+			= FrozenDictionary<string, PagemapItem>.Empty;
 
 
 		/* functions */
@@ -48,11 +59,9 @@ namespace Ans.Net10.Web
 		/// <param name="nodeName">Системное имя искомого информационного узла.</param>
 		/// <returns>Найденный экземпляр <see cref="NodemapItem"/> или <see langword="null"/>, если узел не найден или имя пусто.</returns>
 		public NodemapItem? GetNode(
-			string? nodeName)
+			string nodeName)
 		{
-			if (string.IsNullOrEmpty(nodeName))
-				return null;
-			_nodesIndex.TryGetValue(nodeName, out var node1);
+			NodesIndex.TryGetValue(nodeName, out var node1);
 			return node1;
 		}
 
@@ -63,11 +72,9 @@ namespace Ans.Net10.Web
 		/// <param name="combinedPath">Составной ЧПУ-путь страницы в формате "ИмяУзла/ПутьСтраницы".</param>
 		/// <returns>Найденный экземпляр <see cref="PagemapItem"/> или <see langword="null"/>, если страница не найдена.</returns>
 		public PagemapItem? GetPage(
-			string? combinedPath)
+			string combinedPath)
 		{
-			if (string.IsNullOrEmpty(combinedPath))
-				return null;
-			_pagesIndex.TryGetValue(combinedPath, out var page1);
+			PagesIndex.TryGetValue(combinedPath, out var page1);
 			return page1;
 		}
 
@@ -111,8 +118,8 @@ namespace Ans.Net10.Web
 			var pagesDict1 = new Dictionary<string, PagemapItem>(StringComparer.OrdinalIgnoreCase);
 			foreach (var node1 in _topNodes)
 				_indexNodeRecursive(node1, nodesDict1, pagesDict1);
-			_nodesIndex = nodesDict1.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
-			_pagesIndex = pagesDict1.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+			NodesIndex = nodesDict1.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+			PagesIndex = pagesDict1.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 		}
 
 
@@ -126,7 +133,7 @@ namespace Ans.Net10.Web
 		{
 			if (!string.IsNullOrEmpty(node.Name))
 				nodesDict[node.Name] = node;
-			foreach (var page1 in node.TopPages)
+			foreach (var page1 in node._AllTopPages)
 				_indexPageRecursive(page1, pagesDict);
 			foreach (var childNode1 in node.ChildNodes)
 				_indexNodeRecursive(childNode1, nodesDict, pagesDict);
@@ -136,7 +143,7 @@ namespace Ans.Net10.Web
 		private static void _indexPageRecursive(
 			PagemapItem page,
 			Dictionary<string, PagemapItem> pagesDict)
-		{			
+		{
 			if (page.Path is not null)
 				pagesDict[page.Path] = page;
 			foreach (var childPage1 in page.ChildPages)

@@ -1,135 +1,54 @@
-﻿// rev 2026-10-14
+﻿// rev 2026-10-17
 
 namespace Ans.Net10.Web
 {
 
 	/// <summary>
-	/// Перечисление семантических типов профилей страниц.
-	/// </summary>
-	public enum PageProfileType
-	{
-		/// <summary>
-		/// Стандартная страница контента (может быть как изолированной, так и иметь дочерние страницы).
-		/// </summary>
-		Page,
-
-		/// <summary>
-		/// Каталог страниц. Содержит дочерние страницы.
-		/// </summary>
-		Catalog,
-
-		/// <summary>
-		/// Внутренняя ссылка. Перенаправляет навигацию на другой узел или страницу этого же сайта.
-		/// </summary>
-		InternalLink,
-
-		/// <summary>
-		/// Внешняя ссылка. Ведет на сторонний интернет-ресурс.
-		/// </summary>
-		ExternalLink
-	}
-
-
-
-	/// <summary>
 	/// Описывает профиль текущей страницы.
 	/// </summary>
-	public sealed class PageProfile
-		: _Profile_Proto
+	public sealed class PageProfile(
+		CurrentContext current)
+		: _Profile_Proto(current)
 	{
 
-		/* ctor */
-
-
 		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="PageProfile"/> со значениями по умолчанию.
+		/// Получает или задает связанный элемент карты сайта для текущей контентной страницы.
 		/// </summary>
-		public PageProfile()
+		/// <remarks>
+		/// При установке элемента автоматически инициализирует свойства <see cref="_Profile_Proto.Title"/> 
+		/// и <see cref="_Profile_Proto.ShortTitle"/> значениями из контентной карты.
+		/// </remarks>
+		/// <value>
+		/// Объект <see cref="PagemapItem"/>, описывающий положение страницы в иерархии сайта, 
+		/// или <see langword="null"/>, если страница не привязана к структуре.
+		/// </value>
+		public PagemapItem? MapItem
 		{
-			Type = PageProfileType.Page;
-			ChildPages = new List<PageProfile>();
-		}
-
-
-		/* properties */
-
-
-		/// <summary>
-		/// Получает или задает вышестоящую (родительскую) страницу в иерархическом дереве контента узла.
-		/// Если страница находится на корневом уровне информационного узла, возвращает <see langword="null"/>.
-		/// </summary>
-		public PageProfile? ParentPage { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает коллекцию прямых подчиненных (дочерних) контентных страниц.
-		/// </summary>
-		/// <value>Коллекция дочерних объектов <see cref="PageProfile"/>. Гарантированно не возвращает <see langword="null"/>.</value>
-		public ICollection<PageProfile>? ChildPages { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает имя страницы, уникально идентифицирующее её в пределах текущей ветки контента.
-		/// </summary>
-		/// <value>Строковый идентификатор страницы или <see langword="null"/> для виртуальных/ссылочных страниц.</value>
-		public string? Name { get; set; }
-
-
-		/// <summary>
-		/// Получает или задает настраиваемый (перегруженный) заголовок страницы для браузера.
-		/// Если свойство заполнено, оно имеет наивысший приоритет при формировании заголовка окна.
-		/// </summary>
-		/// <value>Строка кастомного заголовка или <see langword="null"/>, если заголовок должен строиться по умолчанию.</value>
-		public string? CustomBrowserTitle { get; set; }
-
-
-
-		/* readonly properties */
-
-
-		/// <summary>
-		/// Получает или задает семантический тип страницы, определяющий характер перехода в интерфейсе.
-		/// </summary>
-		public PageProfileType Type { get; }
-
-
-		/// <summary>
-		/// Получает полный относительный ЧПУ-путь страницы контента, сформированный с учетом родительских страниц-предков.
-		/// </summary>
-		/// <value>Строка ЧПУ-маршрута страницы или <see langword="null"/>, если это виртуальная ссылочная страница.</value>
-		public string? Path { get; internal set; }
-
-
-		/* methods */
-
-
-		public void Init(
-			PagemapItem source)
-		{
-			Path = source.Path;
-			SetFace(source.Face);
-			if (source.ParentPage is not null)
+			get;
+			set
 			{
-				ParentPage = new PageProfile();
-				ParentPage.Init(source.ParentPage);
+				field = value;
+				if (value is not null)
+				{
+					Title = value.Title;
+					ShortTitle = value.ShortTitle;
+				}
 			}
 		}
 
 
-		/* overrides */
-
-
-		public override IEnumerable<LinkBuilder>? GetParentsLinks()
-		{
-			if (Name is null)
-				return null;
-			var items1 = new List<LinkBuilder>();
-			var parents1 = ParentPage?.GetParentsLinks();
-			if (parents1 is not null)
-				items1.AddRange();
-			items1.Add(new LinkBuilder(Path, ShortTitle));
-			return items1;
-		}
+		/// <summary>
+		/// Получает или задает переопределенный заголовок страницы для отображения в окне браузера.
+		/// </summary>
+		/// <remarks>
+		/// Позволяет принудительно задать текстовое содержимое тега <c>&lt;title&gt;</c> в обход 
+		/// автоматического иерархического построения заголовка из названий страницы, узла и сайта.
+		/// </remarks>
+		/// <value>
+		/// Строка с кастомным заголовком вкладки браузера или <see langword="null"/>, 
+		/// если должен использоваться автоматически рассчитываемый заголовок.
+		/// </value>
+		public string? CustomBrowserTitle { get; set; }
 
 	}
 

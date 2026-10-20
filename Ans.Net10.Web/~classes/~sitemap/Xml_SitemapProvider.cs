@@ -1,4 +1,4 @@
-﻿// rev 2026-10-16
+﻿// rev 2026-10-20
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
@@ -204,7 +204,7 @@ namespace Ans.Net10.Web
 				builder.TopNodes, LibWebConsts.INDEX_NODE_NAME);
 			if (!hasMainNode1)
 			{
-				var defaultMainNode1 = new NodemapItem(LibWebConsts.INDEX_NODE_NAME, "");
+				var defaultMainNode1 = new NodemapItem(LibWebConsts.INDEX_NODE_NAME, string.Empty);
 				builder.InsertTopNode(0, defaultMainNode1);
 			}
 			var tasks1 = new List<Task>();
@@ -321,7 +321,7 @@ namespace Ans.Net10.Web
 		private void _scheduleRebuild()
 		{
 			CancellationTokenSource cts1;
-			lock (_lock1)
+			using (_lock1.EnterScope())
 			{
 				_debounceCts1?.Cancel();
 				_debounceCts1?.Dispose();

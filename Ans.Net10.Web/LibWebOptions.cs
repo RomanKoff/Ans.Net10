@@ -61,10 +61,10 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает или задает базовый адрес главной страницы сайта.
+		/// Получает или задает настраиваемый адрес главной страницы сайта.
 		/// Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
 		/// </summary>
-		public string? SiteHomeUrl { get; set; } = null;
+		public string? CustomHomeUrl { get; set; } = null;
 
 
 		/// <summary>
@@ -122,6 +122,9 @@ namespace Ans.Net10.Web
 		/// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
 		/// </summary>
 		public bool UseRuntimeCompilation { get; set; } = false;
+
+
+		public bool UseNodes { get; set; } = false;
 
 
 		/// <summary>
@@ -214,7 +217,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает или задает флаг вывода детальной технической информации об ошибке.
 		/// </summary>
-		public bool ShowInfo { get; set; } = true;
+		public bool ShowInfo { get; set; } = false;
 
 		/// <summary>
 		/// Получает или задает URL/путь к изображению для ошибки 400 Bad Request.

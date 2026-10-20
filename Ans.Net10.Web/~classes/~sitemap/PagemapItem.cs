@@ -1,4 +1,4 @@
-﻿// rev 2026-10-16
+﻿// rev 2026-10-20
 
 using System.Text.RegularExpressions;
 
@@ -6,41 +6,10 @@ namespace Ans.Net10.Web
 {
 
 	/// <summary>
-	/// Перечисление семантических типов контентных страниц в рамках информационного узла карты сайта.
-	/// </summary>
-	public enum PagemapTypesEnum
-	{
-		/// <summary>
-		/// Стандартная изолированная контентная страница. Обладает системным ЧПУ-именем, 
-		/// не содержит вложенных дочерних страниц.
-		/// </summary>
-		Page,
-
-		/// <summary>
-		/// Каталог (структурный раздел). Является контентной страницей, которая дополнительно 
-		/// содержит вложенную иерархию подчиненных дочерних страниц.
-		/// </summary>
-		Catalog,
-
-		/// <summary>
-		/// Ссылочный элемент страницы, указывающий на произвольный внутренний относительный путь сайта. 
-		/// Не генерирует собственный иерархический ЧПУ-путь на основе предков.
-		/// </summary>
-		InternalPath,
-
-		/// <summary>
-		/// Внешний элемент-ссылка, перенаправляющий пользователя на сторонний интернет-ресурс по абсолютному URL-адресу.
-		/// Не генерирует собственный иерархический ЧПУ-путь на основе предков.
-		/// </summary>
-		ExternalUrl
-	}
-
-
-
-	/// <summary>
 	/// Представляет отдельную контентную страницу карты сайта, связанную с конкретным информационным узлом.
 	/// </summary>
 	public sealed partial class PagemapItem
+		: _MapItem_Proto
 	{
 
 		[GeneratedRegex("^([0-9a-z_-]+)$", RegexOptions.Compiled)]
@@ -68,8 +37,7 @@ namespace Ans.Net10.Web
 		{
 			Node = node ?? throw new ArgumentNullException(nameof(node));
 			Target = target ?? throw new ArgumentNullException(nameof(target));
-			Face = string.IsNullOrEmpty(face)
-				? Target : face;
+			SetFace(string.IsNullOrEmpty(face) ? Target : face);
 			HasNoIndex = hasNoIndex;
 			if (target.StartsWith('/'))
 			{
@@ -106,13 +74,7 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает определение заголовка страницы.
-		/// </summary>
-		public string Face { get; }
-
-
-		/// <summary>
-		/// Получает значение, указывающее на отсутсвие индексной страницы в потомках данной страницы.
+		/// Получает значение, указывающее на отсутствие индексной страницы в потомках данной страницы.
 		/// </summary>
 		public bool HasNoIndex { get; }
 
@@ -124,15 +86,19 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает семантический тип страницы.
+		/// Получает семантический тип страницы контента, определяющий её поведение в структуре навигации.
 		/// </summary>
+		/// <value>
+		/// Одно из значений перечисления <see cref="PagemapTypesEnum"/>, указывающее, является ли страница 
+		/// изолированным элементом, каталогом контента, внутренней ссылкой или внешним URL.
+		/// </value>
 		public PagemapTypesEnum Type { get; private set; }
 
 
 		/// <summary>
-		/// Получает относительный ЧПУ-путь страницы, сформированный с учетом предков. Возвращает <see langword="null"/>, если имя отсутствует.
+		/// Получает относительный ЧПУ-путь страницы, сформированный с учетом предков.
 		/// </summary>
-		public string? Path
+		public override string Path
 			=> field ??= _buildPath();
 
 
@@ -148,20 +114,18 @@ namespace Ans.Net10.Web
 		public IReadOnlyCollection<PagemapItem> ChildPages { get; }
 
 
+		/* functions */
+
+
 		/// <summary>
-		/// Получает ленивое перечисление всех родительских страниц по цепочке навигации вверх до корня.
+		/// Получает ленивое перечисление всех родительских страниц по цепочке навигации вверх до корня. 
+		/// Возвращает <see langword="null"/>, если страница находится на корневом уровне информационного узла.
 		/// </summary>
-		public IEnumerable<PagemapItem> ParentPages
+		public IEnumerable<PagemapItem>? GetParentPages()
 		{
-			get
-			{
-				var current1 = ParentPage;
-				while (current1 is not null)
-				{
-					yield return current1;
-					current1 = current1.ParentPage;
-				}
-			}
+			if (ParentPage is null)
+				return null;
+			return _enumerateParentPages();
 		}
 
 
@@ -182,20 +146,72 @@ namespace Ans.Net10.Web
 		/* privates */
 
 
-		private string? _buildPath()
+		private string _buildPath()
 		{
-			if (Name is null)
-				return null;
+			if (Name is not { Length: > 0 })
+				return string.Empty;
 			var parts1 = new List<string>();
-			foreach (var ancestor1 in ParentPages)
-				if (!string.IsNullOrEmpty(ancestor1.Name))
-					parts1.Insert(0, ancestor1.Name);
-			parts1.Add(Name);
-			if (!string.IsNullOrEmpty(Node.Path))
-				parts1.Insert(0, Node.Path);
-			return string.Join('/', parts1);
+			var ancestors1 = GetParentPages();
+			if (ancestors1 is not null)
+				foreach (var ancestor1 in ancestors1)
+					if (ancestor1.Name is { Length: > 0 }
+						&& !string.Equals(ancestor1.Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))
+						parts1.Insert(0, ancestor1.Name);
+			if (!string.Equals(Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))
+				parts1.Add(Name);
+			var nodePath1 = Node.Path;
+			if (parts1 is [])
+				return nodePath1 is { Length: 1 }
+					? "/" : nodePath1;
+			var pagesPath1 = string.Join('/', parts1);
+			return nodePath1 is { Length: 1 }
+				? $"/{pagesPath1}"
+				: $"{nodePath1}/{pagesPath1}";
 		}
 
+
+		private IEnumerable<PagemapItem> _enumerateParentPages()
+		{
+			var current1 = ParentPage;
+			while (current1 is not null)
+			{
+				yield return current1;
+				current1 = current1.ParentPage;
+			}
+		}
+
+	}
+
+
+
+	/// <summary>
+	/// Перечисление семантических типов страниц.
+	/// </summary>
+	public enum PagemapTypesEnum
+	{
+		/// <summary>
+		/// Стандартная изолированная контентная страница. Обладает системным ЧПУ-именем, 
+		/// не содержит вложенных дочерних страниц.
+		/// </summary>
+		Page,
+
+		/// <summary>
+		/// Каталог (структурный раздел). Является контентной страницей, которая дополнительно 
+		/// содержит вложенную иерархию подчиненных дочерних страниц.
+		/// </summary>
+		Catalog,
+
+		/// <summary>
+		/// Ссылочный элемент страницы, указывающий на произвольный внутренний относительный путь сайта. 
+		/// Не генерирует собственный иерархический ЧПУ-путь на основе предков.
+		/// </summary>
+		InternalPath,
+
+		/// <summary>
+		/// Внешний элемент-ссылка, перенаправляющий пользователя на сторонний интернет-ресурс по абсолютному URL-адресу.
+		/// Не генерирует собственный иерархический ЧПУ-путь на основе предков.
+		/// </summary>
+		ExternalUrl
 	}
 
 }

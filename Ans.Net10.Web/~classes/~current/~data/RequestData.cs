@@ -10,6 +10,9 @@ namespace Ans.Net10.Web
 	public sealed class RequestData
 	{
 
+		private readonly CurrentContext _current;
+
+
 		/* ctor */
 
 
@@ -21,18 +24,11 @@ namespace Ans.Net10.Web
 		public RequestData(
 			CurrentContext current)
 		{
-			ArgumentNullException.ThrowIfNull(current);
-			var request1 = current.HttpContext.Request;
-			RelativeUrl = request1.Path.ToString().ToLowerInvariant().TrimEnd('/');
-			AbsoluteUrl = $"{current.Host.ApplicationUrl}{RelativeUrl}";
+			_current = current ?? throw new ArgumentNullException(nameof(current));
+			var request1 = _current.HttpContext.Request;
+			RelativeUrl = request1.Path.ToString().ToLowerInvariant(); // .TrimEnd('/');
+			AbsoluteUrl = $"{_current.Host.ApplicationUrl}{RelativeUrl}";
 			Params = request1.QueryString.Value;
-			AreaName = current.HttpContext.GetRouteValue("Area")?.ToString();
-			RazorPage = current.HttpContext.GetRouteValue("Page")?.ToString();
-			ControllerName = current.HttpContext.GetRouteValue("Controller")?.ToString();
-			ActionName = current.HttpContext.GetRouteValue("Action")?.ToString();
-			IsController = !string.IsNullOrEmpty(ControllerName);
-			IsRazorPage = !string.IsNullOrEmpty(RazorPage);
-			ActionUniqueID = _buildActionUniqueId();
 		}
 
 
@@ -61,47 +57,52 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает имя текущей области (Area) маршрутизации, если она задана.
 		/// </summary>
-		/// <value>Имя области или <see langword="null"/>, если область не определена в маршруте.</value>
-		public string? AreaName { get; }
+		public string? AreaName
+			=> _current.HttpContext.GetRouteValue("Area")?.ToString();
 
 
 		/// <summary>
 		/// Получает имя текущего MVC-контроллера, если запрос обрабатывается контроллером.
 		/// </summary>
-		/// <value>Имя контроллера или <see langword="null"/>, если запрос идет к Razor Page или статическому файлу.</value>
-		public string? ControllerName { get; }
+		public string? ControllerName
+			=> _current.HttpContext.GetRouteValue("Controller")?.ToString();
 
 
 		/// <summary>
 		/// Получает имя текущего действия (Action) контроллера.
 		/// </summary>
-		/// <value>Имя действия или <see langword="null"/>, если запрос обрабатывается подсистемой Razor Pages.</value>
-		public string? ActionName { get; }
+		public string? ActionName
+			=> _current.HttpContext.GetRouteValue("Action")?.ToString();
 
 
 		/// <summary>
 		/// Получает путь к текущей странице Razor, если запрос обрабатывается Razor Pages.
 		/// </summary>
-		/// <value>Виртуальный путь к странице или <see langword="null"/>, если запрос обрабатывается классическим контроллером.</value>
-		public string? RazorPage { get; }
-
-
-		/// <summary>
-		/// Получает уникальный строковый идентификатор выполненного действия в формате ЧПУ нижнего регистра.
-		/// </summary>
-		public string ActionUniqueID { get; }
+		public string? RazorPage
+			=> _current.HttpContext.GetRouteValue("Page")?.ToString();
 
 
 		/// <summary>
 		/// Получает признак того, что текущий запрос обрабатывается классическим MVC-контроллером.
 		/// </summary>
-		public bool IsController { get; }
+		/// <value>Значение <see langword="true"/>, если задано имя контроллера; иначе — <see langword="false"/>.</value>
+		public bool IsController
+			=> ControllerName is { Length: > 0 };
 
 
 		/// <summary>
 		/// Получает признак того, что текущий запрос обрабатывается подсистемой Razor Pages.
 		/// </summary>
-		public bool IsRazorPage { get; }
+		/// <value>Значение <see langword="true"/>, если определен путь к Razor-странице; иначе — <see langword="false"/>.</value>
+		public bool IsRazorPage
+			=> RazorPage is { Length: > 0 };
+
+
+		/// <summary>
+		/// Получает уникальный строковый идентификатор выполненного действия в формате ЧПУ нижнего регистра.
+		/// </summary>
+		public string ActionUniqueID
+			=> field ??= _buildActionUniqueId();
 
 
 		/* privates */
@@ -109,19 +110,19 @@ namespace Ans.Net10.Web
 
 		private string _buildActionUniqueId()
 		{
-			string areaPart1 = string.IsNullOrEmpty(AreaName)
-				? string.Empty
-				: $"/{AreaName}";
-			string pagePart1 = string.IsNullOrEmpty(RazorPage)
-				? string.Empty
-				: RazorPage;
-			string controllerPart1 = string.IsNullOrEmpty(ControllerName)
-				? string.Empty
-				: $"/{ControllerName}";
-			string actionPart1 = string.IsNullOrEmpty(ActionName)
-				? string.Empty
-				: $"/{ActionName}";
-			return $"{areaPart1}{pagePart1}{controllerPart1}{actionPart1}".ToLowerInvariant();
+			var area1 = AreaName is { Length: > 0 }
+				? $"/{AreaName}"
+				: string.Empty;
+			var razorPage1 = RazorPage is { Length: > 0 }
+				? RazorPage
+				: string.Empty;
+			var controller1 = ControllerName is { Length: > 0 }
+				? $"/{ControllerName}"
+				: string.Empty;
+			var action1 = ActionName is { Length: > 0 }
+				? $"/{ActionName}"
+				: string.Empty;
+			return $"{area1}{razorPage1}{controller1}{action1}".ToLowerInvariant();
 		}
 
 	}

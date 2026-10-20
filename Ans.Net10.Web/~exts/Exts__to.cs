@@ -65,6 +65,45 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
+		/// Возвращает оттипографленный HTML-контент из переданной строки, если логическое значение истинно.
+		/// </summary>
+		/// <param name="value">Логическое условие, управляющее выводом текста.</param>
+		/// <param name="trueText">Строка текста, выводимая при значении <see langword="true"/>.</param>
+		/// <param name="useTypograf">Признак необходимости применения экранной типографики к тексту.</param>
+		/// <returns>Объект <see cref="HtmlString"/> с обработанным контентом или <see cref="HtmlString.Empty"/>.</returns>
+		public static HtmlString ToHtml(
+			this bool value,
+			string? trueText,
+			bool useTypograf = false)
+		{
+			return value && trueText is not null
+				? trueText.ToHtml(useTypograf)
+				: HtmlString.Empty;
+		}
+
+
+		/// <summary>
+		/// Возвращает оттипографленный HTML-контент из первой строки, если логическое значение истинно, или из второй строки, если оно ложно.
+		/// </summary>
+		/// <param name="value">Логическое условие, управляющее выбором строки.</param>
+		/// <param name="trueText">Строка текста, выводимая при значении <see langword="true"/>.</param>
+		/// <param name="falseText">Строка текста, выводимая при значении <see langword="false"/>.</param>
+		/// <param name="useTypograf">Признак необходимости применения экранной типографики к тексту.</param>
+		/// <returns>Объект <see cref="HtmlString"/> с обработанным контентом.</returns>
+		public static HtmlString ToHtml(
+			this bool value,
+			string? trueText,
+			string? falseText,
+			bool useTypograf = false)
+		{
+			var s1 = value ? trueText : falseText;
+			return s1 is not null
+				? s1.ToHtml(useTypograf)
+				: HtmlString.Empty;
+		}
+
+
+		/// <summary>
 		/// Выполняет сложное составное форматирование строки по шаблону с поддержкой дополнительных аргументов 
 		/// и преобразует результат в безопасную структуру <see cref="HtmlString"/> с применением типографики.
 		/// </summary>

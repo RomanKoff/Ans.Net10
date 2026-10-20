@@ -33,8 +33,48 @@
 		<div class="container">
 			<partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
 			@RenderBody()
-			<partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
-			<partial name="/Areas/Ans/Helpers/DebugCurrent.cshtml" />
+			<hr />
+			<div class="row">
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node.MapItem" />
+				</div>
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page.MapItem" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Site" />
+				</div>
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node" />
+				</div>
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current" />
+				</div>
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Host" />
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Request" />
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col">
+					<h4>Pages indexes</h4>
+					<partial name="/Areas/Ans/Helpers/DebugSitemapPages.cshtml" />
+					<h4>Nodes indexes</h4>
+					<partial name="/Areas/Ans/Helpers/DebugSitemapNodes.cshtml" />
+				</div>
+				<div class="col">
+					<h4>Sitemap</h4>
+					<partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
+				</div>
+			</div>
 		</div>
 	</main>
 
@@ -45,7 +85,7 @@
 	</footer>
 	<footer class="py-3 bg-light border-top">
 		<div class="container">
-			SITE FOOTER			
+			SITE FOOTER
 		</div>
 	</footer>
 

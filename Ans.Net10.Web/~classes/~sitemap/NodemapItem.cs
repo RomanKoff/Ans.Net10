@@ -1,4 +1,4 @@
-﻿// rev 2026-10-16
+﻿// rev 2026-10-20
 
 using System.Text.RegularExpressions;
 
@@ -6,7 +6,186 @@ namespace Ans.Net10.Web
 {
 
 	/// <summary>
-	/// Перечисление семантических типов организации информационных узлов в рамках карты сайта.
+	/// Представляет информационный узел карты сайта, определяющий элемент структуры навигации.
+	/// </summary>
+	public sealed partial class NodemapItem
+		: _MapItem_Proto
+	{
+
+		[GeneratedRegex("^([0-9a-z_-]+)$", RegexOptions.Compiled)]
+		private static partial Regex _normalTargetRegex();
+
+		private readonly List<NodemapItem> _childNodes = [];
+		private readonly List<PagemapItem> _topPages = [];
+		private IReadOnlyCollection<PagemapItem>? _pagesCache1;
+
+
+		/* ctor */
+
+
+		/// <summary>
+		/// Инициализирует новый экземпляр класса <see cref="NodemapItem"/>.
+		/// </summary>
+		/// <param name="target">Строка назначения (идентификатор узла, внутренний или внешний URL).</param>
+		/// <param name="face">Отображаемое человекочитаемое наименование узла.</param>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
+		public NodemapItem(
+			string? target,
+			string face)
+		{
+			Target = target;
+			SetFace(face);
+			ChildNodes = _childNodes.AsReadOnly();
+			if (string.IsNullOrEmpty(target))
+			{
+				Type = NodemapTypesEnum.Group;
+				Name = null;
+			}
+			else if (target.StartsWith('/'))
+			{
+				Type = NodemapTypesEnum.InternalPath;
+				Name = null;
+			}
+			else if (_normalTargetRegex().IsMatch(target))
+			{
+				Type = NodemapTypesEnum.Node;
+				Name = target;
+				var startPage1 = new PagemapItem(this, LibWebConsts.INDEX_PAGE_NAME, face, false);
+				_AddTopPage(startPage1);
+				StartPage = startPage1;
+			}
+			else
+			{
+				Type = NodemapTypesEnum.ExternalUrl;
+				Name = null;
+			}
+		}
+
+
+		/* readonly properties */
+
+
+		/// <summary>
+		/// Получает оригинальную строку назначения узла.
+		/// </summary>
+		public string? Target { get; }
+
+
+		/// <summary>
+		/// Получает очищенное системное имя узла, если он относится к типу <see cref="NodemapTypesEnum.Node"/>.
+		/// </summary>
+		public string? Name { get; }
+
+
+		/// <summary>
+		/// Получает семантический тип узла.
+		/// </summary>
+		public NodemapTypesEnum Type { get; }
+
+
+		/// <summary>
+		/// Получает относительный ЧПУ-путь узла.
+		/// </summary>
+		public override string Path
+			=> field ??= _buildPath();
+
+
+		/// <summary>
+		/// Получает выделенную стартовую (индексную) контентную страницу данного информационного узла.
+		/// Возвращает <see langword="null"/>, если узел не относится к типу <see cref="NodemapTypesEnum.Node"/>.
+		/// </summary>
+		public PagemapItem? StartPage { get; }
+
+
+		/// <summary>
+		/// Получает ссылку на родительский узел-контейнер.
+		/// </summary>
+		public NodemapItem? ParentNode { get; internal set; }
+
+
+		/// <summary>
+		/// Получает коллекцию прямых дочерних узлов.
+		/// </summary>
+		public IReadOnlyCollection<NodemapItem> ChildNodes { get; }
+
+
+		/// <summary>
+		/// Получает коллекцию корневых страниц, принадлежащих данному узлу (исключая техническую стартовую страницу).
+		/// </summary>
+		public IReadOnlyCollection<PagemapItem> TopPages
+			=> _pagesCache1 ??= _topPages
+				.Where(p => !string.Equals(p.Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))
+				.ToList()
+				.AsReadOnly();
+
+
+		/// <summary>
+		/// Внутренний метод доступа ко ВСЕМ страницам узла (включая start) для построения индексов в SitemapBuilder.
+		/// </summary>
+		internal IReadOnlyCollection<PagemapItem> _AllTopPages
+			=> _topPages.AsReadOnly();
+
+
+		/* functions */
+
+
+		/// <summary>
+		/// Получает ленивое перечисление всех вышестоящих родительских узлов по цепочке вверх до корня. 
+		/// Возвращает <see langword="null"/>, если текущий узел находится на самом верхнем уровне.
+		/// </summary>
+		public IEnumerable<NodemapItem>? GetParentNodes()
+		{
+			if (ParentNode is null)
+				return null;
+			return _enumerateParentNodes();
+		}
+
+
+		/* internals */
+
+
+		internal void _AddChildNode(
+			NodemapItem child)
+		{
+			child.ParentNode = this;
+			_childNodes.Add(child);
+		}
+
+
+		internal void _AddTopPage(
+			PagemapItem page)
+		{
+			_topPages.Add(page);
+		}
+
+
+		/* privates */
+
+
+		private string _buildPath()
+		{
+			if (string.IsNullOrEmpty(Name) || Name == LibWebConsts.INDEX_NODE_NAME)
+				return "/";
+			return $"/{Name}";
+		}
+
+
+		private IEnumerable<NodemapItem> _enumerateParentNodes()
+		{
+			var current1 = ParentNode;
+			while (current1 is not null)
+			{
+				yield return current1;
+				current1 = current1.ParentNode;
+			}
+		}
+
+	}
+
+
+
+	/// <summary>
+	/// Перечисление семантических типов узлов.
 	/// </summary>
 	public enum NodemapTypesEnum
 	{
@@ -33,162 +212,6 @@ namespace Ans.Net10.Web
 		/// Не участвует в автоматическом иерархическом построении ЧПУ-маршрутов страниц.
 		/// </summary>
 		ExternalUrl
-	}
-
-
-
-	/// <summary>
-	/// Представляет информационный узел карты сайта, определяющий элемент структуры навигации.
-	/// </summary>
-	public sealed partial class NodemapItem
-	{
-
-		[GeneratedRegex("^([0-9a-z_-]+)$", RegexOptions.Compiled)]
-		private static partial Regex _normalTargetRegex();
-
-		private readonly List<NodemapItem> _childNodes = [];
-		private readonly List<PagemapItem> _topPages = [];
-
-
-		/* ctor */
-
-
-		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="NodemapItem"/>.
-		/// </summary>
-		/// <param name="target">Строка назначения (идентификатор узла, внутренний или внешний URL).</param>
-		/// <param name="face">Отображаемое человекочитаемое наименование узла.</param>
-		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
-		public NodemapItem(
-			string? target,
-			string face)
-		{
-			Target = target;
-			Face = face ?? throw new ArgumentNullException(nameof(face));
-			ChildNodes = _childNodes.AsReadOnly();
-			TopPages = _topPages.AsReadOnly();
-			if (string.IsNullOrEmpty(target))
-			{
-				Type = NodemapTypesEnum.Group;
-				Name = null;
-			}
-			else if (target.StartsWith('/'))
-			{
-				Type = NodemapTypesEnum.InternalPath;
-				Name = null;
-			}
-			else if (_normalTargetRegex().IsMatch(target))
-			{
-				Type = NodemapTypesEnum.Node;
-				Name = target;
-			}
-			else
-			{
-				Type = NodemapTypesEnum.ExternalUrl;
-				Name = null;
-			}
-		}
-
-
-		/* readonly properties */
-
-
-		/// <summary>
-		/// Получает оригинальную строку назначения узла.
-		/// </summary>
-		public string? Target { get; }
-
-
-		/// <summary>
-		/// Получает определение заголовка узла.
-		/// </summary>
-		public string Face { get; }
-
-
-		/// <summary>
-		/// Получает очищенное системное имя узла, если он относится к типу <see cref="NodemapTypesEnum.Node"/>.
-		/// </summary>
-		public string? Name { get; }
-
-
-		/// <summary>
-		/// Получает семантический тип узла.
-		/// </summary>
-		public NodemapTypesEnum Type { get; }
-
-
-		/// <summary>
-		/// Получает относительный ЧПУ-путь узла. Возвращает <see langword="null"/>, если имя отсутствует.
-		/// </summary>
-		public string? Path
-			=> field ??= _buildPath();
-
-
-		/// <summary>
-		/// Получает ссылку на родительский узел-контейнер.
-		/// </summary>
-		public NodemapItem? ParentNode { get; internal set; }
-
-
-		/// <summary>
-		/// Получает коллекцию прямых дочерних узлов.
-		/// </summary>
-		public IReadOnlyCollection<NodemapItem> ChildNodes { get; }
-
-
-		/// <summary>
-		/// Получает коллекцию корневых страниц, принадлежащих данному узлу.
-		/// </summary>
-		public IReadOnlyCollection<PagemapItem> TopPages { get; }
-
-
-		/// <summary>
-		/// Получает ленивое перечисление всех вышестоящих родительских узлов по цепочке вверх до корня.
-		/// </summary>
-		public IEnumerable<NodemapItem> ParentNodes
-		{
-			get
-			{
-				var current1 = ParentNode;
-				while (current1 is not null)
-				{
-					yield return current1;
-					current1 = current1.ParentNode;
-				}
-			}
-		}
-
-
-		/* internals */
-
-
-		internal void _AddChildNode(
-			NodemapItem child)
-		{
-			child.ParentNode = this;
-			_childNodes.Add(child);
-		}
-
-
-		internal void _AddTopPage(
-			PagemapItem page)
-		{
-			_topPages.Add(page);
-		}
-
-
-		/* privates */
-
-
-		private string? _buildPath()
-		{
-			if (string.IsNullOrEmpty(Name))
-				return null;
-			if (Name == LibWebConsts.INDEX_NODE_NAME)
-				return string.Empty;
-			return Name;
-		}
-
 	}
 
 }

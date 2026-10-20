@@ -21,7 +21,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="_Dev\" />
+		<None Update="_app_offline.htm">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<Content Remove="appsettings.Development.json" />
+		<None Include="appsettings.Development.json" />
 	</ItemGroup>
 
 </Project>

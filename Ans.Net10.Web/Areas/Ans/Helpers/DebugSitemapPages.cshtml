@@ -1,0 +1,24 @@
+@using System.Collections.Frozen
+@*
+Компонент библиотеки Ans.Net10.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+
+@{
+	OutPages(Current.Sitemap.Current.PagesIndex);
+}
+
+@functions {
+
+	void OutPages(FrozenDictionary<string, PagemapItem> items)
+	{
+		<ul>
+			@foreach (var item1 in items.OrderBy(x => x.Value.Node.Name).ThenBy(x => x.Value.Path))
+			{
+				var key1 = (item1.Key is null) ? "NULL" : $"\"{item1.Key}\"";
+				<li><tt>@key1</tt> <b>@item1.Value.Node.Name</b>.@(item1.Value.Name)</li>
+			}
+		</ul>
+	}
+
+}

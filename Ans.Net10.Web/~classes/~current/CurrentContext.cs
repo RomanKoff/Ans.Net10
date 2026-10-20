@@ -1,4 +1,4 @@
-﻿// rev 2026-10-15
+﻿// rev 2026-10-20
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
+using System.Net;
 
 namespace Ans.Net10.Web
 {
@@ -66,6 +68,7 @@ namespace Ans.Net10.Web
 			ArgumentNullException.ThrowIfNull(mailer);
 			ArgumentNullException.ThrowIfNull(linkGenerator);
 
+			// base
 			Logger = loggerFactory.CreateLogger("Ans.Net10.Web");
 			Env = env;
 			Configuration = configuration;
@@ -95,13 +98,13 @@ namespace Ans.Net10.Web
 			WebApi = new(this);
 
 			// profiles
-			Site = new();
-			Node = new();
-			Page = new();
+			Site = new(this);
+			Node = new(this);
+			Page = new(this);
 		}
 
 
-		/* readonly properties */
+		/* base  */
 
 
 		/// <summary>
@@ -262,6 +265,14 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
+		/// Получает признак того, что веб-приложение запущено в среде разработки (Development).
+		/// </summary>
+		/// <value>Значение <see langword="true"/>, если среда выполнения соответствует <see cref="Microsoft.Extensions.Hosting.Environments.Development"/>; иначе — <see langword="false"/>.</value>
+		public bool IsDevelopment
+			=> Env.IsDevelopment();
+
+
+		/// <summary>
 		/// Получает безопасное HTML-представление человекочитаемого заголовка веб-страницы для тега &lt;title&gt; браузера.
 		/// </summary>		
 		/// <value>Объект <see cref="HtmlString"/>, готовый к выводу в мастер-шаблоне без повторного экранирования.</value>
@@ -281,6 +292,42 @@ namespace Ans.Net10.Web
 			=> field ??= _getBreadcrumbsLazy();
 
 
+		/* properties */
+
+
+		/// <summary>
+		/// Получает или задает имя основного (базового) файла разметки интерфейса сайта по умолчанию.
+		/// </summary>
+		/// <value>Строка с путем или именем макета Razor (например, <c>"_Layout"</c>), инициализируемая из глобальных настроек библиотеки.</value>
+		public string DefaultLayout
+		{
+			get => field ??= Options.DefaultLayout;
+			set;
+		}
+
+
+		/// <summary>
+		/// Получает или задает имя файла разметки для системных и административных страниц интерфейса.
+		/// </summary>
+		/// <value>Строка с именем системного макета Razor. Если не задана явно, возвращает значение <see cref="DefaultLayout"/>.</value>
+		public string SystemLayout
+		{
+			get => field ??= (Options.SystemLayout ?? DefaultLayout);
+			set;
+		}
+
+
+		/// <summary>
+		/// Получает или задает имя файла разметки для страниц отображения HTTP-ошибок (404, 403, 500 и т.д.).
+		/// </summary>
+		/// <value>Строка с именем макета Razor для вывода ошибок. Если не задана явно, возвращает значение <see cref="DefaultLayout"/>.</value>
+		public string ErrorsLayout
+		{
+			get => field ??= (Options.Errors.Layout ?? DefaultLayout);
+			set;
+		}
+
+
 		/* functions */
 
 
@@ -297,7 +344,11 @@ namespace Ans.Net10.Web
 			if (target.StartsWith("http://", StringComparison.OrdinalIgnoreCase)
 				|| target.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
 				return target;
-			return $"{Host.VirtualPath}/{target.TrimStart('/')}";
+			var baseVirtual1 = Host.VirtualPath;
+			var cleanTarget1 = target.TrimStart('/');
+			return baseVirtual1 is { Length: > 0 }
+				? $"{baseVirtual1}/{cleanTarget1}"
+				: $"/{cleanTarget1}";
 		}
 
 
@@ -314,50 +365,89 @@ namespace Ans.Net10.Web
 		}
 
 
-		/* todo */
-
-
 		/// <summary>
-		/// Возвращает URL-адрес изолированного ресурса на основе переданного идентификатора.
+		/// Формирует полный URL-адрес статического или медиа-ресурса CMS на основе переданной семантической строки назначения.
 		/// </summary>
-		/// <param name="target">Идентификатор или путь ресурса.</param>
-		/// <returns>Строка сформированного URL-адреса ресурса.</returns>
-		/// <exception cref="NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
-		internal string GetResUrl(
-			string target)
+		/// <param name="target">Строка назначения ресурса или прямой URL.</param>
+		/// <returns>Полный URL-адрес для вывода в тегах разметки (например, изображений, скриптов, стилей).</returns>
+		public string GetResUrl(
+			string? target)
 		{
-			throw new NotImplementedException();
+			if (string.IsNullOrEmpty(target))
+				return string.Empty;
+			//if (target[0] == '/')
+			//	return $"{Site.ResUrl}{target}";
+			//if (target.StartsWith("site:"))
+			//	return $"{Site.ResUrl}{target[5..].Make("/{0}")}";
+			//if (target.StartsWith("node:"))
+			//	return $"{Node.ResUrl}{target[5..].Make("/{0}")}";
+			//if (target.StartsWith("page:"))
+			//	return $"{Page.ResUrl}{target[5..].Make("/{0}")}";
+			return target;
 		}
 
 
 		/// <summary>
-		/// Возвращает внутренний маршрут на основе переданного строкового кода.
+		/// Разрешает и формирует относительный или абсолютный URL-адрес внутренней ЧПУ-страницы на основе переданного маршрутного плейсхолдера.
 		/// </summary>
-		/// <param name="target">Строковое определение целевого пути.</param>
-		/// <returns>Строка сформированного внутреннего URL.</returns>
-		/// <exception cref="NotImplementedException">Метод будет реализован в следующих ревизиях.</exception>
-		internal string GetUrl(
-			string target)
+		/// <param name="target">Строка навигационного назначения или прямой URL-путь.</param>
+		/// <returns>Готовая строка URL-адреса для использования в гиперссылках веб-интерфейса.</returns>
+		public string GetUrl(
+			string? target)
 		{
-			throw new NotImplementedException();
+			if (string.IsNullOrEmpty(target))
+				return string.Empty;
+			//if (target[0] == '/')
+			//	return $"{Site.AppUrl}{target}";
+			//if (target.StartsWith("site:"))
+			//	return $"{Site.AppUrl}{target[5..].Make("/{0}")}";
+			//if (target.StartsWith("node:"))
+			//	return $"{Node.AppUrl}{target[5..].Make("/{0}")}";
+			//if (target.StartsWith("page:"))
+			//	return $"{Page.AppUrl}{target[5..].Make("/{0}")}";
+			return target;
+		}
+
+
+		/* methods */
+
+
+		/// <summary>
+		/// Генерирует и выбрасывает специализированное HTTP-исключение со статусом <c>404 Not Found</c> (Ресурс не найден).
+		/// </summary>
+		/// <remarks>
+		/// Данный метод прерывает стандартный цикл выполнения текущего HTTP-запроса и делегирует управление глобальному обработчику ошибок.
+		/// </remarks>
+		/// <exception cref="AnsHttpException">Вызывается всегда при выполнении метода со статусом <see cref="HttpStatusCode.NotFound"/>.</exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
+		public void ThrowNotFound()
+		{
+			throw new AnsHttpException(HttpStatusCode.NotFound);
+		}
+
+
+		/// <summary>
+		/// Генерирует и выбрасывает специализированное HTTP-исключение со статусом <c>403 Forbidden</c> (Доступ запрещен).
+		/// </summary>
+		/// <remarks>
+		/// Используется в прикладных сценариях авторизации контента для немедленной блокировки несанкционированного доступа.
+		/// </remarks>
+		/// <exception cref="AnsHttpException">Вызывается всегда при выполнении метода со статусом <see cref="HttpStatusCode.Forbidden"/>.</exception>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage(
+			"Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
+		public void ThrowForbidden()
+		{
+			throw new AnsHttpException(HttpStatusCode.Forbidden);
 		}
 
 
 		/* privates */
 
 
-		private List<LinkBuilder> _getBreadcrumbsLazy()
+		private static List<LinkBuilder> _getBreadcrumbsLazy()
 		{
 			var items1 = new List<LinkBuilder>();
-			var sites1 = Site.GetParentsLinks();
-			var nodes1 = Node.GetParentsLinks();
-			var pages1 = Page.GetParentsLinks();
-			if (sites1 is not null)
-				items1.AddRange(sites1);
-			if (nodes1 is not null)
-				items1.AddRange(nodes1);
-			if (pages1 is not null)
-				items1.AddRange(pages1);
 			return items1;
 		}
 

@@ -1,0 +1,24 @@
+@using System.Collections.Frozen
+@*
+Компонент библиотеки Ans.Net10.Web.
+Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+
+@{
+	OutNodes(Current.Sitemap.Current.NodesIndex);
+}
+
+@functions {
+
+	void OutNodes(FrozenDictionary<string, NodemapItem> items)
+	{
+		<ul>
+			@foreach (var item1 in items.OrderBy(x => x.Value.Name))
+			{
+				var key1 = (item1.Key is null) ? "NULL" : $"\"{item1.Key}\"";
+				<li><tt>@key1</tt> @item1.Value.Name</li>
+			}
+		</ul>
+	}
+
+}

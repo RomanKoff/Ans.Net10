@@ -1,5 +1,4 @@
-﻿using Ans.Net10.Common;
-using Microsoft.AspNetCore.Html;
+﻿using Microsoft.AspNetCore.Html;
 
 namespace Ans.Net10.Web
 {
@@ -10,10 +9,7 @@ namespace Ans.Net10.Web
 	public abstract class _Profile_Proto
 	{
 
-		/* abstracts */
-
-
-		public abstract IEnumerable<LinkBuilder>? GetParentsLinks();
+		internal readonly CurrentContext _Current;
 
 
 		/* ctor */
@@ -22,8 +18,10 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Инициализирует базовые параметры прототипа профиля контента.
 		/// </summary>
-		protected _Profile_Proto()
+		protected _Profile_Proto(
+			CurrentContext current)
 		{
+			_Current = current;
 		}
 
 
@@ -40,6 +38,7 @@ namespace Ans.Net10.Web
 			{
 				field = value ?? string.Empty;
 				TitleHtml = null!;
+				IsShortTitleUnique = !field.Equals(ShortTitle, StringComparison.Ordinal);
 			}
 		} = string.Empty;
 
@@ -50,14 +49,15 @@ namespace Ans.Net10.Web
 		/// </summary>
 		public string ShortTitle
 		{
-			get => field ?? Title;
+			get => field is not { Length: > 0 }
+				? Title : field;
 			set
 			{
-				field = string.IsNullOrEmpty(value)
-					? null! : value;
+				field = value ?? string.Empty;
 				ShortTitleHtml = null!;
+				IsShortTitleUnique = !Title.Equals(field, StringComparison.Ordinal);
 			}
-		}
+		} = string.Empty;
 
 
 		/* readonly properties */
@@ -81,7 +81,9 @@ namespace Ans.Net10.Web
 		/// <value>Объект <see cref="HtmlString"/> для вывода в компактных блоках интерфейса.</value>
 		public HtmlString ShortTitleHtml
 		{
-			get => field ??= ShortTitle.ToHtml(true);
+			get => IsShortTitleUnique
+				? (field ??= ShortTitle.ToHtml(true))
+				: TitleHtml;
 			private set;
 		}
 
@@ -90,44 +92,7 @@ namespace Ans.Net10.Web
 		/// Возвращает признак того, является ли сокращенный заголовок уникальным (установлен отличным от <see cref="Title"/>).
 		/// </summary>
 		/// <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
-		public bool IsShortTitleUnique
-			=> ShortTitle != Title;
-
-
-		/* methods */
-
-
-		/// <summary>
-		/// Декларативно устанавливает основной и сокращенный заголовки профиля на основе переданной форматированной строки.
-		/// </summary>
-		/// <param name="face">
-		/// Строка разметки заголовков. Может содержать разделитель <c>'|'</c> в форматах: 
-		/// <c>"Заголовок"</c>, <c>"Сокр|ПолноеНазвание"</c> или <c>"Сокр|Шаблон с {0}"</c> 
-		/// (например: <c>"УЦР|Управление цифрового развития"</c> или <c>"Ученый совет|{0} университета"</c>).
-		/// </param>
-		public void SetFace(
-			string? face)
-		{
-			if (string.IsNullOrWhiteSpace(face))
-			{
-				Title = string.Empty;
-				ShortTitle = null!;
-				return;
-			}
-			var a1 = face.SplitFix('|', 2);
-			if (string.IsNullOrEmpty(a1[1]))
-			{
-				Title = a1[0];
-				ShortTitle = null!;
-			}
-			else
-			{
-				Title = a1[1].Contains("{0}")
-					? a1[1].Replace("{0}", a1[0])
-					: a1[1];
-				ShortTitle = a1[0];
-			}
-		}
+		public bool IsShortTitleUnique { get; private set; }
 
 	}
 

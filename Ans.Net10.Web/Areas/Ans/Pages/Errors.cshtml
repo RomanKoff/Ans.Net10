@@ -11,7 +11,8 @@
 
 	Layout = options1.Errors.Layout ?? options1.DefaultLayout;
 
-	ViewData["Title"] = $"{Ans.Net10.Web.Resources.Errors.Text_Error} {Model.HttpCode}";
+	Current.Page.CustomBrowserTitle = $"{Ans.Net10.Web.Resources.Errors.Text_Error} {Model.HttpCode}";
+	ViewData["Title"] = Current.Page.CustomBrowserTitle;
 
 	string? errorPicture1 = Model.HttpCode switch
 	{
@@ -25,7 +26,7 @@
 
 <div class="@(options1.DefaultContainerClasses) my-5 text-center">
 	<div class="row justify-content-center">
-		<div class="col-md-8 col-lg-6">
+		<div class="col-md-10 col-lg-8">
 
 			@if (!string.IsNullOrEmpty(errorPicture1))
 			{
@@ -36,7 +37,17 @@
 				<h1 class="display-1 text-danger font-monospace fw-bold mb-3">@Model.HttpCode</h1>
 			}
 
-			<h2 class="h3 text-secondary mb-4">@Model.ExceptionMessage.ToHtml(true)</h2>
+			<div class="text-secondary mb-5">
+				@if (Model.ExceptionMessage.Length > 80)
+				{
+					<p class="lead text-start">@Model.ExceptionMessage.ToHtml(true)</p>
+				}
+				else
+				{
+					<p class="display-5">@Model.ExceptionMessage.ToHtml(true)</p>
+				}
+			</div>
+
 
 			@if (Model.ShowInfo)
 			{

@@ -64,7 +64,8 @@ namespace Ans.Net10.Web
 				builder.Services.AddSession();
 			}
 
-			builder.Services.AddSingleton<Nodes.NodesResolver>();
+			if (options1.UseNodes)
+				builder.Services.AddSingleton<Nodes.NodesResolver>();
 
 			if (options1.XmlSitemap is not null)
 				builder.Services.AddSingleton<ISitemapProvider, Xml_SitemapProvider>();
@@ -143,6 +144,7 @@ namespace Ans.Net10.Web
 				app.UseHsts();
 			app.UseHttpsRedirection();
 
+			//--- proxy
 			if (options1.Proxy is not null && options1.Proxy.UseForwardedHeaders)
 			{
 				var forwardedOptions1 = new ForwardedHeadersOptions();
@@ -150,15 +152,22 @@ namespace Ans.Net10.Web
 				app.UseForwardedHeaders(forwardedOptions1);
 			}
 
+			//--- fix url
 			app.UseMiddleware<AnsUrlCanonicalizationMiddleware>();
+
+			//--- sitemap profiler
 			app.UseMiddleware<AnsSitemapProfilerMiddleware>();
 
 			app.UseResponseCaching();
 			app.UseRequestLocalization();
 
+			//--- sessions
 			if (options1.UseSession)
 				app.UseSession();
 
+			//--- static files
+			if (!options1.UseRuntimeCompilation)
+				app.MapStaticAssets();
 			if (options1.Mimetypes is not null && options1.Mimetypes.Length > 0)
 			{
 				var mimeProvider1 = new FileExtensionContentTypeProvider();
@@ -172,14 +181,17 @@ namespace Ans.Net10.Web
 						&& !string.IsNullOrWhiteSpace(parts1[1]))
 						mimeProvider1.Mappings[parts1[0]] = parts1[1];
 				}
-				app.UseStaticFiles(
-					new StaticFileOptions { ContentTypeProvider = mimeProvider1 });
+				app.UseStaticFiles(new StaticFileOptions
+				{
+					ContentTypeProvider = mimeProvider1
+				});
 			}
 			else
 				app.UseStaticFiles();
 
 			app.UseRouting();
 
+			//--- cors
 			if (string.IsNullOrWhiteSpace(options1.Cors?.Profile))
 				app.UseCors(SuppCors.CORS_ALLOW_ALL);
 			else
@@ -191,14 +203,17 @@ namespace Ans.Net10.Web
 			app.MapControllers();
 			app.MapRazorPages();
 
-			if (options1.XmlSitemap is not null)
+			//--- sitemap
+			var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
+			await sitemapProvider1.InitializeAsync();
+
+			//--- nodes
+			if (options1.UseNodes)
 			{
-				var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
-				await sitemapProvider1.InitializeAsync();
+				var nodesResolver1 = app.Services.GetRequiredService<Nodes.NodesResolver>();
+				await nodesResolver1.InitializeAsync();
 			}
 
-			var nodesResolver1 = app.Services.GetRequiredService<Nodes.NodesResolver>();
-			await nodesResolver1.InitializeAsync();
 		}
 
 	}

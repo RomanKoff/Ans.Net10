@@ -4,8 +4,7 @@
 *@
 
 @{
-	var TopNodes = Current.Sitemap.Current.TopNodes;
-	OutNodes(TopNodes);
+	OutNodes(Current.Sitemap.Current.TopNodes);
 }
 
 @functions {
@@ -20,12 +19,16 @@
 				var url1 = item.Type switch
 				{
 					NodemapTypesEnum.Group => null,
-					NodemapTypesEnum.Node => $"/{item.Path}",
+					NodemapTypesEnum.Node => item.GetUrl(Context),
 					_ => item.Target
 				};
 				var s1 = item.Type is NodemapTypesEnum.Node ? item.Name : item.Target;
 				<li>
-					<span><b>@item.Type</b> @url1.ToHtmlMore("<a href=\"{0}\">{1}</a>", false, s1) @item.Face.ToHtml()</span>
+					<span>
+						<b>@item.Type</b>
+						@url1.ToHtmlMore("<a href=\"{0}\">{1}</a>", false, s1)
+						@item.IsShortTitleUnique.ToHtml($"({item.ShortTitleHtml})&nbsp;")@item.TitleHtml
+					</span>
 					@{
 						OutPages(item.TopPages);
 						OutNodes(item.ChildNodes);
@@ -47,11 +50,11 @@
 				switch (item.Type)
 				{
 					case PagemapTypesEnum.Page:
-						url1 = $"/{item.Path}";
+						url1 = item.GetUrl(Context);
 						s1 = $"{item.Name}";
 						break;
 					case PagemapTypesEnum.Catalog:
-						url1 = $"/{item.Path}";
+						url1 = item.GetUrl(Context);
 						s1 = $"{item.Name}/";
 						break;
 					default:
@@ -70,7 +73,7 @@
 						{
 							@url1.ToHtmlMore("<a href=\"{0}\">{1}</a>", false, s1)
 						}
-						@item.Face.ToHtml()
+						@item.IsShortTitleUnique.ToHtml($"({item.ShortTitleHtml})&nbsp;")@item.TitleHtml
 					</span>
 					@{
 						OutPages(item.ChildPages);

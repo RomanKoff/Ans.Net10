@@ -14,13 +14,23 @@
 		/// <summary>
 		/// Инициализирует новый экземпляр класса <see cref="HostData"/> на основе текущего контекста приложения.
 		/// </summary>
+		/// <remarks>
+		/// В процессе инициализации формируется абсолютный URL-адрес корня веб-приложения <see cref="ApplicationUrl"/> 
+		/// путем конкатенации базового доменного адреса <see cref="BaseUrl"/> и виртуального префикса <see cref="VirtualPath"/>.
+		/// </remarks>
 		/// <param name="current">Единый оркестровый контекст текущего HTTP-запроса.</param>
+		/// <exception cref="ArgumentNullException">
+		/// Вызывается, если параметр <paramref name="current"/> равен <see langword="null"/> 
+		/// или связанный с ним контекст <see cref="Microsoft.AspNetCore.Http.HttpContext"/> не был инициализирован.
+		/// </exception>
 		public HostData(
 			CurrentContext current)
 		{
-			BaseUrl = current.HttpContext?.GetBaseUrl() ?? string.Empty;
-			VirtualPath = current.HttpContext?.GetVirtualPath() ?? string.Empty;
-			ApplicationUrl = $"{BaseUrl}{VirtualPath}";
+			ArgumentNullException.ThrowIfNull(current);
+			ArgumentNullException.ThrowIfNull(current.HttpContext);
+			BaseUrl = current.HttpContext.GetBaseUrl();
+			VirtualPath = current.HttpContext.GetVirtualPath();
+			ApplicationUrl = current.HttpContext.GetApplicationUrl();
 		}
 
 
@@ -28,26 +38,28 @@
 
 
 		/// <summary>
-		/// Возвращает базовый URL-адрес веб-приложения (протокол, хост и порт).
-		/// Если контекст запроса недоступен, возвращает пустую строку.
+		/// Возвращает базовый URL-адрес веб-приложения (протокол, хост и порт, если он нестандартный) 
 		/// </summary>
 		/// <value>Строка вида <c>https://mysite.com</c> или <c>http://localhost:5173</c>.</value>
 		public string BaseUrl { get; }
 
 
 		/// <summary>
-		/// Возвращает базовый виртуальный путь приложения, если оно развернуто в подкаталоге.
-		/// Если контекст запроса недоступен, возвращает пустую строку.
+		/// Возвращает базовый виртуальный путь (PathBase) подстраиваемого приложения, если оно развернуто в подкаталоге IIS/Nginx.
 		/// </summary>
-		/// <value>Строка пути или пустая строка, если приложение запущено в корне домена.</value>
+		/// <returns>Строка вида <c>""</c> или <c>"/app_name"</c>.</returns>
 		public string VirtualPath { get; }
 
 
 		/// <summary>
-		/// Возвращает полный абсолютный URL-адрес корня веб-приложения, 
-		/// включая протокол, хост, порт и виртуальный путь подкаталога.
+		/// Возвращает полный абсолютный URL-адрес корня веб-приложения, включая виртуальный путь подкаталога.
 		/// </summary>
-		/// <value>Строка вида <c>https://mysite.com</c>.</value>
+		/// <returns>
+		/// Строка вида
+		/// <c>"https://mysite.com"</c>,
+		/// <c>"https://mysite.com/app_name"</c>,
+		/// <c>"http://localhost:5173"</c> или
+		/// <c>"http://localhost:5173/app_name"</c>.</returns>
 		public string ApplicationUrl { get; }
 
 	}
