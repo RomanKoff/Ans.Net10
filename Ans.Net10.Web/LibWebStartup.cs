@@ -158,9 +158,9 @@ namespace Ans.Net10.Web
 			if (options1.UseRuntimeCompilation)
 				mvcBuilder1.AddRazorRuntimeCompilation();
 
-			Console.WriteLine("====================");
+			Console.WriteLine("======================================");
 			Console.WriteLine("Add_AnsNet10Web — OK");
-			Console.WriteLine("====================");
+			Console.WriteLine("======================================");
 			Console.WriteLine();
 
 			return builder;
@@ -268,9 +268,9 @@ namespace Ans.Net10.Web
 				await nodesResolver1.InitializeAsync();
 			}
 
-			Console.WriteLine("=========================");
+			Console.WriteLine("======================================");
 			Console.WriteLine("Use_AnsNet10WebAsync — OK");
-			Console.WriteLine("=========================");
+			Console.WriteLine("======================================");
 			Console.WriteLine();
 
 		}
