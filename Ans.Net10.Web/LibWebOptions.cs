@@ -54,10 +54,17 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает или задает заголовок сайта. 
+		/// Получает или задает имя веб-приложения. 
 		/// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
 		/// </summary>
-		public string? SiteTitle { get; set; } = null;
+		public string? AppName { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает заголовок веб-приложения. 
+		/// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
+		/// </summary>
+		public string? AppTitle { get; set; } = null;
 
 
 		/// <summary>
@@ -152,6 +159,13 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
+		/// Получает или задает параметры конфигурации встроенной системы логирования Serilog.
+		/// </summary>
+		/// <returns>Объект конфигурации логера <see cref="SerilogOptions"/>.</returns>
+		public SerilogOptions Serilog { get; set; } = new();
+
+
+		/// <summary>
 		/// Получает или задает настройки отображения и обработки ошибок.
 		/// </summary>
 		public ErrorsOptions Errors { get; set; } = new();
@@ -192,6 +206,27 @@ namespace Ans.Net10.Web
 
 
 	/*---*/
+
+
+
+	/// <summary>
+	/// Настройки встроенной интеграции логера Serilog.
+	/// </summary>
+	public sealed class SerilogOptions
+	{
+		/// <summary>
+		/// Получает или задает флаг автоматической активации Serilog при старте приложения.
+		/// </summary>
+		/// <returns><see langword="true"/>, если встроенный логер должен быть автоматически настроен; иначе — <see langword="false"/>.</returns>
+		public bool Enabled { get; set; } = true;
+
+		/// <summary>
+		/// Получает или задает минимальный уровень логирования для всего приложения.
+		/// Поддерживает стандартные текстовые значения: "Debug", "Information", "Warning", "Error", "Fatal".
+		/// </summary>
+		/// <returns>Строковое представление минимального уровня логирования (по умолчанию — "Warning").</returns>
+		public string MinimumLevel { get; set; } = "Warning";
+	}
 
 
 

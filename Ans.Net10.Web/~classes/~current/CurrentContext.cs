@@ -1,4 +1,4 @@
-﻿// rev 2026-10-20
+﻿// rev 2026-10-21
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -111,78 +111,91 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Централизованная служба логирования Ans-экосистемы.
 		/// </summary>
+		/// <returns>Экземпляр логера <see cref="ILogger"/>.</returns>
 		public ILogger Logger { get; }
 
 
 		/// <summary>
 		/// Получает объект среды выполнения веб-приложения (Development, Staging, Production).
 		/// </summary>
+		/// <returns>Текущая среда выполнения <see cref="IWebHostEnvironment"/>.</returns>
 		public IWebHostEnvironment Env { get; }
 
 
 		/// <summary>
 		/// Получает конфигурацию текущего веб-приложения.
 		/// </summary>
+		/// <returns>Объект конфигурации <see cref="IConfiguration"/>.</returns>
 		public IConfiguration Configuration { get; }
 
 
 		/// <summary>
 		/// Получает гарантированно доступный контекст текущего HTTP-запроса.
 		/// </summary>
+		/// <returns>Текущий контекст запроса <see cref="Microsoft.AspNetCore.Http.HttpContext"/>.</returns>
 		public HttpContext HttpContext { get; }
 
 
 		/// <summary>
 		/// Получает службу гибридного кэширования данных <see cref="HybridCache"/>.
 		/// </summary>
+		/// <returns>Служба кэширования <see cref="HybridCache"/>.</returns>
 		public HybridCache HybridCache { get; }
 
 
 		/// <summary>
 		/// Получает службу рендеринга Razor-представлений в строки.
 		/// </summary>
+		/// <returns>Экземпляр сервиса <see cref="IViewRenderService"/>.</returns>
 		public IViewRenderService ViewRender { get; }
 
 
 		/// <summary>
 		/// Получает фабрику для создания именованных и типизированных HTTP-клиентов.
 		/// </summary>
+		/// <returns>Фабрика клиентов <see cref="IHttpClientFactory"/>.</returns>
 		public IHttpClientFactory HttpClientFactory { get; }
 
 
-		///// <summary>
-		///// Получает поставщик данных и управления жизненным циклом карты сайта.
-		///// </summary>
+		/// <summary>
+		/// Получает поставщик данных и управления жизненным циклом карты сайта.
+		/// </summary>
+		/// <returns>Экземпляр поставщика карты сайта <see cref="ISitemapProvider"/>.</returns>
 		public ISitemapProvider Sitemap { get; }
 
 
 		/// <summary>
 		/// Получает службу отправки электронной почты SMTP.
 		/// </summary>
+		/// <returns>Экземпляр почтового сервиса <see cref="IMailerService"/>.</returns>
 		public IMailerService Mailer { get; }
 
 
 		/// <summary>
 		/// Получает генератор URL-адресов на основе зарегистрированной системы маршрутов.
 		/// </summary>
+		/// <returns>Экземпляр генератора ссылок <see cref="Microsoft.AspNetCore.Routing.LinkGenerator"/>.</returns>
 		public LinkGenerator LinkGenerator { get; }
 
 
 		/// <summary>
 		/// Получает строго типизированные параметры конфигурации веб-библиотеки.
 		/// </summary>
+		/// <returns>Объект конфигурационных опций <see cref="LibWebOptions"/>.</returns>
 		public LibWebOptions Options { get; }
 
 
 		/// <summary>
 		/// Получает информацию о текущей культуре и языковых стандартах потока.
 		/// </summary>
+		/// <returns>Текущая информация о локали <see cref="CultureInfo"/>.</returns>
 		public CultureInfo Culture { get; }
 
 
 		/// <summary>
 		/// Получает экземпляр помощника для работы с форматированием дат и времени.
 		/// </summary>
+		/// <returns>Экземпляр класса-помощника <see cref="DateTimeHelper"/>.</returns>
 		public DateTimeHelper DateTimeHelper { get; }
 
 
@@ -192,13 +205,14 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает структурированные данные о сетевом адресе хоста и виртуальных путях приложения.
 		/// </summary>
+		/// <returns>Экземпляр класса данных хоста <see cref="HostData"/>.</returns>
 		public HostData Host { get; }
 
 
 		/// <summary>
-		/// Получает структурированные данные о параметрах роутинга текущего входящего HTTP-запроса,
-		/// включая информацию об областях (Areas), контроллерах, экшенах и страницах Razor.
+		/// Получает структурированные данные о параметрах роутинга текущего входящего HTTP-запроса.
 		/// </summary>
+		/// <returns>Экземпляр класса данных маршрута <see cref="RequestData"/>.</returns>
 		public RequestData Request { get; }
 
 
@@ -208,36 +222,42 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает прикладную службу гибридного кэширования текущего контекста.
 		/// </summary>
+		/// <returns>Экземпляр службы кэширования контекста <see cref="CacheService"/>.</returns>
 		public CacheService Cache { get; }
 
 
 		/// <summary>
 		/// Получает службу безопасного чтения и записи файлов Cookie.
 		/// </summary>
+		/// <returns>Экземпляр файловой службы <see cref="CookiesService"/>.</returns>
 		public CookiesService Cookies { get; }
 
 
 		/// <summary>
 		/// Получает службу сетевого анализа подключения и валидации IP-адресов/подсетей.
 		/// </summary>
+		/// <returns>Экземпляр сетевой службы <see cref="NetworkService"/>.</returns>
 		public NetworkService Network { get; }
 
 
 		/// <summary>
 		/// Получает службу для работы со строкой запроса (Query String) и фильтрации URL параметров.
 		/// </summary>
+		/// <returns>Экземпляр службы параметров строки запроса <see cref="QueryStringService"/>.</returns>
 		public QueryStringService QueryString { get; }
 
 
 		/// <summary>
 		/// Получает службу отправки уведомлений и HTML-писем на базе Razor-представлений.
 		/// </summary>
+		/// <returns>Экземпляр службы отправки уведомлений <see cref="SendService"/>.</returns>
 		public SendService Send { get; }
 
 
 		/// <summary>
 		/// Получает службу выполнения запросов к внешним Web API с поддержкой гибридного кэширования.
 		/// </summary>
+		/// <returns>Экземпляр службы клиентских API <see cref="WebApiService"/>.</returns>
 		public WebApiService WebApi { get; }
 
 
@@ -247,18 +267,21 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Профиль текущего сайта.
 		/// </summary>
+		/// <returns>Связанный профиль сайта <see cref="SiteProfile"/>.</returns>
 		public SiteProfile Site { get; }
 
 
 		/// <summary>
 		/// Профиль текущего информационного узла.
 		/// </summary>
+		/// <returns>Связанный профиль узла <see cref="NodeProfile"/>.</returns>
 		public NodeProfile Node { get; }
 
 
 		/// <summary>
 		/// Профиль текущей контентной страницы.
 		/// </summary>
+		/// <returns>Связанный профиль контентной страницы <see cref="PageProfile"/>.</returns>
 		public PageProfile Page { get; }
 
 
@@ -269,6 +292,7 @@ namespace Ans.Net10.Web
 		/// Получает признак того, что веб-приложение запущено в среде разработки (Development).
 		/// </summary>
 		/// <value>Значение <see langword="true"/>, если среда выполнения соответствует <see cref="Microsoft.Extensions.Hosting.Environments.Development"/>; иначе — <see langword="false"/>.</value>
+		/// <returns><see langword="true"/>, если приложение запущено в режиме разработки; иначе — <see langword="false"/>.</returns>
 		public bool IsDevelopment
 			=> Env.IsDevelopment();
 
@@ -277,6 +301,7 @@ namespace Ans.Net10.Web
 		/// Получает безопасное HTML-представление человекочитаемого заголовка веб-страницы для тега &lt;title&gt; браузера.
 		/// </summary>		
 		/// <value>Объект <see cref="HtmlString"/>, готовый к выводу в мастер-шаблоне без повторного экранирования.</value>
+		/// <returns>Объект <see cref="HtmlString"/>, содержащий иерархический или кастомный заголовок вкладки.</returns>
 		public HtmlString BrowserTitleHtml
 			=> field ??= new HtmlString(_getBrowserTitle());
 
@@ -285,9 +310,8 @@ namespace Ans.Net10.Web
 		/// Возвращает последовательность элементов навигационной цепочки («хлебных крошек») 
 		/// от главной страницы сайта до текущего активного элемента контента.
 		/// </summary>
-		/// <value>
-		/// Неизменяемая коллекция объектов <see cref="LinkBuilder"/>, представляющих элементы навигации.
-		/// </value>
+		/// <value>Неизменяемая коллекция объектов <see cref="LinkBuilder"/>, представляющих элементы навигации.</value>
+		/// <returns>Только для чтения коллекция хлебных крошек в виде <see cref="IReadOnlyCollection{LinkBuilder}"/>.</returns>
 		public IReadOnlyCollection<LinkBuilder> Breadcrumbs
 			=> field ??= _getBreadcrumbsLazy();
 
@@ -299,6 +323,7 @@ namespace Ans.Net10.Web
 		/// Получает или задает имя основного (базового) файла разметки интерфейса сайта по умолчанию.
 		/// </summary>
 		/// <value>Строка с путем или именем макета Razor (например, <c>"_Layout"</c>), инициализируемая из глобальных настроек библиотеки.</value>
+		/// <returns>Имя или путь к базовому файлу разметки.</returns>
 		public string DefaultLayout
 		{
 			get => field ??= Options.DefaultLayout;
@@ -310,6 +335,7 @@ namespace Ans.Net10.Web
 		/// Получает или задает имя файла разметки для системных и административных страниц интерфейса.
 		/// </summary>
 		/// <value>Строка с именем системного макета Razor. Если не задана явно, возвращает значение <see cref="DefaultLayout"/>.</value>
+		/// <returns>Имя файла разметки панели управления или административных страниц.</returns>
 		public string SystemLayout
 		{
 			get => field ??= (Options.SystemLayout ?? DefaultLayout);
@@ -321,6 +347,7 @@ namespace Ans.Net10.Web
 		/// Получает или задает имя файла разметки для страниц отображения HTTP-ошибок (404, 403, 500 и т.д.).
 		/// </summary>
 		/// <value>Строка с именем макета Razor для вывода ошибок. Если не задана явно, возвращает значение <see cref="DefaultLayout"/>.</value>
+		/// <returns>Имя файла макета Razor для страниц ошибок.</returns>
 		public string ErrorsLayout
 		{
 			get => field ??= (Options.Errors.Layout ?? DefaultLayout);
@@ -374,6 +401,11 @@ namespace Ans.Net10.Web
 		}
 
 
+		/// <summary>
+		/// Формирует интеллектуальный URL-адрес перехода на основе префиксов доменной области (site:, node:, page:).
+		/// </summary>
+		/// <param name="target">Строка целевого назначения ссылки или относительный ЧПУ-маршрут.</param>
+		/// <returns>Канонический виртуальный путь к контентному элементу веб-приложения.</returns>
 		public string GetSmartUrl(
 			string? target)
 		{

@@ -1,4 +1,4 @@
-﻿// rev 2026-10-20
+﻿// rev 2026-10-21
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +17,7 @@ namespace Ans.Net10.Web
 		/// Получает актуальный, полностью проиндексированный экземпляр сборщика карты сайта.
 		/// </summary>
 		/// <value>Экземпляр <see cref="SitemapBuilder"/>, содержащий текущий граф навигации.</value>
+		/// <returns>Текущий проиндексированный граф <see cref="SitemapBuilder"/>.</returns>
 		SitemapBuilder Current { get; }
 
 		/// <summary>
@@ -119,6 +120,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает настроенный относительный путь к каталогу с XML-картами.
 		/// </summary>
+		/// <returns>Строка относительного пути к каталогу ресурсов.</returns>
 		public string SourcePath { get; }
 
 
@@ -270,7 +272,8 @@ namespace Ans.Net10.Web
 			NodeItemXmlDto nodeDto)
 		{
 			string target1 = nodeDto.Target ?? string.Empty;
-			string face1 = nodeDto.Face ?? target1;
+			string face1 = string.IsNullOrWhiteSpace(nodeDto.Face)
+				? target1 : nodeDto.Face;
 			var node1 = new NodemapItem(target1, face1);
 			if (nodeDto.ChildItems is not null)
 				foreach (var childDto1 in nodeDto.ChildItems)
@@ -287,7 +290,7 @@ namespace Ans.Net10.Web
 			NodemapItem node,
 			PagemapItem? parentPage)
 		{
-			string target1 = pageDto.Target ?? string.Empty;
+			string target1 = pageDto.Target;
 			string face1 = pageDto.Face ?? string.Empty;
 			var page1 = new PagemapItem(node, target1, face1, pageDto.HasNoIndex);
 			if (parentPage is null)
@@ -344,7 +347,7 @@ namespace Ans.Net10.Web
 				{
 					_log.RebuildError(_logger, ex1);
 				}
-			}, CancellationToken.None);
+			}, token1);
 		}
 
 

@@ -1,6 +1,4 @@
-﻿// rev 2026-10-20
-
-using Microsoft.Extensions.Hosting;
+﻿// rev 2026-10-21
 
 namespace Ans.Net10.Web
 {
@@ -24,6 +22,7 @@ namespace Ans.Net10.Web
 		/// Строка с настраиваемым адресом домашней страницы сайта или <see langword="null"/>, 
 		/// если конфигурационный fallback-адрес еще не запрашивался.
 		/// </value>
+		/// <returns>Переопределенный URL-адрес главной страницы или значение по умолчанию.</returns>
 		public string? CustomHomeUrl
 		{
 			get => field ??= _Current.Options.CustomHomeUrl;
@@ -34,6 +33,8 @@ namespace Ans.Net10.Web
 		/* overrides */
 
 
+		/// <inheritdoc />
+		/// <returns>Строка CSS-классов контейнера по умолчанию для разметки страниц сайта.</returns>
 		public override string ContainerClasses
 		{
 			get => field ??= _Current.Options.DefaultContainerClasses;
@@ -41,10 +42,14 @@ namespace Ans.Net10.Web
 		}
 
 
+		/// <inheritdoc />
+		/// <returns>Относительный URL-адрес корня текущего веб-приложения (виртуальный путь).</returns>
 		public override string? Url
 			=> field ??= _Current.Host.VirtualPath;
 
 
+		/// <inheritdoc />
+		/// <returns>URL-адрес каталога статических ресурсов контента сайта.</returns>
 		public override string? ResUrl
 		{
 			get => field ??= $"{Url}/content";

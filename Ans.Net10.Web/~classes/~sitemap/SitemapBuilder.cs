@@ -1,4 +1,4 @@
-﻿// rev 2026-10-20
+﻿// rev 2026-10-21
 
 using System.Collections.Frozen;
 
@@ -33,12 +33,14 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает коллекцию корневых информационных узлов карты сайта.
 		/// </summary>
+		/// <returns>Коллекция только для чтения, содержащая корневые узлы <see cref="NodemapItem"/>.</returns>
 		public IReadOnlyCollection<NodemapItem> TopNodes { get; }
 
 
 		/// <summary>
 		/// Получает индексный словарь информационных узлов карты сайта.
 		/// </summary>
+		/// <returns>Оптимизированный для чтения замороженный словарь, сопоставляющий системные имена с объектами <see cref="NodemapItem"/>.</returns>
 		public FrozenDictionary<string, NodemapItem> NodesIndex { get; private set; }
 			= FrozenDictionary<string, NodemapItem>.Empty;
 
@@ -46,6 +48,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает индексный словарь информационных страниц карты сайта.
 		/// </summary>
+		/// <returns>Оптимизированный для чтения замороженный словарь, сопоставляющий полные ЧПУ-маршруты с объектами <see cref="PagemapItem"/>.</returns>
 		public FrozenDictionary<string, PagemapItem> PagesIndex { get; private set; }
 			= FrozenDictionary<string, PagemapItem>.Empty;
 

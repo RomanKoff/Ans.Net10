@@ -1,4 +1,6 @@
-﻿using Ans.Net10.Common;
+﻿// rev 2026-10-21
+
+using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Routing;
 
@@ -17,12 +19,24 @@ namespace Ans.Net10.Web
 		/* abstracts */
 
 
+		/// <summary>
+		/// При переопределении в производном классе получает или задает CSS-классы контейнера для текущего профиля.
+		/// </summary>
+		/// <returns>Строка CSS-классов контейнера.</returns>
 		public abstract string ContainerClasses { get; set; }
 
 
+		/// <summary>
+		/// При переопределении в производном классе получает полный относительный URL-адрес текущего профиля.
+		/// </summary>
+		/// <returns>Строка относительного URL-адреса профиля контента либо <see langword="null"/>.</returns>
 		public abstract string? Url { get; }
 
 
+		/// <summary>
+		/// При переопределении в производном классе получает или задает URL-адрес ресурса (например, изображения) профиля.
+		/// </summary>
+		/// <returns>Строка URL-адреса ресурса либо <see langword="null"/>.</returns>
 		public abstract string? ResUrl { get; set; }
 
 
@@ -52,6 +66,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает или задает основной заголовок элемента контента.
 		/// </summary>
+		/// <returns>Строка основного заголовка элемента контента.</returns>
 		public string Title
 		{
 			get;
@@ -69,6 +84,7 @@ namespace Ans.Net10.Web
 		/// Получает или задает сокращенный заголовок элемента контента для компактных представлений.
 		/// Если сокращенная форма не задана явно, возвращает значение свойства <see cref="Title"/>.
 		/// </summary>
+		/// <returns>Строка сокращенного заголовка элемента контента.</returns>
 		public string ShortTitle
 		{
 			get => field is not { Length: > 0 } ? Title : field;
@@ -89,6 +105,7 @@ namespace Ans.Net10.Web
 		/// Получает безопасное HTML-представление основного заголовка с примененными правилами типографики.
 		/// </summary>
 		/// <value>Объект <see cref="HtmlString"/>, готовый к выводу в Razor-представлениях без экранирования.</value>
+		/// <returns>Безопасная HTML-строка с оттипографленным основным заголовком.</returns>
 		public HtmlString TitleHtml
 		{
 			get => field ??= Title.ToHtml(true);
@@ -101,6 +118,7 @@ namespace Ans.Net10.Web
 		/// Если сокращенный заголовок не задан, возвращает HTML-представление основного заголовка.
 		/// </summary>
 		/// <value>Объект <see cref="HtmlString"/> для вывода в компактных блоках интерфейса.</value>
+		/// <returns>Безопасная HTML-строка с оттипографленным сокращенным заголовком.</returns>
 		public HtmlString ShortTitleHtml
 		{
 			get => IsShortTitleUnique
@@ -114,6 +132,7 @@ namespace Ans.Net10.Web
 		/// Возвращает признак того, является ли сокращенный заголовок уникальным (установлен отличным от <see cref="Title"/>).
 		/// </summary>
 		/// <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
+		/// <returns><see langword="true"/>, если сокращенный заголовок уникален; иначе — <see langword="false"/>.</returns>
 		public bool IsShortTitleUnique { get; private set; }
 
 
@@ -121,6 +140,7 @@ namespace Ans.Net10.Web
 		/// Получает список ссылок на вышестоящие родительские элементы текущего профиля.
 		/// </summary>
 		/// <value>Коллекция объектов <see cref="LinkBuilder"/>.</value>
+		/// <returns>Изменяемый список ссылок на родительские элементы.</returns>
 		public List<LinkBuilder> ParentsLinks { get; internal set; } = [];
 
 
@@ -128,6 +148,7 @@ namespace Ans.Net10.Web
 		/// Получает признак наличия зарегистрированных родительских элементов.
 		/// </summary>
 		/// <value>Значение <see langword="true"/>, если список родителей содержит элементы; иначе — <see langword="false"/>.</value>
+		/// <returns><see langword="true"/>, если у профиля есть родительские элементы; иначе — <see langword="false"/>.</returns>
 		public bool HasParents
 			=> ParentsLinks is not [];
 

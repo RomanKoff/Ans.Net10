@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
 using System.Globalization;
 
 namespace Ans.Net10.Web
@@ -17,18 +19,18 @@ namespace Ans.Net10.Web
 	/// Предоставляет статические методы расширения для автоматической "zero-configuration" 
 	/// инициализации и настройки инфраструктуры веб-библиотеки Ans в конвейере приложения.
 	/// </summary>
-	public static class LibWebStartup
+	public static partial class LibWebStartup
 	{
 
 		/// <summary>
 		/// Выполняет централизованную регистрацию сервисов библиотеки.
 		/// </summary>
 		/// <param name="builder">Архитектурный строитель веб-приложения <see cref="WebApplicationBuilder"/>.</param>
-		/// <returns>Строитель <see cref="IMvcBuilder"/> для последующей кастомизации конвейера MVC фреймворка.</returns>
+		/// <returns>Строитель <see cref="WebApplicationBuilder "/> для последующей кастомизации конвейера MVC фреймворка.</returns>
 		/// <exception cref="ArgumentNullException">
 		/// Вызывается, если переданный параметр <paramref name="builder"/> равен <see langword="null"/>.
 		/// </exception>
-		public static IMvcBuilder Add_AnsNet10Web(
+		public static WebApplicationBuilder Add_AnsNet10Web(
 			this WebApplicationBuilder builder)
 		{
 			ArgumentNullException.ThrowIfNull(builder);
@@ -46,6 +48,53 @@ namespace Ans.Net10.Web
 				o.SupportedCultures = [defaultCulture1];
 				o.SupportedUICultures = [defaultCulture1];
 			});
+
+			if (options1.Serilog.Enabled)
+			{
+				var appName1 = options1.AppName ?? builder.Environment.ApplicationName;
+				const string logTemplate1 = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}";
+				if (!Enum.TryParse<LogEventLevel>(options1.Serilog.MinimumLevel, true, out var rootLevel1))
+					rootLevel1 = LogEventLevel.Information;
+				static DateTime getLogHourKey1(LogEvent x) =>
+					new(x.Timestamp.Year, x.Timestamp.Month, x.Timestamp.Day, x.Timestamp.Hour, 0, 0, DateTimeKind.Utc);
+				builder.Host.UseSerilog((context, services, loggerConfiguration) =>
+				{
+					loggerConfiguration
+						.MinimumLevel.Is(rootLevel1)
+						.Enrich.FromLogContext()
+						.WriteTo.Console()
+						.WriteTo.Logger(lc => lc
+							.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Warning)
+							.WriteTo.Map(
+								keySelector: getLogHourKey1,
+								configure: (dateTime1, wt1) => wt1.File(
+									path: $"logs/{appName1}/{dateTime1:yyyy-MM}/warn_{dateTime1:dd-HH}.txt",
+									rollingInterval: RollingInterval.Infinite,
+									retainedFileCountLimit: null,
+									outputTemplate: logTemplate1
+								)))
+						.WriteTo.Logger(lc => lc
+							.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Error)
+							.WriteTo.Map(
+								keySelector: getLogHourKey1,
+								configure: (dateTime1, wt1) => wt1.File(
+									path: $"logs/{appName1}/{dateTime1:yyyy-MM}/err_{dateTime1:dd-HH}.txt",
+									rollingInterval: RollingInterval.Infinite,
+									retainedFileCountLimit: null,
+									outputTemplate: logTemplate1
+								)))
+						.WriteTo.Logger(lc => lc
+							.MinimumLevel.Fatal()
+							.WriteTo.Map(
+								keySelector: getLogHourKey1,
+								configure: (dateTime1, wt1) => wt1.File(
+									path: $"logs/{appName1}/{dateTime1:yyyy-MM}/fatal_{dateTime1:dd-HH}.txt",
+									rollingInterval: RollingInterval.Infinite,
+									retainedFileCountLimit: null,
+									outputTemplate: logTemplate1
+								)));
+				});
+			}
 
 			builder.Services.AddHttpContextAccessor();
 			builder.Services.AddHybridCache(o =>
@@ -109,7 +158,12 @@ namespace Ans.Net10.Web
 			if (options1.UseRuntimeCompilation)
 				mvcBuilder1.AddRazorRuntimeCompilation();
 
-			return mvcBuilder1;
+			Console.WriteLine("====================");
+			Console.WriteLine("Add_AnsNet10Web — OK");
+			Console.WriteLine("====================");
+			Console.WriteLine();
+
+			return builder;
 		}
 
 
@@ -213,6 +267,11 @@ namespace Ans.Net10.Web
 				var nodesResolver1 = app.Services.GetRequiredService<Nodes.NodesResolver>();
 				await nodesResolver1.InitializeAsync();
 			}
+
+			Console.WriteLine("=========================");
+			Console.WriteLine("Use_AnsNet10WebAsync — OK");
+			Console.WriteLine("=========================");
+			Console.WriteLine();
 
 		}
 

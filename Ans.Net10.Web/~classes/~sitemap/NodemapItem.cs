@@ -1,4 +1,4 @@
-﻿// rev 2026-10-20
+﻿// rev 2026-10-21
 
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
@@ -34,6 +34,7 @@ namespace Ans.Net10.Web
 			string? target,
 			string face)
 		{
+			ArgumentNullException.ThrowIfNull(face);
 			Target = target;
 			SetFace(face);
 			ChildNodes = _childNodes.AsReadOnly();
@@ -69,6 +70,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает относительный ЧПУ-путь узла.
 		/// </summary>
+		/// <returns>Относительный ЧПУ-путь в формате строки (например, "/catalog").</returns>
 		public override string Path
 			=> field ??= _buildPath();
 
@@ -78,6 +80,7 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
 		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="httpContext"/> равен <see langword="null"/>.</exception>
 		public override string GetUrl(
 			HttpContext httpContext)
 		{
@@ -90,6 +93,7 @@ namespace Ans.Net10.Web
 				_ => Target ?? string.Empty
 			};
 		}
+		private string? _url = null;
 
 
 		/* readonly properties */
@@ -98,18 +102,21 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает оригинальную строку назначения узла.
 		/// </summary>
+		/// <returns>Строка назначения (идентификатор, относительный или абсолютный URL) либо <see langword="null"/>.</returns>
 		public string? Target { get; }
 
 
 		/// <summary>
 		/// Получает очищенное системное имя узла, если он относится к типу <see cref="NodemapTypesEnum.Node"/>.
 		/// </summary>
+		/// <returns>Строковый системный идентификатор узла либо <see langword="null"/>.</returns>
 		public string? Name { get; }
 
 
 		/// <summary>
 		/// Получает семантический тип узла.
 		/// </summary>
+		/// <returns>Значение перечисления <see cref="NodemapTypesEnum"/>, определяющее поведение узла.</returns>
 		public NodemapTypesEnum Type { get; }
 
 
@@ -117,36 +124,32 @@ namespace Ans.Net10.Web
 		/// Получает выделенную стартовую (индексную) контентную страницу данного информационного узла.
 		/// Возвращает <see langword="null"/>, если узел не относится к типу <see cref="NodemapTypesEnum.Node"/>.
 		/// </summary>
+		/// <returns>Объект страницы <see cref="PagemapItem"/> либо <see langword="null"/>.</returns>
 		public PagemapItem? StartPage { get; }
 
 
 		/// <summary>
 		/// Получает ссылку на родительский узел-контейнер.
 		/// </summary>
+		/// <returns>Экземпляр родительского узла <see cref="NodemapItem"/> либо <see langword="null"/>.</returns>
 		public NodemapItem? ParentNode { get; internal set; }
 
 
 		/// <summary>
 		/// Получает коллекцию прямых дочерних узлов.
 		/// </summary>
+		/// <returns>Коллекция только для чтения, содержащая дочерние узлы <see cref="NodemapItem"/>.</returns>
 		public IReadOnlyCollection<NodemapItem> ChildNodes { get; }
 
 
 		/// <summary>
 		/// Получает коллекцию корневых страниц, принадлежащих данному узлу (исключая техническую стартовую страницу).
 		/// </summary>
+		/// <returns>Коллекция только для чтения, содержащая значимые страницы <see cref="PagemapItem"/>.</returns>
 		public IReadOnlyCollection<PagemapItem> TopPages
-			=> _pagesCache1 ??= _topPages
-				.Where(p => !string.Equals(p.Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))
-				.ToList()
-				.AsReadOnly();
-
-
-		/// <summary>
-		/// Внутренний метод доступа ко ВСЕМ страницам узла (включая start) для построения индексов в SitemapBuilder.
-		/// </summary>
-		internal IReadOnlyCollection<PagemapItem> _AllTopPages
-			=> _topPages.AsReadOnly();
+			=> _pagesCache1 ??= [.. _topPages.Where(
+					x => !string.Equals(
+						x.Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))];
 
 
 		/* functions */
@@ -156,6 +159,7 @@ namespace Ans.Net10.Web
 		/// Получает ленивое перечисление всех вышестоящих родительских узлов по цепочке вверх до корня. 
 		/// Возвращает <see langword="null"/>, если текущий узел находится на самом верхнем уровне.
 		/// </summary>
+		/// <returns>Последовательность родительских узлов <see cref="NodemapItem"/> либо <see langword="null"/>.</returns>
 		public IEnumerable<NodemapItem>? GetParentNodes()
 		{
 			if (ParentNode is null)
@@ -165,6 +169,10 @@ namespace Ans.Net10.Web
 
 
 		/* internals */
+
+
+		internal IReadOnlyCollection<PagemapItem> _AllTopPages
+			=> _topPages.AsReadOnly();
 
 
 		internal void _AddChildNode(
@@ -183,7 +191,7 @@ namespace Ans.Net10.Web
 
 
 		/* privates */
-		
+
 
 		private string _buildPath()
 		{

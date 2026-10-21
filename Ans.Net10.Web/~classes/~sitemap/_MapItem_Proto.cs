@@ -1,4 +1,4 @@
-﻿// rev 2026-10-20
+﻿// rev 2026-10-21
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
@@ -20,6 +20,7 @@ namespace Ans.Net10.Web
 		/// При переопределении в производном классе получает полный относительный ЧПУ-маршрут (Path) элемента структуры контента.
 		/// </summary>
 		/// <value>Строка канонического относительного пути, используемая для сопоставления маршрутов и индексации.</value>
+		/// <returns>Строка канонического относительного пути (например, "/catalog").</returns>
 		public abstract string Path { get; }
 
 
@@ -29,8 +30,7 @@ namespace Ans.Net10.Web
 		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
 		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
 		public abstract string GetUrl(HttpContext httpContext);
-		internal string? _url = null;
-
+		
 
 		/* ctor */
 
@@ -49,6 +49,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает основной заголовок элемента.
 		/// </summary>
+		/// <returns>Основной заголовок элемента структуры контента.</returns>
 		public string Title { get; private set; } = string.Empty;
 
 
@@ -56,6 +57,7 @@ namespace Ans.Net10.Web
 		/// Получает сокращенный заголовок элемента для компактных представлений.
 		/// Если сокращенная форма не задана явно, возвращает значение свойства <see cref="Title"/>.
 		/// </summary>
+		/// <returns>Сокращенный заголовок для таблиц и компактных меню.</returns>
 		public string ShortTitle { get; private set; } = string.Empty;
 
 
@@ -63,6 +65,7 @@ namespace Ans.Net10.Web
 		/// Получает безопасное HTML-представление основного заголовка элемента с примененными правилами типографики.
 		/// </summary>
 		/// <value>Объект <see cref="HtmlString"/>, готовый к выводу в Razor-представлениях без экранирования.</value>
+		/// <returns>Безопасная HTML-строка с оттипографленным основным заголовком.</returns>
 		public HtmlString TitleHtml { get; private set; } = HtmlString.Empty;
 
 
@@ -71,6 +74,7 @@ namespace Ans.Net10.Web
 		/// Если сокращенный заголовок не задан, возвращает HTML-представление основного заголовка.
 		/// </summary>
 		/// <value>Объект <see cref="HtmlString"/> для вывода в компактных blocks интерфейса.</value>
+		/// <returns>Безопасная HTML-строка с оттипографленным сокращенным заголовком.</returns>
 		public HtmlString ShortTitleHtml { get; private set; } = HtmlString.Empty;
 
 
@@ -78,6 +82,7 @@ namespace Ans.Net10.Web
 		/// Возвращает признак того, является ли сокращенный заголовок элемента уникальным (установлен отличным от <see cref="Title"/>).
 		/// </summary>
 		/// <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
+		/// <returns><see langword="true"/>, если сокращенный заголовок не совпадает с основным; иначе — <see langword="false"/>.</returns>
 		public bool IsShortTitleUnique { get; private set; }
 
 

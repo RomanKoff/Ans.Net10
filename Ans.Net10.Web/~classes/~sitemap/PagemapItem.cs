@@ -1,4 +1,4 @@
-﻿// rev 2026-10-20
+﻿// rev 2026-10-21
 
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
@@ -65,6 +65,7 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает относительный ЧПУ-путь страницы, сформированный с учетом предков.
 		/// </summary>
+		/// <returns>Относительный ЧПУ-маршрут страницы в виде строки (например, "/catalog/subpage").</returns>
 		public override string Path
 			=> field ??= _buildPath();
 
@@ -74,6 +75,7 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
 		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="httpContext"/> равен <see langword="null"/>.</exception>
 		public override string GetUrl(
 			HttpContext httpContext)
 		{
@@ -85,6 +87,7 @@ namespace Ans.Net10.Web
 				_ => $"{httpContext.GetVirtualPath()}{Path}"
 			};
 		}
+		private string? _url;
 
 
 		/* readonly properties */
@@ -93,24 +96,28 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает родительский информационный узел текущей страницы.
 		/// </summary>
+		/// <returns>Экземпляр связанного навигационного узла <see cref="NodemapItem"/>.</returns>
 		public NodemapItem Node { get; }
 
 
 		/// <summary>
 		/// Получает оригинальную строку назначения страницы.
 		/// </summary>
+		/// <returns>Строковый идентификатор назначения (путь или URL).</returns>
 		public string Target { get; }
 
 
 		/// <summary>
 		/// Получает значение, указывающее на отсутствие индексной страницы в потомках данной страницы.
 		/// </summary>
+		/// <returns><see langword="true"/>, если индексные страницы потомков отключены; иначе — <see langword="false"/>.</returns>
 		public bool HasNoIndex { get; }
 
 
 		/// <summary>
 		/// Получает системное ЧПУ-имя страницы, если тип относится к <see cref="PagemapTypesEnum.Page"/>.
 		/// </summary>
+		/// <returns>Имя ЧПУ-сегмента страницы либо <see langword="null"/>.</returns>
 		public string? Name { get; }
 
 
@@ -121,18 +128,21 @@ namespace Ans.Net10.Web
 		/// Одно из значений перечисления <see cref="PagemapTypesEnum"/>, указывающее, является ли страница 
 		/// изолированным элементом, каталогом контента, внутренней ссылкой или внешним URL.
 		/// </value>
+		/// <returns>Текущий тип страницы из перечисления <see cref="PagemapTypesEnum"/>.</returns>
 		public PagemapTypesEnum Type { get; private set; }
 
 
 		/// <summary>
 		/// Получает ссылку на родительскую страницу в иерархическом дереве контента.
 		/// </summary>
+		/// <returns>Экземпляр родительской страницы <see cref="PagemapItem"/> либо <see langword="null"/>, если страница находится на верхнем уровне узла.</returns>
 		public PagemapItem? ParentPage { get; private set; }
 
 
 		/// <summary>
 		/// Получает коллекцию прямых дочерних страниц.
 		/// </summary>
+		/// <returns>Коллекция только для чтения, содержащая вложенные страницы <see cref="PagemapItem"/>.</returns>
 		public IReadOnlyCollection<PagemapItem> ChildPages { get; }
 
 
@@ -143,6 +153,7 @@ namespace Ans.Net10.Web
 		/// Получает ленивое перечисление всех родительских страниц по цепочке навигации вверх до корня. 
 		/// Возвращает <see langword="null"/>, если страница находится на корневом уровне информационного узла.
 		/// </summary>
+		/// <returns>Последовательность вышестоящих страниц <see cref="PagemapItem"/> либо <see langword="null"/>.</returns>
 		public IEnumerable<PagemapItem>? GetParentPages()
 		{
 			if (ParentPage is null)

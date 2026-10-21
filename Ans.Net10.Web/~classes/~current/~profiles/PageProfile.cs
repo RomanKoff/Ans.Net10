@@ -1,4 +1,4 @@
-﻿// rev 2026-10-20
+﻿// rev 2026-10-21
 
 using Ans.Net10.Common;
 
@@ -24,6 +24,7 @@ namespace Ans.Net10.Web
 		/// Объект <see cref="PagemapItem"/>, описывающий положение страницы в иерархии сайта, 
 		/// или <see langword="null"/>, если страница не привязана к структуре.
 		/// </value>
+		/// <returns>Текущий связанный экземпляр <see cref="PagemapItem"/> либо <see langword="null"/>.</returns>
 		public PagemapItem? MapItem
 		{
 			get;
@@ -43,17 +44,23 @@ namespace Ans.Net10.Web
 		/* overrides */
 
 
+		/// <inheritdoc />
+		/// <returns>Строка CSS-классов контейнера, специфичных для текущей страницы или унаследованных от родительского узла.</returns>
 		public override string ContainerClasses
 		{
-			get => field ?? _Current.Node.ContainerClasses;
+			get => field ??= _Current.Node.ContainerClasses;
 			set;
 		}
 
 
+		/// <inheritdoc />
+		/// <returns>Полный виртуальный URL-адрес текущей страницы либо <see langword="null"/>.</returns>
 		public override string? Url
 			=> field ??= MapItem?.GetUrl(_Current.HttpContext);
 
 
+		/// <inheritdoc />
+		/// <returns>URL-адрес каталога ресурсов, выделенного для данной контентной страницы.</returns>
 		public override string? ResUrl
 		{
 			get => field ??= $"{_Current.Node.ResUrl}{ResPath.Make("/{0}")}";
@@ -76,6 +83,10 @@ namespace Ans.Net10.Web
 		/* properties */
 
 
+		/// <summary>
+		/// Получает или задает относительный путь к каталогу статических ресурсов текущей страницы.
+		/// </summary>
+		/// <returns>Строка относительного пути к ресурсам страницы либо <see langword="null"/>.</returns>
 		public string? ResPath
 		{
 			get => field ??= MapItem?.Name;
@@ -98,6 +109,7 @@ namespace Ans.Net10.Web
 		/// Строка с кастомным заголовком вкладки браузера или <see langword="null"/>, 
 		/// если должен использоваться автоматически рассчитываемый заголовок.
 		/// </value>
+		/// <returns>Кастомный заголовок вкладки браузера либо <see langword="null"/>.</returns>
 		public string? CustomBrowserTitle { get; set; }
 
 

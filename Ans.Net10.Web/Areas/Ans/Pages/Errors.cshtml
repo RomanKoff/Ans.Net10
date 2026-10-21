@@ -7,24 +7,22 @@
 @{
 	Model.Init();
 
-	var options1 = HttpContext.RequestServices.GetRequiredService<LibWebOptions>();
-
-	Layout = options1.Errors.Layout ?? options1.DefaultLayout;
+	Layout = Current.ErrorsLayout;
 
 	Current.Page.CustomBrowserTitle = $"{Ans.Net10.Web.Resources.Errors.Text_Error} {Model.HttpCode}";
 	ViewData["Title"] = Current.Page.CustomBrowserTitle;
 
 	string? errorPicture1 = Model.HttpCode switch
 	{
-		400 => options1.Errors.Picture400,
-		403 => options1.Errors.Picture403,
-		404 => options1.Errors.Picture404,
-		500 => options1.Errors.Picture500,
+		400 => Current.Options.Errors.Picture400,
+		403 => Current.Options.Errors.Picture403,
+		404 => Current.Options.Errors.Picture404,
+		500 => Current.Options.Errors.Picture500,
 		_ => null
 	};
 }
 
-<div class="@(options1.DefaultContainerClasses) my-5 text-center">
+<div class="@(Current.Options.DefaultContainerClasses) my-5 text-center">
 	<div class="row justify-content-center">
 		<div class="col-md-10 col-lg-8">
 
