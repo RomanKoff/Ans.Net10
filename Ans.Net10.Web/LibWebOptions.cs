@@ -1,4 +1,4 @@
-﻿// rev 2026-10-09
+﻿// rev 2026-10-21
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -103,10 +103,11 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает или задает телефонный код региона по умолчанию.
 		/// </summary>
-		/// /// <value>
-		/// Строковое телефонный код региона без начального '+' (например, <c>"7812"</c>).
+		/// <value>
+		/// Строковый телефонный код региона без начального '+' (например, <c>"7812"</c>).
 		/// Значение по умолчанию: <c>"7812"</c>.
 		/// </value>
+		/// <returns>Строка телефонного кода региона.</returns>
 		public string DefaultRegionPhoneCode { get; set; } = "7812";
 
 
@@ -131,6 +132,10 @@ namespace Ans.Net10.Web
 		public bool UseRuntimeCompilation { get; set; } = false;
 
 
+		/// <summary>
+		/// Получает или задает флаг автоматического подключения иерархических информационных узлов карты сайта.
+		/// </summary>
+		/// <returns><see langword="true"/>, если поддержка навигационных узлов активирована; иначе — <see langword="false"/>.</returns>
 		public bool UseNodes { get; set; } = false;
 
 
@@ -171,7 +176,18 @@ namespace Ans.Net10.Web
 		public ErrorsOptions Errors { get; set; } = new();
 
 
+		/// <summary>
+		/// Получает или задает параметры конфигурации и пути к файлам XML-карт сайта (Sitemap).
+		/// </summary>
+		/// <returns>Объект конфигурации XML-карты <see cref="XmlSitemapOptions"/> или <see langword="null"/>, если карта отключена.</returns>
 		public XmlSitemapOptions? XmlSitemap { get; set; } = null;
+
+
+		/// <summary>
+		/// Получает или задает параметры конфигурации подсистемы защиты данных (Data Protection).
+		/// </summary>
+		/// <returns>Объект конфигурации защиты данных <see cref="DataProtectionOptions"/>.</returns>
+		public DataProtectionOptions DataProtection { get; set; } = new();
 
 
 		/// <summary>
@@ -219,6 +235,15 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <returns><see langword="true"/>, если встроенный логер должен быть автоматически настроен; иначе — <see langword="false"/>.</returns>
 		public bool Enabled { get; set; } = true;
+
+		/// <summary>
+		/// Получает или задает базовый путь для сохранения файлов логов. 
+		/// Поддерживает относительные пути (например, "logs"),
+		/// маркеры выхода из каталога (например, "../logs")
+		/// и абсолютные пути (например, "/var/log/my_apps" или "C:/Logs/MyProject").
+		/// </summary>
+		/// <returns>Строка базового пути к каталогу логов (по умолчанию — "logs").</returns>
+		public string Path { get; set; } = "logs";
 
 		/// <summary>
 		/// Получает или задает минимальный уровень логирования для всего приложения.
@@ -277,9 +302,48 @@ namespace Ans.Net10.Web
 
 
 
+	/// <summary>
+	/// Параметры конфигурации расположения и путей файловой карты сайта XML.
+	/// </summary>
 	public class XmlSitemapOptions
 	{
 		public string Path { get; set; } = string.Empty;
+	}
+
+
+
+	/// <summary>
+	/// Настройки встроенной интеграции службы ASP.NET Core Data Protection.
+	/// </summary>
+	public sealed class DataProtectionOptions
+	{
+		/*
+			"DataProtection": {
+				"Path": "../secure-keys",
+				"CertificatePath": "../secure-keys/dataprotection-encrypt.pfx",
+				"CertificatePassword": "ВашНадежныйПарольОтСертификата"
+			}
+		 */
+
+		/// <summary>
+		/// Получает или задает базовый путь для персистентного хранения ключей шифрования.
+		/// Поддерживает относительные пути (например, "data-protection"), маркеры выхода (например, "../data-protection") и абсолютные пути.
+		/// </summary>
+		/// <returns>Строка базового пути к каталогу ключей (по умолчанию — "data-protection").</returns>
+		public string Path { get; set; } = "data-protection";
+
+		/// <summary>
+		/// Получает или задает путь к файлу сертификата X.509 (.pfx) для шифрования ключей Data Protection на диске.
+		/// Если путь не указан, ключи будут сохраняться в незашифрованном виде (вызовет предупреждение WRN).
+		/// </summary>
+		/// <returns>Путь к файлу сертификата на диске либо <see langword="null"/>.</returns>
+		public string? CertificatePath { get; set; } = null;
+
+		/// <summary>
+		/// Получает или задает пароль для открытия файла сертификата X.509.
+		/// </summary>
+		/// <returns>Строка пароля к сертификату либо <see langword="null"/>.</returns>
+		public string? CertificatePassword { get; set; } = null;
 	}
 
 
@@ -290,14 +354,16 @@ namespace Ans.Net10.Web
 	public class ProxyOptions
 	{
 		/// <summary>
-		/// Флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
+		/// Получает или задает флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
 		/// </summary>
+		/// <returns><see langword="true"/>, если обработка заголовков обратного прокси включена; иначе — <see langword="false"/>.</returns>
 		public bool UseForwardedHeaders { get; set; } = false;
 
 		/// <summary>
-		/// Список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
+		/// Получает или задает список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
 		/// Если пустой — по умолчанию доверяется локальной петле (Loopback).
 		/// </summary>
+		/// <returns>Строка с перечислением IP-адресов доверенных прокси-серверов через точку с запятой либо <see langword="null"/>.</returns>
 		public string? KnownProxies { get; set; } = null;
 	}
 
@@ -391,30 +457,35 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Возвращает типизированный список подсетей администраторов с ленивой инициализацией.
 		/// </summary>
+		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка администраторов не задана.</returns>
 		public IPSubnetsList? AdminSubnets
 			=> _getSubnets(Admin, ref field);
 
 		/// <summary>
 		/// Возвращает типизированный список безопасных подсетей с ленивой инициализацией.
 		/// </summary>
+		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка безопасной зоны не задана.</returns>
 		public IPSubnetsList? SafeSubnets
 			=> _getSubnets(Safe, ref field);
 
 		/// <summary>
 		/// Возвращает типизированный список небезопасных подсетей с ленивой инициализацией.
 		/// </summary>
+		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка публичной зоны не задана.</returns>
 		public IPSubnetsList? UnsafeSubnets
 			=> _getSubnets(Unsafe, ref field);
 
 		/// <summary>
 		/// Возвращает типизированный список разрешенных подсетей с ленивой инициализацией.
 		/// </summary>
+		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если белый список CIDR не задан.</returns>
 		public IPSubnetsList? AllowSubnets
 			=> _getSubnets(Allow, ref field);
 
 		/// <summary>
 		/// Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
 		/// </summary>
+		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если черный список CIDR не задан.</returns>
 		public IPSubnetsList? DenySubnets
 			=> _getSubnets(Deny, ref field);
 

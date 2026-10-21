@@ -5,12 +5,14 @@ using Ans.Net10.Common.Services;
 using Ans.Net10.Web.Middlewares;
 using Ans.Net10.Web.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Ans.Net10.Web
 {
@@ -40,6 +42,8 @@ namespace Ans.Net10.Web
 			var options1 = AppSettingsFactory.GetOptions<LibWebOptions>(builder.Configuration);
 			builder.Services.AddSingleton(options1);
 
+			var appName1 = options1.AppName ?? builder.Environment.ApplicationName;
+
 			var defaultCultureName1 = options1.DefaultCulture;
 			builder.Services.Configure<RequestLocalizationOptions>(o =>
 			{
@@ -51,12 +55,13 @@ namespace Ans.Net10.Web
 
 			if (options1.Serilog.Enabled)
 			{
-				var appName1 = options1.AppName ?? builder.Environment.ApplicationName;
 				const string logTemplate1 = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}";
-				if (!Enum.TryParse<LogEventLevel>(options1.Serilog.MinimumLevel, true, out var rootLevel1))
-					rootLevel1 = LogEventLevel.Information;
 				static DateTime getLogHourKey1(LogEvent x) =>
 					new(x.Timestamp.Year, x.Timestamp.Month, x.Timestamp.Day, x.Timestamp.Hour, 0, 0, DateTimeKind.Utc);
+				var basePath1 = string.IsNullOrWhiteSpace(options1.Serilog.Path)
+					? "logs" : options1.Serilog.Path.TrimEnd('/');
+				if (!Enum.TryParse<LogEventLevel>(options1.Serilog.MinimumLevel, true, out var rootLevel1))
+					rootLevel1 = LogEventLevel.Information;
 				builder.Host.UseSerilog((context, services, loggerConfiguration) =>
 				{
 					loggerConfiguration
@@ -68,7 +73,7 @@ namespace Ans.Net10.Web
 							.WriteTo.Map(
 								keySelector: getLogHourKey1,
 								configure: (dateTime1, wt1) => wt1.File(
-									path: $"logs/{appName1}/{dateTime1:yyyy-MM}/warn_{dateTime1:dd-HH}.txt",
+									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/warn_{dateTime1:dd-HH}.txt",
 									rollingInterval: RollingInterval.Infinite,
 									retainedFileCountLimit: null,
 									outputTemplate: logTemplate1
@@ -78,7 +83,7 @@ namespace Ans.Net10.Web
 							.WriteTo.Map(
 								keySelector: getLogHourKey1,
 								configure: (dateTime1, wt1) => wt1.File(
-									path: $"logs/{appName1}/{dateTime1:yyyy-MM}/err_{dateTime1:dd-HH}.txt",
+									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/err_{dateTime1:dd-HH}.txt",
 									rollingInterval: RollingInterval.Infinite,
 									retainedFileCountLimit: null,
 									outputTemplate: logTemplate1
@@ -88,12 +93,32 @@ namespace Ans.Net10.Web
 							.WriteTo.Map(
 								keySelector: getLogHourKey1,
 								configure: (dateTime1, wt1) => wt1.File(
-									path: $"logs/{appName1}/{dateTime1:yyyy-MM}/fatal_{dateTime1:dd-HH}.txt",
+									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/fatal_{dateTime1:dd-HH}.txt",
 									rollingInterval: RollingInterval.Infinite,
 									retainedFileCountLimit: null,
 									outputTemplate: logTemplate1
 								)));
 				});
+			}
+
+			var dpBasePath1 = string.IsNullOrWhiteSpace(options1.DataProtection.Path)
+				? "data-protection"
+				: options1.DataProtection.Path.TrimEnd('/');
+			var finalDpPath1 = Path.Combine(dpBasePath1, appName1);
+			var dpBuilder1 = builder.Services.AddDataProtection()
+				.PersistKeysToFileSystem(new DirectoryInfo(finalDpPath1))
+				.SetApplicationName(appName1);
+			if (!string.IsNullOrWhiteSpace(options1.DataProtection.CertificatePath))
+			{
+				var certPath1 = Path.Combine(builder.Environment.ContentRootPath, options1.DataProtection.CertificatePath);
+				if (File.Exists(certPath1))
+				{
+					using var certificate1 = X509CertificateLoader.LoadPkcs12FromFile(
+						certPath1,
+						options1.DataProtection.CertificatePassword,
+						X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.EphemeralKeySet);
+					dpBuilder1.ProtectKeysWithCertificate(certificate1);
+				}
 			}
 
 			builder.Services.AddHttpContextAccessor();

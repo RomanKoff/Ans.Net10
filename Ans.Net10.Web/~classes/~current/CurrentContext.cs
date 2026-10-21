@@ -38,7 +38,7 @@ namespace Ans.Net10.Web
 		/// <param name="hybridCache">Служба двухслойного гибридного кэширования платформы.</param>
 		/// <param name="viewRender">Служба изолированного рендеринга представлений Razor в строковые буферы.</param>
 		/// <param name="httpClientFactory">Фабрика для создания экземпляров HTTP-клиентов.</param>		
-		/// <param name="sitemap">Поставщик данных и управления жизненным циклом карты сайта.</param>
+		/// <param name="sitemapProvider">Поставщик данных и управления жизненным циклом карты сайта.</param>
 		/// <param name="mailer">Служба асинхронной отправки электронных писем.</param>
 		/// <param name="linkGenerator">Компонент генерации URL-адресов на основе зарегистрированных маршрутов приложения.</param>
 		/// <exception cref="ArgumentNullException">
@@ -55,7 +55,7 @@ namespace Ans.Net10.Web
 			HybridCache hybridCache,
 			IViewRenderService viewRender,
 			IHttpClientFactory httpClientFactory,
-			ISitemapProvider sitemap,
+			ISitemapProvider sitemapProvider,
 			IMailerService mailer,
 			LinkGenerator linkGenerator)
 		{
@@ -78,7 +78,7 @@ namespace Ans.Net10.Web
 			HybridCache = hybridCache;
 			ViewRender = viewRender;
 			HttpClientFactory = httpClientFactory;
-			Sitemap = sitemap;
+			Sitemap = sitemapProvider.Current;
 			Mailer = mailer;
 			LinkGenerator = linkGenerator;
 
@@ -157,11 +157,18 @@ namespace Ans.Net10.Web
 		public IHttpClientFactory HttpClientFactory { get; }
 
 
+		///// <summary>
+		///// Получает поставщик данных и управления жизненным циклом карты сайта.
+		///// </summary>
+		///// <returns>Экземпляр поставщика карты сайта <see cref="ISitemapProvider"/>.</returns>
+		//public ISitemapProvider Sitemap { get; }
+
+
 		/// <summary>
-		/// Получает поставщик данных и управления жизненным циклом карты сайта.
+		/// Получает актуальную карту сайта.
 		/// </summary>
-		/// <returns>Экземпляр поставщика карты сайта <see cref="ISitemapProvider"/>.</returns>
-		public ISitemapProvider Sitemap { get; }
+		/// <returns>Экземпляр строителя карты сайта <see cref="SitemapBuilder"/>.</returns>
+		public SitemapBuilder Sitemap { get; }
 
 
 		/// <summary>

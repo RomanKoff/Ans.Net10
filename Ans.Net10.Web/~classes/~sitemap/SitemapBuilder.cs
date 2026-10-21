@@ -121,8 +121,11 @@ namespace Ans.Net10.Web
 			var pagesDict1 = new Dictionary<string, PagemapItem>(StringComparer.OrdinalIgnoreCase);
 			foreach (var node1 in _topNodes)
 				_indexNodeRecursive(node1, nodesDict1, pagesDict1);
-			NodesIndex = nodesDict1.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
-			PagesIndex = pagesDict1.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+			NodesIndex = nodesDict1
+				.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+			PagesIndex = pagesDict1
+				.Where(x => x.Key is not { Length: 0 })
+				.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
 		}
 
 
