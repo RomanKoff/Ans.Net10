@@ -86,6 +86,31 @@
         <member name="M:Ans.Net10.Web.Attributes.SubnetAccessAttribute.CreateInstance(System.IServiceProvider)">
             <inheritdoc />
         </member>
+        <member name="T:Ans.Net10.Web.Controllers._NodesController_Base">
+            <summary>
+            Базовый класс централизованного CMS-контроллера, обеспечивающий перехват динамических ЧПУ-маршрутов, 
+            их разрешение через внутренний реестр представлений и рендеринг контента.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Controllers._NodesController_Base.#ctor(Ans.Net10.Web.Nodes.NodesResolver,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Controllers._NodesController_Base})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Controllers._NodesController_Base"/>.
+            </summary>
+            <param name="resolver">Служба анализа и разрешения путей CMS в памяти.</param>
+            <param name="logger">Служба ведения системных логов.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из входящих параметров равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Controllers._NodesController_Base.Render(System.String)">
+            <summary>
+            Действие по перехвату catch-all маршрута, выполняющее сопоставление входящего URL 
+            с матрицей приоритетов файлов и рендеринг результирующего Razor-представления.
+            </summary>
+            <param name="path">Относительный ЧПУ-путь входящего HTTP-запроса.</param>
+            <returns>
+            Объект <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>: отрендеренное Razor-представление при успешном совпадении, 
+            либо <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundResult"/> (404), если файл не найден.
+            </returns>
+        </member>
         <member name="T:Ans.Net10.Web.Crud.ICrudMasterController`1">
             <summary>
             Интерфейс асинхронного CRUD-контроллера для управления жизненным циклом главных (Master) сущностей.
@@ -2175,7 +2200,7 @@
             Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
             </remarks>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.Title">
+        <member name="P:Ans.Net10.Web.LibWebOptions.SiteTitle">
             <summary>
             Получает или задает заголовок сайта. 
             Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
@@ -4508,17 +4533,10 @@
         </member>
         <member name="M:Ans.Net10.Web.CurrentContext.GetResUrl(System.String)">
             <summary>
-            Формирует полный URL-адрес статического или медиа-ресурса CMS на основе переданной семантической строки назначения.
+            Формирует полный URL-адрес статического ресурса на основе переданной семантической строки назначения.
             </summary>
             <param name="target">Строка назначения ресурса или прямой URL.</param>
             <returns>Полный URL-адрес для вывода в тегах разметки (например, изображений, скриптов, стилей).</returns>
-        </member>
-        <member name="M:Ans.Net10.Web.CurrentContext.GetUrl(System.String)">
-            <summary>
-            Разрешает и формирует относительный или абсолютный URL-адрес внутренней ЧПУ-страницы на основе переданного маршрутного плейсхолдера.
-            </summary>
-            <param name="target">Строка навигационного назначения или прямой URL-путь.</param>
-            <returns>Готовая строка URL-адреса для использования в гиперссылках веб-интерфейса.</returns>
         </member>
         <member name="M:Ans.Net10.Web.CurrentContext.ThrowNotFound">
             <summary>
@@ -4699,6 +4717,12 @@
             или <see langword="null"/>, если страница не привязана к структуре.
             </value>
         </member>
+        <member name="M:Ans.Net10.Web.PageProfile.GetLink">
+            <summary>
+            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля страницы.
+            </summary>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+        </member>
         <member name="P:Ans.Net10.Web.PageProfile.CustomBrowserTitle">
             <summary>
             Получает или задает переопределенный заголовок страницы для отображения в окне браузера.
@@ -4711,12 +4735,6 @@
             Строка с кастомным заголовком вкладки браузера или <see langword="null"/>, 
             если должен использоваться автоматически рассчитываемый заголовок.
             </value>
-        </member>
-        <member name="M:Ans.Net10.Web.PageProfile.GetLink">
-            <summary>
-            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля страницы.
-            </summary>
-            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
         </member>
         <member name="T:Ans.Net10.Web.SiteProfile">
             <summary>

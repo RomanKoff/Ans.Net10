@@ -56,7 +56,7 @@ namespace Ans.Net10.Web.Middlewares
 
 			var requestPath1 = current.Request.RelativeUrl;
 
-			current.Site.Title = current.Options.Title ?? SuppApp.CallingAssembly?.Name ?? string.Empty;
+			current.Site.Title = current.Options.SiteTitle ?? SuppApp.CallingAssembly?.Name ?? string.Empty;
 
 			var pageMapItem1 = current.Sitemap.Current.GetPage(requestPath1);
 

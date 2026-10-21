@@ -1,5 +1,9 @@
 ﻿// rev 2026-10-20
 
+using Ans.Net10.Common;
+using Microsoft.AspNetCore.Http;
+using Org.BouncyCastle.Ocsp;
+
 namespace Ans.Net10.Web
 {
 
@@ -42,6 +46,24 @@ namespace Ans.Net10.Web
 		/* overrides */
 
 
+		public override string ContainerClasses
+		{
+			get => field ?? _Current.Site.ContainerClasses;
+			set;
+		}
+
+
+		public override string? Url
+			=> field ??= MapItem?.GetUrl(_Current.HttpContext);
+
+
+		public override string? ResUrl
+		{
+			get => field ??= $"{_Current.Site.ResUrl}{ResPath.Make("/{0}")}";
+			set;
+		}
+
+
 		/// <summary>
 		/// Возвращает объект ссылки <see cref="LinkBuilder"/> для текущего профиля узла.
 		/// </summary>
@@ -50,8 +72,21 @@ namespace Ans.Net10.Web
 		{
 			if (MapItem is null)
 				return null;
-			var url1 = MapItem.GetUrl(_Current.HttpContext);
-			return new LinkBuilder(url1, ShortTitle);
+			return new LinkBuilder(Url, ShortTitle);
+		}
+
+
+		/* properties */
+
+
+		public string? ResPath
+		{
+			get => field ??= MapItem?.Name;
+			set
+			{
+				field = value;
+				ResUrl = null;
+			}
 		}
 
 

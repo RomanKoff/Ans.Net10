@@ -189,11 +189,11 @@ namespace Ans.Net10.Web.TagHelpers
 			else if (!string.IsNullOrEmpty(HrefPageResData))
 				await _makeHrefAsync(output, _current.GetResUrl($"page:{HrefPageResData}"));
 			else if (!string.IsNullOrEmpty(HrefSiteData))
-				await _makeHrefAsync(output, _current.GetUrl($"site:{HrefSiteData}"));
+				await _makeHrefAsync(output, _current.GetSmartUrl($"site:{HrefSiteData}"));
 			else if (!string.IsNullOrEmpty(HrefNodeData))
-				await _makeHrefAsync(output, _current.GetUrl($"node:{HrefNodeData}"));
+				await _makeHrefAsync(output, _current.GetSmartUrl($"node:{HrefNodeData}"));
 			else if (!string.IsNullOrEmpty(HrefPageData))
-				await _makeHrefAsync(output, _current.GetUrl($"page:{HrefPageData}"));
+				await _makeHrefAsync(output, _current.GetSmartUrl($"page:{HrefPageData}"));
 		}
 
 

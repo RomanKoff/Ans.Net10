@@ -1,5 +1,7 @@
 ﻿// rev 2026-10-20
 
+using Microsoft.Extensions.Hosting;
+
 namespace Ans.Net10.Web
 {
 
@@ -30,6 +32,24 @@ namespace Ans.Net10.Web
 
 
 		/* overrides */
+
+
+		public override string ContainerClasses
+		{
+			get => field ??= _Current.Options.DefaultContainerClasses;
+			set;
+		}
+
+
+		public override string? Url
+			=> field ??= _Current.Host.VirtualPath;
+
+
+		public override string? ResUrl
+		{
+			get => field ??= $"{Url}/content";
+			set;
+		}
 
 
 		/// <summary>

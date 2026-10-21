@@ -17,6 +17,15 @@ namespace Ans.Net10.Web
 		/* abstracts */
 
 
+		public abstract string ContainerClasses { get; set; }
+
+
+		public abstract string? Url { get; }
+
+
+		public abstract string? ResUrl { get; set; }
+
+
 		/// <summary>
 		/// При переопределении в производном классе формирует объект ссылки <see cref="LinkBuilder"/> для текущего профиля.
 		/// </summary>
@@ -237,8 +246,10 @@ namespace Ans.Net10.Web
 		/// <returns>Строка текстовой иерархии предков с разделителем.</returns>
 		public string GetParentsTitles()
 		{
-			return _parentsTitles ??= SuppTypograph.GetTypografMin(
-				$"{string.Join(". ", ParentsLinks.Select(x => x.InnerHtml))}. ");
+			return _parentsTitles ??= HasParents
+				? SuppTypograph.GetTypografMin(
+					$"{string.Join(". ", ParentsLinks.Select(x => x.InnerHtml))}. ")
+				: string.Empty;
 		}
 		private string? _parentsTitles = null;
 
@@ -277,7 +288,7 @@ namespace Ans.Net10.Web
 			string url,
 			string title)
 		{
-			var url1 = _Current.GetUrl(url);
+			var url1 = _Current.GetSmartUrl(url);
 			return new LinkBuilder(url1, title);
 		}
 

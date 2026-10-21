@@ -353,7 +353,7 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Формирует полный URL-адрес статического или медиа-ресурса CMS на основе переданной семантической строки назначения.
+		/// Формирует полный URL-адрес статического ресурса на основе переданной семантической строки назначения.
 		/// </summary>
 		/// <param name="target">Строка назначения ресурса или прямой URL.</param>
 		/// <returns>Полный URL-адрес для вывода в тегах разметки (например, изображений, скриптов, стилей).</returns>
@@ -362,36 +362,31 @@ namespace Ans.Net10.Web
 		{
 			if (string.IsNullOrEmpty(target))
 				return string.Empty;
-			//if (target[0] == '/')
-			//	return $"{Site.ResUrl}{target}";
-			//if (target.StartsWith("site:"))
-			//	return $"{Site.ResUrl}{target[5..].Make("/{0}")}";
-			//if (target.StartsWith("node:"))
-			//	return $"{Node.ResUrl}{target[5..].Make("/{0}")}";
-			//if (target.StartsWith("page:"))
-			//	return $"{Page.ResUrl}{target[5..].Make("/{0}")}";
+			if (target[0] == '/')
+				return $"{Site.ResUrl}{target}";
+			if (target.StartsWith("site:"))
+				return $"{Site.ResUrl}{target[5..].Make("/{0}")}";
+			if (target.StartsWith("node:"))
+				return $"{Node.ResUrl}{target[5..].Make("/{0}")}";
+			if (target.StartsWith("page:"))
+				return $"{Page.ResUrl}{target[5..].Make("/{0}")}";
 			return target;
 		}
 
 
-		/// <summary>
-		/// Разрешает и формирует относительный или абсолютный URL-адрес внутренней ЧПУ-страницы на основе переданного маршрутного плейсхолдера.
-		/// </summary>
-		/// <param name="target">Строка навигационного назначения или прямой URL-путь.</param>
-		/// <returns>Готовая строка URL-адреса для использования в гиперссылках веб-интерфейса.</returns>
-		public string GetUrl(
+		public string GetSmartUrl(
 			string? target)
 		{
 			if (string.IsNullOrEmpty(target))
 				return string.Empty;
-			//if (target[0] == '/')
-			//	return $"{Site.AppUrl}{target}";
-			//if (target.StartsWith("site:"))
-			//	return $"{Site.AppUrl}{target[5..].Make("/{0}")}";
-			//if (target.StartsWith("node:"))
-			//	return $"{Node.AppUrl}{target[5..].Make("/{0}")}";
-			//if (target.StartsWith("page:"))
-			//	return $"{Page.AppUrl}{target[5..].Make("/{0}")}";
+			if (target[0] == '/')
+				return $"{Host.VirtualPath}{target}";
+			if (target.StartsWith("site:"))
+				return $"{Site.Url}/{target[5..]}";
+			if (target.StartsWith("node:"))
+				return $"{Node.Url}/{target[5..]}";
+			if (target.StartsWith("page:"))
+				return $"{Page.Url}/{target[5..]}";
 			return target;
 		}
 

@@ -1,5 +1,7 @@
 ﻿// rev 2026-10-20
 
+using Ans.Net10.Common;
+
 namespace Ans.Net10.Web
 {
 
@@ -27,13 +29,60 @@ namespace Ans.Net10.Web
 			get;
 			set
 			{
-				field = value;				
+				field = value;
 				if (value is not null)
 				{
 					Title = value.Title;
 					ShortTitle = value.ShortTitle;
 					_calcParents(value.GetParentPages());
 				}
+			}
+		}
+
+
+		/* overrides */
+
+
+		public override string ContainerClasses
+		{
+			get => field ?? _Current.Node.ContainerClasses;
+			set;
+		}
+
+
+		public override string? Url
+			=> field ??= MapItem?.GetUrl(_Current.HttpContext);
+
+
+		public override string? ResUrl
+		{
+			get => field ??= $"{_Current.Node.ResUrl}{ResPath.Make("/{0}")}";
+			set;
+		}
+
+
+		/// <summary>
+		/// Возвращает объект ссылки <see cref="LinkBuilder"/> для текущего профиля страницы.
+		/// </summary>
+		/// <returns>Экземпляр <see cref="LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+		public override LinkBuilder? GetLink()
+		{
+			if (MapItem is null)
+				return null;
+			return new LinkBuilder(Url, ShortTitle);
+		}
+
+
+		/* properties */
+
+
+		public string? ResPath
+		{
+			get => field ??= MapItem?.Name;
+			set
+			{
+				field = value;
+				ResUrl = null;
 			}
 		}
 
@@ -50,22 +99,6 @@ namespace Ans.Net10.Web
 		/// если должен использоваться автоматически рассчитываемый заголовок.
 		/// </value>
 		public string? CustomBrowserTitle { get; set; }
-
-
-		/* overrides */
-
-
-		/// <summary>
-		/// Возвращает объект ссылки <see cref="LinkBuilder"/> для текущего профиля страницы.
-		/// </summary>
-		/// <returns>Экземпляр <see cref="LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
-		public override LinkBuilder? GetLink()
-		{
-			if (MapItem is null)
-				return null;
-			var url1 = MapItem.GetUrl(_Current.HttpContext);
-			return new LinkBuilder(url1, ShortTitle);
-		}
 
 
 		/* privates */

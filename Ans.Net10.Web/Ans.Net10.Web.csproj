@@ -81,8 +81,4 @@
 		</EmbeddedResource>
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Areas\Ans\Layouts\" />
-	</ItemGroup>
-
 </Project>
