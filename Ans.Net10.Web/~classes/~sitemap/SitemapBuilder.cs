@@ -1,4 +1,4 @@
-﻿// rev 2026-10-21
+﻿// rev 2026-10-22
 
 using System.Collections.Frozen;
 
@@ -86,14 +86,29 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Добавляет готовый информационный узел в конец коллекции корневых элементов.
+		/// Программно преобразует и добавляет корневой узел на основе его декларативного описания в конец коллекции.
 		/// </summary>
-		/// <param name="node">Добавляемый информационный узел.</param>
+		/// <param name="nodeDef">Декларативное описание добавляемого узла.</param>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="nodeDef"/> равен <see langword="null"/>.</exception>
+		public void AddTopNodeDef(
+			NodemapDef nodeDef)
+		{
+			ArgumentNullException.ThrowIfNull(nodeDef);
+			var node1 = new NodemapItem(nodeDef);
+			AddTopNode(node1);
+		}
+
+
+		/// <summary>
+		/// Программно добавляет корневой информационный узел в карту сайта.
+		/// </summary>
+		/// <param name="node">Добавляемый информационный узел <see cref="NodemapItem"/>.</param>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="node"/> равен <see langword="null"/>.</exception>
 		public void AddTopNode(
 			NodemapItem node)
 		{
-			if (node is not null)
-				_topNodes.Add(node);
+			ArgumentNullException.ThrowIfNull(node);
+			_topNodes.Add(node);
 		}
 
 
@@ -102,12 +117,55 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="index">Порядковый индекс позиции вставки (начиная с 0).</param>
 		/// <param name="node">Вставляемый информационный узел.</param>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="node"/> равен <see langword="null"/>.</exception>
 		public void InsertTopNode(
 			int index,
 			NodemapItem node)
 		{
-			if (node is not null)
-				_topNodes.Insert(index, node);
+			ArgumentNullException.ThrowIfNull(node);
+			_topNodes.Insert(index, node);
+		}
+
+
+		/// <summary>
+		/// Программно вставляет дочерний узел в уже существующий родительский узел карты сайта.
+		/// </summary>
+		/// <param name="parentTarget">Идентификатор или путь целевого родительского узла.</param>
+		/// <param name="childNode">Новый дочерний узел <see cref="NodemapItem"/>.</param>
+		/// <returns>Значение <see langword="true"/>, если родительский узел найден и инъекция успешна; иначе — <see langword="false"/>.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="childNode"/> равен <see langword="null"/>.</exception>
+		public bool InjectChildNode(
+			string parentTarget,
+			NodemapItem childNode)
+		{
+			ArgumentNullException.ThrowIfNull(childNode);
+			if (NodesIndex.TryGetValue(parentTarget, out var parentNode1))
+			{
+				parentNode1.AddChildNode(childNode);
+				return true;
+			}
+			return false;
+		}
+
+
+		/// <summary>
+		/// Программно вставляет контентную страницу в существующий информационный узел графа.
+		/// </summary>
+		/// <param name="nodeTarget">Идентификатор информационного узла, в который добавляется страница.</param>
+		/// <param name="page">Новая страница контента <see cref="PagemapItem"/>.</param>
+		/// <returns>Значение <see langword="true"/>, если целевой узел найден и страница добавлена; иначе — <see langword="false"/>.</returns>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="page"/> равен <see langword="null"/>.</exception>
+		public bool InjectPageToNode(
+			string nodeTarget,
+			PagemapItem page)
+		{
+			ArgumentNullException.ThrowIfNull(page);
+			if (NodesIndex.TryGetValue(nodeTarget, out var node1))
+			{
+				node1.AddTopPage(page);
+				return true;
+			}
+			return false;
 		}
 
 

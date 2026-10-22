@@ -1,10 +1,61 @@
-﻿// rev 2026-10-21
+﻿// rev 2026-10-22
 
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 
 namespace Ans.Net10.Web
 {
+
+	/// <summary>
+	/// Облегченное декларативное определение информационного узла, применяемое для программных инъекций.
+	/// </summary>
+	public sealed class NodemapDef
+	{
+		/// <summary>
+		/// Инициализирует новый экземпляр класса <see cref="NodemapDef"/>.
+		/// </summary>
+		/// <param name="target">Строка назначения (ЧПУ-идентификатор, внутренний или внешний URL).</param>
+		/// <param name="face">Человекочитаемое наименование узла.</param>
+		/// <param name="childNodes">Массив дочерних узлов верхнего уровня.</param>
+		/// <param name="topPages">Массив корневых страниц, принадлежащих узлу.</param>
+		public NodemapDef(
+			string? target,
+			string face,
+			NodemapDef[]? childNodes = null,
+			PagemapDef[]? topPages = null)
+		{
+			Target = target;
+			Face = face;
+			ChildNodes = childNodes;
+			TopPages = topPages;
+		}
+
+		/// <summary>
+		/// Получает строку назначения узла.
+		/// </summary>
+		/// <returns>Строка назначения либо <see langword="null"/>.</returns>
+		public string? Target { get; }
+
+		/// <summary>
+		/// Получает отображаемое человекочитаемое наименование узла.
+		/// </summary>
+		/// <returns>Строка заголовка узла.</returns>
+		public string Face { get; }
+
+		/// <summary>
+		/// Получает массив описаний дочерних узлов.
+		/// </summary>
+		/// <returns>Массив объектов <see cref="NodemapDef"/> либо <see langword="null"/>.</returns>
+		public NodemapDef[]? ChildNodes { get; }
+
+		/// <summary>
+		/// Получает массив описаний корневых страниц узла.
+		/// </summary>
+		/// <returns>Массив объектов <see cref="PagemapDef"/> либо <see langword="null"/>.</returns>
+		public PagemapDef[]? TopPages { get; }
+	}
+
+
 
 	/// <summary>
 	/// Представляет информационный узел карты сайта, определяющий элемент структуры навигации.
@@ -21,7 +72,7 @@ namespace Ans.Net10.Web
 		private IReadOnlyCollection<PagemapItem>? _pagesCache1;
 
 
-		/* ctor */
+		/* ctors */
 
 
 		/// <summary>
@@ -53,7 +104,7 @@ namespace Ans.Net10.Web
 				Type = NodemapTypesEnum.Node;
 				Name = target;
 				var startPage1 = new PagemapItem(this, LibWebConsts.INDEX_PAGE_NAME, null, false);
-				_AddTopPage(startPage1);
+				AddTopPage(startPage1);
 				StartPage = startPage1;
 			}
 			else
@@ -61,6 +112,25 @@ namespace Ans.Net10.Web
 				Type = NodemapTypesEnum.ExternalUrl;
 				Name = null;
 			}
+		}
+
+
+		/// <summary>
+		/// Инициализирует новый экземпляр класса <see cref="NodemapItem"/> на основе декларативного описания.
+		/// </summary>
+		/// <param name="def">Объект декларативного описания узла.</param>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="def"/> равен <see langword="null"/>.</exception>
+		public NodemapItem(
+			NodemapDef def)
+			: this(def.Target, def.Face)
+		{
+			ArgumentNullException.ThrowIfNull(def);
+			if (def.TopPages is not null)
+				foreach (var page1 in def.TopPages)
+					AddTopPage(new PagemapItem(this, page1));
+			if (def.ChildNodes is not null)
+				foreach (var node1 in def.ChildNodes)
+					AddChildNode(new NodemapItem(node1));
 		}
 
 
@@ -152,6 +222,24 @@ namespace Ans.Net10.Web
 						x.Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))];
 
 
+		/* methods */
+
+
+		public void AddChildNode(
+			NodemapItem child)
+		{
+			child.ParentNode = this;
+			_childNodes.Add(child);
+		}
+
+
+		public void AddTopPage(
+			PagemapItem page)
+		{
+			_topPages.Add(page);
+		}
+
+
 		/* functions */
 
 
@@ -173,21 +261,6 @@ namespace Ans.Net10.Web
 
 		internal IReadOnlyCollection<PagemapItem> _AllTopPages
 			=> _topPages.AsReadOnly();
-
-
-		internal void _AddChildNode(
-			NodemapItem child)
-		{
-			child.ParentNode = this;
-			_childNodes.Add(child);
-		}
-
-
-		internal void _AddTopPage(
-			PagemapItem page)
-		{
-			_topPages.Add(page);
-		}
 
 
 		/* privates */

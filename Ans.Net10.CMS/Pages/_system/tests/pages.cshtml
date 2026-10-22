@@ -1,0 +1,192 @@
+﻿@page
+@using Microsoft.AspNetCore.Hosting
+@using System.IO
+@inject IWebHostEnvironment WebHostEnvironment
+@model AnsPageModel
+@{
+	var site1 = new SiteInfo(new DirectoryInfo($"{WebHostEnvironment.ContentRootPath}/Views/Nodes"));
+}
+
+
+
+<div class="row">
+	<div class="col-md-7">
+		<h2>Узлы и страницы (.cshtml) в Views/Nodes</h2>
+		<div id="site_pages" class="d-flex flex-wrap gap-3">
+			@foreach (var node1 in site1.Nodes)
+			{
+				var url1 = $"{Current.Host.VirtualPath}{node1.Url}";
+				<div class="my-4 node1" style="width:20rem;">
+					<h4 class="m-0">
+						<a target="_blank" href="@url1"><code>@node1.Name</code></a>
+						@node1.Catalog.HasViewStart.ToHtml("<small class=\"text-secondary\" title=\"ViewStart\">+VS</small>")
+						@node1.Catalog.HasLayout.ToHtml("<small class=\"text-secondary\" title=\"Layout\">+L</small>")
+					</h4>
+					@{
+						OutCatalogInfo(node1.Catalog);
+					}
+				</div>
+			}
+		</div>
+	</div>
+	<div class="col-md-5">
+		<h2>Индексы страниц в карте сайта</h2>
+		@foreach (var page1 in Current.Sitemap.PagesIndex.OrderBy(x => x.Value.Node.Name).ThenBy(x => x.Value.Path))
+		{
+			if (page1.Value.HasNoIndex)
+			{
+				<div class="ps-2">
+					<small class="opacity-50">@page1.Value.Node.Name</small>
+					<span>@page1.Key</span>
+				</div>
+			}
+			else
+			{
+				var url1 = $"{Current.Host.VirtualPath}{page1.Key}";
+				<div class="page1 ps-2" data-path="@url1">
+					<small class="opacity-50">@page1.Value.Node.Name</small>
+					<a target="_blank" href="@url1">@page1.Key</a>
+					<span></span>
+				</div>
+			}
+		}
+	</div>
+</div>
+
+
+
+<script defer>
+
+	document.querySelectorAll('.page1').forEach((e1) => {
+		const
+			info1 = e1.querySelector('span'),
+			url1 = e1.dataset.path;
+		checkUrl(url1).then(status1 => {
+			switch (status1) {
+				case 200:
+					info1.innerHTML = '&nbsp;—&nbsp;<em class="text-success">OK</em>';
+					break;
+				case 404:
+					info1.innerHTML = '&nbsp;—&nbsp;<em class="text-danger">404</em>';
+					break;
+				case 500:
+					info1.innerHTML = '&nbsp;—&nbsp;<em class="text-danger">500</em>';
+					break;
+				default:
+					info1.innerHTML = `&nbsp;—&nbsp;<em class="text-danger">${status1}</em>`;
+					break;
+			}
+		});
+	});
+
+	async function checkUrl(url) {
+		const response1 = await fetch(url, { method: 'GET' });
+		return response1.status;
+	}
+
+</script>
+
+
+
+@functions {
+
+	void OutCatalogInfo(CatalogInfo catalog)
+	{
+		<div class="catalog1">
+			@if (catalog.Catalogs?.Count() > 0)
+				foreach (var catalog1 in catalog.Catalogs)
+				{
+					OutCatalogInfo(catalog1);
+				}
+			@if (catalog.Pages?.Count() > 0)
+				foreach (var page1 in catalog.Pages)
+				{
+					var url1 = $"{Current.Host.VirtualPath}{page1.Url}";
+					<div class="page1 ps-2" data-path="@url1">
+						<small class="opacity-50">@catalog.Url</small>
+						<a target="_blank" href="@url1">@page1.Name</a>
+						<span></span>
+					</div>
+				}
+		</div>
+	}
+
+
+
+	class SiteInfo
+	{
+		public SiteInfo(DirectoryInfo dir)
+		{
+			Nodes = dir.GetDirectories()
+				.OrderBy(x => x.Name)
+				.Select(x => new NodeInfo(x));
+		}
+
+		public IEnumerable<NodeInfo> Nodes { get; }
+	}
+
+
+
+	class NodeInfo
+	{
+		public NodeInfo(DirectoryInfo dir)
+		{
+			Name = dir.Name;
+			Url = $"/{Name.Replace("_main", null).Make("{0}/")}";
+			Catalog = new CatalogInfo(Url, dir);
+		}
+
+		public string Name { get; }
+		public string Url { get; }
+		public CatalogInfo Catalog { get; }
+	}
+
+
+
+	class CatalogInfo
+	{
+		public CatalogInfo(string url, DirectoryInfo dir)
+		{
+			var files1 = dir
+				.GetFiles("*.cshtml")
+				.Where(x => x.Name.IndexOf('~') == -1)
+				.OrderBy(x => x.Name);
+			Name = dir.Name;
+			Url = url;
+			HasViewStart = files1.Any(
+				x => x.Name.Equals("_viewstart.cshtml",
+				StringComparison.InvariantCultureIgnoreCase));
+			HasLayout = files1.Any(
+				x => x.Name.Equals("_layout.cshtml",
+				StringComparison.InvariantCultureIgnoreCase));
+			Catalogs = dir.GetDirectories()
+				.OrderBy(x => x.Name)
+				.Select(x => new CatalogInfo($"{Url}{x.Name}/", x));
+			Pages = files1
+				.Where(x => x.Name[0] != '_')
+				.Select(x => new PageInfo(Url, x));
+		}
+
+		public string Name { get; }
+		public string Url { get; }
+		public IEnumerable<CatalogInfo> Catalogs { get; }
+		public IEnumerable<PageInfo> Pages { get; }
+		public bool HasViewStart { get; }
+		public bool HasLayout { get; }
+	}
+
+
+
+	class PageInfo
+	{
+		public PageInfo(string url, FileInfo page)
+		{
+			Name = page.Name[..^7];
+			Url = $"{url}{Name}".ReplaceEnd("/start", null);
+		}
+
+		public string Name { get; }
+		public string Url { get; }
+	}
+
+}

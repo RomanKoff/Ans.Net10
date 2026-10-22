@@ -1,4 +1,4 @@
-﻿// rev 2026-10-15
+﻿// rev 2026-10-22
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -23,6 +23,9 @@ namespace Ans.Net10.Web
 	/// </summary>
 	public static partial class LibWebStartup
 	{
+
+		/* functions */
+
 
 		/// <summary>
 		/// Выполняет централизованную регистрацию сервисов библиотеки.
@@ -183,25 +186,26 @@ namespace Ans.Net10.Web
 			if (options1.UseRuntimeCompilation)
 				mvcBuilder1.AddRazorRuntimeCompilation();
 
-			Console.WriteLine("======================================");
-			Console.WriteLine("Add_AnsNet10Web — OK");
-			Console.WriteLine("======================================");
-			Console.WriteLine();
+			SuppConsole.WriteColor(ConsoleColor.Yellow, "\nAdd_AnsNet10Web — OK");
+			SuppConsole.WriteColor(ConsoleColor.Yellow, "\n======================================\n\n");
 
 			return builder;
 		}
 
 
+		/* methods */
+
+
 		/// <summary>
-		/// Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline).
+		/// Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline)
 		/// </summary>
 		/// <param name="app">Экземпляр выполняемого веб-приложения <see cref="WebApplication"/>.</param>
+		/// <param name="sitemapInjections">Необязательный делегат для выполнения программных инъекций служебных узлов и страниц.</param>
 		/// <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
-		/// <exception cref="ArgumentNullException">
-		/// Вызывается, если переданный параметр <paramref name="app"/> равен <see langword="null"/>.
-		/// </exception>
+		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="app"/> равен <see langword="null"/>.</exception>
 		public static async Task Use_AnsNet10WebAsync(
-			this WebApplication app)
+			this WebApplication app,
+			Action<SitemapBuilder>? sitemapInjections = null)
 		{
 			ArgumentNullException.ThrowIfNull(app);
 
@@ -285,6 +289,8 @@ namespace Ans.Net10.Web
 			//--- sitemap
 			var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
 			await sitemapProvider1.InitializeAsync();
+			sitemapInjections?.Invoke(sitemapProvider1.Current);
+			sitemapProvider1.Current.BuildIndexes();
 
 			//--- nodes
 			if (options1.UseNodes)
@@ -293,10 +299,8 @@ namespace Ans.Net10.Web
 				await nodesResolver1.InitializeAsync();
 			}
 
-			Console.WriteLine("======================================");
-			Console.WriteLine("Use_AnsNet10WebAsync — OK");
-			Console.WriteLine("======================================");
-			Console.WriteLine();
+			SuppConsole.WriteColor(ConsoleColor.Yellow, "\nUse_AnsNet10WebAsync — OK");
+			SuppConsole.WriteColor(ConsoleColor.Yellow, "\n======================================\n\n");
 
 		}
 

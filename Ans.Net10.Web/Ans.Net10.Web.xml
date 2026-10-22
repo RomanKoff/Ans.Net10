@@ -2607,15 +2607,14 @@
             Вызывается, если переданный параметр <paramref name="builder"/> равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Web.LibWebStartup.Use_AnsNet10WebAsync(Microsoft.AspNetCore.Builder.WebApplication)">
+        <member name="M:Ans.Net10.Web.LibWebStartup.Use_AnsNet10WebAsync(Microsoft.AspNetCore.Builder.WebApplication,System.Action{Ans.Net10.Web.SitemapBuilder})">
             <summary>
-            Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline).
+            Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline)
             </summary>
             <param name="app">Экземпляр выполняемого веб-приложения <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/>.</param>
+            <param name="sitemapInjections">Необязательный делегат для выполнения программных инъекций служебных узлов и страниц.</param>
             <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
-            <exception cref="T:System.ArgumentNullException">
-            Вызывается, если переданный параметр <paramref name="app"/> равен <see langword="null"/>.
-            </exception>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="app"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="T:Ans.Net10.Web.Middlewares.AnsLocalizationMiddleware">
             <summary>
@@ -6106,6 +6105,44 @@
             Возвращает начальное текстовое значение многострочного поля ввода.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.NodemapDef">
+            <summary>
+            Облегченное декларативное определение информационного узла, применяемое для программных инъекций.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NodemapDef.#ctor(System.String,System.String,Ans.Net10.Web.NodemapDef[],Ans.Net10.Web.PagemapDef[])">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NodemapDef"/>.
+            </summary>
+            <param name="target">Строка назначения (ЧПУ-идентификатор, внутренний или внешний URL).</param>
+            <param name="face">Человекочитаемое наименование узла.</param>
+            <param name="childNodes">Массив дочерних узлов верхнего уровня.</param>
+            <param name="topPages">Массив корневых страниц, принадлежащих узлу.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapDef.Target">
+            <summary>
+            Получает строку назначения узла.
+            </summary>
+            <returns>Строка назначения либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapDef.Face">
+            <summary>
+            Получает отображаемое человекочитаемое наименование узла.
+            </summary>
+            <returns>Строка заголовка узла.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapDef.ChildNodes">
+            <summary>
+            Получает массив описаний дочерних узлов.
+            </summary>
+            <returns>Массив объектов <see cref="T:Ans.Net10.Web.NodemapDef"/> либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.NodemapDef.TopPages">
+            <summary>
+            Получает массив описаний корневых страниц узла.
+            </summary>
+            <returns>Массив объектов <see cref="T:Ans.Net10.Web.PagemapDef"/> либо <see langword="null"/>.</returns>
+        </member>
         <member name="T:Ans.Net10.Web.NodemapItem">
             <summary>
             Представляет информационный узел карты сайта, определяющий элемент структуры навигации.
@@ -6133,6 +6170,13 @@
             <param name="target">Строка назначения (идентификатор узла, внутренний или внешний URL).</param>
             <param name="face">Отображаемое человекочитаемое наименование узла.</param>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.NodemapItem.#ctor(Ans.Net10.Web.NodemapDef)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NodemapItem"/> на основе декларативного описания.
+            </summary>
+            <param name="def">Объект декларативного описания узла.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="def"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="P:Ans.Net10.Web.NodemapItem.Path">
             <summary>
@@ -6227,6 +6271,44 @@
             Не участвует в автоматическом иерархическом построении ЧПУ-маршрутов страниц.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.PagemapDef">
+            <summary>
+            Облегченное декларативное определение контентной страницы, применяемое для программных инъекций.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.PagemapDef.#ctor(System.String,System.String,System.Boolean,Ans.Net10.Web.PagemapDef[])">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.PagemapDef"/>.
+            </summary>
+            <param name="target">Строка назначения страницы (ЧПУ-сегмент или путь).</param>
+            <param name="face">Человекочитаемое название страницы.</param>
+            <param name="hasNoIndex">Признак отключения индексации для страницы и её потомков.</param>
+            <param name="childPages">Массив вложенных дочерних страниц.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapDef.Target">
+            <summary>
+            Получает оригинальную строку назначения страницы.
+            </summary>
+            <returns>Строковый идентификатор назначения.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapDef.Face">
+            <summary>
+            Получает человекочитаемое наименование страницы.
+            </summary>
+            <returns>Название страницы либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapDef.HasNoIndex">
+            <summary>
+            Получает значение, указывающее на отключение индексации потомков.
+            </summary>
+            <returns><see langword="true"/>, если индексация отключена; иначе — <see langword="false"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.PagemapDef.ChildPages">
+            <summary>
+            Получает массив вложенных дочерних страниц.
+            </summary>
+            <returns>Массив объектов <see cref="T:Ans.Net10.Web.PagemapDef"/> либо <see langword="null"/>.</returns>
+        </member>
         <member name="T:Ans.Net10.Web.PagemapItem">
             <summary>
             Представляет отдельную контентную страницу карты сайта, связанную с конкретным информационным узлом.
@@ -6256,6 +6338,14 @@
             <param name="face">Отображаемое наименование страницы. Если пустой — подставляется значение назначения.</param>
             <param name="hasNoIndex">Признак отсутствия индексной страницы в потомках.</param>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="node"/> или <paramref name="target"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.PagemapItem.#ctor(Ans.Net10.Web.NodemapItem,Ans.Net10.Web.PagemapDef)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.PagemapItem"/> на основе декларативного описания.
+            </summary>
+            <param name="node">Родительский информационный узел карты сайта.</param>
+            <param name="def">Объект декларативного описания страницы.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="def"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="P:Ans.Net10.Web.PagemapItem.Path">
             <summary>
@@ -6396,11 +6486,19 @@
             <param name="combinedPath">Составной ЧПУ-путь страницы в формате "ИмяУзла/ПутьСтраницы".</param>
             <returns>Найденный экземпляр <see cref="T:Ans.Net10.Web.PagemapItem"/> или <see langword="null"/>, если страница не найдена.</returns>
         </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.AddTopNodeDef(Ans.Net10.Web.NodemapDef)">
+            <summary>
+            Программно преобразует и добавляет корневой узел на основе его декларативного описания в конец коллекции.
+            </summary>
+            <param name="nodeDef">Декларативное описание добавляемого узла.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="nodeDef"/> равен <see langword="null"/>.</exception>
+        </member>
         <member name="M:Ans.Net10.Web.SitemapBuilder.AddTopNode(Ans.Net10.Web.NodemapItem)">
             <summary>
-            Добавляет готовый информационный узел в конец коллекции корневых элементов.
+            Программно добавляет корневой информационный узел в карту сайта.
             </summary>
-            <param name="node">Добавляемый информационный узел.</param>
+            <param name="node">Добавляемый информационный узел <see cref="T:Ans.Net10.Web.NodemapItem"/>.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="node"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.SitemapBuilder.InsertTopNode(System.Int32,Ans.Net10.Web.NodemapItem)">
             <summary>
@@ -6408,6 +6506,25 @@
             </summary>
             <param name="index">Порядковый индекс позиции вставки (начиная с 0).</param>
             <param name="node">Вставляемый информационный узел.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="node"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.InjectChildNode(System.String,Ans.Net10.Web.NodemapItem)">
+            <summary>
+            Программно вставляет дочерний узел в уже существующий родительский узел карты сайта.
+            </summary>
+            <param name="parentTarget">Идентификатор или путь целевого родительского узла.</param>
+            <param name="childNode">Новый дочерний узел <see cref="T:Ans.Net10.Web.NodemapItem"/>.</param>
+            <returns>Значение <see langword="true"/>, если родительский узел найден и инъекция успешна; иначе — <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="childNode"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.InjectPageToNode(System.String,Ans.Net10.Web.PagemapItem)">
+            <summary>
+            Программно вставляет контентную страницу в существующий информационный узел графа.
+            </summary>
+            <param name="nodeTarget">Идентификатор информационного узла, в который добавляется страница.</param>
+            <param name="page">Новая страница контента <see cref="T:Ans.Net10.Web.PagemapItem"/>.</param>
+            <returns>Значение <see langword="true"/>, если целевой узел найден и страница добавлена; иначе — <see langword="false"/>.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="page"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.SitemapBuilder.BuildIndexes">
             <summary>

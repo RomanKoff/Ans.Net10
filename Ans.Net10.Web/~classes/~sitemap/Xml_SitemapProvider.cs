@@ -1,4 +1,4 @@
-﻿// rev 2026-10-21
+﻿// rev 2026-10-22
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
@@ -216,7 +216,6 @@ namespace Ans.Net10.Web
 					tasks1.Add(_loadPagesForNodeAsync(node1));
 			});
 			await Task.WhenAll(tasks1);
-			builder.BuildIndexes();
 		}
 
 
@@ -279,7 +278,7 @@ namespace Ans.Net10.Web
 				foreach (var childDto1 in nodeDto.ChildItems)
 				{
 					var childNode1 = _parseNodeRecursive(childDto1);
-					node1._AddChildNode(childNode1);
+					node1.AddChildNode(childNode1);
 				}
 			return node1;
 		}
@@ -294,9 +293,9 @@ namespace Ans.Net10.Web
 			string face1 = pageDto.Face ?? string.Empty;
 			var page1 = new PagemapItem(node, target1, face1, pageDto.HasNoIndex);
 			if (parentPage is null)
-				node._AddTopPage(page1);
+				node.AddTopPage(page1);
 			else
-				parentPage._AddChildPage(page1);
+				parentPage.AddChildPage(page1);
 			if (page1.Type == PagemapTypesEnum.Page && pageDto.ChildItems is not null)
 				foreach (var childDto1 in pageDto.ChildItems)
 					_parsePageRecursive(childDto1, node, page1);
