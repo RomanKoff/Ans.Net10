@@ -19,7 +19,7 @@
 				var url1 = item1.GetUrl(Context);
 				<li>
 					<span>
-						<b>@item1.Type</b>
+						@GetTagsInfo(item1).ToHtml()<b>@item1.Type</b>
 						@switch (item1.Type)
 						{
 							case NodemapTypesEnum.Group:
@@ -56,7 +56,7 @@
 				var url1 = item1.GetUrl(Context);
 				<li>
 					<span>
-						<i>@item1.Type</i>
+						@GetTagsInfo(item1).ToHtml()<i>@item1.Type</i>
 						@switch (item1.Type)
 						{
 							case PagemapTypesEnum.Catalog:
@@ -87,6 +87,11 @@
 				</li>
 			}
 		</ul>
+	}
+
+	string GetTagsInfo(_MapItem_Proto item)
+	{
+		return $"{item.IsDisplayed().Make(string.Empty, "<em class=\"text-danger\" title=\"Hidden\">[H]&nbsp;</em>")}{item.IsPassthrough().Make("<em class=\"text-danger\" title=\"Passthrough\">[P]&nbsp;</em>")}";
 	}
 
 }

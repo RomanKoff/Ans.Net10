@@ -1,6 +1,7 @@
 ﻿@page
-@using Microsoft.AspNetCore.Hosting
+@using System.Collections.Frozen
 @using System.IO
+@using Microsoft.AspNetCore.Hosting
 @inject IWebHostEnvironment WebHostEnvironment
 @model AnsPageModel
 @{
@@ -11,6 +12,8 @@
 
 <div class="row">
 	<div class="col-md-7">
+
+
 		<h2>Узлы и страницы (.cshtml) в Views/Nodes</h2>
 		<div id="site_pages" class="d-flex flex-wrap gap-3">
 			@foreach (var node1 in site1.Nodes)
@@ -28,28 +31,18 @@
 				</div>
 			}
 		</div>
+
+
 	</div>
 	<div class="col-md-5">
+
+
 		<h2>Индексы страниц в карте сайта</h2>
-		@foreach (var page1 in Current.Sitemap.PagesIndex.OrderBy(x => x.Value.Node.Name).ThenBy(x => x.Value.Path))
-		{
-			if (page1.Value.HasNoIndex)
-			{
-				<div class="ps-2">
-					<small class="opacity-50">@page1.Value.Node.Name</small>
-					<span>@page1.Key</span>
-				</div>
-			}
-			else
-			{
-				var url1 = $"{Current.Host.VirtualPath}{page1.Key}";
-				<div class="page1 ps-2" data-path="@url1">
-					<small class="opacity-50">@page1.Value.Node.Name</small>
-					<a target="_blank" href="@url1">@page1.Key</a>
-					<span></span>
-				</div>
-			}
+		@{
+			OutNodes(Current.Sitemap.NodesIndex);
 		}
+
+
 	</div>
 </div>
 
@@ -89,6 +82,63 @@
 
 
 @functions {
+
+
+	void OutNodes(FrozenDictionary<string, NodemapItem> nodes)
+	{
+		if (nodes.Count > 0)
+			foreach (var node1 in nodes.OrderBy(x => x.Value.Name))
+			{
+				OutPages(node1.Value.AllTopPages);
+			}
+	}
+
+
+	void OutPages(IReadOnlyCollection<PagemapItem> pages)
+	{
+		if (pages.Count > 0)
+			foreach (var page1 in pages)
+			{
+				var url1 = page1.GetUrl(HttpContext);
+				string? pref1 = null;
+				string? title1 = null;
+				switch (page1.Type)
+				{
+					case PagemapTypesEnum.Catalog:
+						title1 = $"{page1.Path}/";
+						break;
+					case PagemapTypesEnum.Page:
+						title1 = page1.Path;
+						break;
+					case PagemapTypesEnum.InternalPath:
+						pref1 = "(int)";
+						title1 = page1.Target;
+						break;
+					case PagemapTypesEnum.ExternalUrl:
+						pref1 = "(ext)";
+						title1 = page1.Target;
+						break;
+				}
+
+				@if (page1.HasNoIndex)
+				{
+					<div class="ps-2">
+						<small class="opacity-50">@page1.Node.Name</small>
+						<span>@title1</span>
+					</div>
+				}
+				else
+				{
+					<div class="page1 ps-2" data-path="@url1">
+						<small class="opacity-50">@page1.Node.Name</small>
+						@pref1.ToHtml("{0}&nbsp;")<a target="_blank" href="@url1">@title1</a>
+						<span></span>
+					</div>
+				}
+				OutPages(page1.ChildPages);
+			}
+	}
+
 
 	void OutCatalogInfo(CatalogInfo catalog)
 	{

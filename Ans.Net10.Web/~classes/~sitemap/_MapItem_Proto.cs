@@ -1,4 +1,4 @@
-﻿// rev 2026-10-21
+﻿// rev 2026-10-22
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
@@ -30,7 +30,7 @@ namespace Ans.Net10.Web
 		/// <param name="httpContext">Контекст текущего HTTP-запроса.</param>
 		/// <returns>Абсолютный относительный путь к элементу навигации.</returns>
 		public abstract string GetUrl(HttpContext httpContext);
-		
+
 
 		/* ctor */
 
@@ -86,6 +86,27 @@ namespace Ans.Net10.Web
 		public bool IsShortTitleUnique { get; private set; }
 
 
+		/// <summary>
+		/// Получает очищенный массив тегов принудительного скрытия для высокопроизводительного поиска.
+		/// </summary>
+		/// <returns>Массив уникальных строковых тегов скрытия в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
+		public string[]? HidesArray { get; protected set; }
+
+
+		/// <summary>
+		/// Получает очищенный массив тегов обязательного отображения для высокопроизводительного поиска.
+		/// </summary>
+		/// <returns>Массив уникальных строковых тегов видимости в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
+		public string[]? ShowsArray { get; protected set; }
+
+
+		/// <summary>
+		/// Получает очищенный массив тегов «сквозного» поведения для высокопроизводительного поиска.
+		/// </summary>
+		/// <returns>Массив уникальных строковых тегов сквозного прохода в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
+		public string[]? PassthroughsArray { get; protected set; }
+
+
 		/* methods */
 
 
@@ -128,6 +149,139 @@ namespace Ans.Net10.Web
 			ShortTitleHtml = IsShortTitleUnique
 				? ShortTitle.ToHtml(true)
 				: TitleHtml;
+		}
+
+
+		/* functions */
+
+
+		/// <summary>
+		/// Определяет, должен ли элемент отображаться в интерфейсе на основе переданного тега контекста.
+		/// </summary>
+		/// <param name="tag">Тег для проверки видимости элемента. Если равен <see langword="null"/>, проверяется общая доступность элемента.</param>
+		/// <returns><see langword="true"/>, если элемент разрешен к отображению; иначе — <see langword="false"/>.</returns>
+		public bool IsDisplayed(
+			string? tag = null)
+		{
+			if (string.IsNullOrWhiteSpace(tag))
+				return ShowsArray is null;
+			if (ShowsArray is not null && Array.IndexOf(ShowsArray, tag.ToLowerInvariant()) != -1)
+				return true;
+			if (HidesArray is not null && Array.IndexOf(HidesArray, tag.ToLowerInvariant()) != -1)
+				return false;
+			return ShowsArray is null;
+		}
+
+
+		/// <summary>
+		/// Проверяет, удовлетворяет ли элемент условиям отображения на основе набора активных тегов контекста (например, ролей пользователя).
+		/// </summary>
+		/// <param name="activeTags">Коллекция активных тегов контекста.</param>
+		/// <returns><see langword="true"/>, если элемент должен быть отображен; иначе — <see langword="false"/>.</returns>
+		public bool IsDisplayedTags(
+			IEnumerable<string>? activeTags)
+		{
+			if (HidesArray is null && ShowsArray is null)
+				return true;
+			if (activeTags is null)
+				return ShowsArray is null;
+			if (ShowsArray is not null)
+			{
+				foreach (var tag1 in activeTags)
+					if (tag1 is not null && Array.IndexOf(ShowsArray, tag1.ToLowerInvariant()) != -1)
+						return true;
+				return false;
+			}
+			if (HidesArray is not null)
+				foreach (var tag1 in activeTags)
+					if (tag1 is not null && Array.IndexOf(HidesArray, tag1.ToLowerInvariant()) != -1)
+						return false;
+			return true;
+		}
+
+
+		/// <summary>
+		/// Определяет, должен ли элемент отображаться в интерфейсе на основе переданной строки активных тегов.
+		/// </summary>
+		/// <param name="rawActiveTags">Строка с активными тегами контекста, разделенными запятыми или точками с запятой (например, "user,premium").</param>
+		/// <returns><see langword="true"/>, если элемент разрешен к отображению; иначе — <see langword="false"/>.</returns>
+		public bool IsDisplayedTags(
+			string? rawActiveTags)
+		{
+			if (HidesArray is null && ShowsArray is null)
+				return true;
+			var parsedTags1 = _ParseTags(rawActiveTags);
+			return IsDisplayedTags(parsedTags1);
+		}
+
+
+		/// <summary>
+		/// Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) для указанного тега.
+		/// </summary>
+		/// <param name="tag">Тег для проверки сквозного поведения. Если равен <see langword="null"/>, возвращает <see langword="false"/>.</param>
+		/// <returns><see langword="true"/>, если элемент является прозрачным; иначе — <see langword="false"/>.</returns>
+		public bool IsPassthrough(
+			string? tag = null)
+		{
+			if (PassthroughsArray is null || string.IsNullOrWhiteSpace(tag))
+				return false;
+			return Array.IndexOf(PassthroughsArray, tag.ToLowerInvariant()) != -1;
+		}
+
+
+		/// <summary>
+		/// Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) при наличии хотя бы одного из активных тегов.
+		/// </summary>
+		/// <param name="activeTags">Коллекция активных тегов контекста.</param>
+		/// <returns><see langword="true"/>, если сработал сквозной проход; иначе — <see langword="false"/>.</returns>
+		public bool IsPassthroughTags(
+			IEnumerable<string>? activeTags)
+		{
+			if (PassthroughsArray is null || activeTags is null)
+				return false;
+			foreach (var tag1 in activeTags)
+				if (tag1 is not null && Array.IndexOf(PassthroughsArray, tag1.ToLowerInvariant()) != -1)
+					return true;
+			return false;
+		}
+
+
+		/// <summary>
+		/// Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) при наличии хотя бы одного из тегов в переданной строке.
+		/// </summary>
+		/// <param name="rawActiveTags">Строка с активными тегами контекста, разделенными запятыми или точками с запятой (например, "system,archive").</param>
+		/// <returns><see langword="true"/>, если сработал сквозной проход; иначе — <see langword="false"/>.</returns>
+		public bool IsPassthroughTags(
+			string? rawActiveTags)
+		{
+			if (PassthroughsArray is null || string.IsNullOrWhiteSpace(rawActiveTags))
+				return false;
+
+			var parsedTags1 = _ParseTags(rawActiveTags);
+			return IsPassthroughTags(parsedTags1);
+		}
+
+
+		/* internals */
+
+
+		/// <summary>
+		/// Выполняет разбор сырой строки тегов на очищенный массив уникальных элементов. 
+		/// Если строка пуста или не содержит валидных тегов, возвращает <see langword="null"/> для экономии памяти.
+		/// </summary>
+		/// <param name="rawTags">Сырая строка с тегами, разделенными запятыми или точками с запятой.</param>
+		/// <returns>Массив очищенных уникальных тегов в нижнем регистре либо <see langword="null"/>, если теги не обнаружены.</returns>
+		internal static string[]? _ParseTags(
+			string? rawTags)
+		{
+			if (string.IsNullOrWhiteSpace(rawTags))
+				return null;
+			var array1 = rawTags.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries)
+				.Select(x => x.Trim().ToLowerInvariant())
+				.Distinct()
+				.ToArray();
+			return array1.Length == 0
+				? null : array1;
 		}
 
 	}

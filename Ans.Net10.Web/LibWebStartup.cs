@@ -47,10 +47,9 @@ namespace Ans.Net10.Web
 
 			var appName1 = options1.AppName ?? builder.Environment.ApplicationName;
 
-			var defaultCultureName1 = options1.DefaultCulture;
 			builder.Services.Configure<RequestLocalizationOptions>(o =>
 			{
-				var defaultCulture1 = new CultureInfo(defaultCultureName1);
+				var defaultCulture1 = new CultureInfo(options1.DefaultCulture);
 				o.DefaultRequestCulture = new(defaultCulture1);
 				o.SupportedCultures = [defaultCulture1];
 				o.SupportedUICultures = [defaultCulture1];
@@ -211,6 +210,8 @@ namespace Ans.Net10.Web
 
 			var options1 = app.Services.GetRequiredService<LibWebOptions>();
 
+			app.UseRequestLocalization();
+
 			if (options1.UseDeveloperMode)
 			{
 				app.UseDeveloperExceptionPage();
@@ -242,7 +243,6 @@ namespace Ans.Net10.Web
 			app.UseMiddleware<AnsSitemapProfilerMiddleware>();
 
 			app.UseResponseCaching();
-			app.UseRequestLocalization();
 
 			//--- sessions
 			if (options1.UseSession)

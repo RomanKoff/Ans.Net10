@@ -1,2 +1,4 @@
-- name: Ans.Net10.Images
-  href: AnsNet10Images.md
+- name: Ans.Net10.Images. Как правильно обрабатывать тяжелый CPU-bound (pHash, ресайз) в веб-приложениях?
+  href: Ans.Net10.Images/article1.md
+- name: Features. Архитектура подсистемы тегов и динамической фильтрации в Ans.Net10.Web
+  href: features/sitemap-tags.md

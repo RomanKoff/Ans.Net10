@@ -7,7 +7,8 @@ namespace Ans.Net10.Common
 	/// Специализированный строковый словарь (строковые ключи и строковые значения),
 	/// поддерживающий текстовую сериализацию и десериализацию пар данных.
 	/// </summary>
-	public class DictString : _Dict_Proto<string, string>
+	public class DictString
+		: _Dict_Proto<string, string>
 	{
 
 		/* ctors */

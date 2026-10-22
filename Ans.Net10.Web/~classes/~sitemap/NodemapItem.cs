@@ -18,16 +18,25 @@ namespace Ans.Net10.Web
 		/// <param name="face">Человекочитаемое наименование узла.</param>
 		/// <param name="childNodes">Массив дочерних узлов верхнего уровня.</param>
 		/// <param name="topPages">Массив корневых страниц, принадлежащих узлу.</param>
+		/// <param name="tagHides">Перечень строковых тегов для принудительного скрытия узла.</param>
+		/// <param name="tagShows">Перечень строковых тегов, необходимых для отображения узла</param>
+		/// <param name="tagPassthroughs">Перечень строковых тегов, задающих сквозное поведение узла</param>
 		public NodemapDef(
 			string? target,
 			string face,
 			NodemapDef[]? childNodes = null,
-			PagemapDef[]? topPages = null)
+			PagemapDef[]? topPages = null,
+			string? tagHides = null,
+			string? tagShows = null,
+			string? tagPassthroughs = null)
 		{
 			Target = target;
 			Face = face;
 			ChildNodes = childNodes;
 			TopPages = topPages;
+			TagHides = tagHides;
+			TagShows = tagShows;
+			TagPassthroughs = tagPassthroughs;
 		}
 
 		/// <summary>
@@ -53,6 +62,24 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <returns>Массив объектов <see cref="PagemapDef"/> либо <see langword="null"/>.</returns>
 		public PagemapDef[]? TopPages { get; }
+
+		/// <summary>
+		/// Получает перечень строковых тегов для принудительного скрытия узла.
+		/// </summary>
+		/// <returns>Строка тегов или <see langword="null"/>.</returns>
+		public string? TagHides { get; }
+
+		/// <summary>
+		/// Получает перечень строковых тегов, необходимых для отображения узла.
+		/// </summary>
+		/// <returns>Строка тегов или <see langword="null"/>.</returns>
+		public string? TagShows { get; }
+
+		/// <summary>
+		/// Получает перечень строковых тегов, задающих сквозное поведение узла.
+		/// </summary>
+		/// <returns>Строка тегов или <see langword="null"/>.</returns>
+		public string? TagPassthroughs { get; }
 	}
 
 
@@ -80,15 +107,24 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="target">Строка назначения (идентификатор узла, внутренний или внешний URL).</param>
 		/// <param name="face">Отображаемое человекочитаемое наименование узла.</param>
+		/// <param name="tagHides">Сырая строка тегов принудительного скрытия.</param>
+		/// <param name="tagShows">Сырая строка тегов обязательного отображения.</param>
+		/// <param name="tagPassthroughs">Сырая строка тегов сквозного прохода.</param>
 		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
 		public NodemapItem(
 			string? target,
-			string face)
+			string face,
+			string? tagHides = null,
+			string? tagShows = null,
+			string? tagPassthroughs = null)
 		{
 			ArgumentNullException.ThrowIfNull(face);
 			Target = target;
 			SetFace(face);
 			ChildNodes = _childNodes.AsReadOnly();
+			HidesArray = _ParseTags(tagHides);
+			ShowsArray = _ParseTags(tagShows);
+			PassthroughsArray = _ParseTags(tagPassthroughs);
 			if (string.IsNullOrEmpty(target))
 			{
 				Type = NodemapTypesEnum.Group;
@@ -112,6 +148,7 @@ namespace Ans.Net10.Web
 				Type = NodemapTypesEnum.ExternalUrl;
 				Name = null;
 			}
+			AllTopPages = _topPages.AsReadOnly();
 		}
 
 
@@ -122,7 +159,7 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="def"/> равен <see langword="null"/>.</exception>
 		public NodemapItem(
 			NodemapDef def)
-			: this(def.Target, def.Face)
+			: this(def.Target, def.Face, def.TagHides, def.TagShows, def.TagPassthroughs)
 		{
 			ArgumentNullException.ThrowIfNull(def);
 			if (def.TopPages is not null)
@@ -222,9 +259,20 @@ namespace Ans.Net10.Web
 						x.Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))];
 
 
+		/// <summary>
+		/// Получает коллекцию всех корневых страниц, принадлежащих данному узлу.
+		/// </summary>
+		/// <returns>Коллекция только для чтения, содержащая вложенные страницы <see cref="PagemapItem"/>.</returns>
+		public IReadOnlyCollection<PagemapItem> AllTopPages { get; }
+
+
 		/* methods */
 
 
+		/// <summary>
+		/// Добавляет готовый дочерний информационный узел в текущую ветку дерева навигации.
+		/// </summary>
+		/// <param name="child">Экземпляр добавляемого дочернего информационного узла <see cref="NodemapItem"/>.</param>
 		public void AddChildNode(
 			NodemapItem child)
 		{
@@ -233,6 +281,10 @@ namespace Ans.Net10.Web
 		}
 
 
+		/// <summary>
+		/// Добавляет страницу верхнего уровня в коллекцию страниц текущего информационного узла.
+		/// </summary>
+		/// <param name="page">Экземпляр добавляемой контентной страницы <see cref="PagemapItem"/>.</param>
 		public void AddTopPage(
 			PagemapItem page)
 		{

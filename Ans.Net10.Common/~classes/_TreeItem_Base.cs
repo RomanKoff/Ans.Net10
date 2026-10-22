@@ -59,7 +59,6 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Добавляет дочерний узел в конец списка текущего элемента.
 		/// </summary>
-		/// <param name="item">Добавляемый дочерний элемент, реализующий <see cref="ITreeItem"/>.</param>
 		void AppendChild(ITreeItem item);
 
 		/// <summary>
@@ -106,28 +105,28 @@ namespace Ans.Net10.Common
 		/// <inheritdoc />
 		public IEnumerable<ITreeItem> Parents
 		{
-						get => _getParents();
+			get => _getParents();
 		}
 
 
 		/// <inheritdoc />
 		public IEnumerable<ITreeItem> Children
 		{
-						get => _children ?? Enumerable.Empty<ITreeItem>();
+			get => _children ?? Enumerable.Empty<ITreeItem>();
 		}
 
 
 		/// <inheritdoc />
 		public bool HasChildren
 		{
-						get => _children?.Count > 0;
+			get => _children?.Count > 0;
 		}
 
 
 		/// <inheritdoc />
 		public bool HasParent
 		{
-						get => Parent != null;
+			get => Parent != null;
 		}
 
 

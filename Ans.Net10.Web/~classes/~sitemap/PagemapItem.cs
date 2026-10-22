@@ -18,16 +18,25 @@ namespace Ans.Net10.Web
 		/// <param name="face">Человекочитаемое название страницы.</param>
 		/// <param name="hasNoIndex">Признак отключения индексации для страницы и её потомков.</param>
 		/// <param name="childPages">Массив вложенных дочерних страниц.</param>
+		/// <param name="tagHides">Перечень строковых тегов для принудительного скрытия страницы.</param>
+		/// <param name="tagShows">Перечень строковых тегов, необходимых для отображения страницы</param>
+		/// <param name="tagPassthroughs">Перечень строковых тегов, задающих сквозное поведение страницы</param>
 		public PagemapDef(
 			string target,
 			string? face,
 			bool hasNoIndex = false,
-			PagemapDef[]? childPages = null)
+			PagemapDef[]? childPages = null,
+			string? tagHides = null,
+			string? tagShows = null,
+			string? tagPassthroughs = null)
 		{
 			Target = target;
 			Face = face;
 			HasNoIndex = hasNoIndex;
 			ChildPages = childPages;
+			TagHides = tagHides;
+			TagShows = tagShows;
+			TagPassthroughs = tagPassthroughs;
 		}
 
 		/// <summary>
@@ -53,6 +62,24 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <returns>Массив объектов <see cref="PagemapDef"/> либо <see langword="null"/>.</returns>
 		public PagemapDef[]? ChildPages { get; }
+
+		/// <summary>
+		/// Получает перечень строковых тегов для принудительного скрытия страницы.
+		/// </summary>
+		/// <returns>Строка тегов или <see langword="null"/>.</returns>
+		public string? TagHides { get; }
+
+		/// <summary>
+		/// Получает перечень строковых тегов, необходимых для отображения страницы.
+		/// </summary>
+		/// <returns>Строка тегов или <see langword="null"/>.</returns>
+		public string? TagShows { get; }
+
+		/// <summary>
+		/// Получает перечень строковых тегов, задающих сквозное поведение страницы.
+		/// </summary>
+		/// <returns>Строка тегов или <see langword="null"/>.</returns>
+		public string? TagPassthroughs { get; }
 	}
 
 
@@ -80,12 +107,18 @@ namespace Ans.Net10.Web
 		/// <param name="target">Строка назначения страницы (ЧПУ-имя, внутренний или внешний URL).</param>
 		/// <param name="face">Отображаемое наименование страницы. Если пустой — подставляется значение назначения.</param>
 		/// <param name="hasNoIndex">Признак отсутствия индексной страницы в потомках.</param>
+		/// <param name="tagHides">Сырая строка тегов принудительного скрытия.</param>
+		/// <param name="tagShows">Сырая строка тегов обязательного отображения.</param>
+		/// <param name="tagPassthroughs">Сырая строка тегов сквозного прохода.</param>
 		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="node"/> или <paramref name="target"/> равен <see langword="null"/>.</exception>
 		public PagemapItem(
 			NodemapItem node,
 			string target,
 			string? face,
-			bool hasNoIndex = false)
+			bool hasNoIndex = false,
+			string? tagHides = null,
+			string? tagShows = null,
+			string? tagPassthroughs = null)
 		{
 			ArgumentNullException.ThrowIfNull(node);
 			ArgumentNullException.ThrowIfNull(target);
@@ -93,6 +126,9 @@ namespace Ans.Net10.Web
 			Target = target;
 			SetFace(string.IsNullOrEmpty(face) ? target == "start" ? null : target : face);
 			HasNoIndex = hasNoIndex;
+			HidesArray = _ParseTags(tagHides);
+			ShowsArray = _ParseTags(tagShows);
+			PassthroughsArray = _ParseTags(tagPassthroughs);
 			if (target.StartsWith('/'))
 			{
 				Type = PagemapTypesEnum.InternalPath;
@@ -121,7 +157,7 @@ namespace Ans.Net10.Web
 		public PagemapItem(
 			NodemapItem node,
 			PagemapDef def)
-			: this(node, def.Target, def.Face, def.HasNoIndex)
+			: this(node, def.Target, def.Face, def.HasNoIndex, def.TagHides, def.TagShows, def.TagPassthroughs)
 		{
 			ArgumentNullException.ThrowIfNull(def);
 			if (def.ChildPages is not null)
@@ -220,6 +256,11 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
+		/// <summary>
+		/// Добавляет подчиненную дочернюю контентную страницу в текущий навигационный элемент.
+		/// Автоматически переводит семантический тип страницы в статус <see cref="PagemapTypesEnum.Catalog"/>.
+		/// </summary>
+		/// <param name="child">Экземпляр добавляемой дочерней страницы <see cref="PagemapItem"/>.</param>
 		public void AddChildPage(
 			PagemapItem child)
 		{

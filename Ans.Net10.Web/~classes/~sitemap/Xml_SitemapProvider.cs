@@ -273,7 +273,9 @@ namespace Ans.Net10.Web
 			string target1 = nodeDto.Target ?? string.Empty;
 			string face1 = string.IsNullOrWhiteSpace(nodeDto.Face)
 				? target1 : nodeDto.Face;
-			var node1 = new NodemapItem(target1, face1);
+			var node1 = new NodemapItem(
+				target1, face1,
+				nodeDto.TagHides, nodeDto.TagShows, nodeDto.TagPassthroughs);
 			if (nodeDto.ChildItems is not null)
 				foreach (var childDto1 in nodeDto.ChildItems)
 				{
@@ -291,7 +293,9 @@ namespace Ans.Net10.Web
 		{
 			string target1 = pageDto.Target;
 			string face1 = pageDto.Face ?? string.Empty;
-			var page1 = new PagemapItem(node, target1, face1, pageDto.HasNoIndex);
+			var page1 = new PagemapItem(
+				node, target1, face1, pageDto.HasNoIndex,
+				pageDto.TagHides, pageDto.TagShows, pageDto.TagPassthroughs);
 			if (parentPage is null)
 				node.AddTopPage(page1);
 			else
