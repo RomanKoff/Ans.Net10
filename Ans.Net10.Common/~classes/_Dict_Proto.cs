@@ -38,6 +38,7 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Преобразует ключ типа <typeparamref name="TKey"/> в строковое представление для последующей сериализации.
 		/// </summary>
+		/// <param name="key">Экземпляр ключа типа <typeparamref name="TKey"/>.</param>
 		/// <returns>Строковое представление переданного ключа.</returns>
 		public abstract string KeyToString(TKey key);
 
@@ -45,6 +46,7 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Преобразует значение типа <typeparamref name="TValue"/> в строковое представление для последующей сериализации.
 		/// </summary>
+		/// <param name="value">Экземпляр значения типа <typeparamref name="TValue"/>.</param>
 		/// <returns>Строковое представление переданного значения.</returns>
 		public abstract string ValueToString(TValue value);
 

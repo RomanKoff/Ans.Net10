@@ -40,19 +40,20 @@
 				<xs:documentation>Не имеет стартовой страницы.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
-		<xs:attribute name="hide" type="xs:string" use="optional">
+		<xs:attribute name="display" type="xs:string" use="optional">
 			<xs:annotation>
-				<xs:documentation>Список тегов для которых элемент не отображается.</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="show" type="xs:string" use="optional">
-			<xs:annotation>
-				<xs:documentation>Список тегов только для которых элемент отображается.</xs:documentation>
+				<xs:documentation>
+					Получает или задает декларативное правило отображения элемента.
+					Формат строки: "теги_показа|теги_скрытия" (например, "main,header", "|footer").
+				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 		<xs:attribute name="pass" type="xs:string" use="optional">
 			<xs:annotation>
-				<xs:documentation>Список тегов в которых элемент невидим, но вместо себя выводит свои дочерние элементы.</xs:documentation>
+				<xs:documentation>
+					Получает или задает декларативное правило сквозного поведения элемента.
+					Формат строки: "теги_включения|теги_исключения" (например, "footer", "|main,header").
+				</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>

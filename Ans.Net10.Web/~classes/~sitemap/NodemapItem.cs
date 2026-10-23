@@ -1,4 +1,4 @@
-﻿// rev 2026-10-22
+﻿// rev 2026-10-23
 
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
@@ -10,6 +10,7 @@ namespace Ans.Net10.Web
 	/// Облегченное декларативное определение информационного узла, применяемое для программных инъекций.
 	/// </summary>
 	public sealed class NodemapDef
+		: _MapDef_Base
 	{
 		/// <summary>
 		/// Инициализирует новый экземпляр класса <see cref="NodemapDef"/>.
@@ -18,25 +19,22 @@ namespace Ans.Net10.Web
 		/// <param name="face">Человекочитаемое наименование узла.</param>
 		/// <param name="childNodes">Массив дочерних узлов верхнего уровня.</param>
 		/// <param name="topPages">Массив корневых страниц, принадлежащих узлу.</param>
-		/// <param name="tagHides">Перечень строковых тегов для принудительного скрытия узла.</param>
-		/// <param name="tagShows">Перечень строковых тегов, необходимых для отображения узла</param>
-		/// <param name="tagPassthroughs">Перечень строковых тегов, задающих сквозное поведение узла</param>
+		/// <param name="display">Декларативное правило отображения элемента ("показ|скрытие").</param>
+		/// <param name="passthroughs">Декларативное правило задающих сквозное поведение элемента ("сквозной|обычный").</param>
 		public NodemapDef(
 			string? target,
 			string face,
 			NodemapDef[]? childNodes = null,
 			PagemapDef[]? topPages = null,
-			string? tagHides = null,
-			string? tagShows = null,
-			string? tagPassthroughs = null)
+			string? display = null,
+			string? passthroughs = null)
 		{
 			Target = target;
 			Face = face;
 			ChildNodes = childNodes;
 			TopPages = topPages;
-			TagHides = tagHides;
-			TagShows = tagShows;
-			TagPassthroughs = tagPassthroughs;
+			Display = display;
+			Passthroughs = passthroughs;
 		}
 
 		/// <summary>
@@ -62,24 +60,6 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <returns>Массив объектов <see cref="PagemapDef"/> либо <see langword="null"/>.</returns>
 		public PagemapDef[]? TopPages { get; }
-
-		/// <summary>
-		/// Получает перечень строковых тегов для принудительного скрытия узла.
-		/// </summary>
-		/// <returns>Строка тегов или <see langword="null"/>.</returns>
-		public string? TagHides { get; }
-
-		/// <summary>
-		/// Получает перечень строковых тегов, необходимых для отображения узла.
-		/// </summary>
-		/// <returns>Строка тегов или <see langword="null"/>.</returns>
-		public string? TagShows { get; }
-
-		/// <summary>
-		/// Получает перечень строковых тегов, задающих сквозное поведение узла.
-		/// </summary>
-		/// <returns>Строка тегов или <see langword="null"/>.</returns>
-		public string? TagPassthroughs { get; }
 	}
 
 
@@ -107,24 +87,31 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="target">Строка назначения (идентификатор узла, внутренний или внешний URL).</param>
 		/// <param name="face">Отображаемое человекочитаемое наименование узла.</param>
-		/// <param name="tagHides">Сырая строка тегов принудительного скрытия.</param>
-		/// <param name="tagShows">Сырая строка тегов обязательного отображения.</param>
-		/// <param name="tagPassthroughs">Сырая строка тегов сквозного прохода.</param>
-		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
+		/// <param name="display">
+		/// Декларативное правило видимости в формате <c>"теги_показа|теги_скрытия"</c> (например, <c>"premium,admin|archive"</c>, <c>"manager"</c> или <c>"|guest"</c>). 
+		/// Переданная строка автоматически парсится в высокопроизводительные nullable-массивы тегов.
+		/// </param>		
+		/// <param name="passthroughs">
+		/// Декларативное правило сквозного поведения (прозрачности) в формате <c>"теги_включения|теги_исключения"</c> (например, <c>"system|debug-off"</c>, <c>"mobile"</c> или <c>"|desktop"</c>). 
+		/// Переданная строка автоматически парсится в высокопроизводительные nullable-массивы тегов активации и отключения сквозного режима.
+		/// </param>
+		///  <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
 		public NodemapItem(
 			string? target,
 			string face,
-			string? tagHides = null,
-			string? tagShows = null,
-			string? tagPassthroughs = null)
+			string? display = null,
+			string? passthroughs = null)
 		{
 			ArgumentNullException.ThrowIfNull(face);
 			Target = target;
 			SetFace(face);
 			ChildNodes = _childNodes.AsReadOnly();
-			HidesArray = _ParseTags(tagHides);
-			ShowsArray = _ParseTags(tagShows);
-			PassthroughsArray = _ParseTags(tagPassthroughs);
+			_ParseRule(display, out var shows1, out var hides1);
+			ShowsArray = shows1;
+			HidesArray = hides1;
+			_ParseRule(passthroughs, out var on1, out var off1);
+			PassthroughsOnArray = on1;
+			PassthroughsOffArray = off1;
 			if (string.IsNullOrEmpty(target))
 			{
 				Type = NodemapTypesEnum.Group;
@@ -159,7 +146,7 @@ namespace Ans.Net10.Web
 		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="def"/> равен <see langword="null"/>.</exception>
 		public NodemapItem(
 			NodemapDef def)
-			: this(def.Target, def.Face, def.TagHides, def.TagShows, def.TagPassthroughs)
+			: this(def.Target, def.Face, def.Display, def.Passthroughs)
 		{
 			ArgumentNullException.ThrowIfNull(def);
 			if (def.TopPages is not null)

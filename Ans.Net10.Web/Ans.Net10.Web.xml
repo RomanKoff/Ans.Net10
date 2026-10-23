@@ -6110,7 +6110,7 @@
             Облегченное декларативное определение информационного узла, применяемое для программных инъекций.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.NodemapDef.#ctor(System.String,System.String,Ans.Net10.Web.NodemapDef[],Ans.Net10.Web.PagemapDef[],System.String,System.String,System.String)">
+        <member name="M:Ans.Net10.Web.NodemapDef.#ctor(System.String,System.String,Ans.Net10.Web.NodemapDef[],Ans.Net10.Web.PagemapDef[],System.String,System.String)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NodemapDef"/>.
             </summary>
@@ -6118,9 +6118,8 @@
             <param name="face">Человекочитаемое наименование узла.</param>
             <param name="childNodes">Массив дочерних узлов верхнего уровня.</param>
             <param name="topPages">Массив корневых страниц, принадлежащих узлу.</param>
-            <param name="tagHides">Перечень строковых тегов для принудительного скрытия узла.</param>
-            <param name="tagShows">Перечень строковых тегов, необходимых для отображения узла</param>
-            <param name="tagPassthroughs">Перечень строковых тегов, задающих сквозное поведение узла</param>
+            <param name="display">Декларативное правило отображения элемента ("показ|скрытие").</param>
+            <param name="passthroughs">Декларативное правило задающих сквозное поведение элемента ("сквозной|обычный").</param>
         </member>
         <member name="P:Ans.Net10.Web.NodemapDef.Target">
             <summary>
@@ -6146,24 +6145,6 @@
             </summary>
             <returns>Массив объектов <see cref="T:Ans.Net10.Web.PagemapDef"/> либо <see langword="null"/>.</returns>
         </member>
-        <member name="P:Ans.Net10.Web.NodemapDef.TagHides">
-            <summary>
-            Получает перечень строковых тегов для принудительного скрытия узла.
-            </summary>
-            <returns>Строка тегов или <see langword="null"/>.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.NodemapDef.TagShows">
-            <summary>
-            Получает перечень строковых тегов, необходимых для отображения узла.
-            </summary>
-            <returns>Строка тегов или <see langword="null"/>.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.NodemapDef.TagPassthroughs">
-            <summary>
-            Получает перечень строковых тегов, задающих сквозное поведение узла.
-            </summary>
-            <returns>Строка тегов или <see langword="null"/>.</returns>
-        </member>
         <member name="T:Ans.Net10.Web.NodemapItem">
             <summary>
             Представляет информационный узел карты сайта, определяющий элемент структуры навигации.
@@ -6184,16 +6165,21 @@
             </code>
             </remarks>
         </member>
-        <member name="M:Ans.Net10.Web.NodemapItem.#ctor(System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:Ans.Net10.Web.NodemapItem.#ctor(System.String,System.String,System.String,System.String)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NodemapItem"/>.
             </summary>
             <param name="target">Строка назначения (идентификатор узла, внутренний или внешний URL).</param>
             <param name="face">Отображаемое человекочитаемое наименование узла.</param>
-            <param name="tagHides">Сырая строка тегов принудительного скрытия.</param>
-            <param name="tagShows">Сырая строка тегов обязательного отображения.</param>
-            <param name="tagPassthroughs">Сырая строка тегов сквозного прохода.</param>
-            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
+            <param name="display">
+            Декларативное правило видимости в формате <c>"теги_показа|теги_скрытия"</c> (например, <c>"premium,admin|archive"</c>, <c>"manager"</c> или <c>"|guest"</c>). 
+            Переданная строка автоматически парсится в высокопроизводительные nullable-массивы тегов.
+            </param>		
+            <param name="passthroughs">
+            Декларативное правило сквозного поведения (прозрачности) в формате <c>"теги_включения|теги_исключения"</c> (например, <c>"system|debug-off"</c>, <c>"mobile"</c> или <c>"|desktop"</c>). 
+            Переданная строка автоматически парсится в высокопроизводительные nullable-массивы тегов активации и отключения сквозного режима.
+            </param>
+             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="face"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.NodemapItem.#ctor(Ans.Net10.Web.NodemapDef)">
             <summary>
@@ -6318,7 +6304,7 @@
             Облегченное декларативное определение контентной страницы, применяемое для программных инъекций.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.PagemapDef.#ctor(System.String,System.String,System.Boolean,Ans.Net10.Web.PagemapDef[],System.String,System.String,System.String)">
+        <member name="M:Ans.Net10.Web.PagemapDef.#ctor(System.String,System.String,System.Boolean,Ans.Net10.Web.PagemapDef[],System.String,System.String)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.PagemapDef"/>.
             </summary>
@@ -6326,9 +6312,8 @@
             <param name="face">Человекочитаемое название страницы.</param>
             <param name="hasNoIndex">Признак отключения индексации для страницы и её потомков.</param>
             <param name="childPages">Массив вложенных дочерних страниц.</param>
-            <param name="tagHides">Перечень строковых тегов для принудительного скрытия страницы.</param>
-            <param name="tagShows">Перечень строковых тегов, необходимых для отображения страницы</param>
-            <param name="tagPassthroughs">Перечень строковых тегов, задающих сквозное поведение страницы</param>
+            <param name="display">Декларативное правило отображения элемента ("показ|скрытие").</param>
+            <param name="passthroughs">Декларативное правило задающих сквозное поведение элемента ("сквозной|обычный").</param>
         </member>
         <member name="P:Ans.Net10.Web.PagemapDef.Target">
             <summary>
@@ -6354,24 +6339,6 @@
             </summary>
             <returns>Массив объектов <see cref="T:Ans.Net10.Web.PagemapDef"/> либо <see langword="null"/>.</returns>
         </member>
-        <member name="P:Ans.Net10.Web.PagemapDef.TagHides">
-            <summary>
-            Получает перечень строковых тегов для принудительного скрытия страницы.
-            </summary>
-            <returns>Строка тегов или <see langword="null"/>.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.PagemapDef.TagShows">
-            <summary>
-            Получает перечень строковых тегов, необходимых для отображения страницы.
-            </summary>
-            <returns>Строка тегов или <see langword="null"/>.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.PagemapDef.TagPassthroughs">
-            <summary>
-            Получает перечень строковых тегов, задающих сквозное поведение страницы.
-            </summary>
-            <returns>Строка тегов или <see langword="null"/>.</returns>
-        </member>
         <member name="T:Ans.Net10.Web.PagemapItem">
             <summary>
             Представляет отдельную контентную страницу карты сайта, связанную с конкретным информационным узлом.
@@ -6392,7 +6359,7 @@
             </code>
             </remarks>
         </member>
-        <member name="M:Ans.Net10.Web.PagemapItem.#ctor(Ans.Net10.Web.NodemapItem,System.String,System.String,System.Boolean,System.String,System.String,System.String)">
+        <member name="M:Ans.Net10.Web.PagemapItem.#ctor(Ans.Net10.Web.NodemapItem,System.String,System.String,System.Boolean,System.String,System.String)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.PagemapItem"/>.
             </summary>
@@ -6400,9 +6367,14 @@
             <param name="target">Строка назначения страницы (ЧПУ-имя, внутренний или внешний URL).</param>
             <param name="face">Отображаемое наименование страницы. Если пустой — подставляется значение назначения.</param>
             <param name="hasNoIndex">Признак отсутствия индексной страницы в потомках.</param>
-            <param name="tagHides">Сырая строка тегов принудительного скрытия.</param>
-            <param name="tagShows">Сырая строка тегов обязательного отображения.</param>
-            <param name="tagPassthroughs">Сырая строка тегов сквозного прохода.</param>
+            <param name="display">
+            Декларативное правило видимости в формате <c>"теги_показа|теги_скрытия"</c> (например, <c>"premium,admin|archive"</c>, <c>"manager"</c> или <c>"|guest"</c>). 
+            Переданная строка автоматически парсится в высокопроизводительные nullable-массивы тегов.
+            </param>		
+            <param name="passthroughs">
+            Декларативное правило сквозного поведения (прозрачности) в формате <c>"теги_включения|теги_исключения"</c> (например, <c>"system|debug-off"</c>, <c>"mobile"</c> или <c>"|desktop"</c>). 
+            Переданная строка автоматически парсится в высокопроизводительные nullable-массивы тегов активации и отключения сквозного режима.
+            </param>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="node"/> или <paramref name="target"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.PagemapItem.#ctor(Ans.Net10.Web.NodemapItem,Ans.Net10.Web.PagemapDef)">
@@ -6666,6 +6638,18 @@
         <member name="M:Ans.Net10.Web.Xml_SitemapProvider.Dispose">
             <inheritdoc />
         </member>
+        <member name="P:Ans.Net10.Web._MapDef_Base.Display">
+            <summary>
+            Получает или задает декларативное правило отображения элемента ("показ|скрытие").
+            </summary>
+            <returns>Строка правила либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web._MapDef_Base.Passthroughs">
+            <summary>
+            Получает или задает декларативное правило сквозного прохода элемента ("включение|исключение").
+            </summary>
+            <returns>Строка правила либо <see langword="null"/>.</returns>
+        </member>
         <member name="T:Ans.Net10.Web._MapItem_Proto">
             <summary>
             Абстрактный прототип класса для элементов карты сайта (Узел, Страница).
@@ -6737,11 +6721,17 @@
             </summary>
             <returns>Массив уникальных строковых тегов видимости в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
         </member>
-        <member name="P:Ans.Net10.Web._MapItem_Proto.PassthroughsArray">
+        <member name="P:Ans.Net10.Web._MapItem_Proto.PassthroughsOnArray">
             <summary>
-            Получает очищенный массив тегов «сквозного» поведения для высокопроизводительного поиска.
+            Получает очищенный массив тегов активации «сквозного» поведения.
             </summary>
-            <returns>Массив уникальных строковых тегов сквозного прохода в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
+            <returns>Массив строковых тегов включения сквозного прохода либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web._MapItem_Proto.PassthroughsOffArray">
+            <summary>
+            Получает очищенный массив тегов принудительного отключения «сквозного» поведения.
+            </summary>
+            <returns>Массив строковых тегов исключения сквозного прохода либо <see langword="null"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Web._MapItem_Proto.SetFace(System.String)">
             <summary>
@@ -6767,13 +6757,6 @@
             <param name="activeTags">Коллекция активных тегов контекста.</param>
             <returns><see langword="true"/>, если элемент должен быть отображен; иначе — <see langword="false"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Web._MapItem_Proto.IsDisplayedTags(System.String)">
-            <summary>
-            Определяет, должен ли элемент отображаться в интерфейсе на основе переданной строки активных тегов.
-            </summary>
-            <param name="rawActiveTags">Строка с активными тегами контекста, разделенными запятыми или точками с запятой (например, "user,premium").</param>
-            <returns><see langword="true"/>, если элемент разрешен к отображению; иначе — <see langword="false"/>.</returns>
-        </member>
         <member name="M:Ans.Net10.Web._MapItem_Proto.IsPassthrough(System.String)">
             <summary>
             Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) для указанного тега.
@@ -6783,25 +6766,32 @@
         </member>
         <member name="M:Ans.Net10.Web._MapItem_Proto.IsPassthroughTags(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
-            Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) при наличии хотя бы одного из активных тегов.
+            Определяет, является ли текущий элемент структуры «сквозным» при наличии активных тегов контекста.
             </summary>
             <param name="activeTags">Коллекция активных тегов контекста.</param>
             <returns><see langword="true"/>, если сработал сквозной проход; иначе — <see langword="false"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Web._MapItem_Proto.IsPassthroughTags(System.String)">
+        <member name="M:Ans.Net10.Web._MapItem_Proto._ParseRule(System.String,System.String[]@,System.String[]@)">
             <summary>
-            Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) при наличии хотя бы одного из тегов в переданной строке.
+            Разбирает единую строку правил "разрешено|запрещено" и инициализирует внутренние nullable-массивы тегов.
             </summary>
-            <param name="rawActiveTags">Строка с активными тегами контекста, разделенными запятыми или точками с запятой (например, "system,archive").</param>
-            <returns><see langword="true"/>, если сработал сквозной проход; иначе — <see langword="false"/>.</returns>
+            <param name="rawRules">Сырая строка правила из атрибута.</param>
+            <param name="allow">Выходной массив разрешающих тегов.</param>
+            <param name="deny">Выходной массив запрещающих тегов.</param>
         </member>
-        <member name="M:Ans.Net10.Web._MapItem_Proto._ParseTags(System.String)">
+        <member name="P:Ans.Net10.Web._MapItemXmlDto_Base.Display">
             <summary>
-            Выполняет разбор сырой строки тегов на очищенный массив уникальных элементов. 
-            Если строка пуста или не содержит валидных тегов, возвращает <see langword="null"/> для экономии памяти.
+            Получает или задает декларативное правило отображения элемента.
+            Формат строки: "теги_показа|теги_скрытия" (например, "main,header", "|footer").
             </summary>
-            <param name="rawTags">Сырая строка с тегами, разделенными запятыми или точками с запятой.</param>
-            <returns>Массив очищенных уникальных тегов в нижнем регистре либо <see langword="null"/>, если теги не обнаружены.</returns>
+            <returns>Строка с правилами отображения либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web._MapItemXmlDto_Base.Passthroughs">
+            <summary>
+            Получает или задает декларативное правило сквозного поведения элемента.
+            Формат строки: "теги_включения|теги_исключения" (например, "footer", "|main,header").
+            </summary>
+            <returns>Строка с правилами сквозного прохода либо <see langword="null"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.NodesXmlDto">
             <summary>
@@ -6836,36 +6826,6 @@
             Получает или задает человекочитаемое наименование (интерфейс) или шаблон названия элемента.
             </summary>
             <returns>Человекочитаемый заголовок или маска отображения узла.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.NodeItemXmlDto.TagHides">
-            <summary>
-            Получает или задает перечень строковых тегов (меток), при наличии которых элемент должен быть принудительно скрыт в интерфейсе.
-            </summary>
-            <remarks>
-            Используется в подсистемах динамической фильтрации контента для исключения элементов на основе ролей или условий. 
-            Обычно содержит список тегов, разделенных запятой или точкой с запятой.
-            </remarks>
-            <returns>Строка, содержащая теги скрытия элемента, либо <see langword="null"/>, если ограничение отсутствует.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.NodeItemXmlDto.TagShows">
-            <summary>
-            Получает или задает перечень строковых тегов (меток), которые необходимы для отображения данного элемента в интерфейсе.
-            </summary>
-            <remarks>
-            Элемент будет визуализирован только в том случае, если контекст рендеринга удовлетворяет указанным условиям (белый список). 
-            Обычно содержит список тегов, разделенных запятой или точкой с запятой.
-            </remarks>
-            <returns>Строка, содержащая теги видимости элемента, либо <see langword="null"/>, если элемент доступен для всех.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.NodeItemXmlDto.TagPassthroughs">
-            <summary>
-            Получает или задает перечень строковых тегов (меток), определяющих «сквозное» поведение (прозрачность) элемента структуры.
-            </summary>
-            <remarks>
-            Применяется для декоративных или служебных элементов, которые сами не должны выводиться в разметку, 
-            но их дочерние потомки обязаны быть обработаны и подняты на уровень выше в иерархии меню.
-            </remarks>
-            <returns>Строка, содержащая теги сквозной фильтрации, либо <see langword="null"/>, если элемент обрабатывается в стандартном режиме.</returns>
         </member>
         <member name="T:Ans.Net10.Web.PagesXmlDto">
             <summary>
@@ -6906,36 +6866,6 @@
             Получает или задает флаг, указывающий на отсутствие у данного элемента стартовой страницы.
             </summary>
             <returns><see langword="true"/>, если для данного уровня структуры отключена индексная страница; иначе — <see langword="false"/>.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.PageItemXmlDto.TagHides">
-            <summary>
-            Получает или задает перечень строковых тегов (меток), при наличии которых элемент должен быть принудительно скрыт в интерфейсе.
-            </summary>
-            <remarks>
-            Используется в подсистемах динамической фильтрации контента для исключения элементов на основе ролей или условий. 
-            Обычно содержит список тегов, разделенных запятой или точкой с запятой.
-            </remarks>
-            <returns>Строка, содержащая теги скрытия элемента, либо <see langword="null"/>, если ограничение отсутствует.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.PageItemXmlDto.TagShows">
-            <summary>
-            Получает или задает перечень строковых тегов (меток), которые необходимы для отображения данного элемента в интерфейсе.
-            </summary>
-            <remarks>
-            Элемент будет визуализирован только в том случае, если контекст рендеринга удовлетворяет указанным условиям (белый список). 
-            Обычно содержит список тегов, разделенных запятой или точкой с запятой.
-            </remarks>
-            <returns>Строка, содержащая теги видимости элемента, либо <see langword="null"/>, если элемент доступен для всех.</returns>
-        </member>
-        <member name="P:Ans.Net10.Web.PageItemXmlDto.TagPassthroughs">
-            <summary>
-            Получает или задает перечень строковых тегов (меток), определяющих «сквозное» поведение (прозрачность) элемента структуры.
-            </summary>
-            <remarks>
-            Применяется для декоративных или служебных элементов, которые сами не должны выводиться в разметку, 
-            но их дочерние потомки обязаны быть обработаны и подняты на уровень выше в иерархии меню.
-            </remarks>
-            <returns>Строка, содержащая теги сквозной фильтрации, либо <see langword="null"/>, если элемент обрабатывается в стандартном режиме.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Exts_ClaimsPrincipal">
             <summary>

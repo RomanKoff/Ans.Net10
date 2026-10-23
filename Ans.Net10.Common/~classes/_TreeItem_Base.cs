@@ -59,6 +59,7 @@ namespace Ans.Net10.Common
 		/// <summary>
 		/// Добавляет дочерний узел в конец списка текущего элемента.
 		/// </summary>
+		/// <param name="item">Добавляемый дочерний элемент, реализующий <see cref="ITreeItem"/>.</param>
 		void AppendChild(ITreeItem item);
 
 		/// <summary>

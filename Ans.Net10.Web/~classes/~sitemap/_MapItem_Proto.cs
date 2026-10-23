@@ -101,10 +101,18 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Получает очищенный массив тегов «сквозного» поведения для высокопроизводительного поиска.
+		/// Получает очищенный массив тегов активации «сквозного» поведения.
 		/// </summary>
-		/// <returns>Массив уникальных строковых тегов сквозного прохода в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
-		public string[]? PassthroughsArray { get; protected set; }
+		/// <returns>Массив строковых тегов включения сквозного прохода либо <see langword="null"/>.</returns>
+		public string[]? PassthroughsOnArray { get; protected set; }
+
+
+		/// <summary>
+		/// Получает очищенный массив тегов принудительного отключения «сквозного» поведения.
+		/// </summary>
+		/// <returns>Массив строковых тегов исключения сквозного прохода либо <see langword="null"/>.</returns>
+		public string[]? PassthroughsOffArray { get; protected set; }
+
 
 
 		/* methods */
@@ -201,21 +209,6 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Определяет, должен ли элемент отображаться в интерфейсе на основе переданной строки активных тегов.
-		/// </summary>
-		/// <param name="rawActiveTags">Строка с активными тегами контекста, разделенными запятыми или точками с запятой (например, "user,premium").</param>
-		/// <returns><see langword="true"/>, если элемент разрешен к отображению; иначе — <see langword="false"/>.</returns>
-		public bool IsDisplayedTags(
-			string? rawActiveTags)
-		{
-			if (HidesArray is null && ShowsArray is null)
-				return true;
-			var parsedTags1 = _ParseTags(rawActiveTags);
-			return IsDisplayedTags(parsedTags1);
-		}
-
-
-		/// <summary>
 		/// Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) для указанного тега.
 		/// </summary>
 		/// <param name="tag">Тег для проверки сквозного поведения. Если равен <see langword="null"/>, возвращает <see langword="false"/>.</param>
@@ -223,42 +216,41 @@ namespace Ans.Net10.Web
 		public bool IsPassthrough(
 			string? tag = null)
 		{
-			if (PassthroughsArray is null || string.IsNullOrWhiteSpace(tag))
+			if (string.IsNullOrWhiteSpace(tag))
 				return false;
-			return Array.IndexOf(PassthroughsArray, tag.ToLowerInvariant()) != -1;
+			var lowerTag1 = tag.ToLowerInvariant();
+			if (PassthroughsOnArray is not null && Array.IndexOf(PassthroughsOnArray, lowerTag1) != -1)
+				return true;
+			if (PassthroughsOffArray is not null && Array.IndexOf(PassthroughsOffArray, lowerTag1) != -1)
+				return false;
+			return false;
 		}
 
 
 		/// <summary>
-		/// Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) при наличии хотя бы одного из активных тегов.
+		/// Определяет, является ли текущий элемент структуры «сквозным» при наличии активных тегов контекста.
 		/// </summary>
 		/// <param name="activeTags">Коллекция активных тегов контекста.</param>
 		/// <returns><see langword="true"/>, если сработал сквозной проход; иначе — <see langword="false"/>.</returns>
 		public bool IsPassthroughTags(
 			IEnumerable<string>? activeTags)
 		{
-			if (PassthroughsArray is null || activeTags is null)
+			if (PassthroughsOnArray is null && PassthroughsOffArray is null)
 				return false;
-			foreach (var tag1 in activeTags)
-				if (tag1 is not null && Array.IndexOf(PassthroughsArray, tag1.ToLowerInvariant()) != -1)
-					return true;
+			if (activeTags is null)
+				return false;
+			if (PassthroughsOnArray is not null)
+			{
+				foreach (var tag1 in activeTags)
+					if (tag1 is not null && Array.IndexOf(PassthroughsOnArray, tag1.ToLowerInvariant()) != -1)
+						return true;
+				return false;
+			}
+			if (PassthroughsOffArray is not null)
+				foreach (var tag1 in activeTags)
+					if (tag1 is not null && Array.IndexOf(PassthroughsOffArray, tag1.ToLowerInvariant()) != -1)
+						return false;
 			return false;
-		}
-
-
-		/// <summary>
-		/// Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) при наличии хотя бы одного из тегов в переданной строке.
-		/// </summary>
-		/// <param name="rawActiveTags">Строка с активными тегами контекста, разделенными запятыми или точками с запятой (например, "system,archive").</param>
-		/// <returns><see langword="true"/>, если сработал сквозной проход; иначе — <see langword="false"/>.</returns>
-		public bool IsPassthroughTags(
-			string? rawActiveTags)
-		{
-			if (PassthroughsArray is null || string.IsNullOrWhiteSpace(rawActiveTags))
-				return false;
-
-			var parsedTags1 = _ParseTags(rawActiveTags);
-			return IsPassthroughTags(parsedTags1);
 		}
 
 
@@ -266,22 +258,34 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
-		/// Выполняет разбор сырой строки тегов на очищенный массив уникальных элементов. 
-		/// Если строка пуста или не содержит валидных тегов, возвращает <see langword="null"/> для экономии памяти.
+		/// Разбирает единую строку правил "разрешено|запрещено" и инициализирует внутренние nullable-массивы тегов.
 		/// </summary>
-		/// <param name="rawTags">Сырая строка с тегами, разделенными запятыми или точками с запятой.</param>
-		/// <returns>Массив очищенных уникальных тегов в нижнем регистре либо <see langword="null"/>, если теги не обнаружены.</returns>
-		internal static string[]? _ParseTags(
-			string? rawTags)
+		/// <param name="rawRules">Сырая строка правила из атрибута.</param>
+		/// <param name="allow">Выходной массив разрешающих тегов.</param>
+		/// <param name="deny">Выходной массив запрещающих тегов.</param>
+		internal static void _ParseRule(
+			string? rawRules,
+			out string[]? allow,
+			out string[]? deny)
 		{
-			if (string.IsNullOrWhiteSpace(rawTags))
-				return null;
-			var array1 = rawTags.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries)
-				.Select(x => x.Trim().ToLowerInvariant())
-				.Distinct()
-				.ToArray();
-			return array1.Length == 0
-				? null : array1;
+			allow = null;
+			deny = null;
+			if (string.IsNullOrWhiteSpace(rawRules))
+				return;
+			var parts1 = rawRules.SplitFix('|', 2);
+			allow = _parseSubRule(parts1[0]);
+			deny = _parseSubRule(parts1[1]);
+			static string[]? _parseSubRule(string raw1)
+			{
+				if (string.IsNullOrWhiteSpace(raw1))
+					return null;
+				var res1 = raw1.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries)
+					.Select(x => x.Trim().ToLowerInvariant())
+					.Distinct()
+					.ToArray();
+				return res1.Length == 0
+					? null : res1;
+			}
 		}
 
 	}

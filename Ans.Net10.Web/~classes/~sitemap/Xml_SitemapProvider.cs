@@ -1,4 +1,4 @@
-﻿// rev 2026-10-22
+﻿// rev 2026-10-23
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
@@ -274,8 +274,7 @@ namespace Ans.Net10.Web
 			string face1 = string.IsNullOrWhiteSpace(nodeDto.Face)
 				? target1 : nodeDto.Face;
 			var node1 = new NodemapItem(
-				target1, face1,
-				nodeDto.TagHides, nodeDto.TagShows, nodeDto.TagPassthroughs);
+				target1, face1, nodeDto.Display, nodeDto.Passthroughs);
 			if (nodeDto.ChildItems is not null)
 				foreach (var childDto1 in nodeDto.ChildItems)
 				{
@@ -294,8 +293,7 @@ namespace Ans.Net10.Web
 			string target1 = pageDto.Target;
 			string face1 = pageDto.Face ?? string.Empty;
 			var page1 = new PagemapItem(
-				node, target1, face1, pageDto.HasNoIndex,
-				pageDto.TagHides, pageDto.TagShows, pageDto.TagPassthroughs);
+				node, target1, face1, pageDto.HasNoIndex, pageDto.Display, pageDto.Passthroughs);
 			if (parentPage is null)
 				node.AddTopPage(page1);
 			else
