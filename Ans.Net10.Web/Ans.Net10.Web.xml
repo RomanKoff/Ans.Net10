@@ -6638,17 +6638,22 @@
         <member name="M:Ans.Net10.Web.Xml_SitemapProvider.Dispose">
             <inheritdoc />
         </member>
+        <member name="T:Ans.Net10.Web._MapDef_Base">
+            <summary>
+            Базовый класс для облегченных декларативных определений элементов карт сайта.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web._MapDef_Base.Display">
             <summary>
             Получает или задает декларативное правило отображения элемента ("показ|скрытие").
             </summary>
-            <returns>Строка правила либо <see langword="null"/>.</returns>
+            <returns>Строка правила видимости либо <see langword="null"/>.</returns>
         </member>
         <member name="P:Ans.Net10.Web._MapDef_Base.Passthroughs">
             <summary>
             Получает или задает декларативное правило сквозного прохода элемента ("включение|исключение").
             </summary>
-            <returns>Строка правила либо <see langword="null"/>.</returns>
+            <returns>Строка правила прозрачности либо <see langword="null"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web._MapItem_Proto">
             <summary>
@@ -6750,7 +6755,7 @@
             <param name="tag">Тег для проверки видимости элемента. Если равен <see langword="null"/>, проверяется общая доступность элемента.</param>
             <returns><see langword="true"/>, если элемент разрешен к отображению; иначе — <see langword="false"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Web._MapItem_Proto.IsDisplayedTags(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Ans.Net10.Web._MapItem_Proto.IsDisplayed(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Проверяет, удовлетворяет ли элемент условиям отображения на основе набора активных тегов контекста (например, ролей пользователя).
             </summary>
@@ -6761,10 +6766,10 @@
             <summary>
             Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) для указанного тега.
             </summary>
-            <param name="tag">Тег для проверки сквозного поведения. Если равен <see langword="null"/>, возвращает <see langword="false"/>.</param>
+            <param name="tag">Тег для проверки сквозного поведения.</param>
             <returns><see langword="true"/>, если элемент является прозрачным; иначе — <see langword="false"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Web._MapItem_Proto.IsPassthroughTags(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Ans.Net10.Web._MapItem_Proto.IsPassthrough(System.Collections.Generic.IEnumerable{System.String})">
             <summary>
             Определяет, является ли текущий элемент структуры «сквозным» при наличии активных тегов контекста.
             </summary>

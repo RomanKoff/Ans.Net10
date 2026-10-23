@@ -91,7 +91,11 @@
 
 	string GetTagsInfo(_MapItem_Proto item)
 	{
-		return $"{item.IsDisplayed().Make(string.Empty, "<em class=\"text-danger\" title=\"Hidden\">[H]&nbsp;</em>")}{item.IsPassthrough().Make("<em class=\"text-danger\" title=\"Passthrough\">[P]&nbsp;</em>")}";
+		var s1 = (!item.IsDisplayed()).Make(
+			"<em class=\"text-danger\" title=\"Hidden\">[H]&nbsp;</em>");
+		var s2 = item.IsPassthrough().Make(
+			"<em class=\"text-danger\" title=\"Passthrough\">[P]&nbsp;</em>");
+		return $"{s1}{s2}";
 	}
 
 }

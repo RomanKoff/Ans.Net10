@@ -5019,12 +5019,14 @@
             <summary>
             Преобразует ключ типа <typeparamref name="TKey"/> в строковое представление для последующей сериализации.
             </summary>
+            <param name="key">Экземпляр ключа типа <typeparamref name="TKey"/>.</param>
             <returns>Строковое представление переданного ключа.</returns>
         </member>
         <member name="M:Ans.Net10.Common._Dict_Proto`2.ValueToString(`1)">
             <summary>
             Преобразует значение типа <typeparamref name="TValue"/> в строковое представление для последующей сериализации.
             </summary>
+            <param name="value">Экземпляр значения типа <typeparamref name="TValue"/>.</param>
             <returns>Строковое представление переданного значения.</returns>
         </member>
         <member name="M:Ans.Net10.Common._Dict_Proto`2.#ctor">
@@ -5202,6 +5204,7 @@
             <summary>
             Добавляет дочерний узел в конец списка текущего элемента.
             </summary>
+            <param name="item">Добавляемый дочерний элемент, реализующий <see cref="T:Ans.Net10.Common.ITreeItem"/>.</param>
         </member>
         <member name="M:Ans.Net10.Common.ITreeItem.AppendChildren(Ans.Net10.Common.ITreeItem[])">
             <summary>

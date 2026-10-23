@@ -186,7 +186,7 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="activeTags">Коллекция активных тегов контекста.</param>
 		/// <returns><see langword="true"/>, если элемент должен быть отображен; иначе — <see langword="false"/>.</returns>
-		public bool IsDisplayedTags(
+		public bool IsDisplayed(
 			IEnumerable<string>? activeTags)
 		{
 			if (HidesArray is null && ShowsArray is null)
@@ -211,20 +211,23 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Определяет, является ли текущий элемент структуры «сквозным» (прозрачным) для указанного тега.
 		/// </summary>
-		/// <param name="tag">Тег для проверки сквозного поведения. Если равен <see langword="null"/>, возвращает <see langword="false"/>.</param>
+		/// <param name="tag">Тег для проверки сквозного поведения.</param>
 		/// <returns><see langword="true"/>, если элемент является прозрачным; иначе — <see langword="false"/>.</returns>
 		public bool IsPassthrough(
 			string? tag = null)
 		{
-			if (string.IsNullOrWhiteSpace(tag))
+			if (PassthroughsOnArray is null && PassthroughsOffArray is null)
 				return false;
+			if (string.IsNullOrWhiteSpace(tag))
+				return PassthroughsOnArray is null;
 			var lowerTag1 = tag.ToLowerInvariant();
 			if (PassthroughsOnArray is not null && Array.IndexOf(PassthroughsOnArray, lowerTag1) != -1)
 				return true;
 			if (PassthroughsOffArray is not null && Array.IndexOf(PassthroughsOffArray, lowerTag1) != -1)
 				return false;
-			return false;
+			return PassthroughsOnArray is null;
 		}
+
 
 
 		/// <summary>
@@ -232,13 +235,13 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <param name="activeTags">Коллекция активных тегов контекста.</param>
 		/// <returns><see langword="true"/>, если сработал сквозной проход; иначе — <see langword="false"/>.</returns>
-		public bool IsPassthroughTags(
+		public bool IsPassthrough(
 			IEnumerable<string>? activeTags)
 		{
 			if (PassthroughsOnArray is null && PassthroughsOffArray is null)
 				return false;
 			if (activeTags is null)
-				return false;
+				return PassthroughsOnArray is null;
 			if (PassthroughsOnArray is not null)
 			{
 				foreach (var tag1 in activeTags)
@@ -250,8 +253,9 @@ namespace Ans.Net10.Web
 				foreach (var tag1 in activeTags)
 					if (tag1 is not null && Array.IndexOf(PassthroughsOffArray, tag1.ToLowerInvariant()) != -1)
 						return false;
-			return false;
+			return true;
 		}
+
 
 
 		/* internals */
@@ -268,10 +272,12 @@ namespace Ans.Net10.Web
 			out string[]? allow,
 			out string[]? deny)
 		{
-			allow = null;
-			deny = null;
 			if (string.IsNullOrWhiteSpace(rawRules))
+			{
+				allow = null;
+				deny = null;
 				return;
+			}
 			var parts1 = rawRules.SplitFix('|', 2);
 			allow = _parseSubRule(parts1[0]);
 			deny = _parseSubRule(parts1[1]);
@@ -283,8 +289,7 @@ namespace Ans.Net10.Web
 					.Select(x => x.Trim().ToLowerInvariant())
 					.Distinct()
 					.ToArray();
-				return res1.Length == 0
-					? null : res1;
+				return res1.Length == 0 ? null : res1;
 			}
 		}
 
