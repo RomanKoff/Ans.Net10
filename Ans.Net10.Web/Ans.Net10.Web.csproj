@@ -24,14 +24,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Remove="_Dev\**" />
-		<None Include="_Dev\**">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
-		</None>
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="_Docs\MapNodes.xsd">
 			<SubType>Designer</SubType>
 		</Content>

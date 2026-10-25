@@ -9,12 +9,4 @@
 		<ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Content Remove="_Dev\**" />
-		<None Include="_Dev\**">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
-		</None>
-	</ItemGroup>
-
 </Project>

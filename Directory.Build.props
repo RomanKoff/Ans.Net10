@@ -9,7 +9,7 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<NoWarn>1591;1573</NoWarn>		
+		<NoWarn>1591;1573</NoWarn>
 
 		<Authors>Roman Koff</Authors>
 		<Copyright>Copyright © $([System.DateTime]::Now.ToString("yyyy")) $(Authors)</Copyright>
@@ -27,6 +27,11 @@
 
 	<ItemGroup Condition="'$(IsPackable)' != 'false'">
 		<None Include="$(MSBuildThisFileDirectory)LICENSE.md" Pack="true" PackagePath="\" Link="LICENSE.md" />
+		<Content Remove="_Dev\**" />
+		<None Include="_Dev\**">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>

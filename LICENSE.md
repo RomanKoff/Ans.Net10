@@ -1,7 +1,7 @@
 # Лицензия / License
 
 **Автор / Copyright (c) 2026:**
-[Roman Kovalevch](https://github.com/RomanKoff) (далее — Автор).
+[Роман Ковалевич](https://github.com/RomanKoff) (далее — Автор).
 
 Этот проект защищен лицензией **PolyForm Noncommercial License 1.0.0** для собственного кода Автора, с сохранением оригинальных разрешительных лицензий для сторонних зависимостей.
 
