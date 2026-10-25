@@ -1,0 +1,32 @@
+<Project>
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<NeutralLanguage>ru</NeutralLanguage>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<NoWarn>1591;1573</NoWarn>		
+
+		<Authors>Roman Koff</Authors>
+		<Copyright>Copyright © $([System.DateTime]::Now.ToString("yyyy")) $(Authors)</Copyright>
+		<Version>10.2.0</Version>
+		<VersionPrefix>$(Version)</VersionPrefix>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(IsPackable)' != 'false'">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/RomanKoff/Ans.Net10</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/RomanKoff/Ans.Net10</PackageProjectUrl>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(IsPackable)' != 'false'">
+		<None Include="$(MSBuildThisFileDirectory)LICENSE.md" Pack="true" PackagePath="\" Link="LICENSE.md" />
+	</ItemGroup>
+
+</Project>

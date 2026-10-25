@@ -206,7 +206,7 @@ namespace Ans.Net10.Web
 				builder.TopNodes, LibWebConsts.INDEX_NODE_NAME);
 			if (!hasMainNode1)
 			{
-				var defaultMainNode1 = new NodemapItem(LibWebConsts.INDEX_NODE_NAME, string.Empty);
+				var defaultMainNode1 = new NodemapItem(LibWebConsts.INDEX_NODE_NAME, string.Empty, passthroughs: "|all");
 				builder.InsertTopNode(0, defaultMainNode1);
 			}
 			var tasks1 = new List<Task>();

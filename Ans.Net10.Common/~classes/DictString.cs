@@ -63,8 +63,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="key">Строковое представление ключа, извлеченное при парсинге.</param>
-		/// <returns>Оригинальное строковое значение ключа типа <see cref="string"/> без изменений.</returns>
 		public override string StringToKey(
 			string key)
 		{
@@ -73,8 +71,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="value">Строковое представление значения, извлеченное при парсинге.</param>
-		/// <returns>Оригинальное строковое значение типа <see cref="string"/> без изменений.</returns>
 		public override string StringToValue(
 			string value)
 		{
@@ -83,8 +79,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="key">Строковый ключ типа <see cref="string"/>.</param>
-		/// <returns>Оригинальная строка ключа для записи в сериализуемый поток.</returns>
 		public override string KeyToString(
 			string key)
 		{
@@ -93,8 +87,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="value">Строковое значение типа <see cref="string"/>.</param>
-		/// <returns>Оригинальная строка значения для записи в сериализуемый поток.</returns>
 		public override string ValueToString(
 			string value)
 		{

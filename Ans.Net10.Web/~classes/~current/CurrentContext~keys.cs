@@ -131,7 +131,10 @@ namespace Ans.Net10.Web
 		public bool IsKeyNotOff(
 			string key)
 		{
-			return HttpContext.Items[key] is string value1 && !value1.Equals("off");
+			if (HttpContext.Items[key] is not { } value1)
+				return true;
+			return value1 is not string value2
+				|| !value2.Equals("off", StringComparison.Ordinal);
 		}
 
 

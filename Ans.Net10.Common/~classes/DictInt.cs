@@ -63,11 +63,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="key">Строковое представление ключа, извлеченное при парсинге.</param>
-		/// <returns>Целочисленное значение типа <see cref="int"/>.</returns>
-		/// <exception cref="FormatException">
-		/// Вызывается, если переданная строка <paramref name="key"/> не может быть корректно преобразована в 32-битное целое число со знаком с помощью метода расширения <c>ToInt()</c>.
-		/// </exception>
 		public override int StringToKey(
 			string key)
 		{
@@ -78,8 +73,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="value">Строковое представление значения, извлеченное при парсинге.</param>
-		/// <returns>Оригинальное строковое значение типа <see cref="string"/> без изменений.</returns>
 		public override string StringToValue(
 			string value)
 		{
@@ -88,8 +81,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="key">Целочисленный ключ типа <see cref="int"/>.</param>
-		/// <returns>Строковое представление числа.</returns>
 		public override string KeyToString(
 			int key)
 		{
@@ -98,8 +89,6 @@ namespace Ans.Net10.Common
 
 
 		/// <inheritdoc />
-		/// <param name="value">Строковое значение типа <see cref="string"/>.</param>
-		/// <returns>Строка для записи в сериализуемый поток.</returns>
 		public override string ValueToString(
 			string value)
 		{

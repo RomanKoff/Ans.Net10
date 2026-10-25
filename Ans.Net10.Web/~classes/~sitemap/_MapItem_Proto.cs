@@ -86,35 +86,6 @@ namespace Ans.Net10.Web
 		public bool IsShortTitleUnique { get; private set; }
 
 
-		/// <summary>
-		/// Получает очищенный массив тегов принудительного скрытия для высокопроизводительного поиска.
-		/// </summary>
-		/// <returns>Массив уникальных строковых тегов скрытия в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
-		public string[]? HidesArray { get; protected set; }
-
-
-		/// <summary>
-		/// Получает очищенный массив тегов обязательного отображения для высокопроизводительного поиска.
-		/// </summary>
-		/// <returns>Массив уникальных строковых тегов видимости в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
-		public string[]? ShowsArray { get; protected set; }
-
-
-		/// <summary>
-		/// Получает очищенный массив тегов активации «сквозного» поведения.
-		/// </summary>
-		/// <returns>Массив строковых тегов включения сквозного прохода либо <see langword="null"/>.</returns>
-		public string[]? PassthroughsOnArray { get; protected set; }
-
-
-		/// <summary>
-		/// Получает очищенный массив тегов принудительного отключения «сквозного» поведения.
-		/// </summary>
-		/// <returns>Массив строковых тегов исключения сквозного прохода либо <see langword="null"/>.</returns>
-		public string[]? PassthroughsOffArray { get; protected set; }
-
-
-
 		/* methods */
 
 
@@ -164,6 +135,20 @@ namespace Ans.Net10.Web
 
 
 		/// <summary>
+		/// Формирует объект ссылки <see cref="LinkBuilder"/> для текущего элемента карты на основе контекста запроса.
+		/// </summary>
+		/// <param name="httpContext">Текущий контекст HTTP-запроса, используемый для генерации URL.</param>
+		/// <returns>Новый экземпляр <see cref="LinkBuilder"/>, содержащий сформированный URL и основной заголовок элемента.</returns>
+		/// <exception cref="ArgumentNullException">Инициируется, если параметр <paramref name="httpContext"/> равен <see langword="null"/>.</exception>
+		public LinkBuilder GetLink(
+			HttpContext httpContext)
+		{
+			ArgumentNullException.ThrowIfNull(httpContext);
+			return new LinkBuilder(GetUrl(httpContext), Title);
+		}
+
+
+		/// <summary>
 		/// Определяет, должен ли элемент отображаться в интерфейсе на основе переданного тега контекста.
 		/// </summary>
 		/// <param name="tag">Тег для проверки видимости элемента. Если равен <see langword="null"/>, проверяется общая доступность элемента.</param>
@@ -172,12 +157,12 @@ namespace Ans.Net10.Web
 			string? tag = null)
 		{
 			if (string.IsNullOrWhiteSpace(tag))
-				return ShowsArray is null;
-			if (ShowsArray is not null && Array.IndexOf(ShowsArray, tag.ToLowerInvariant()) != -1)
+				return _DisplayOnTags is null;
+			if (_DisplayOnTags is not null && Array.IndexOf(_DisplayOnTags, tag.ToLowerInvariant()) != -1)
 				return true;
-			if (HidesArray is not null && Array.IndexOf(HidesArray, tag.ToLowerInvariant()) != -1)
+			if (_DisplayOffTags is not null && Array.IndexOf(_DisplayOffTags, tag.ToLowerInvariant()) != -1)
 				return false;
-			return ShowsArray is null;
+			return _DisplayOnTags is null;
 		}
 
 
@@ -189,20 +174,20 @@ namespace Ans.Net10.Web
 		public bool IsDisplayed(
 			IEnumerable<string>? activeTags)
 		{
-			if (HidesArray is null && ShowsArray is null)
+			if (_DisplayOffTags is null && _DisplayOnTags is null)
 				return true;
 			if (activeTags is null)
-				return ShowsArray is null;
-			if (ShowsArray is not null)
+				return _DisplayOnTags is null;
+			if (_DisplayOnTags is not null)
 			{
 				foreach (var tag1 in activeTags)
-					if (tag1 is not null && Array.IndexOf(ShowsArray, tag1.ToLowerInvariant()) != -1)
+					if (tag1 is not null && Array.IndexOf(_DisplayOnTags, tag1.ToLowerInvariant()) != -1)
 						return true;
 				return false;
 			}
-			if (HidesArray is not null)
+			if (_DisplayOffTags is not null)
 				foreach (var tag1 in activeTags)
-					if (tag1 is not null && Array.IndexOf(HidesArray, tag1.ToLowerInvariant()) != -1)
+					if (tag1 is not null && Array.IndexOf(_DisplayOffTags, tag1.ToLowerInvariant()) != -1)
 						return false;
 			return true;
 		}
@@ -216,16 +201,16 @@ namespace Ans.Net10.Web
 		public bool IsPassthrough(
 			string? tag = null)
 		{
-			if (PassthroughsOnArray is null && PassthroughsOffArray is null)
+			if (_PassthroughsOnTags is null && _PassthroughsOffTags is null)
 				return false;
 			if (string.IsNullOrWhiteSpace(tag))
-				return PassthroughsOnArray is null;
+				return _PassthroughsOnTags is null;
 			var lowerTag1 = tag.ToLowerInvariant();
-			if (PassthroughsOnArray is not null && Array.IndexOf(PassthroughsOnArray, lowerTag1) != -1)
+			if (_PassthroughsOnTags is not null && Array.IndexOf(_PassthroughsOnTags, lowerTag1) != -1)
 				return true;
-			if (PassthroughsOffArray is not null && Array.IndexOf(PassthroughsOffArray, lowerTag1) != -1)
+			if (_PassthroughsOffTags is not null && Array.IndexOf(_PassthroughsOffTags, lowerTag1) != -1)
 				return false;
-			return PassthroughsOnArray is null;
+			return _PassthroughsOnTags is null;
 		}
 
 
@@ -238,60 +223,54 @@ namespace Ans.Net10.Web
 		public bool IsPassthrough(
 			IEnumerable<string>? activeTags)
 		{
-			if (PassthroughsOnArray is null && PassthroughsOffArray is null)
+			if (_PassthroughsOnTags is null && _PassthroughsOffTags is null)
 				return false;
 			if (activeTags is null)
-				return PassthroughsOnArray is null;
-			if (PassthroughsOnArray is not null)
+				return _PassthroughsOnTags is null;
+			if (_PassthroughsOnTags is not null)
 			{
 				foreach (var tag1 in activeTags)
-					if (tag1 is not null && Array.IndexOf(PassthroughsOnArray, tag1.ToLowerInvariant()) != -1)
+					if (tag1 is not null && Array.IndexOf(_PassthroughsOnTags, tag1.ToLowerInvariant()) != -1)
 						return true;
 				return false;
 			}
-			if (PassthroughsOffArray is not null)
+			if (_PassthroughsOffTags is not null)
 				foreach (var tag1 in activeTags)
-					if (tag1 is not null && Array.IndexOf(PassthroughsOffArray, tag1.ToLowerInvariant()) != -1)
+					if (tag1 is not null && Array.IndexOf(_PassthroughsOffTags, tag1.ToLowerInvariant()) != -1)
 						return false;
 			return true;
 		}
-
 
 
 		/* internals */
 
 
 		/// <summary>
-		/// Разбирает единую строку правил "разрешено|запрещено" и инициализирует внутренние nullable-массивы тегов.
+		/// Получает очищенный массив тегов обязательного отображения для высокопроизводительного поиска.
 		/// </summary>
-		/// <param name="rawRules">Сырая строка правила из атрибута.</param>
-		/// <param name="allow">Выходной массив разрешающих тегов.</param>
-		/// <param name="deny">Выходной массив запрещающих тегов.</param>
-		internal static void _ParseRule(
-			string? rawRules,
-			out string[]? allow,
-			out string[]? deny)
-		{
-			if (string.IsNullOrWhiteSpace(rawRules))
-			{
-				allow = null;
-				deny = null;
-				return;
-			}
-			var parts1 = rawRules.SplitFix('|', 2);
-			allow = _parseSubRule(parts1[0]);
-			deny = _parseSubRule(parts1[1]);
-			static string[]? _parseSubRule(string raw1)
-			{
-				if (string.IsNullOrWhiteSpace(raw1))
-					return null;
-				var res1 = raw1.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries)
-					.Select(x => x.Trim().ToLowerInvariant())
-					.Distinct()
-					.ToArray();
-				return res1.Length == 0 ? null : res1;
-			}
-		}
+		/// <returns>Массив уникальных строковых тегов видимости в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
+		internal string[]? _DisplayOnTags { get; set; }
+
+
+		/// <summary>
+		/// Получает очищенный массив тегов принудительного скрытия для высокопроизводительного поиска.
+		/// </summary>
+		/// <returns>Массив уникальных строковых тегов скрытия в нижнем регистре либо <see langword="null"/>, если теги не заданы.</returns>
+		internal string[]? _DisplayOffTags { get; set; }
+
+
+		/// <summary>
+		/// Получает очищенный массив тегов активации «сквозного» поведения.
+		/// </summary>
+		/// <returns>Массив строковых тегов включения сквозного прохода либо <see langword="null"/>.</returns>
+		internal string[]? _PassthroughsOnTags { get; set; }
+
+
+		/// <summary>
+		/// Получает очищенный массив тегов принудительного отключения «сквозного» поведения.
+		/// </summary>
+		/// <returns>Массив строковых тегов исключения сквозного прохода либо <see langword="null"/>.</returns>
+		internal string[]? _PassthroughsOffTags { get; set; }
 
 	}
 

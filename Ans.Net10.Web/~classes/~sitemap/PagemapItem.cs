@@ -1,68 +1,11 @@
 ﻿// rev 2026-10-23
 
+using Ans.Net10.Common;
 using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 
 namespace Ans.Net10.Web
 {
-
-	/// <summary>
-	/// Облегченное декларативное определение контентной страницы, применяемое для программных инъекций.
-	/// </summary>
-	public sealed class PagemapDef
-		: _MapDef_Base
-	{
-		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="PagemapDef"/>.
-		/// </summary>
-		/// <param name="target">Строка назначения страницы (ЧПУ-сегмент или путь).</param>
-		/// <param name="face">Человекочитаемое название страницы.</param>
-		/// <param name="hasNoIndex">Признак отключения индексации для страницы и её потомков.</param>
-		/// <param name="childPages">Массив вложенных дочерних страниц.</param>
-		/// <param name="display">Декларативное правило отображения элемента ("показ|скрытие").</param>
-		/// <param name="passthroughs">Декларативное правило задающих сквозное поведение элемента ("сквозной|обычный").</param>
-		public PagemapDef(
-			string target,
-			string? face,
-			bool hasNoIndex = false,
-			PagemapDef[]? childPages = null,
-			string? display = null,
-			string? passthroughs = null)
-		{
-			Target = target;
-			Face = face;
-			HasNoIndex = hasNoIndex;
-			ChildPages = childPages;
-			Display = display;
-			Passthroughs = passthroughs;
-		}
-
-		/// <summary>
-		/// Получает оригинальную строку назначения страницы.
-		/// </summary>
-		/// <returns>Строковый идентификатор назначения.</returns>
-		public string Target { get; }
-
-		/// <summary>
-		/// Получает человекочитаемое наименование страницы.
-		/// </summary>
-		/// <returns>Название страницы либо <see langword="null"/>.</returns>
-		public string? Face { get; }
-
-		/// <summary>
-		/// Получает значение, указывающее на отключение индексации потомков.
-		/// </summary>
-		/// <returns><see langword="true"/>, если индексация отключена; иначе — <see langword="false"/>.</returns>
-		public bool HasNoIndex { get; }
-
-		/// <summary>
-		/// Получает массив вложенных дочерних страниц.
-		/// </summary>
-		/// <returns>Массив объектов <see cref="PagemapDef"/> либо <see langword="null"/>.</returns>
-		public PagemapDef[]? ChildPages { get; }
-	}
-
-
 
 	/// <summary>
 	/// Представляет отдельную контентную страницу карты сайта, связанную с конкретным информационным узлом.
@@ -110,12 +53,8 @@ namespace Ans.Net10.Web
 			Target = target;
 			SetFace(string.IsNullOrEmpty(face) ? target == "start" ? null : target : face);
 			HasNoIndex = hasNoIndex;
-			_ParseRule(display, out var shows1, out var hides1);
-			ShowsArray = shows1;
-			HidesArray = hides1;
-			_ParseRule(passthroughs, out var on1, out var off1);
-			PassthroughsOnArray = on1;
-			PassthroughsOffArray = off1;
+			(_DisplayOnTags, _DisplayOffTags) = SuppValues.ParseRule(display);
+			(_PassthroughsOnTags, _PassthroughsOffTags) = SuppValues.ParseRule(passthroughs);
 			if (target.StartsWith('/'))
 			{
 				Type = PagemapTypesEnum.InternalPath;
@@ -238,6 +177,15 @@ namespace Ans.Net10.Web
 		/// </summary>
 		/// <returns>Коллекция только для чтения, содержащая вложенные страницы <see cref="PagemapItem"/>.</returns>
 		public IReadOnlyCollection<PagemapItem> ChildPages { get; }
+
+
+		/// <summary>
+		/// Получает признак наличия дочерних страниц у текущего элемента карты страниц.
+		/// </summary>
+		/// <value>Значение <see langword="true"/>, если коллекция дочерних элементов содержит записи; иначе — <see langword="false"/>.</value>
+		/// <returns><see langword="true"/>, если есть дочерние элементы; иначе — <see langword="false"/>.</returns>
+		public bool HasChildPages
+			=> ChildPages is { Count: > 0 };
 
 
 		/* methods */

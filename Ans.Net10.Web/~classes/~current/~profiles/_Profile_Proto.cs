@@ -153,6 +153,15 @@ namespace Ans.Net10.Web
 			=> ParentsLinks is not [];
 
 
+		/// <summary>
+		/// Получает лениво инициализируемую ссылку на прямого родителя текущего элемента.
+		/// </summary>
+		/// <value>Объект <see cref="LinkBuilder"/> прямого родителя или <see langword="null"/>, если предки отсутствуют.</value>
+		/// <returns>Ссылка на прямого родителя либо <see langword="null"/>.</returns>
+		public LinkBuilder? ParentLink
+			=> field ??= GetDirectParent();
+
+
 		/* methods */
 
 
@@ -259,6 +268,20 @@ namespace Ans.Net10.Web
 
 
 		/* functions */
+
+
+		/// <summary>
+		/// Возвращает ссылку на прямого родителя текущего элемента (ближайшего предка в иерархии).
+		/// </summary>
+		/// <returns>
+		/// Объект <see cref="LinkBuilder"/>, представляющий прямого родителя, 
+		/// либо <see langword="null"/>, если у текущего элемента нет зарегистрированных предков.
+		/// </returns>
+		public LinkBuilder? GetDirectParent()
+		{
+			return HasParents
+				? ParentsLinks[^1] : null;
+		}
 
 
 		/// <summary>

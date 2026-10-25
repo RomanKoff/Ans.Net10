@@ -1,4 +1,4 @@
-﻿// rev 2026-09-26
+﻿// rev 2026-10-24
 
 using System.Buffers;
 using System.Numerics;
@@ -77,6 +77,48 @@ namespace Ans.Net10.Common
 		{
 			return (current == nullValue)
 				? defaultValue : current;
+		}
+
+
+		/// <summary>
+		/// Возвращает массив уникальных тегов в нижнем регистре по разделителям «,» и «;».
+		/// </summary>
+		/// <param name="tags">Исходная строка с тегами.</param>
+		/// <returns>
+		/// Массив очищенных уникальных строк в нижнем регистре, либо <see langword="null"/>, 
+		/// если исходная строка пуста или не содержит элементов.
+		/// </returns>
+		public static string[]? GetTags(
+			string? tags)
+		{
+			if (string.IsNullOrWhiteSpace(tags))
+				return null;
+			var a1 = tags.Split([',', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+			if (a1.Length == 0)
+				return null;
+			var hash1 = new HashSet<string>(a1.Length, StringComparer.OrdinalIgnoreCase);
+			foreach (var item1 in a1)
+				hash1.Add(item1.ToLowerInvariant());
+			return hash1.Count is 0
+				? null : [.. hash1];
+		}
+
+
+		/// <summary>
+		/// Возвращает кортеж разрешенных и запрещенных элементов.
+		/// </summary>
+		/// <param name="rules">Исходная строка правила (например, "allow1,allow2|deny1").</param>
+		/// <returns>
+		/// Кортеж, содержащий массив разрешенных элементов (<c>allow</c>) и массив запрещенных элементов (<c>deny</c>).
+		/// Любой из массивов может быть равен <see langword="null"/>.
+		/// </returns>
+		public static (string[]? allow, string[]? deny) ParseRule(
+			string? rules)
+		{
+			if (string.IsNullOrWhiteSpace(rules))
+				return (null, null);
+			var parts1 = rules.SplitFix('|', 2);
+			return (GetTags(parts1[0]), GetTags(parts1[1]));
 		}
 
 
