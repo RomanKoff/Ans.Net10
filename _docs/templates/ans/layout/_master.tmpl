@@ -51,5 +51,27 @@
       {{/_disableFooter}}
     </div>
     {{>partials/scripts}}
+
+     <!-- Подключаем локальный ESM-модуль стандартным HTML-тегом -->
+    <script type="module" src="~/plugins/mermaid.min.js"></script>
+    
+    <!-- Скрипт инициализации, который выполнится строго ПОСЛЕ загрузки модуля -->
+    <script type="module">
+      // Проверяем наличие глобального объекта во встроенном реестре Window
+      // В ESM-сборках Mermaid принудительно регистрирует себя глобально при инициализации тегом
+      if (typeof mermaid !== 'undefined') {
+        mermaid.initialize({ 
+          startOnLoad: true, 
+          theme: 'default' 
+        });
+      } else {
+        // Альтернативный ленивый импорт по абсолютному корню, если первый шаг изолировал контекст
+        import('/plugins/mermaid.min.js').then(module => {
+          const m = module.default || module;
+          m.initialize({ startOnLoad: true, theme: 'default' });
+        }).catch(err => console.error('Ошибка инициализации Mermaid:', err));
+      }
+    </script>
+
   </body>
 </html>

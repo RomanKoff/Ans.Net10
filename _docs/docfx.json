@@ -29,8 +29,10 @@
 		],
 		"resource": [
 			{
-				"files": [
-					"images/**"
+				"files": [					
+					"images/**",
+					"plugins/**/*.js",
+					"plugins/**/*.css"
 				]
 			}
 		],
