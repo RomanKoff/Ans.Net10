@@ -1,4 +1,8 @@
-- name: article1
+- name: Ans.Net10.CMS
+  href: ans_net10_cms/
+
+- name: Обзор
   href: article1.md
-- name: sitemap-tags
+
+- name: Теги карты сайта
   href: sitemap-tags.md

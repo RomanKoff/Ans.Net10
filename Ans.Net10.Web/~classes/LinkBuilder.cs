@@ -22,15 +22,13 @@ namespace Ans.Net10.Web
 		/// <param name="href">Целевой URL-адрес гиперссылки.</param>
 		/// <param name="title">Отображаемый текст (заголовок) ссылки.</param>
 		/// <param name="isDisabled">Признак принудительной блокировки ссылки. По умолчанию: <see langword="false"/>.</param>
-		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="title"/> равен <see langword="null"/>.</exception>
 		public LinkBuilder(
 			string? href,
-			string title,
+			string? title,
 			bool isDisabled = false)
 		{
-			ArgumentNullException.ThrowIfNull(title);
 			Href = href;
-			InnerHtml = SuppTypograph.GetTypografMin(title);
+			InnerHtml = SuppTypograph.GetTypografMin(title ?? Href);
 			IsDisabled = isDisabled;
 		}
 

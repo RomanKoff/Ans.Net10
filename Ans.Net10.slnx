@@ -1,5 +1,5 @@
 <Solution>
-  <Folder Name="/Ans.Net10/">
+  <Folder Name="/^solution/">
     <File Path=".gitattributes" />
     <File Path=".github/workflows/docfx.yml" />
     <File Path=".gitignore" />
