@@ -1,8 +1,4 @@
-﻿@*
-Компонент библиотеки Ans.Net10.Web.
-Код не предназначен для редактирования и компиляции во время выполнения!
-*@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="@Current.Culture" class="h-100">
 <head>
 
@@ -44,40 +40,18 @@
 			<partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
 			<partial name="/Areas/Ans/Helpers/PageTitle.cshtml" />
 			@RenderBody()
+			<hr />
+			<div class="row">
+				<div class="col">
+					<h4>Узлы:</h4>
+					<partial name="/Areas/Ans/Helpers/SubNodes.cshtml" />
+				</div>
+				<div class="col">
+					<h4>Сраницы:</h4>
+					<partial name="/Areas/Ans/Helpers/SubPages.cshtml" />
+				</div>
+			</div>
 
-			<hr />
-			<div class="row">
-				<div class="col">
-					<h4>Sitemap</h4>
-					<partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
-				</div>
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node.MapItem" />
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page.MapItem" />
-				</div>
-			</div>
-			<hr />
-			<div class="row">
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Site" />
-				</div>
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node" />
-				</div>
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page" />
-				</div>
-			</div>
-			<hr />
-			<div class="row">
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current" />
-				</div>
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Host" />
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Request" />
-				</div>
-			</div>
 		</div>
 	</main>
 

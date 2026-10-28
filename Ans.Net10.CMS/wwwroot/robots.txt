@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /_system/
+
+Sitemap: https://yourdomain.com

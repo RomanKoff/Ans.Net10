@@ -1,0 +1,23 @@
+@*
+	Компонент библиотеки Ans.Net10.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@if (Current.Node.MapItem?.HasChildNodes ?? false)
+{
+	OutItems(Current.Node.MapItem.ChildNodes);
+}
+
+@functions {
+
+	void OutItems(IEnumerable<NodemapItem> items)
+	{
+		<ul>
+			@foreach (var item1 in items)
+			{
+				var tag1 = item1.GetLink(Context).GetTag();
+				<li class="nav-item">@tag1</li>
+			}
+		</ul>
+	}
+
+}

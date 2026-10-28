@@ -1,8 +1,7 @@
-﻿// rev 2026-09-26
+﻿// rev 2026-10-28
 
 using CsvHelper;
 using System.Globalization;
-using System.Text;
 
 namespace Ans.Net10.Common
 {
@@ -33,11 +32,13 @@ namespace Ans.Net10.Common
 		{
 			ArgumentNullException.ThrowIfNull(targetStream);
 			ArgumentNullException.ThrowIfNull(items);
-			// Использование UTF-8 без BOM — лучшая практика для веб-интерфейсов и API
-			// Оставляем поток открытым (leaveOpen: true), так как за жизненный цикл targetStream отвечает вызывающий код
-			using var writer1 = new StreamWriter(targetStream, new UTF8Encoding(false), leaveOpen: true);
-			using var csv1 = new CsvWriter(writer1, CultureInfo.CurrentCulture);
-			await csv1.WriteRecordsAsync(items, cancellationToken).ConfigureAwait(false);
+			var options1 = new CsvWriterOptions
+			{
+				FormatProvider = CultureInfo.CurrentCulture,
+				WriteByteOrderMark = false
+			};
+			await using var writer1 = CsvWriter.Create(targetStream, options1, leaveOpen: true);
+			await writer1.WriteRecordsAsync(items, cancellationToken).ConfigureAwait(false);
 			await writer1.FlushAsync(cancellationToken).ConfigureAwait(false);
 		}
 	}
