@@ -52,12 +52,12 @@
     </div>
     {{>partials/scripts}}
 
-    <script type="module">
+    <script src="~/styles/mermaid.min.js"></script>
+    <script>
       document.addEventListener("DOMContentLoaded", async () => {
         if (document.querySelectorAll('.lang-mermaid, .mermaid').length === 0)
             return;
-        try {
-          await import('/styles/mermaid.min.js');
+        try {          
           if (typeof mermaid !== 'undefined') {
             mermaid.initialize({ 
               startOnLoad: true, 
