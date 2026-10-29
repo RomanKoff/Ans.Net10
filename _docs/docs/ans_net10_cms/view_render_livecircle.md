@@ -106,14 +106,14 @@
 ## Схема конвейера рендеринга (Render Pipeline)
 
 ```mermaid
-graph TD
-    A[Вызов из контроллера: return View] --> B[_ViewImports.cshtml: Сборка контекста]
-    B --> C[_ViewStart.cshtml: Инициализация среды]
-    C --> D[**/*.cshtml: Рендеринг контента]
-    D --> E[Partial Views / Tag Helpers]
-    E --> D
-    D --> F[_Layout.cshtml: Сборка каркаса]
-    F --> G[Внедрение контента: RenderBody]
-    G --> H[Вставка секций: RenderSection]
-    H --> I[Отправка клиенту: HTTP Response]
+graph TD;
+    A(Запрос <strong>View</strong>) --> B[Сборка директив компиляции <code>_ViewImports.cshtml</code>];
+    B --> C[Инициализация среды <code>_ViewStart.cshtml</code>];
+    C --> D[Рендеринг <strong>View</strong>];
+    D --> E[Рендеринг <strong>Partials</strong>];
+    E --> D;
+    D --> F[Сборка актуального шаблона <strong>Layout</strong>];
+    F --> G["Внедрение контента <code>@RenderBody()</code>"];
+    G --> H["Вставка секций <code>@await RenderSectionAsync()</code>"];
+    H --> I(Ответ);
 ```

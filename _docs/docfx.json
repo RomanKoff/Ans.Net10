@@ -31,8 +31,8 @@
 			{
 				"files": [					
 					"images/**",
-					"plugins/**/*.js",
-					"plugins/**/*.css"
+					"styles/**/*.js",
+					"styles/**/*.css"
 				]
 			}
 		],
