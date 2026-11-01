@@ -9,6 +9,7 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>$(MSBuildProjectName).xml</DocumentationFile>
 		<NoWarn>1591;1573</NoWarn>
 
 		<Authors>Roman Koff</Authors>

@@ -20,9 +20,8 @@ namespace Ans.Net10.CMS.Controllers
 
 		/// <inheritdoc/>
 		public NodesController(
-			NodesResolver resolver,
-			ILogger<NodesController> logger)
-			: base(resolver, logger)
+			NodesMapper mapper)
+			: base(mapper)
 		{
 		}
 
@@ -33,7 +32,7 @@ namespace Ans.Net10.CMS.Controllers
 		/// <inheritdoc/>
 		[HttpGet("{*path}")]
 		public override IActionResult Render(
-			string path)
+			string? path)
 		{
 			return base.Render(path);
 		}

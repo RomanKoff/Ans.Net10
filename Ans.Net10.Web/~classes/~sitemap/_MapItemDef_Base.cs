@@ -1,4 +1,4 @@
-﻿// rev 2026-10-23
+﻿// rev 2026-10-30
 
 namespace Ans.Net10.Web
 {
@@ -6,7 +6,7 @@ namespace Ans.Net10.Web
 	/// <summary>
 	/// Базовый класс для облегченных декларативных определений элементов карт сайта.
 	/// </summary>
-	public class _MapDef_Base
+	public class _MapItemDef_Base
 	{
 		/// <summary>
 		/// Получает или задает декларативное правило отображения элемента ("показ|скрытие").

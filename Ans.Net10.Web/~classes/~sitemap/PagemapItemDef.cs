@@ -1,4 +1,4 @@
-﻿// rev 2026-10-23
+﻿// rev 2026-10-30
 
 namespace Ans.Net10.Web
 {
@@ -6,11 +6,11 @@ namespace Ans.Net10.Web
 	/// <summary>
 	/// Облегченное декларативное определение контентной страницы, применяемое для программных инъекций.
 	/// </summary>
-	public sealed class PagemapDef
-		: _MapDef_Base
+	public sealed class PagemapItemDef
+		: _MapItemDef_Base
 	{
 		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="PagemapDef"/>.
+		/// Инициализирует новый экземпляр класса <see cref="PagemapItemDef"/>.
 		/// </summary>
 		/// <param name="target">Строка назначения страницы (ЧПУ-сегмент или путь).</param>
 		/// <param name="face">Человекочитаемое название страницы.</param>
@@ -18,11 +18,11 @@ namespace Ans.Net10.Web
 		/// <param name="childPages">Массив вложенных дочерних страниц.</param>
 		/// <param name="display">Декларативное правило отображения элемента ("показ|скрытие").</param>
 		/// <param name="passthroughs">Декларативное правило задающих сквозное поведение элемента ("сквозной|обычный").</param>
-		public PagemapDef(
+		public PagemapItemDef(
 			string target,
 			string? face,
 			bool hasNoIndex = false,
-			PagemapDef[]? childPages = null,
+			PagemapItemDef[]? childPages = null,
 			string? display = null,
 			string? passthroughs = null)
 		{
@@ -55,8 +55,8 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает массив вложенных дочерних страниц.
 		/// </summary>
-		/// <returns>Массив объектов <see cref="PagemapDef"/> либо <see langword="null"/>.</returns>
-		public PagemapDef[]? ChildPages { get; }
+		/// <returns>Массив объектов <see cref="PagemapItemDef"/> либо <see langword="null"/>.</returns>
+		public PagemapItemDef[]? ChildPages { get; }
 	}
 
 }

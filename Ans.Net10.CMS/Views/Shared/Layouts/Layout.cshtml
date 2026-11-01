@@ -43,15 +43,34 @@
 			<hr />
 			<div class="row">
 				<div class="col">
-					<h4>Узлы:</h4>
+					<h4>Views:</h4>
+					<partial name="/Areas/Ans/Helpers/DebugNodes.cshtml" />
+				</div>
+				<div class="col">
+					<h4>Nodes:</h4>
 					<partial name="/Areas/Ans/Helpers/SubNodes.cshtml" />
 				</div>
 				<div class="col">
-					<h4>Сраницы:</h4>
+					<h4>Pages:</h4>
 					<partial name="/Areas/Ans/Helpers/SubPages.cshtml" />
 				</div>
 			</div>
-
+			<hr />
+			<div class="row">
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Site" />
+				</div>
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node" />
+					<hr />
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node.MapItem" />
+				</div>
+				<div class="col">
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page" />
+					<hr />
+					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page.MapItem" />
+				</div>
+			</div>
 		</div>
 	</main>
 

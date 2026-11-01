@@ -55,36 +55,38 @@ namespace Ans.Net10.Web.Middlewares
 			}
 
 			var pathSpan1 = originalPath1.AsSpan();
+			var pathBaseSpan1 = context.Request.PathBase.Value.AsSpan();
 			bool isChanged1 = false;
 
-			// 1. Правило: Удаление закрывающего слэша (за исключением корня сайта "/")
-			if (pathSpan1.Length > 1 && pathSpan1[^1] == '/')
+			// 1. Правило: Удаление закрывающего слэша.
+			// Запрещаем удаление, только если это истинный корень сайта (PathBase пустой И Path == "/")
+			bool isTrueRoot1 = pathBaseSpan1.IsEmpty && pathSpan1.Length == 1 && pathSpan1[0] == '/';
+
+			if (!isTrueRoot1 && pathSpan1.Length > 0 && pathSpan1[^1] == '/')
 			{
 				pathSpan1 = pathSpan1[..^1];
 				isChanged1 = true;
 			}
 
 			// 2. Правило: Удаление скрытого технического суффикса "/start"
-			// Проверяем окончание строки на "/start" с игнорированием регистра символов
 			if (pathSpan1.EndsWith("/start", StringComparison.OrdinalIgnoreCase))
 			{
 				pathSpan1 = pathSpan1[..^6];
 				isChanged1 = true;
+			}
 
-				// Если после удаления /start остался только пустой корень, принудительно делаем его "/"
-				if (pathSpan1.IsEmpty)
-				{
-					pathSpan1 = "/".AsSpan();
-				}
+			// Если после удаления /start или /_main путь стал пустым, но это корень сайта, возвращаем "/"
+			if (pathSpan1.IsEmpty && pathBaseSpan1.IsEmpty)
+			{
+				pathSpan1 = "/".AsSpan();
 			}
 
 			// 3. Правило: Удаление скрытого технического префикса "/_main"
-			// Проверяем, начинается ли путь с "/_main" (например, "/_main/contacts" или просто "/_main")
 			if (pathSpan1.StartsWith("/_main", StringComparison.OrdinalIgnoreCase))
 			{
 				if (pathSpan1.Length == 6)
 				{
-					pathSpan1 = "/".AsSpan();
+					pathSpan1 = pathBaseSpan1.IsEmpty ? "/".AsSpan() : "".AsSpan();
 					isChanged1 = true;
 				}
 				else if (pathSpan1[6] == '/')
@@ -94,13 +96,26 @@ namespace Ans.Net10.Web.Middlewares
 				}
 			}
 
-			// Если сработало хотя бы одно из правил канонизации — выполняем честный HTTP 301 Редирект
-			if (isChanged1)
+			// Проверяем, есть ли закрывающий слэш в PathBase (например, "/app1/")
+			bool isPathBaseTrailingSlash1 = pathBaseSpan1.Length > 0 && pathBaseSpan1[^1] == '/';
+
+			if (isChanged1 || isPathBaseTrailingSlash1)
 			{
+				var cleanPathBase1 = isPathBaseTrailingSlash1 ? pathBaseSpan1[..^1] : pathBaseSpan1;
 				var query1 = context.Request.QueryString;
+
 				string targetUrl1 = query1.HasValue
-					? $"{pathSpan1}{query1.Value}"
-					: pathSpan1.ToString();
+					? $"{cleanPathBase1}{pathSpan1}{query1.Value}"
+					: $"{cleanPathBase1}{pathSpan1}";
+
+				// Защита: если редирект ведет на абсолютно тот же URL, что и текущий, прерываем канонизацию
+				string currentFullUrl1 = $"{context.Request.PathBase}{context.Request.Path}";
+				if (targetUrl1.Equals(currentFullUrl1, StringComparison.OrdinalIgnoreCase))
+				{
+					await _next(context);
+					return;
+				}
+
 				_log.RedirectToCanonicalUrl(_logger, originalPath1, targetUrl1);
 				context.Response.StatusCode = StatusCodes.Status301MovedPermanently;
 				context.Response.Headers.Location = targetUrl1;

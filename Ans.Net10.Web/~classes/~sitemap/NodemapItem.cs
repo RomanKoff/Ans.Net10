@@ -1,4 +1,4 @@
-﻿// rev 2026-10-23
+﻿// rev 2026-10-30
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Http;
@@ -84,7 +84,7 @@ namespace Ans.Net10.Web
 		/// <param name="def">Объект декларативного описания узла.</param>
 		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="def"/> равен <see langword="null"/>.</exception>
 		public NodemapItem(
-			NodemapDef def)
+			NodemapItemDef def)
 			: this(def.Target, def.Face, def.Display, def.Passthroughs)
 		{
 			ArgumentNullException.ThrowIfNull(def);

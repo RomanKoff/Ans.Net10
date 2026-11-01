@@ -402,7 +402,7 @@ FodyWeavers.xsd
 
 
 **/_Dev/
-**/Views/Nodes/
+# **/Views/
 
 _docs/_site
 _docs/api

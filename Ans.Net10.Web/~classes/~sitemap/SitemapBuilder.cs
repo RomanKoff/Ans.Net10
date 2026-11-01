@@ -1,4 +1,4 @@
-﻿// rev 2026-10-22
+﻿// rev 2026-10-30
 
 using System.Collections.Frozen;
 
@@ -85,18 +85,18 @@ namespace Ans.Net10.Web
 		/* methods */
 
 
-		/// <summary>
-		/// Программно преобразует и добавляет корневой узел на основе его декларативного описания в конец коллекции.
-		/// </summary>
-		/// <param name="nodeDef">Декларативное описание добавляемого узла.</param>
-		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="nodeDef"/> равен <see langword="null"/>.</exception>
-		public void AddTopNodeDef(
-			NodemapDef nodeDef)
-		{
-			ArgumentNullException.ThrowIfNull(nodeDef);
-			var node1 = new NodemapItem(nodeDef);
-			AddTopNode(node1);
-		}
+		///// <summary>
+		///// Программно преобразует и добавляет корневой узел на основе его декларативного описания в конец коллекции.
+		///// </summary>
+		///// <param name="nodemapItemDef">Декларативное описание добавляемого узла.</param>
+		///// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="nodemapItemDef"/> равен <see langword="null"/>.</exception>
+		//public void AddTopNodeDef(
+		//	NodemapItemDef nodemapItemDef)
+		//{
+		//	ArgumentNullException.ThrowIfNull(nodemapItemDef);
+		//	var node1 = new NodemapItem(nodemapItemDef);
+		//	AddTopNode(node1);
+		//}
 
 
 		/// <summary>

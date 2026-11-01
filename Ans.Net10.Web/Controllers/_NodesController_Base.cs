@@ -1,22 +1,20 @@
 ﻿using Ans.Net10.Web.Nodes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Ans.Net10.Web.Controllers
 {
 
 	/// <summary>
-	/// Базовый класс централизованного CMS-контроллера, обеспечивающий перехват динамических ЧПУ-маршрутов, 
-	/// их разрешение через внутренний реестр представлений и рендеринг контента.
+	/// Абстрактный базовый класс для контроллеров динамического рендеринга страниц.
+	/// Предоставляет встроенный конвейер разрешения ЧПУ-путей через карту представлений.
 	/// </summary>
 	//[ApiExplorerSettings(IgnoreApi = true)]
 	//[Route("/")]
-	public class _NodesController_Base
+	public abstract class _NodesController_Base
 		: Controller
 	{
 
-		private readonly NodesResolver _resolver;
-		private readonly ILogger<_NodesController_Base> _logger;
+		private readonly NodesMapper _mapper;
 
 
 		/* ctor */
@@ -25,15 +23,13 @@ namespace Ans.Net10.Web.Controllers
 		/// <summary>
 		/// Инициализирует новый экземпляр класса <see cref="_NodesController_Base"/>.
 		/// </summary>
-		/// <param name="resolver">Служба анализа и разрешения путей CMS в памяти.</param>
-		/// <param name="logger">Служба ведения системных логов.</param>
-		/// <exception cref="ArgumentNullException">Вызывается, если один из входящих параметров равен <see langword="null"/>.</exception>
-		public _NodesController_Base(
-			NodesResolver resolver,
-			ILogger<_NodesController_Base> logger)
+		/// <param name="mapper">Исполнитель карты путей к Razor-представлениям.</param>
+		/// <exception cref="ArgumentNullException">Инициируется, если переданный маппер равен null.</exception>
+		protected _NodesController_Base(
+			NodesMapper mapper)
 		{
-			_resolver = resolver ?? throw new ArgumentNullException(nameof(resolver));
-			_logger = logger ?? throw new ArgumentNullException(nameof(logger));
+			ArgumentNullException.ThrowIfNull(mapper);
+			_mapper = mapper;
 		}
 
 
@@ -41,22 +37,21 @@ namespace Ans.Net10.Web.Controllers
 
 
 		/// <summary>
-		/// Действие по перехвату catch-all маршрута, выполняющее сопоставление входящего URL 
-		/// с матрицей приоритетов файлов и рендеринг результирующего Razor-представления.
+		/// Перехватывает любые многосегментные HTTP-запросы и выполняет рендеринг соответствующего узла или страницы.
 		/// </summary>
-		/// <param name="path">Относительный ЧПУ-путь входящего HTTP-запроса.</param>
+		/// <param name="path">Динамический относительный ЧПУ-путь из входящего URL-адреса.</param>
 		/// <returns>
-		/// Объект <see cref="IActionResult"/>: отрендеренное Razor-представление при успешном совпадении, 
-		/// либо <see cref="NotFoundResult"/> (404), если файл не найден.
+		/// Экземпляр <see cref="ViewResult"/> с физическим путем к .cshtml файлу в случае успеха, 
+		/// либо <see cref="NotFoundResult"/> (HTTP 404), если страница отсутствует в карте.
 		/// </returns>
 		//[HttpGet("{*path}")]
 		public virtual IActionResult Render(
-			string path)
+			string? path)
 		{
-			var result1 = _resolver.Resolve(path);
-			if (!result1.IsMatched || string.IsNullOrEmpty(result1.ViewPath))
-				return NotFound();
-			return View(result1.ViewPath);
+			string cleanPath1 = path?.Trim('/') ?? string.Empty;
+			if (_mapper.TryGetView(cleanPath1, out var viewPath1) && viewPath1 is not null)
+				return View(viewPath1, model: cleanPath1);
+			return NotFound();
 		}
 
 	}

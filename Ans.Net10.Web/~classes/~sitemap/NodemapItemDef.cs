@@ -1,4 +1,4 @@
-﻿// rev 2026-10-23
+﻿// rev 2026-10-30
 
 namespace Ans.Net10.Web
 {
@@ -6,11 +6,11 @@ namespace Ans.Net10.Web
 	/// <summary>
 	/// Облегченное декларативное определение информационного узла, применяемое для программных инъекций.
 	/// </summary>
-	public sealed class NodemapDef
-		: _MapDef_Base
+	public sealed class NodemapItemDef
+		: _MapItemDef_Base
 	{
 		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="NodemapDef"/>.
+		/// Инициализирует новый экземпляр класса <see cref="NodemapItemDef"/>.
 		/// </summary>
 		/// <param name="target">Строка назначения (ЧПУ-идентификатор, внутренний или внешний URL).</param>
 		/// <param name="face">Человекочитаемое наименование узла.</param>
@@ -18,11 +18,11 @@ namespace Ans.Net10.Web
 		/// <param name="topPages">Массив корневых страниц, принадлежащих узлу.</param>
 		/// <param name="display">Декларативное правило отображения элемента ("показ|скрытие").</param>
 		/// <param name="passthroughs">Декларативное правило задающих сквозное поведение элемента ("сквозной|обычный").</param>
-		public NodemapDef(
+		public NodemapItemDef(
 			string? target,
 			string face,
-			NodemapDef[]? childNodes = null,
-			PagemapDef[]? topPages = null,
+			NodemapItemDef[]? childNodes = null,
+			PagemapItemDef[]? topPages = null,
 			string? display = null,
 			string? passthroughs = null)
 		{
@@ -49,14 +49,14 @@ namespace Ans.Net10.Web
 		/// <summary>
 		/// Получает массив описаний дочерних узлов.
 		/// </summary>
-		/// <returns>Массив объектов <see cref="NodemapDef"/> либо <see langword="null"/>.</returns>
-		public NodemapDef[]? ChildNodes { get; }
+		/// <returns>Массив объектов <see cref="NodemapItemDef"/> либо <see langword="null"/>.</returns>
+		public NodemapItemDef[]? ChildNodes { get; }
 
 		/// <summary>
 		/// Получает массив описаний корневых страниц узла.
 		/// </summary>
-		/// <returns>Массив объектов <see cref="PagemapDef"/> либо <see langword="null"/>.</returns>
-		public PagemapDef[]? TopPages { get; }
+		/// <returns>Массив объектов <see cref="PagemapItemDef"/> либо <see langword="null"/>.</returns>
+		public PagemapItemDef[]? TopPages { get; }
 	}
 
 }

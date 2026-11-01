@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="urn:ans:net10:web:map-pages"
+	   xsi:schemaLocation="urn:ans:net10:web:map-pages https://raw.githubusercontent.com/RomanKoff/Ans.Net10/refs/heads/main/Ans.Net10.Web/_Docs/MapPages.xsd">
+
+	<item target="brand" face="Фирстиль">
+		<item target="colors" face="Цвета|Основные {0}" />
+		<item target="logo-guap" face="Логотипы ГУАП" />
+		<item target="logo-guap-deps" face="Логотипы подразделений ГУАП" />
+		<item target="logo-suai" face="Логотипы SUAI" />
+		<item display="none" target="siteerrors" face="Картинки ошибок сайта" />
+	</item>
+
+	<item target="rules" face="Инструкции">
+		<item target="ills" face="Изображения" />
+		<item target="media" face="Медиатека|Подключение и работа с системой" />
+		<item target="pubs" face="Публикации|Требования к материалам для новостных публикаций" />
+		<item target="code" face="Код|Соглашения и рекомендации по программному коду" />
+	</item>
+
+	<item target="theme" face="Тема">
+		<item target="colors" face="Палитра" />
+		<item target="fonts" face="Шрифты" />
+		<item target="typos" face="Типографика" />
+		<item target="desmode" face="Режим дизайна" />
+		<item target="samples" face="Примеры разметки">
+			<item target="alerts" face="Оповещения (alert)" />
+			<item target="lh" face="Mежстрочное расстояние" />
+			<item target="shadow" face="Тени" />
+			<item target="forms" face="Яндекс-формы" />
+			<item target="icon-link" face="Ссылка с иконкой" />
+			<item target="theme-columns" face="Автоматические колонки" />
+			<item target="theme-icon-list" face="Маркерный список с настраиваемой иконкой" />
+			<item target="theme-anchor" face="Автоматическая якорная ссылка" />
+			<item target="theme-bg-cb" face="Шахматный фон для прозрачных изображений" />
+		</item>
+		<item target="vars-css" face="Переменные css" />
+	</item>
+
+	<item target="helpers" face="Helpers">
+		<item target="news" face="News">
+			<item target="node" face="Узел (публикации, объявления, мероприятия)" />
+			<item target="pubs" face="Публикации" />
+		</item>
+		<item target="contacts" face="Контакты">
+			<item target="item" face="Виджет карточки контакта" />
+			<item target="list-items" face="Виджет списка карточек контактов" />
+		</item>
+	</item>
+
+	<item target="core" face="Ядро" no-index="true">
+		<item target="release" face="Актуализация|Переезд на актуальное ядро" />
+		<item target="livecircle" face="Сборка страницы|Жизненный цикл сборки страницы" />
+		<item target="taghelpers" face="Тег-хелперы" />
+		<item target="models" face="Встроенные модели" />
+	</item>
+
+	<item target="libs" face="Libs" no-index="true">
+		<item target="bootstrap-icons_1-11-3" />
+		<item target="guap-icons_11" />
+		<item target="lightgallery_2-8-3" />
+		<item target="swiper_11-2-10" />
+	</item>
+
+</pages>

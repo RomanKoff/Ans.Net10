@@ -26,7 +26,9 @@ namespace Ans.Net10.Web
 		{
 			_current = current ?? throw new ArgumentNullException(nameof(current));
 			var request1 = _current.HttpContext.Request;
-			RelativeUrl = request1.Path.ToString().ToLowerInvariant(); // .TrimEnd('/');
+			RelativeUrl = request1.Path.ToString().ToLowerInvariant();
+			if (RelativeUrl is { Length: 0 })
+				RelativeUrl = "/";
 			AbsoluteUrl = $"{_current.Host.ApplicationUrl}{RelativeUrl}";
 			Params = request1.QueryString.Value;
 		}

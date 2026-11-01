@@ -1,15 +1,18 @@
-﻿// rev 2026-10-22
+﻿// rev 2026-10-31
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
 using Ans.Net10.Web.Middlewares;
+using Ans.Net10.Web.Nodes;
 using Ans.Net10.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Core;
 using Serilog.Events;
 using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
@@ -45,7 +48,8 @@ namespace Ans.Net10.Web
 			var options1 = AppSettingsFactory.GetOptions<LibWebOptions>(builder.Configuration);
 			builder.Services.AddSingleton(options1);
 
-			var appName1 = options1.AppName ?? builder.Environment.ApplicationName;
+			var env1 = builder.Environment;
+			var appName1 = options1.AppName ?? env1.ApplicationName;
 
 			builder.Services.Configure<RequestLocalizationOptions>(o =>
 			{
@@ -57,8 +61,8 @@ namespace Ans.Net10.Web
 
 			if (options1.Serilog.Enabled)
 			{
-				const string logTemplate1 = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}";
-				static DateTime getLogHourKey1(LogEvent x) =>
+				const string logTemplate1 = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}\n";
+				static DateTime funcLogHourKey1(LogEvent x) =>
 					new(x.Timestamp.Year, x.Timestamp.Month, x.Timestamp.Day, x.Timestamp.Hour, 0, 0, DateTimeKind.Utc);
 				var basePath1 = string.IsNullOrWhiteSpace(options1.Serilog.Path)
 					? "logs" : options1.Serilog.Path.TrimEnd('/');
@@ -70,31 +74,61 @@ namespace Ans.Net10.Web
 						.MinimumLevel.Is(rootLevel1)
 						.Enrich.FromLogContext()
 						.WriteTo.Console()
+
+						// Debug
+						.WriteTo.Logger(lc => lc
+							.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Debug)
+							.WriteTo.Map(
+								keySelector: funcLogHourKey1,
+								configure: (dateTime1, writer1) => writer1.File(
+									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/debug_{dateTime1:dd-HH}.txt",
+									rollingInterval: RollingInterval.Infinite,
+									retainedFileCountLimit: null,
+									outputTemplate: logTemplate1
+								)))
+
+						// Information
+						.WriteTo.Logger(lc => lc
+							.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Information)
+							.WriteTo.Map(
+								keySelector: funcLogHourKey1,
+								configure: (dateTime1, writer1) => writer1.File(
+									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/info_{dateTime1:dd-HH}.txt",
+									rollingInterval: RollingInterval.Infinite,
+									retainedFileCountLimit: null,
+									outputTemplate: logTemplate1
+								)))
+
+						// Warning
 						.WriteTo.Logger(lc => lc
 							.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Warning)
 							.WriteTo.Map(
-								keySelector: getLogHourKey1,
-								configure: (dateTime1, wt1) => wt1.File(
+								keySelector: funcLogHourKey1,
+								configure: (dateTime1, writer1) => writer1.File(
 									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/warn_{dateTime1:dd-HH}.txt",
 									rollingInterval: RollingInterval.Infinite,
 									retainedFileCountLimit: null,
 									outputTemplate: logTemplate1
 								)))
+
+						// Error
 						.WriteTo.Logger(lc => lc
 							.Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Error)
 							.WriteTo.Map(
-								keySelector: getLogHourKey1,
-								configure: (dateTime1, wt1) => wt1.File(
+								keySelector: funcLogHourKey1,
+								configure: (dateTime1, writer1) => writer1.File(
 									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/err_{dateTime1:dd-HH}.txt",
 									rollingInterval: RollingInterval.Infinite,
 									retainedFileCountLimit: null,
 									outputTemplate: logTemplate1
 								)))
+
+						// Fatal
 						.WriteTo.Logger(lc => lc
 							.MinimumLevel.Fatal()
 							.WriteTo.Map(
-								keySelector: getLogHourKey1,
-								configure: (dateTime1, wt1) => wt1.File(
+								keySelector: funcLogHourKey1,
+								configure: (dateTime1, writer1) => writer1.File(
 									path: $"{basePath1}/{appName1}/{dateTime1:yyyy-MM}/fatal_{dateTime1:dd-HH}.txt",
 									rollingInterval: RollingInterval.Infinite,
 									retainedFileCountLimit: null,
@@ -141,12 +175,15 @@ namespace Ans.Net10.Web
 			}
 
 			if (options1.UseNodes)
-				builder.Services.AddSingleton<Nodes.NodesResolver>();
+			{
+				builder.Services.AddSingleton<NodesMapper>();
+				builder.Services.AddHostedService<NodesWatcherService>();
+			}
 
-			if (options1.XmlSitemap is not null)
-				builder.Services.AddSingleton<ISitemapProvider, Xml_SitemapProvider>();
-			else
-				builder.Services.AddSingleton<ISitemapProvider, Fake_SitemapProvider>();
+			//if (options1.XmlSitemap is not null)
+			//	builder.Services.AddSingleton<ISitemapProvider, Xml_SitemapProvider>();
+			//else
+			//	builder.Services.AddSingleton<ISitemapProvider, Fake_SitemapProvider>();
 
 			if (options1.MailService is not null)
 				builder.Services.AddSingleton<IMailerService, Ans_MailerService>(
@@ -199,12 +236,10 @@ namespace Ans.Net10.Web
 		/// Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline)
 		/// </summary>
 		/// <param name="app">Экземпляр выполняемого веб-приложения <see cref="WebApplication"/>.</param>
-		/// <param name="sitemapInjections">Необязательный делегат для выполнения программных инъекций служебных узлов и страниц.</param>
 		/// <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
 		/// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="app"/> равен <see langword="null"/>.</exception>
 		public static async Task Use_AnsNet10WebAsync(
-			this WebApplication app,
-			Action<SitemapBuilder>? sitemapInjections = null)
+			this WebApplication app)
 		{
 			ArgumentNullException.ThrowIfNull(app);
 
@@ -239,8 +274,8 @@ namespace Ans.Net10.Web
 			//--- fix url
 			app.UseMiddleware<AnsUrlCanonicalizationMiddleware>();
 
-			//--- sitemap profiler
-			app.UseMiddleware<AnsSitemapProfilerMiddleware>();
+			////--- sitemap profiler
+			//app.UseMiddleware<AnsSitemapProfilerMiddleware>();
 
 			app.UseResponseCaching();
 
@@ -286,18 +321,11 @@ namespace Ans.Net10.Web
 			app.MapControllers();
 			app.MapRazorPages();
 
-			//--- sitemap
-			var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
-			await sitemapProvider1.InitializeAsync();
-			sitemapInjections?.Invoke(sitemapProvider1.Current);
-			sitemapProvider1.Current.BuildIndexes();
-
-			//--- nodes
-			if (options1.UseNodes)
-			{
-				var nodesResolver1 = app.Services.GetRequiredService<Nodes.NodesResolver>();
-				await nodesResolver1.InitializeAsync();
-			}
+			////--- sitemap
+			//var sitemapProvider1 = app.Services.GetRequiredService<ISitemapProvider>();
+			//await sitemapProvider1.InitializeAsync();
+			//sitemapInjections?.Invoke(sitemapProvider1.Sitemap);
+			//sitemapProvider1.Sitemap.BuildIndexes();
 
 			SuppConsole.WriteColor(ConsoleColor.Yellow, "\nUse_AnsNet10WebAsync — OK");
 			SuppConsole.WriteColor(ConsoleColor.Yellow, "\n======================================\n\n");
