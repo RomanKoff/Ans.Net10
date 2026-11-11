@@ -1,0 +1,11 @@
+﻿<h2>Градиенты</h2>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+	@foreach (var item1 in ",-ifpti,-i1,-i2,-i3,-i4,-hf,-vuc,-i8,-indo,-fdpo,-fspo,-igf".Split(','))
+	{
+		var s1 = $"guap{item1}-bg";
+		<div class="col">
+			<code>.@s1</code>
+			<div class="@s1 p-3 rounded" style="height: 6rem;"></div>
+		</div>
+	}
+</div>

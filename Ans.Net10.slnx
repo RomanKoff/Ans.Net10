@@ -4,6 +4,7 @@
     <File Path=".github/workflows/docfx.yml" />
     <File Path=".gitignore" />
     <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
     <File Path="LICENSE.md" />
     <File Path="README.md" />
     <Project Path="_Dev/" Type="Website" DisplayName="_Dev">
@@ -23,7 +24,7 @@
         <Property Name="Release.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_58712\&quot;" />
         <Property Name="Release.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
         <Property Name="Release.AspNetCompiler.VirtualPath" Value="&quot;/localhost_58712&quot;" />
-        <Property Name="TargetFrameworkMoniker" Value="&quot;.NETFramework,Version%3Dv4.8&quot;" />
+        <Property Name="TargetFrameworkMoniker" Value="&quot;.NETFramework,Version%3Dv4.8.1&quot;" />
         <Property Name="VWDPort" Value="&quot;58712&quot;" />
       </Properties>
     </Project>
@@ -44,7 +45,7 @@
         <Property Name="Release.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_63455\&quot;" />
         <Property Name="Release.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
         <Property Name="Release.AspNetCompiler.VirtualPath" Value="&quot;/localhost_63455&quot;" />
-        <Property Name="TargetFrameworkMoniker" Value="&quot;.NETFramework,Version%3Dv4.8&quot;" />
+        <Property Name="TargetFrameworkMoniker" Value="&quot;.NETFramework,Version%3Dv4.8.1&quot;" />
         <Property Name="VWDPort" Value="&quot;63455&quot;" />
       </Properties>
     </Project>

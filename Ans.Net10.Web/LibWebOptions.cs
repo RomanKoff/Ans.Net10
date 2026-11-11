@@ -1,4 +1,4 @@
-﻿// rev 2026-10-21
+﻿// rev 2026-11-05
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -6,318 +6,326 @@ using Ans.Net10.Common.Services;
 namespace Ans.Net10.Web
 {
 
-	/// <summary>
-	/// Параметры конфигурации для библиотеки <c>Ans.Net10.Web</c>.
-	/// </summary>
-	public class LibWebOptions
-		: _AppSettings_Base
-	{
-
-		/// <summary>
-		/// Инициализирует новый экземпляр класса <see cref="LibWebOptions"/> 
-		/// с системным именем секции по умолчанию.
-		/// </summary>
-		public LibWebOptions()
-			: base("Ans.Net10.Web")
-		{
-		}
-
-
-		/// <inheritdoc />
-		/// <remarks>
-		/// Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
-		/// </remarks>
-		public override void Test()
-		{
-			if (string.IsNullOrEmpty(DefaultCulture))
-				throw GetExceptionParamRequired("DefaultCulture");
-			if (MailService is not null)
-			{
-				if (string.IsNullOrEmpty(MailService.SmtpServer))
-					throw GetExceptionParamRequired("MailService.SmtpServer");
-				if (string.IsNullOrEmpty(MailService.SmtpUsername))
-					throw GetExceptionParamRequired("MailService.SmtpUsername");
-				if (string.IsNullOrEmpty(MailService.SmtpPassword))
-					throw GetExceptionParamRequired("MailService.SmtpPassword");
-				if (string.IsNullOrEmpty(MailService.DefaultFromAddress))
-					throw GetExceptionParamRequired("MailService.DefaultFromAddress");
-			}
-			if (XmlSitemap is not null)
-			{
-				if (string.IsNullOrEmpty(XmlSitemap.Path))
-					throw GetExceptionParamRequired("XmlSitemap.Path");
-			}
-		}
-
-
-		/* options */
-
-
-		/// <summary>
-		/// Получает или задает имя веб-приложения. 
-		/// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
-		/// </summary>
-		public string? AppName { get; set; } = null;
-
-
-		/// <summary>
-		/// Получает или задает заголовок веб-приложения. 
-		/// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
-		/// </summary>
-		public string? AppTitle { get; set; } = null;
-
-
-		/// <summary>
-		/// Получает или задает настраиваемый адрес главной страницы сайта.
-		/// Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
-		/// </summary>
-		public string? CustomHomeUrl { get; set; } = null;
-
-
-		/// <summary>
-		/// Получает или задает культуру по умолчанию (например, "ru", "en").
-		/// </summary>
-		public string DefaultCulture { get; set; } = string.Empty;
-
-
-		/// <summary>
-		/// Получает или задает имя основного файла мастер-шаблона разметки (Layout) по умолчанию.
-		/// </summary>
-		/// <value>
-		/// Строковое имя или относительный путь к файлу представления (например, <c>"_Layout"</c>).
-		/// Значение по умолчанию: <c>"/Areas/Ans/Layouts/_Layout.cshtml"</c>.
-		/// </value>
-		public string DefaultLayout { get; set; } = "/Areas/Ans/Layouts/_Layout.cshtml";
-
-
-		/// <summary>
-		/// Получает или задает базовый набор CSS-классов для главного оборачивающего HTML-контейнера страниц.
-		/// </summary>
-		/// <value>
-		/// Строка с перечислением CSS-классов (например, в стиле фреймворка Bootstrap 5: <c>"container"</c> или <c>"container-fluid"</c>).
-		/// Значение по умолчанию: <c>"container"</c>.
-		/// </value>
-		public string DefaultContainerClasses { get; set; } = "container";
-
-
-		/// <summary>
-		/// Получает или задает телефонный код региона по умолчанию.
-		/// </summary>
-		/// <value>
-		/// Строковый телефонный код региона без начального '+' (например, <c>"7812"</c>).
-		/// Значение по умолчанию: <c>"7812"</c>.
-		/// </value>
-		/// <returns>Строка телефонного кода региона.</returns>
-		public string DefaultRegionPhoneCode { get; set; } = "7812";
+    /// <summary>
+    /// Параметры конфигурации для библиотеки <c>Ans.Net10.Web</c>.
+    /// </summary>
+    public class LibWebOptions
+        : _AppSettings_Base
+    {
+
+        /// <summary>
+        /// Инициализирует новый экземпляр класса <see cref="LibWebOptions"/> 
+        /// с системным именем секции по умолчанию.
+        /// </summary>
+        public LibWebOptions()
+            : base("Ans.Net10.Web")
+        {
+        }
+
+
+        /// <inheritdoc />
+        /// <remarks>
+        /// Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
+        /// </remarks>
+        public override void Test()
+        {
+            if (string.IsNullOrEmpty(DefaultCulture))
+                throw GetExceptionParamRequired("DefaultCulture");
+            if (XmlSitemap is not null)
+            {
+                if (string.IsNullOrEmpty(XmlSitemap.Path))
+                    throw GetExceptionParamRequired("XmlSitemap.Path");
+            }
+            if (MailService is not null)
+            {
+                if (string.IsNullOrEmpty(MailService.SmtpServer))
+                    throw GetExceptionParamRequired("MailService.SmtpServer");
+                if (string.IsNullOrEmpty(MailService.SmtpUsername))
+                    throw GetExceptionParamRequired("MailService.SmtpUsername");
+                if (string.IsNullOrEmpty(MailService.SmtpPassword))
+                    throw GetExceptionParamRequired("MailService.SmtpPassword");
+                if (string.IsNullOrEmpty(MailService.DefaultFromAddress))
+                    throw GetExceptionParamRequired("MailService.DefaultFromAddress");
+            }
+            if (PuppeteerSharpService is not null)
+            {
+                if (string.IsNullOrEmpty(PuppeteerSharpService.AppPath))
+                    throw GetExceptionParamRequired("PuppeteerSharpService.AppPath");
+            }
+        }
+
+
+        /* options */
+
+
+        /// <summary>
+        /// Получает или задает имя веб-приложения. 
+        /// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
+        /// </summary>
+        public string? AppName { get; set; } = null;
+
+
+        /// <summary>
+        /// Получает или задает заголовок веб-приложения. 
+        /// Если равен <see langword="null"/>, имя определяется автоматически на основе вызывающей сборки.
+        /// </summary>
+        public string? AppTitle { get; set; } = null;
+
+
+        /// <summary>
+        /// Получает или задает настраиваемый адрес главной страницы сайта.
+        /// Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
+        /// </summary>
+        public string? CustomHomeUrl { get; set; } = null;
+
+
+        /// <summary>
+        /// Получает или задает культуру по умолчанию (например, "ru", "en").
+        /// </summary>
+        public string DefaultCulture { get; set; } = string.Empty;
+
+
+        /// <summary>
+        /// Получает или задает имя основного файла мастер-шаблона разметки (Layout) по умолчанию.
+        /// </summary>
+        /// <value>
+        /// Строковое имя или относительный путь к файлу представления (например, <c>"_Layout"</c>).
+        /// Значение по умолчанию: <c>"/Areas/Ans/Layouts/_Layout.cshtml"</c>.
+        /// </value>
+        public string DefaultLayout { get; set; } = "/Areas/Ans/Layouts/_Layout.cshtml";
+
+
+        /// <summary>
+        /// Получает или задает базовый набор CSS-классов для главного оборачивающего HTML-контейнера страниц.
+        /// </summary>
+        /// <value>
+        /// Строка с перечислением CSS-классов (например, в стиле фреймворка Bootstrap 5: <c>"container"</c> или <c>"container-fluid"</c>).
+        /// Значение по умолчанию: <c>"container"</c>.
+        /// </value>
+        public string DefaultContainerClasses { get; set; } = "container";
+
+
+        /// <summary>
+        /// Получает или задает телефонный код региона по умолчанию.
+        /// </summary>
+        /// <value>
+        /// Строковый телефонный код региона без начального '+' (например, <c>"7812"</c>).
+        /// Значение по умолчанию: <c>"7812"</c>.
+        /// </value>
+        /// <returns>Строка телефонного кода региона.</returns>
+        public string DefaultRegionPhoneCode { get; set; } = "7812";
 
 
-		/// <summary>
-		/// Получает или задает имя глобального альтернативного или системного шаблона разметки.
-		/// </summary>
-		/// <value>
-		/// Строковое имя файла шаблона или <see langword="null"/>, если системный шаблон разметки не используется.
-		/// </value>
-		public string? SystemLayout { get; set; } = null;
+        /// <summary>
+        /// Получает или задает имя глобального альтернативного или системного шаблона разметки.
+        /// </summary>
+        /// <value>
+        /// Строковое имя файла шаблона или <see langword="null"/>, если системный шаблон разметки не используется.
+        /// </value>
+        public string? SystemLayout { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает флаг режима разработки.
-		/// </summary>
-		public bool UseDeveloperMode { get; set; } = false;
+        /// <summary>
+        /// Получает или задает флаг режима разработки.
+        /// </summary>
+        public bool UseDeveloperMode { get; set; } = false;
 
 
-		/// <summary>
-		/// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
-		/// </summary>
-		public bool UseRuntimeCompilation { get; set; } = false;
+        /// <summary>
+        /// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
+        /// </summary>
+        public bool UseRuntimeCompilation { get; set; } = false;
 
 
-		/// <summary>
-		/// Получает или задает флаг автоматического подключения иерархических информационных узлов карты сайта.
-		/// </summary>
-		/// <returns><see langword="true"/>, если поддержка навигационных узлов активирована; иначе — <see langword="false"/>.</returns>
-		public bool UseNodes { get; set; } = false;
+        /// <summary>
+        /// Получает или задает флаг автоматического подключения иерархических информационных узлов карты сайта.
+        /// </summary>
+        /// <returns><see langword="true"/>, если поддержка навигационных узлов активирована; иначе — <see langword="false"/>.</returns>
+        public bool UseNodes { get; set; } = false;
 
 
-		/// <summary>
-		/// Получает или задает флаг использования серверных пользовательских сессий.
-		/// </summary>
-		public bool UseSession { get; set; } = false;
+        /// <summary>
+        /// Получает или задает флаг использования серверных пользовательских сессий.
+        /// </summary>
+        public bool UseSession { get; set; } = false;
 
 
-		/// <summary>
-		/// Получает или задает системный токен безопасности приложения.
-		/// </summary>
-		public string? SystemToken { get; set; } = null;
+        /// <summary>
+        /// Получает или задает системный токен безопасности приложения.
+        /// </summary>
+        public string? SystemToken { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает список переопределений MIME-типов.
-		/// </summary>
-		public string[]? Mimetypes { get; set; } = null;
+        /// <summary>
+        /// Получает или задает список переопределений MIME-типов.
+        /// </summary>
+        public string[]? Mimetypes { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает список кастомных маршрутов роутинга.
-		/// </summary>
-		public string[]? Routes { get; set; } = null;
+        /// <summary>
+        /// Получает или задает список кастомных маршрутов роутинга.
+        /// </summary>
+        public string[]? Routes { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает параметры конфигурации встроенной системы логирования Serilog.
-		/// </summary>
-		/// <returns>Объект конфигурации логера <see cref="SerilogOptions"/>.</returns>
-		public SerilogOptions Serilog { get; set; } = new();
+        /// <summary>
+        /// Получает или задает параметры конфигурации встроенной системы логирования Serilog.
+        /// </summary>
+        /// <returns>Объект конфигурации логера <see cref="SerilogOptions"/>.</returns>
+        public SerilogOptions Serilog { get; set; } = new();
 
 
-		/// <summary>
-		/// Получает или задает настройки отображения и обработки ошибок.
-		/// </summary>
-		public ErrorsOptions Errors { get; set; } = new();
+        /// <summary>
+        /// Получает или задает настройки отображения и обработки ошибок.
+        /// </summary>
+        public ErrorsOptions Errors { get; set; } = new();
 
 
-		/// <summary>
-		/// Получает или задает параметры конфигурации и пути к файлам XML-карт сайта (Sitemap).
-		/// </summary>
-		/// <returns>Объект конфигурации XML-карты <see cref="XmlSitemapOptions"/> или <see langword="null"/>, если карта отключена.</returns>
-		public XmlSitemapOptions? XmlSitemap { get; set; } = null;
+        /// <summary>
+        /// Получает или задает параметры конфигурации и пути к файлам XML-карт сайта (Sitemap).
+        /// </summary>
+        /// <returns>Объект конфигурации XML-карты <see cref="XmlSitemapOptions"/> или <see langword="null"/>, если карта отключена.</returns>
+        public XmlSitemapOptions? XmlSitemap { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает параметры конфигурации подсистемы защиты данных (Data Protection).
-		/// </summary>
-		/// <returns>Объект конфигурации защиты данных <see cref="DataProtectionOptions"/>.</returns>
-		public DataProtectionOptions DataProtection { get; set; } = new();
+        /// <summary>
+        /// Получает или задает параметры конфигурации подсистемы защиты данных (Data Protection).
+        /// </summary>
+        /// <returns>Объект конфигурации защиты данных <see cref="DataProtectionOptions"/>.</returns>
+        public DataProtectionOptions DataProtection { get; set; } = new();
 
 
-		/// <summary>
-		/// Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
-		/// </summary>
-		public ProxyOptions? Proxy { get; set; } = null;
+        /// <summary>
+        /// Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
+        /// </summary>
+        public ProxyOptions? Proxy { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает параметры конфигурации политик CORS (Cross-Origin Resource Sharing).
-		/// </summary>
-		/// <remarks>
-		/// Настройки используются сервисом <see cref="SuppCors"/> для регистрации и последующей 
-		/// активации именованных профилей междоменной безопасности в конвейере обработки запросов.
-		/// </remarks>
-		public CorsOptions? Cors { get; set; } = null;
+        /// <summary>
+        /// Получает или задает параметры конфигурации политик CORS (Cross-Origin Resource Sharing).
+        /// </summary>
+        /// <remarks>
+        /// Настройки используются сервисом <see cref="SuppCors"/> для регистрации и последующей 
+        /// активации именованных профилей междоменной безопасности в конвейере обработки запросов.
+        /// </remarks>
+        public CorsOptions? Cors { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает списки подсетей для ограничения доступа.
-		/// </summary>
-		public SubnetsOptions? Subnets { get; set; } = null;
+        /// <summary>
+        /// Получает или задает списки подсетей для ограничения доступа.
+        /// </summary>
+        public SubnetsOptions? Subnets { get; set; } = null;
 
 
-		/// <summary>
-		/// Получает или задает параметры службы отправки писем.
-		/// </summary>
-		public MailServiceOptions? MailService { get; set; } = null;
+        /// <summary>
+        /// Получает или задает параметры службы отправки писем.
+        /// </summary>
+        public MailServiceOptions? MailService { get; set; } = null;
 
-	}
 
+        public PuppeteerSharpServiceOptions? PuppeteerSharpService { get; set; } = null;
 
+    }
 
-	/*---*/
 
 
+    /*---*/
 
-	/// <summary>
-	/// Настройки встроенной интеграции логера Serilog.
-	/// </summary>
-	public sealed class SerilogOptions
-	{
-		/// <summary>
-		/// Получает или задает флаг автоматической активации Serilog при старте приложения.
-		/// </summary>
-		/// <returns><see langword="true"/>, если встроенный логер должен быть автоматически настроен; иначе — <see langword="false"/>.</returns>
-		public bool Enabled { get; set; } = true;
 
-		/// <summary>
-		/// Получает или задает базовый путь для сохранения файлов логов. 
-		/// Поддерживает относительные пути (например, "logs"),
-		/// маркеры выхода из каталога (например, "../logs")
-		/// и абсолютные пути (например, "/var/log/my_apps" или "C:/Logs/MyProject").
-		/// </summary>
-		/// <returns>Строка базового пути к каталогу логов (по умолчанию — "logs").</returns>
-		public string Path { get; set; } = "logs";
 
-		/// <summary>
-		/// Получает или задает минимальный уровень логирования для всего приложения.
-		/// Поддерживает стандартные текстовые значения: "Debug", "Information", "Warning", "Error", "Fatal".
-		/// </summary>
-		/// <returns>Строковое представление минимального уровня логирования (по умолчанию — "Warning").</returns>
-		public string MinimumLevel { get; set; } = "Warning";
-	}
+    /// <summary>
+    /// Настройки встроенной интеграции логера Serilog.
+    /// </summary>
+    public sealed class SerilogOptions
+    {
+        /// <summary>
+        /// Получает или задает флаг автоматической активации Serilog при старте приложения.
+        /// </summary>
+        /// <returns><see langword="true"/>, если встроенный логер должен быть автоматически настроен; иначе — <see langword="false"/>.</returns>
+        public bool Enabled { get; set; } = true;
 
+        /// <summary>
+        /// Получает или задает базовый путь для сохранения файлов логов. 
+        /// Поддерживает относительные пути (например, "logs"),
+        /// маркеры выхода из каталога (например, "../logs")
+        /// и абсолютные пути (например, "/var/log/my_apps" или "C:/Logs/MyProject").
+        /// </summary>
+        /// <returns>Строка базового пути к каталогу логов (по умолчанию — "logs").</returns>
+        public string Path { get; set; } = "logs";
 
+        /// <summary>
+        /// Получает или задает минимальный уровень логирования для всего приложения.
+        /// Поддерживает стандартные текстовые значения: "Debug", "Information", "Warning", "Error", "Fatal".
+        /// </summary>
+        /// <returns>Строковое представление минимального уровня логирования (по умолчанию — "Warning").</returns>
+        public string MinimumLevel { get; set; } = "Warning";
+    }
 
-	/// <summary>
-	/// Параметры конфигурации страниц отображения ошибок и статусных кодов HTTP.
-	/// </summary>
-	public class ErrorsOptions
-	{
-		/// <summary>
-		/// Получает или задает относительный путь к единой универсальной Razor-странице фреймворка 
-		/// для отображения как фатальных серверных исключений (500), так и HTTP статус-кодов (404, 403, 400).
-		/// </summary>
-		/// <value>
-		/// Строковый виртуальный путь к эндпоинту (например, <c>"/Ans/Errors"</c>).
-		/// </value>
-		public string RazorPageErrorsPath { get; set; } = "/Ans/Errors";
 
-		/// <summary>
-		/// Получает или задает кастомный Layout для страниц ошибок.
-		/// </summary>
-		public string? Layout { get; set; } = null;
 
-		/// <summary>
-		/// Получает или задает флаг вывода детальной технической информации об ошибке.
-		/// </summary>
-		public bool ShowInfo { get; set; } = false;
+    /// <summary>
+    /// Параметры конфигурации страниц отображения ошибок и статусных кодов HTTP.
+    /// </summary>
+    public class ErrorsOptions
+    {
+        /// <summary>
+        /// Получает или задает относительный путь к единой универсальной Razor-странице фреймворка 
+        /// для отображения как фатальных серверных исключений (500), так и HTTP статус-кодов (404, 403, 400).
+        /// </summary>
+        /// <value>
+        /// Строковый виртуальный путь к эндпоинту (например, <c>"/Ans/Errors"</c>).
+        /// </value>
+        public string RazorPageErrorsPath { get; set; } = "/Ans/Errors";
 
-		/// <summary>
-		/// Получает или задает URL/путь к изображению для ошибки 400 Bad Request.
-		/// </summary>
-		public string? Picture400 { get; set; } = null;
+        /// <summary>
+        /// Получает или задает кастомный Layout для страниц ошибок.
+        /// </summary>
+        public string? Layout { get; set; } = null;
 
-		/// <summary>
-		/// Получает или задает URL/путь к изображению для ошибки 403 Forbidden.
-		/// </summary>
-		public string? Picture403 { get; set; } = null;
+        /// <summary>
+        /// Получает или задает флаг вывода детальной технической информации об ошибке.
+        /// </summary>
+        public bool ShowInfo { get; set; } = false;
 
-		/// <summary>
-		/// Получает или задает URL/путь к изображению для ошибки 404 Not Found.
-		/// </summary>
-		public string? Picture404 { get; set; } = null;
+        /// <summary>
+        /// Получает или задает URL/путь к изображению для ошибки 400 Bad Request.
+        /// </summary>
+        public string? Picture400 { get; set; } = null;
 
-		/// <summary>
-		/// Получает или задает URL/путь к изображению для ошибки 500 Internal Server Error.
-		/// </summary>
-		public string? Picture500 { get; set; } = null;
-	}
+        /// <summary>
+        /// Получает или задает URL/путь к изображению для ошибки 403 Forbidden.
+        /// </summary>
+        public string? Picture403 { get; set; } = null;
 
+        /// <summary>
+        /// Получает или задает URL/путь к изображению для ошибки 404 Not Found.
+        /// </summary>
+        public string? Picture404 { get; set; } = null;
 
+        /// <summary>
+        /// Получает или задает URL/путь к изображению для ошибки 500 Internal Server Error.
+        /// </summary>
+        public string? Picture500 { get; set; } = null;
+    }
 
-	/// <summary>
-	/// Параметры конфигурации расположения и путей файловой карты сайта XML.
-	/// </summary>
-	public class XmlSitemapOptions
-	{
-		public string Path { get; set; } = string.Empty;
-	}
 
 
+    /// <summary>
+    /// Параметры конфигурации расположения и путей файловой карты сайта XML.
+    /// </summary>
+    public class XmlSitemapOptions
+    {
+        public string Path { get; set; } = string.Empty;
+    }
 
-	/// <summary>
-	/// Настройки встроенной интеграции службы ASP.NET Core Data Protection.
-	/// </summary>
-	public sealed class DataProtectionOptions
-	{
-		/*
+
+
+    /// <summary>
+    /// Настройки встроенной интеграции службы ASP.NET Core Data Protection.
+    /// </summary>
+    public sealed class DataProtectionOptions
+    {
+        /*
 			"DataProtection": {
 				"Path": "../secure-keys",
 				"CertificatePath": "../secure-keys/dataprotection-encrypt.pfx",
@@ -325,217 +333,223 @@ namespace Ans.Net10.Web
 			}
 		 */
 
-		/// <summary>
-		/// Получает или задает базовый путь для персистентного хранения ключей шифрования.
-		/// Поддерживает относительные пути (например, "data-protection"), маркеры выхода (например, "../data-protection") и абсолютные пути.
-		/// </summary>
-		/// <returns>Строка базового пути к каталогу ключей (по умолчанию — "data-protection").</returns>
-		public string Path { get; set; } = "data-protection";
+        /// <summary>
+        /// Получает или задает базовый путь для персистентного хранения ключей шифрования.
+        /// Поддерживает относительные пути (например, "data-protection"), маркеры выхода (например, "../data-protection") и абсолютные пути.
+        /// </summary>
+        /// <returns>Строка базового пути к каталогу ключей (по умолчанию — "data-protection").</returns>
+        public string Path { get; set; } = "data-protection";
 
-		/// <summary>
-		/// Получает или задает путь к файлу сертификата X.509 (.pfx) для шифрования ключей Data Protection на диске.
-		/// Если путь не указан, ключи будут сохраняться в незашифрованном виде (вызовет предупреждение WRN).
-		/// </summary>
-		/// <returns>Путь к файлу сертификата на диске либо <see langword="null"/>.</returns>
-		public string? CertificatePath { get; set; } = null;
+        /// <summary>
+        /// Получает или задает путь к файлу сертификата X.509 (.pfx) для шифрования ключей Data Protection на диске.
+        /// Если путь не указан, ключи будут сохраняться в незашифрованном виде (вызовет предупреждение WRN).
+        /// </summary>
+        /// <returns>Путь к файлу сертификата на диске либо <see langword="null"/>.</returns>
+        public string? CertificatePath { get; set; } = null;
 
-		/// <summary>
-		/// Получает или задает пароль для открытия файла сертификата X.509.
-		/// </summary>
-		/// <returns>Строка пароля к сертификату либо <see langword="null"/>.</returns>
-		public string? CertificatePassword { get; set; } = null;
-	}
-
-
-
-	/// <summary>
-	/// Параметры конфигурации обработки прокси-заголовков.
-	/// </summary>
-	public class ProxyOptions
-	{
-		/// <summary>
-		/// Получает или задает флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
-		/// </summary>
-		/// <returns><see langword="true"/>, если обработка заголовков обратного прокси включена; иначе — <see langword="false"/>.</returns>
-		public bool UseForwardedHeaders { get; set; } = false;
-
-		/// <summary>
-		/// Получает или задает список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
-		/// Если пустой — по умолчанию доверяется локальной петле (Loopback).
-		/// </summary>
-		/// <returns>Строка с перечислением IP-адресов доверенных прокси-серверов через точку с запятой либо <see langword="null"/>.</returns>
-		public string? KnownProxies { get; set; } = null;
-	}
+        /// <summary>
+        /// Получает или задает пароль для открытия файла сертификата X.509.
+        /// </summary>
+        /// <returns>Строка пароля к сертификату либо <see langword="null"/>.</returns>
+        public string? CertificatePassword { get; set; } = null;
+    }
 
 
 
-	/// <summary>
-	/// Описывает параметры конфигурации совместного использования ресурсов между разными источниками (CORS) 
-	/// для разграничения прав доступа к веб-приложению со стороны браузеров.
-	/// </summary>
-	public class CorsOptions
-	{
+    /// <summary>
+    /// Параметры конфигурации обработки прокси-заголовков.
+    /// </summary>
+    public class ProxyOptions
+    {
+        /// <summary>
+        /// Получает или задает флаг принудительного включения поддержки прокси-заголовков Forwarded Headers.
+        /// </summary>
+        /// <returns><see langword="true"/>, если обработка заголовков обратного прокси включена; иначе — <see langword="false"/>.</returns>
+        public bool UseForwardedHeaders { get; set; } = false;
 
-		/// <summary>
-		/// Получает или задает имя активного профиля CORS, применяемого ко всему приложению по умолчанию.
-		/// </summary>
-		/// <value>
-		/// Строковое имя профиля (например, <c>"ALLOW ALL"</c>, <c>"ALLOW LOCAL"</c> или <c>"ALLOW CREDENTIALS"</c>).
-		/// </value>
-		/// <remarks>
-		/// Допустимые стандартные константы профилей определены в классе <see cref="SuppCors"/>. 
-		/// Если профиль не указан или равен <see langword="null"/>, фреймворк автоматически активирует профиль защиты по умолчанию.
-		/// </remarks>
-		public string? Profile { get; set; } = null;
-
-
-		/// <summary>
-		/// Получает или задает коллекцию локальных адресов источников (Origins) разработчиков, 
-		/// используемых для междоменной отладки клиентских интерфейсов.
-		/// </summary>
-		/// <value>
-		/// Массив строковых URL-адресов локальных хостов (например, <c>["http://localhost:3000", "http://localhost:5173"]</c>).
-		/// </value>
-		public string[]? LocalOrigins { get; set; } = null;
-
-
-		/// <summary>
-		/// Получает или задает коллекцию доверенных корпоративных или внешних адресов источников (Origins), 
-		/// которым разрешено выполнять междоменные запросы к ресурсам приложения в режиме Production.
-		/// </summary>
-		/// <value>
-		/// Массив официальных строковых URL-адресов доверенных доменов (например, <c>["https://my-company.ru"]</c>).
-		/// </value>
-		/// <remarks>
-		/// Данный список является обязательным для корректной работы политик безопасности 
-		/// <see cref="SuppCors.CORS_ALLOW_TRUSTED"/> и <see cref="SuppCors.CORS_ALLOW_CREDENTIALS"/>.
-		/// </remarks>
-		public string[]? TrustedOrigins { get; set; } = null;
-
-	}
+        /// <summary>
+        /// Получает или задает список доверенных IP-адресов прокси-серверов (например, "127.0.0.1;192.168.1.10").
+        /// Если пустой — по умолчанию доверяется локальной петле (Loopback).
+        /// </summary>
+        /// <returns>Строка с перечислением IP-адресов доверенных прокси-серверов через точку с запятой либо <see langword="null"/>.</returns>
+        public string? KnownProxies { get; set; } = null;
+    }
 
 
 
-	/// <summary>
-	/// Конфигурация списков IP-подсетей с ленивой инициализацией типизированных CIDR-структур.
-	/// </summary>
-	public class SubnetsOptions
-	{
+    /// <summary>
+    /// Описывает параметры конфигурации совместного использования ресурсов между разными источниками (CORS) 
+    /// для разграничения прав доступа к веб-приложению со стороны браузеров.
+    /// </summary>
+    public class CorsOptions
+    {
 
-		/* options */
-
-
-		/// <summary>
-		/// Получает или задает сырую CIDR-строку подсетей администраторов.
-		/// </summary>
-		public string? Admin { get; set; } = null;
-
-		/// <summary>
-		/// Получает или задает сырую CIDR-строку безопасных подсетей.
-		/// </summary>
-		public string? Safe { get; set; } = null;
-
-		/// <summary>
-		/// Получает или задает сырую CIDR-строку небезопасных подсетей.
-		/// </summary>
-		public string? Unsafe { get; set; } = null;
-
-		/// <summary>
-		/// Получает или задает сырую CIDR-строку разрешенных подсетей.
-		/// </summary>
-		public string? Allow { get; set; } = null;
-
-		/// <summary>
-		/// Получает или задает сырую CIDR-строку запрещенных подсетей.
-		/// </summary>
-		public string? Deny { get; set; } = null;
+        /// <summary>
+        /// Получает или задает имя активного профиля CORS, применяемого ко всему приложению по умолчанию.
+        /// </summary>
+        /// <value>
+        /// Строковое имя профиля (например, <c>"ALLOW ALL"</c>, <c>"ALLOW LOCAL"</c> или <c>"ALLOW CREDENTIALS"</c>).
+        /// </value>
+        /// <remarks>
+        /// Допустимые стандартные константы профилей определены в классе <see cref="SuppCors"/>. 
+        /// Если профиль не указан или равен <see langword="null"/>, фреймворк автоматически активирует профиль защиты по умолчанию.
+        /// </remarks>
+        public string? Profile { get; set; } = null;
 
 
-		/* readonly properties */
+        /// <summary>
+        /// Получает или задает коллекцию локальных адресов источников (Origins) разработчиков, 
+        /// используемых для междоменной отладки клиентских интерфейсов.
+        /// </summary>
+        /// <value>
+        /// Массив строковых URL-адресов локальных хостов (например, <c>["http://localhost:3000", "http://localhost:5173"]</c>).
+        /// </value>
+        public string[]? LocalOrigins { get; set; } = null;
 
 
-		/// <summary>
-		/// Возвращает типизированный список подсетей администраторов с ленивой инициализацией.
-		/// </summary>
-		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка администраторов не задана.</returns>
-		public IPSubnetsList? AdminSubnets
-			=> _getSubnets(Admin, ref field);
+        /// <summary>
+        /// Получает или задает коллекцию доверенных корпоративных или внешних адресов источников (Origins), 
+        /// которым разрешено выполнять междоменные запросы к ресурсам приложения в режиме Production.
+        /// </summary>
+        /// <value>
+        /// Массив официальных строковых URL-адресов доверенных доменов (например, <c>["https://my-company.ru"]</c>).
+        /// </value>
+        /// <remarks>
+        /// Данный список является обязательным для корректной работы политик безопасности 
+        /// <see cref="SuppCors.CORS_ALLOW_TRUSTED"/> и <see cref="SuppCors.CORS_ALLOW_CREDENTIALS"/>.
+        /// </remarks>
+        public string[]? TrustedOrigins { get; set; } = null;
 
-		/// <summary>
-		/// Возвращает типизированный список безопасных подсетей с ленивой инициализацией.
-		/// </summary>
-		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка безопасной зоны не задана.</returns>
-		public IPSubnetsList? SafeSubnets
-			=> _getSubnets(Safe, ref field);
-
-		/// <summary>
-		/// Возвращает типизированный список небезопасных подсетей с ленивой инициализацией.
-		/// </summary>
-		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка публичной зоны не задана.</returns>
-		public IPSubnetsList? UnsafeSubnets
-			=> _getSubnets(Unsafe, ref field);
-
-		/// <summary>
-		/// Возвращает типизированный список разрешенных подсетей с ленивой инициализацией.
-		/// </summary>
-		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если белый список CIDR не задан.</returns>
-		public IPSubnetsList? AllowSubnets
-			=> _getSubnets(Allow, ref field);
-
-		/// <summary>
-		/// Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
-		/// </summary>
-		/// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если черный список CIDR не задан.</returns>
-		public IPSubnetsList? DenySubnets
-			=> _getSubnets(Deny, ref field);
-
-
-		/* privates */
-
-
-		private static IPSubnetsList? _getSubnets(
-			string? value,
-			ref IPSubnetsList? cache)
-		{
-			return string.IsNullOrEmpty(value)
-				? null
-				: cache ??= new IPSubnetsList(value);
-		}
-
-	}
+    }
 
 
 
-	/// <summary>
-	/// Параметры конфигурации почтовой службы, реализующие интерфейс <see cref="IMailerServiceOptions"/> 
-	/// из инфраструктуры библиотеки <c>Ans.Net10.Common</c>.
-	/// </summary>
-	public class MailServiceOptions
-		: IMailerServiceOptions
-	{
-		/// <inheritdoc />
-		public string SmtpServer { get; set; } = string.Empty;
+    /// <summary>
+    /// Конфигурация списков IP-подсетей с ленивой инициализацией типизированных CIDR-структур.
+    /// </summary>
+    public class SubnetsOptions
+    {
 
-		/// <inheritdoc />
-		public int SmtpPort { get; set; } = 0;
+        /* options */
 
-		/// <inheritdoc />
-		public bool SmtpUseSsl { get; set; } = false;
 
-		/// <inheritdoc />
-		public string SmtpUsername { get; set; } = string.Empty;
+        /// <summary>
+        /// Получает или задает сырую CIDR-строку подсетей администраторов.
+        /// </summary>
+        public string? Admin { get; set; } = null;
 
-		/// <inheritdoc />
-		public string SmtpPassword { get; set; } = string.Empty;
+        /// <summary>
+        /// Получает или задает сырую CIDR-строку безопасных подсетей.
+        /// </summary>
+        public string? Safe { get; set; } = null;
 
-		/// <inheritdoc />
-		public string DefaultFromAddress { get; set; } = string.Empty;
+        /// <summary>
+        /// Получает или задает сырую CIDR-строку небезопасных подсетей.
+        /// </summary>
+        public string? Unsafe { get; set; } = null;
 
-		/// <inheritdoc />
-		public string? DefaultFromTitle { get; set; } = null;
+        /// <summary>
+        /// Получает или задает сырую CIDR-строку разрешенных подсетей.
+        /// </summary>
+        public string? Allow { get; set; } = null;
 
-		/// <inheritdoc />
-		public string? DebugCc { get; set; } = null;
-	}
+        /// <summary>
+        /// Получает или задает сырую CIDR-строку запрещенных подсетей.
+        /// </summary>
+        public string? Deny { get; set; } = null;
+
+
+        /* readonly properties */
+
+
+        /// <summary>
+        /// Возвращает типизированный список подсетей администраторов с ленивой инициализацией.
+        /// </summary>
+        /// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка администраторов не задана.</returns>
+        public IPSubnetsList? AdminSubnets
+            => _getSubnets(Admin, ref field);
+
+        /// <summary>
+        /// Возвращает типизированный список безопасных подсетей с ленивой инициализацией.
+        /// </summary>
+        /// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка безопасной зоны не задана.</returns>
+        public IPSubnetsList? SafeSubnets
+            => _getSubnets(Safe, ref field);
+
+        /// <summary>
+        /// Возвращает типизированный список небезопасных подсетей с ленивой инициализацией.
+        /// </summary>
+        /// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка публичной зоны не задана.</returns>
+        public IPSubnetsList? UnsafeSubnets
+            => _getSubnets(Unsafe, ref field);
+
+        /// <summary>
+        /// Возвращает типизированный список разрешенных подсетей с ленивой инициализацией.
+        /// </summary>
+        /// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если белый список CIDR не задан.</returns>
+        public IPSubnetsList? AllowSubnets
+            => _getSubnets(Allow, ref field);
+
+        /// <summary>
+        /// Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
+        /// </summary>
+        /// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если черный список CIDR не задан.</returns>
+        public IPSubnetsList? DenySubnets
+            => _getSubnets(Deny, ref field);
+
+
+        /* privates */
+
+
+        private static IPSubnetsList? _getSubnets(
+            string? value,
+            ref IPSubnetsList? cache)
+        {
+            return string.IsNullOrEmpty(value)
+                ? null
+                : cache ??= new IPSubnetsList(value);
+        }
+
+    }
+
+
+
+    /// <summary>
+    /// Параметры конфигурации почтовой службы, реализующие интерфейс <see cref="IMailerServiceOptions"/> 
+    /// из инфраструктуры библиотеки <c>Ans.Net10.Common</c>.
+    /// </summary>
+    public class MailServiceOptions
+        : IMailerServiceOptions
+    {
+        /// <inheritdoc />
+        public string SmtpServer { get; set; } = string.Empty;
+
+        /// <inheritdoc />
+        public int SmtpPort { get; set; } = 0;
+
+        /// <inheritdoc />
+        public bool SmtpUseSsl { get; set; } = false;
+
+        /// <inheritdoc />
+        public string SmtpUsername { get; set; } = string.Empty;
+
+        /// <inheritdoc />
+        public string SmtpPassword { get; set; } = string.Empty;
+
+        /// <inheritdoc />
+        public string DefaultFromAddress { get; set; } = string.Empty;
+
+        /// <inheritdoc />
+        public string? DefaultFromTitle { get; set; } = null;
+
+        /// <inheritdoc />
+        public string? DebugCc { get; set; } = null;
+    }
+
+
+    public class PuppeteerSharpServiceOptions
+    {
+        public string AppPath { get; set; } = string.Empty;
+    }
 
 }

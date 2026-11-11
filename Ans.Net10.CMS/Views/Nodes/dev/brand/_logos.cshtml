@@ -1,0 +1,22 @@
+﻿@model (string[] Items, string[] Mods, string[] Variants, string Host)
+@foreach (var logo1 in Model.Items)
+{
+	<div class=" my-5">
+		<table class="table table-borderless table-sm">
+			@foreach (var var1 in Model.Variants)
+			{
+				<tr>
+					@foreach (var mod1 in Model.Mods)
+					{
+						var file1 = $"{var1}{logo1}{mod1}.svg";
+						var url1 = $"{Model.Host}/{file1}";
+						<td>
+							<a class="text-nowrap" target="_blank" href="@url1">@file1</a><br />
+							<img class="theme-bg-cb rounded" src="@url1" alt="@file1" />
+						</td>
+					}
+				</tr>
+			}
+		</table>
+	</div>
+}

@@ -1,0 +1,107 @@
+﻿@section PageBefore {
+    <page-container>
+
+        <p>
+            По&nbsp;умолчанию контент страницы вписан в&nbsp;контейнер <code>&lt;div class="container content mb-5" /></code>.
+        </p>
+        <p>
+            Этот контейнер предполагает ограничение контента по&nbsp;ширине (адаптивный отступ справа и&nbsp;слева), белый цвет фона и&nbsp;применение стандартного стиля отображения html-разметки (css-класс <code>.content</code>).
+        </p>
+        <p>
+            Если на&nbsp;странице требуются особые приемы оформления с&nbsp;использованием всей ширины области просмотра браузера, для этого можно воспользоваться секциями <code>PageBefore</code> и/или <code>PageAfter</code>, которые в&nbsp;шаблоне сайта размещены до&nbsp;и&nbsp;после основного контента страницы и&nbsp;не&nbsp;имеют ограничений по&nbsp;ширине.
+        </p>
+        <p>
+            Внутри секций <code>PageBefore</code> и&nbsp;<code>PageAfter</code> можно размещать любую требуемую разметку, но&nbsp;для приведения её&nbsp;к&nbsp;стандартному виду необходимо обернуть ее&nbsp;с&nbsp;сервисный тег <code>&lt;page-container>&lt;/lt;page-container></code> и, при необходимости, добавить css-класс <code>.content</code>.
+        </p>
+
+        <p>Пример кода:</p>
+        <pre><code class="language-razor line-numbers">
+
+            @@section PageBefore {
+
+            &Tab;&lt;p&gt;Свободный контент в начале страницы&lt;/p&gt;
+
+            &Tab;&lt;div class="bg-info"&gt;
+
+            &Tab;&Tab;&lt;page-container&gt;
+            &Tab;&Tab;&Tab;&lt;p&gt;Контент в границах&lt;/p&gt;
+            &Tab;&Tab;&lt;/page-container&gt;
+
+            &Tab;&Tab;&lt;page-container class="content"&gt;
+            &Tab;&Tab;&Tab;&lt;p&gt;Контент в границах и стандартном оформлении&lt;/p&gt;
+            &Tab;&Tab;&lt;/page-container&gt;
+
+            &Tab;&lt;/div&gt;
+
+            &Tab;&lt;p&gt;Свободный контент в начале страницы&lt;/p&gt;
+
+            }
+
+
+            &lt;p&gt;
+            &Tab;Обычный контент страницы в границах и стандартном оформлении
+            &lt;/p&gt;
+
+
+            @@section PageAfter {
+
+            &Tab;&lt;p&gt;Свободный контент в конце страницы&lt;/p&gt;
+
+            &Tab;&lt;div class="bg-success"&gt;
+
+            &Tab;&Tab;&lt;page-container&gt;
+            &Tab;&Tab;&Tab;&lt;p&gt;Контент в границах в конце страницы&lt;/p&gt;
+            &Tab;&Tab;&lt;/page-container&gt;        
+
+            &Tab;&lt;/div&gt;
+
+            &Tab;&lt;p&gt;Свободный контент в конце страницы&lt;/p&gt;
+
+            }
+
+        </code></pre>
+
+        <p>Результат:</p>
+
+    </page-container>
+
+
+
+    <p>Свободный контент в начале страницы</p>
+    <div class="bg-info">
+        <page-container>
+            <p>Контент в границах</p>
+        </page-container>
+        <page-container class="content">
+            <p>Контент в границах и стандартном оформлении</p>
+        </page-container>
+    </div>
+    <p>Свободный контент в начале страницы</p>
+
+
+    
+}
+
+
+
+<p>
+    Обычный контент страницы в границах и стандартном оформлении
+</p>
+
+
+
+@section PageAfter {
+
+
+
+    <p>Свободный контент в конце страницы</p>
+    <div class="bg-success">
+        <page-container>
+            <p>Контент в границах в конце страницы</p>
+        </page-container>
+    </div>
+    <p>Свободный контент в конце страницы</p>
+
+
+    
+}

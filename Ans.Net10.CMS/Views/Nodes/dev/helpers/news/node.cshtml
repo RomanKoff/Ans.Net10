@@ -1,0 +1,22 @@
+﻿@{
+    
+}
+
+
+@* Новости в контенте обычной страницы узла *@
+<partial name="Helpers/Guap/News/Node" model='new { nodeId = 9186 }' />
+
+@section PageAfter {
+
+    <div class="bg-info py-5">
+
+        <page-container class="content">
+
+            @* Новости в контенте кастомной страницы узла (блок) *@
+            <partial name="Helpers/Guap/News/Node" model='new { nodeId = 9186, hideEvents = true }' />
+
+        </page-container>
+
+    </div>
+
+}

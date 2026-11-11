@@ -152,7 +152,7 @@ namespace Ans.Net10.Common.Crud
 		public virtual IQueryable<T> GetItemsAsQueryable(
 			Expression<Func<T, bool>>? filter)
 		{
-			return filter == null
+			return filter is null
 				? DbSet.AsNoTracking()
 				: DbSet.AsNoTracking().Where(filter);
 		}
@@ -182,7 +182,7 @@ namespace Ans.Net10.Common.Crud
 			Expression<Func<T, bool>>? filter,
 			CancellationToken cancellationToken = default)
 		{
-			return filter == null
+			return filter is null
 				? await DbSet.CountAsync(cancellationToken)
 				: await DbSet.Where(filter).CountAsync(cancellationToken);
 		}
@@ -239,7 +239,7 @@ namespace Ans.Net10.Common.Crud
 			int id)
 		{
 			var entity1 = await DbSet.FindAsync(id);
-			if (entity1 != null)
+			if (entity1 is not null)
 				Remove(entity1);
 		}
 

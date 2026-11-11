@@ -1,0 +1,49 @@
+﻿@{
+	var data1 = Current.WebApi.Get<Dictionary<string, int>>(
+	"https://src.guap.ru/libs/guap-icons/11/guap-icons.json?2025-011-13");
+}
+
+<style>
+	.icons i {
+		margin: .5rem;
+		font-size: 3rem;
+	}
+</style>
+
+
+
+<div class="icons">
+	@foreach (var item1 in data1)
+	{
+		@:@icon(item1.Key)
+	}
+</div>
+<hr />
+<div class="icons">
+	@foreach (var item1 in data1)
+	{
+		<div id="@item1.Key" class="d-flex align-items-center">
+			<a href="#sm_@item1.Key"><i class="gi-@item1.Key"></i></a>
+			<div>
+				<code class="user-select-all">\@item1.Value.ToString("X4")</code><br />
+				<code>&lt;i class="gi-@item1.Key">&lt;/i></code>
+			</div>
+		</div>
+	}
+</div>
+<hr />
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+	@foreach (var item1 in data1)
+	{
+		<div id="sm_@item1.Key" class="col"><i class="gi-@item1.Key"></i> gi-@(item1.Key)</div>
+	}
+</div>
+
+
+
+@functions {
+	HtmlString icon(string key)
+	{
+		return new HtmlString($"<a class=\"test-all\" href=\"#{key}\"><i class=\"gi-{key}\"></i></a>");
+	}
+}

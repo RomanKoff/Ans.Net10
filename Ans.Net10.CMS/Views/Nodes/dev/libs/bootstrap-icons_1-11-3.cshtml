@@ -1,0 +1,118 @@
+﻿@{
+	var data1 = Current.WebApi.Get<Dictionary<string, int>>(
+	"https://src.guap.ru/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.json")
+	.OrderBy(x => x.Key);
+}
+
+<style>
+	.icons i {
+		margin: .5rem;
+		font-size: 3rem;
+	}
+</style>
+
+
+
+<h2>Избранное</h2>
+
+<p class="icons">
+	@icon("at")
+	@icon("telephone")
+	@icon("phone")
+	@icon("envelope")
+	@icon("envelope-at")
+	@icon("envelope-paper")
+	@icon("geo-alt")
+	@icon("mailbox")
+	@icon("buildings")
+
+	@icon("exclamation-circle")
+	@icon("info-circle")
+	@icon("question-circle")
+	@icon("1-circle")
+	@icon("x-circle")
+
+	@icon("mortarboard")
+	@icon("person-video3")
+	@icon("people")
+	@icon("person-vcard")
+
+	@icon("quote")
+	@icon("eye-slash")
+	@icon("universal-access-circle")
+
+	@icon("pen")
+	@icon("vector-pen")
+
+	@icon("flag")
+	@icon("check-lg")
+	@icon("plus-lg")
+	@icon("x-lg")
+
+	@icon("house")
+	@icon("search")
+	@icon("clock")
+	@icon("gear")
+	@icon("hand-thumbs-up")
+	@icon("hourglass")
+	@icon("trash3")
+	@icon("unlock")
+	@icon("diagram-3")
+	@icon("calendar3")
+	@icon("tools")
+
+	@icon("film")
+	@icon("play-circle")
+	@icon("globe2")
+	@icon("signpost")
+	@icon("stopwatch")
+	@icon("table")
+	@icon("tags")
+	@icon("cash-coin")
+	@icon("file-earmark-pdf")
+	@icon("clipboard2-plus")
+
+	@icon("file-earmark-arrow-down")
+	@icon("file-earmark-pdf")
+	@icon("filetype-psd")
+</p>
+
+
+
+<h2>Все</h2>
+
+<div class="icons">
+	@foreach (var item1 in data1)
+	{
+		@:@icon(item1.Key)
+	}
+</div>
+<hr />
+<div class="icons">
+	@foreach (var item1 in data1)
+	{
+		<div id="@item1.Key" class="d-flex align-items-center">
+			<a href="#sm_@item1.Key"><i class="bi-@item1.Key"></i></a>
+			<div>
+				<code class="user-select-all">\@item1.Value.ToString("X4")</code><br />
+				<code>&lt;i class="bi-@item1.Key">&lt;/i></code>
+			</div>
+		</div>
+	}
+</div>
+<hr />
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+	@foreach (var item1 in data1)
+	{
+		<div id="sm_@item1.Key" class="col"><i class="bi-@item1.Key"></i> bi-@(item1.Key)</div>
+	}
+</div>
+
+
+
+@functions {
+	HtmlString icon(string key)
+	{
+		return new HtmlString($"<a class=\"test-all\" href=\"#{key}\"><i class=\"bi-{key}\"></i></a>");
+	}
+}

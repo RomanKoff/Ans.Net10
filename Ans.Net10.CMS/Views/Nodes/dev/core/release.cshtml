@@ -1,0 +1,152 @@
+﻿@{
+
+    OutInfo("guap.ru/n", new string[] {
+"accelerator:moved:2026-07-06",
+});
+
+    OutInfo("guap.ru/m", new string[] {
+"abit08_09:del:2025-10-01",
+"accelerator2023:moved:2025-10-12",
+"aspira:moved:2025-10-01",
+"assist-spw:moved:2025-10-06",
+"avlg:moved:2026-10-15",
+"covid19:moved:2025-10-11",
+"cv",
+"digital_2022:moved:2025-10-12",
+"dom:moved:2026-07-02",
+"eif:moved:2026-10-15",
+"ens",
+"history",
+"iiaat",
+"inps",
+"inter:moved:2026-09-10",
+"knip:moved:2025-11-07",
+"med:moved:2026-06-29",
+"poliklass:moved:2026-05-01",
+"prioritet2030:moved:2025-10-08",
+"ptpi:moved:2025-10-03",
+"!quality",
+"ric:moved:2026-07-07",
+"schoolconf:moved:2026-02-02",
+"!science",
+"sgo:moved:2026-07-07",
+"ssk:moved:2026-04-10",
+"!sveden",
+"unesco:moved:2026-05-14",
+"us:moved:2025-10-20",
+"wsr:moved:2026-05-27",
+"yurclinica:moved:2025-11-08",
+});
+
+    OutInfo("guap.ru/c", new string[] {
+"aeot:moved:2025-10-14",
+"career",
+"cekomp",
+"ctt",
+"digital:moved:2025-10-11",
+"futurecode:moved:2025-10-21",
+"hrclub",
+"!it",
+"itcomp",
+"itforum",
+"ittime",
+"moodle:del:2025-09-30",
+"naukavuz",
+"omp:moved:2026-10-14",
+"osod:moved:2026-04-10",
+"osvr",
+"piar",
+"profor:moved:2025-11-28",
+"!regdocs",
+"unids",
+"vrmp",
+"zavread:moved:2025-11-04",
+});
+
+    OutInfo("new.guap.ru", new string[]{
+"f06",
+"fdpo:moved:2026-04-30",
+"fspo",
+"i01",
+"i02",
+"i03",
+"i04",
+"i08",
+"iibmp",
+"oldpubs",
+"targets",
+"vuc",
+});
+
+}
+
+
+
+
+
+
+@functions {
+
+    void OutInfo(string site, string[] nodes)
+    {
+        var nodes1 = nodes.Select(x => new NodeInfo(x));
+        var works1 = nodes1.Where(x => !x.HasInfo);
+        var compls1 = nodes1.Where(x => x.HasInfo).OrderByDescending(x => x.Date);
+        <div class="my-5">
+            <h4 class="m-0">@site</h4>
+            <ol class="theme-columns-3">
+                @foreach (var info1 in works1)
+                {
+                    var css1 = info1.HasInfo.Make("text-decoration-line-through opacity-50");
+                    var addon1 = info1.HasInfo.Make($" ({info1.Info}, {info1.Date})");
+                    <li class="@css1"><a target="_blank" href="https://@site/@info1.Name">@info1.Name @(info1.IsHard.Make("<i class=\"bi-exclamation-circle text-danger\"></i>").ToHtml())</a>@addon1.ToHtml()</li>
+                }
+            </ol>
+            @if (compls1?.Count() > 0)
+            {
+                <p class="m-0">Лог:</p>
+                <ul>
+                    @foreach (var info1 in compls1)
+                    {
+                        <li>@info1.Date — @info1.Name (@info1.Info)</li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+
+    class NodeInfo
+    {
+        public NodeInfo(string data)
+        {
+            var a1 = data.Split(':');
+            if (a1.Length == 3)
+            {
+                Info = a1[1];
+                Date = a1[2].ToDateOnly();
+            }
+            _parseName(a1[0]);
+        }
+
+        public string Name { get; set; }
+        public bool IsHard { get; set; }
+        public string Info { get; set; }
+        public DateOnly? Date { get; set; }
+
+        public bool HasInfo => Info != null;
+
+        private void _parseName(string name)
+        {
+            if (name[0] == '!')
+            {
+                IsHard = true;
+                Name = name[1..];
+            }
+            else
+            {
+                Name = name;
+            }
+        }
+    }
+
+}

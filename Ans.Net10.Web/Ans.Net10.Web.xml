@@ -103,7 +103,7 @@
             <summary>
             Перехватывает любые многосегментные HTTP-запросы и выполняет рендеринг соответствующего узла или страницы.
             </summary>
-            <param name="path">Динамический относительный ЧПУ-путь из входящего URL-адреса.</param>
+            <param name="path">Динамический относительный ЧПУ-путь из входящего URL-адреса. Допускает значение <see langword="null"/>.</param>
             <returns>
             Экземпляр <see cref="T:Microsoft.AspNetCore.Mvc.ViewResult"/> с физическим путем к .cshtml файлу в случае успеха, 
             либо <see cref="T:Microsoft.AspNetCore.Mvc.NotFoundResult"/> (HTTP 404), если страница отсутствует в карте.
@@ -2648,6 +2648,30 @@
             <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
             <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
         </member>
+        <member name="T:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware">
+            <summary>
+            Инфраструктурный компонент конвейера (Middleware), обеспечивающий сопряжение данных 
+            проиндексированной карты сайта с Триадой профилей оркеструющего контекста <see cref="T:Ans.Net10.Web.CurrentContext"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware"/>.
+            </summary>
+            <param name="next">Делегат, представляющий следующую функцию обработки в конвейере HTTP.</param>
+            <param name="logger">Служба ведения системных логов.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из входящих параметров равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Middlewares.AnsSitemapProfilerMiddleware.InvokeAsync(Microsoft.AspNetCore.Http.HttpContext,Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Выполняет перехват канонического URL-адреса запроса, извлекает метаданные из индекса 
+            карты сайта O(1) и наполняет Триаду профилей текущего контекста.
+            </summary>
+            <param name="context">Контекст текущего обрабатываемого HTTP-запроса.</param>
+            <param name="current">Оркестровый контекст текущего запроса (Scoped-сервис).</param>
+            <returns>Поток-задача асинхронного выполнения операции конвейера.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="context"/> или <paramref name="current"/> равен <see langword="null"/>.</exception>
+        </member>
         <member name="T:Ans.Net10.Web.Middlewares.AnsUrlCanonicalizationMiddleware">
             <summary>
             Инфраструктурный компонент конвейера (Middleware), обеспечивающий автоматический 
@@ -2683,6 +2707,18 @@
             <param name="logger">Служба ведения системных логов.</param>
             <exception cref="T:System.ArgumentNullException">Инициируется, если переданные зависимости равны null.</exception>
         </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesMapper.NodesPath">
+            <summary>
+            Возвращает абсолютный физический путь к корневому каталогу хранения Razor-представлений динамических узлов.
+            </summary>
+            <value>Строка канонического пути с нормализованными прямыми слэшами.</value>
+        </member>
+        <member name="P:Ans.Net10.Web.Nodes.NodesMapper.Map">
+            <summary>
+            Возвращает текущий неизменяемый снимок карты маршрутов, сопоставляющий ЧПУ-ключи с виртуальными путями к .cshtml файлам.
+            </summary>
+            <value>Потокобезопасный словарь <see cref="T:System.Collections.Immutable.ImmutableDictionary`2"/>.</value>
+        </member>
         <member name="M:Ans.Net10.Web.Nodes.NodesMapper.InitializeAsync(System.Threading.CancellationToken)">
             <summary>
             Выполняет полное сканирование диска и перестроение карты представлений.
@@ -2695,24 +2731,29 @@
             Выполняет поиск виртуального пути к Razor-представлению по каноническому ключу запроса.
             </summary>
             <param name="requestPath">Нормализованный путь запроса пользователя (без ведущих/закрывающих слэшей).</param>
-            <param name="viewPath">Выходной параметр, содержащий виртуальный путь вида <c>/Views/Nodes/...</c>.</param>
+            <param name="viewPath">Выходной параметр, содержащий виртуальный путь вида <c>/Views/Nodes/...</c> в случае успеха.</param>
             <returns>Значение <see langword="true"/>, если представление найдено; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Nodes.NodesWatcherService">
             <summary>
-            Фоновое инфраструктурное решение (Триггер), отслеживающее изменения в Views/Nodes
-            и координирующее безопасное перестроение карты в NodesMapper с защитой от шторма событий.
+            Фоновая служба автоматического мониторинга дискового пространства каталога Views/Nodes.
+            Отслеживает создание, удаление и изменение файлов Razor-представлений (*.cshtml) и инициирует обновление карты маршрутов.
             </summary>
         </member>
         <member name="M:Ans.Net10.Web.Nodes.NodesWatcherService.#ctor(Ans.Net10.Web.Nodes.NodesMapper,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Nodes.NodesWatcherService})">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Nodes.NodesWatcherService"/>.
             </summary>
-            <param name="mapper">Исполнитель карты путей.</param>
-            <param name="logger">Служба ведения системных логов.</param>
+            <param name="mapper">Синглтон-исполнитель и хранитель карты Razor-представлений.</param>
+            <param name="logger">Служба ведения фонового лога событий.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из переданных параметров равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.Nodes.NodesWatcherService.ExecuteAsync(System.Threading.CancellationToken)">
-            <inheritdoc />
+            <summary>
+            Запускает бесконечный фоновый цикл ожидания сигналов от файловой системы и координирует Debounce-затишье.
+            </summary>
+            <param name="stoppingToken">Токен остановки фонового процесса веб-сервера.</param>
+            <returns>Поток-задача <see cref="T:System.Threading.Tasks.Task"/> жизненного цикла службы.</returns>
         </member>
         <member name="M:Ans.Net10.Web.Nodes.NodesWatcherService.Dispose">
             <inheritdoc />
@@ -4414,7 +4455,7 @@
             базовые инфраструктурные службы платформы и встроенные прикладные сервисы библиотеки.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.CurrentContext.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Caching.Hybrid.HybridCache,Ans.Net10.Web.Services.IViewRenderService,System.Net.Http.IHttpClientFactory,Ans.Net10.Common.Services.IMailerService,Microsoft.AspNetCore.Routing.LinkGenerator)">
+        <member name="M:Ans.Net10.Web.CurrentContext.#ctor(Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Http.IHttpContextAccessor,Microsoft.Extensions.Caching.Hybrid.HybridCache,Ans.Net10.Web.Services.IViewRenderService,System.Net.Http.IHttpClientFactory,Ans.Net10.Web.SitemapBuilder,Ans.Net10.Common.Services.IMailerService,Microsoft.AspNetCore.Routing.LinkGenerator)">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.CurrentContext"/> с внедрением всех базовых зависимостей.
             </summary>
@@ -4475,6 +4516,12 @@
             Получает фабрику для создания именованных и типизированных HTTP-клиентов.
             </summary>
             <returns>Фабрика клиентов <see cref="T:System.Net.Http.IHttpClientFactory"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Sitemap">
+            <summary>
+            Получает синглтон-строитель карты сайта и актуальные проиндексированные коллекции навигации.
+            </summary>
+            <returns>Экземпляр класса <see cref="T:Ans.Net10.Web.SitemapBuilder"/>.</returns>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Mailer">
             <summary>
@@ -6196,14 +6243,12 @@
             <summary>
             Получает признак наличия дочерних узлов у текущего элемента карты узлов.
             </summary>
-            <value>Значение <see langword="true"/>, если коллекция дочерних узлов содержит элементы; иначе — <see langword="false"/>.</value>
             <returns><see langword="true"/>, если есть дочерние узлы; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="P:Ans.Net10.Web.NodemapItem.HasPages">
             <summary>
             Получает признак наличия страниц у текущего элемента карты узлов.
             </summary>
-            <value>Значение <see langword="true"/>, если коллекция основных страниц содержит элементы; иначе — <see langword="false"/>.</value>
             <returns><see langword="true"/>, если есть основные страницы; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Web.NodemapItem.AddChildNode(Ans.Net10.Web.NodemapItem)">
@@ -6382,10 +6427,6 @@
             <summary>
             Получает семантический тип страницы контента, определяющий её поведение в структуре навигации.
             </summary>
-            <value>
-            Одно из значений перечисления <see cref="T:Ans.Net10.Web.PagemapTypesEnum"/>, указывающее, является ли страница 
-            изолированным элементом, каталогом контента, внутренней ссылкой или внешним URL.
-            </value>
             <returns>Текущий тип страницы из перечисления <see cref="T:Ans.Net10.Web.PagemapTypesEnum"/>.</returns>
         </member>
         <member name="P:Ans.Net10.Web.PagemapItem.ParentPage">
@@ -6404,7 +6445,6 @@
             <summary>
             Получает признак наличия дочерних страниц у текущего элемента карты страниц.
             </summary>
-            <value>Значение <see langword="true"/>, если коллекция дочерних элементов содержит записи; иначе — <see langword="false"/>.</value>
             <returns><see langword="true"/>, если есть дочерние элементы; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Web.PagemapItem.AddChildPage(Ans.Net10.Web.PagemapItem)">
@@ -6496,9 +6536,28 @@
             регистронезависимый поиск узлов и страниц карты сайта в оперативной памяти.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.SitemapBuilder.#ctor">
+        <member name="F:Ans.Net10.Web.SitemapBuilder.MAPNODES_FILENAME">
             <summary>
-            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SitemapBuilder"/>.
+            Имя конфигурационного файла структуры информационных узлов.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.SitemapBuilder.MAPPAGES_FILENAME">
+            <summary>
+            Имя конфигурационного файла структуры страниц контента внутри узла.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Ans.Net10.Web.LibWebOptions,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.SitemapBuilder})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SitemapBuilder"/> с вычислением базового пути к файлам карт.
+            </summary>
+            <param name="env">Окружение веб-приложения для определения корневого каталога.</param>
+            <param name="options">Конфигурационные параметры навигации и путей к XML-файлам.</param>
+            <param name="logger">Экземпляр логгера для записи событий сборки структуры.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из переданных параметров равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.SitemapBuilder.SitemapPath">
+            <summary>
+            Получает полный физический путь к корневому каталогу с XML-файлами карты сайта.
             </summary>
         </member>
         <member name="P:Ans.Net10.Web.SitemapBuilder.TopNodes">
@@ -6519,19 +6578,19 @@
             </summary>
             <returns>Оптимизированный для чтения замороженный словарь, сопоставляющий полные ЧПУ-маршруты с объектами <see cref="T:Ans.Net10.Web.PagemapItem"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Web.SitemapBuilder.GetNode(System.String)">
+        <member name="M:Ans.Net10.Web.SitemapBuilder.InitializeAsync(System.Threading.CancellationToken)">
             <summary>
-            Возвращает информационный узел из индекса по его системному имени.
+            Асинхронно загружает, парсит и полностью перестраивает структуру карты сайта из XML-файлов конфигурации.
             </summary>
-            <param name="nodeName">Системное имя искомого информационного узла.</param>
-            <returns>Найденный экземпляр <see cref="T:Ans.Net10.Web.NodemapItem"/> или <see langword="null"/>, если узел не найден или имя пусто.</returns>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Значение <see langword="true"/>, если перестроение графа и индексов завершилось успехом; иначе — <see langword="false"/> (ошибка I/O или парсинга).</returns>
         </member>
-        <member name="M:Ans.Net10.Web.SitemapBuilder.GetPage(System.String)">
+        <member name="M:Ans.Net10.Web.SitemapBuilder.AddTopNodeDef(Ans.Net10.Web.NodemapItemDef)">
             <summary>
-            Возвращает контентную страницу из индекса по её полному составному пути.
+            Программно преобразует и добавляет корневой узел на основе его декларативного описания в конец коллекции.
             </summary>
-            <param name="combinedPath">Составной ЧПУ-путь страницы в формате "ИмяУзла/ПутьСтраницы".</param>
-            <returns>Найденный экземпляр <see cref="T:Ans.Net10.Web.PagemapItem"/> или <see langword="null"/>, если страница не найдена.</returns>
+            <param name="nodemapItemDef">Декларативное описание добавляемого узла.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="nodemapItemDef"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="M:Ans.Net10.Web.SitemapBuilder.AddTopNode(Ans.Net10.Web.NodemapItem)">
             <summary>
@@ -6566,11 +6625,48 @@
             <returns>Значение <see langword="true"/>, если целевой узел найден и страница добавлена; иначе — <see langword="false"/>.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="page"/> равен <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Web.SitemapBuilder.BuildIndexes">
+        <member name="M:Ans.Net10.Web.SitemapBuilder.GetNode(System.String)">
             <summary>
-            Выполняет рекурсивный обход текущего графа элементов и компилирует 
-            высокопроизводительные неизменяемые словари (Frozen) для быстрого поиска узлов и страниц.
+            Возвращает информационный узел из индекса по его системному имени.
             </summary>
+            <param name="nodeName">Системное имя искомого информационного узла.</param>
+            <returns>Найденный экземпляр <see cref="T:Ans.Net10.Web.NodemapItem"/> или <see langword="null"/>, если узел не найден или имя пусто.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapBuilder.GetPage(System.String)">
+            <summary>
+            Возвращает контентную страницу из индекса по её полному составному пути.
+            </summary>
+            <param name="combinedPath">Составной ЧПУ-путь страницы в формате "ИмяУзла/ПутьСтраницы".</param>
+            <returns>Найденный экземпляр <see cref="T:Ans.Net10.Web.PagemapItem"/> или <see langword="null"/>, если страница не найдена.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.SitemapBuilder._log">
+            <summary>
+            Вложенный класс генерации логов с использованием Source Generator.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.SitemapWatcherService">
+            <summary>
+            Фоновое прерывание и служба автоматического мониторинга XML-файлов конфигурации карты сайта.
+            Использует низкоуровневые уведомления файловой системы с задержкой (Debounce) для предотвращения дребезга.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapWatcherService.#ctor(Ans.Net10.Web.SitemapBuilder,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.SitemapWatcherService})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SitemapWatcherService"/>.
+            </summary>
+            <param name="builder">Синглтон-строитель графа навигации, подлежащий актуализации.</param>
+            <param name="logger">Экземпляр логгера фоновой службы.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из параметров равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapWatcherService.ExecuteAsync(System.Threading.CancellationToken)">
+            <summary>
+            Выполняет основную асинхронную логику фонового ожидания сигналов и перестроения карты сайта.
+            </summary>
+            <param name="stoppingToken">Токен остановки фоновой службы.</param>
+            <returns>Задание <see cref="T:System.Threading.Tasks.Task"/>, представляющее жизненный цикл фоновой службы.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SitemapWatcherService.Dispose">
+            <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Web._MapItemDef_Base">
             <summary>
@@ -6717,6 +6813,94 @@
             Получает очищенный массив тегов принудительного отключения «сквозного» поведения.
             </summary>
             <returns>Массив строковых тегов исключения сквозного прохода либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web._MapItemXmlDto_Base.Display">
+            <summary>
+            Получает или задает декларативное правило отображения элемента.
+            Формат строки: "теги_показа|теги_скрытия" (например, "main,header", "|footer").
+            </summary>
+            <returns>Строка с правилами отображения либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web._MapItemXmlDto_Base.Passthroughs">
+            <summary>
+            Получает или задает декларативное правило сквозного поведения элемента.
+            Формат строки: "теги_включения|теги_исключения" (например, "footer", "|main,header").
+            </summary>
+            <returns>Строка с правилами сквозного прохода либо <see langword="null"/>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.NodesXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для корневого элемента конфигурации дерева информационных узлов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodesXmlDto.Items">
+            <summary>
+            Получает или задает список корневых элементов навигационных узлов.
+            </summary>
+            <returns>Список объектов <see cref="T:Ans.Net10.Web.NodeItemXmlDto"/> или <see langword="null"/>, если элементы не заданы.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.NodeItemXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для конкретного элемента информационного узла в XML-файле.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeItemXmlDto.ChildItems">
+            <summary>
+            Получает или задает список дочерних элементов информационных узлов.
+            </summary>
+            <returns>Список дочерних объектов <see cref="T:Ans.Net10.Web.NodeItemXmlDto"/> или <see langword="null"/>, если вложенные элементы отсутствуют.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeItemXmlDto.Target">
+            <summary>
+            Получает или задает строку назначения (идентификатор узла, внутренний или внешний URL).
+            </summary>
+            <returns>Строка назначения (ЧПУ-идентификатор, относительный путь или внешний адрес) либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.NodeItemXmlDto.Face">
+            <summary>
+            Получает или задает человекочитаемое наименование (интерфейс) или шаблон названия элемента.
+            </summary>
+            <returns>Человекочитаемый заголовок или маска отображения узла.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.PagesXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для корневого элемента конфигурации дерева страниц конкретного узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PagesXmlDto.Items">
+            <summary>
+            Получает или задает список корневых элементов контентных страниц.
+            </summary>
+            <returns>Список объектов <see cref="T:Ans.Net10.Web.PageItemXmlDto"/> или <see langword="null"/>, если страницы не заданы.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.PageItemXmlDto">
+            <summary>
+            Объект переноса данных (DTO) для конкретного элемента контентной страницы в XML-файле.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.ChildItems">
+            <summary>
+            Получает или задает список дочерних элементов контентных страниц.
+            </summary>
+            <returns>Список дочерних объектов <see cref="T:Ans.Net10.Web.PageItemXmlDto"/> или <see langword="null"/>, если вложенные страницы отсутствуют.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.Target">
+            <summary>
+            Получает или задает строку назначения страницы (ЧПУ-имя, внутренний или внешний URL).
+            </summary>
+            <returns>Строка ЧПУ-имени страницы или адрес перенаправления.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.Face">
+            <summary>
+            Получает или задает человекочитаемое наименование страницы.
+            </summary>
+            <returns>Текст названия страницы для отображения в интерфейсах либо <see langword="null"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.PageItemXmlDto.HasNoIndex">
+            <summary>
+            Получает или задает флаг, указывающий на отсутствие у данного элемента стартовой страницы.
+            </summary>
+            <returns><see langword="true"/>, если для данного уровня структуры отключена индексная страница; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Exts_ClaimsPrincipal">
             <summary>

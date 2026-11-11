@@ -1,0 +1,115 @@
+﻿@{
+	//Current.Page.Title = "Fonts";
+}
+
+
+<h2>Гарнитуры</h2>
+@{
+	OutSample("", "По умолчанию");
+	OutSample("Roboto Condensed");
+	OutSample("Roboto Mono");
+	OutSample("Roboto Slab");
+	OutSample("Open Sans");
+}
+
+
+
+<h2>Классы стилей</h2>
+<div class="row">
+	<div class="col-12 col-md-5">
+		<pre><code class="language-html line-numbers">
+			.fw-lighter: lighter;
+			.fw-light: 300;
+			.fw-normal: 400;
+			.fw-medium: 500;
+			.fw-semibold: 600;
+			.fw-bold: 700;
+			.fw-bolder: bolder;
+		</code></pre>
+	</div>
+	<div class="col-12 col-md-7">
+		<pre><code class="language-html line-numbers">
+			.font-robotocondensed: font-family:'Roboto Condensed';
+			.font-robotomono: font-family:'Roboto Mono';
+			.font-robotoslab: font-family:'Roboto Slab';
+			.font-opensans: font-family:'Open Sans';
+		</code></pre>
+	</div>
+</div>
+
+
+
+@functions {
+
+	HtmlString sample1 = $@"
+<p>
+{SuppLangRu.Sample()}.
+{SuppLangRu.Sample()}.
+{SuppLangRu.Sample()}.
+{SuppLangRu.Sample()}.
+{SuppLangRu.Sample()}.
+{SuppLangRu.Sample()}.
+</p>
+<p>
+{SuppLangRu.SampleSmall()}
+<b>&lt;b>{SuppLangRu.SampleSmaller()}&lt;/b></b> {SuppLangRu.SampleSmall()}
+<em>&lt;em>{SuppLangRu.SampleSmaller()}&lt;/em></em> {SuppLangRu.SampleSmall()}
+<small>&lt;small>{SuppLangRu.SampleSmaller()}&lt;/small></small> {SuppLangRu.SampleSmall()}
+<big>&lt;big>{SuppLangRu.SampleSmaller()}&lt;/big></big> {SuppLangRu.SampleSmall()}
+<sup>&lt;sup>{SuppLangRu.SampleSmaller()}&lt;/sup></sup> {SuppLangRu.SampleSmall()}
+<sub>&lt;sub>{SuppLangRu.SampleSmaller()}&lt;/sub></sub> {SuppLangRu.SampleSmall()}
+<s>&lt;s>{SuppLangRu.SampleSmaller()}&lt;/s></s> {SuppLangRu.SampleSmall()}.
+</p>".ToHtml();
+
+	HtmlString sample2 = SuppLangRu.Sample().ToHtml();
+
+	void OutSample(string name, string title = null)
+	{
+		var s1 = name.Make("font-family:'{0}';");
+		<h3 class="text-info">@((title ?? name).ToHtml())</h3>
+		if (name != "")
+		{
+			<pre><code class="language-html line-numbers">
+				style="@s1"
+				class="font-@(name.Replace(" ", "").ToLower())"
+			</code></pre>
+		}
+		<div style="@(s1)">
+			@(sample1)
+			<table class="table">
+				@foreach (var item1 in new[] { "lighter", "light", "normal", "medium", "semibold", "bold", "bolder" })
+				{
+					<tr>
+						<td class="code text-nowrap" style="width: 1%;">.fw-@(item1)</td>
+						<td class="fw-@(item1)">@sample2</td>
+					</tr>
+				}
+			</table>
+		</div>
+	}
+
+}
+
+<h2>Символы</h2>
+<p> 🛈 ₽ </p>
+<p> 🡠 🡢 🡡 🡣 🡤 🡥 🡦 🡧 </p>
+<p> © ® ™ º ª ‰ π ¦ § ° µ ¶ … ‾ ´ & ˜ ˆ ¨ ¯ ¸ ¿ ¡ ¤ ↵ </p>
+<p> × ÷ <> ± ¹ ² ³ ¬ ¼ ½ ¾ ⁄ − ≤ ≥ ≈ ≠ ≡ √ ∞ ∑ ∏ ∂ ∫ </p>
+<p> ∀ ∃ ∅ Ø ∈ ∉ ∋ ⊂ ⊃ ⊄ ⊆ ⊇ ⊕ ⊗ ⊥ ∠ ∧ ∨ ∩ ∪ </p>
+<p> € ¢ £ ¥ ƒ • · † ‡ ♠ ♣ ♥ ♦ ◊ </p>
+<p> " ‘ ’ ‚ ‹ › “ ” „ « » ′ ″ </p>
+<p> ← → ↑ ↓ ↔ ↕ ⇐ ⇒ ⇑ ⇓ ⇔ ⇕ </p>
+<p> ✱ ⚪ ⚫ ★ ☆ ✪ ✫ ✯ ⚝ ✵ ✹ ✸ ✶ ✷ ✴ ✳ ⍟ ❄ ❅ ❆ ⚹ ⊛ ❉ ❋ ✺ ✲ ✧ ✦ ☃ </p>
+<p> ─ ━ ┄ ┅ ┈ ┉ ╌ ╍ ═ </p>
+<p> │ ┃ ┆ ┇ ┊ ┋ ╎ ╏ ║ </p>
+<p> ┌ ┍ ┎ ┏ ╒ ╓ ╔ </p>
+<p> ┐ ┑ ┒ ┓ ╕ ╖ ╗ </p>
+<p> └ ┕ ┖ ┗ ╘ ╙ ╚ </p>
+<p> ┘ ┙ ┚ ┛ ╛ ╜ ╝ </p>
+<p> ├ ┝ ┞ ┟ ┠ ┡ ┢ ┣ ╞ ╟ ╠ </p>
+<p> ┤ ┥ ┦ ┧ ┨ ┩ ┪ ┫ ╡ ╢ ╣ </p>
+<p> ┬ ┭ ┮ ┯ ┰ ┱ ┲ ┳ ╤ ╥ ╦ </p>
+<p> ┴ ┵ ┶ ┷ ┸ ┹ ┺ ┻ ╧ ╨ ╩ </p>
+<p> ┼ ┽ ┾ ┿ ╀ ╁ ╂ ╃ ╄ ╅ ╆ ╇ ╈ ╉ ╊ ╋ ╪ ╫ ╬ </p>
+<p> ╭ ╮ ╯ ╰ ╱ ╲ ╳ ╴ ╵ ╶ ╷ ╸ ╹ ╺ ╻ ╼ ╽ ╾ ╿ </p>
+<p> ▀ ▁ ▂ ▃ ▄ ▅ ▆ ▇ █ ▉ ▊ ▋ ▌ ▍ ▎ ▏ ▐ ░ ▒ ▓ ▔ ▕ ▖ ▗ ▘ ▙ ▚ ▛ ▜ ▝ ▟ </p>

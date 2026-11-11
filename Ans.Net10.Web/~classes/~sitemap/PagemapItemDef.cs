@@ -1,4 +1,4 @@
-﻿// rev 2026-10-30
+﻿// rev 2026-11-05
 
 namespace Ans.Net10.Web
 {

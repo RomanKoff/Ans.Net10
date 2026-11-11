@@ -1,4 +1,4 @@
-﻿// rev 2026-10-21
+﻿// rev 2026-11-05
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -55,8 +55,8 @@ namespace Ans.Net10.Web
 			HybridCache hybridCache,
 			IViewRenderService viewRender,
 			IHttpClientFactory httpClientFactory,
-			//ISitemapProvider sitemapProvider,
-			IMailerService mailer,
+            SitemapBuilder sitemapBuilder,
+            IMailerService mailer,
 			LinkGenerator linkGenerator)
 		{
 			ArgumentNullException.ThrowIfNull(loggerFactory);
@@ -66,7 +66,8 @@ namespace Ans.Net10.Web
 			ArgumentNullException.ThrowIfNull(hybridCache);
 			ArgumentNullException.ThrowIfNull(viewRender);
 			ArgumentNullException.ThrowIfNull(httpClientFactory);
-			ArgumentNullException.ThrowIfNull(mailer);
+            ArgumentNullException.ThrowIfNull(sitemapBuilder);
+            ArgumentNullException.ThrowIfNull(mailer);
 			ArgumentNullException.ThrowIfNull(linkGenerator);
 
 			// base
@@ -78,8 +79,8 @@ namespace Ans.Net10.Web
 			HybridCache = hybridCache;
 			ViewRender = viewRender;
 			HttpClientFactory = httpClientFactory;
-			//Sitemap = sitemapProvider.Sitemap;
-			Mailer = mailer;
+            Sitemap = sitemapBuilder;
+            Mailer = mailer;
 			LinkGenerator = linkGenerator;
 
 			Options = AppSettingsFactory.GetOptions<LibWebOptions>(Configuration);
@@ -157,25 +158,18 @@ namespace Ans.Net10.Web
 		public IHttpClientFactory HttpClientFactory { get; }
 
 
-		///// <summary>
-		///// Получает поставщик данных и управления жизненным циклом карты сайта.
-		///// </summary>
-		///// <returns>Экземпляр поставщика карты сайта <see cref="ISitemapProvider"/>.</returns>
-		//public ISitemapProvider Sitemap { get; }
+        /// <summary>
+        /// Получает синглтон-строитель карты сайта и актуальные проиндексированные коллекции навигации.
+        /// </summary>
+        /// <returns>Экземпляр класса <see cref="SitemapBuilder"/>.</returns>
+        public SitemapBuilder Sitemap { get; }
 
 
-		///// <summary>
-		///// Получает актуальную карту сайта.
-		///// </summary>
-		///// <returns>Экземпляр строителя карты сайта <see cref="SitemapBuilder"/>.</returns>
-		//public SitemapBuilder Sitemap { get; }
-
-
-		/// <summary>
-		/// Получает службу отправки электронной почты SMTP.
-		/// </summary>
-		/// <returns>Экземпляр почтового сервиса <see cref="IMailerService"/>.</returns>
-		public IMailerService Mailer { get; }
+        /// <summary>
+        /// Получает службу отправки электронной почты SMTP.
+        /// </summary>
+        /// <returns>Экземпляр почтового сервиса <see cref="IMailerService"/>.</returns>
+        public IMailerService Mailer { get; }
 
 
 		/// <summary>

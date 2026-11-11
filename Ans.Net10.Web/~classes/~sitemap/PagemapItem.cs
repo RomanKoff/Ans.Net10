@@ -1,4 +1,4 @@
-﻿// rev 2026-10-30
+﻿// rev 2026-11-05
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Http;
@@ -154,15 +154,11 @@ namespace Ans.Net10.Web
 		public string? Name { get; }
 
 
-		/// <summary>
-		/// Получает семантический тип страницы контента, определяющий её поведение в структуре навигации.
-		/// </summary>
-		/// <value>
-		/// Одно из значений перечисления <see cref="PagemapTypesEnum"/>, указывающее, является ли страница 
-		/// изолированным элементом, каталогом контента, внутренней ссылкой или внешним URL.
-		/// </value>
-		/// <returns>Текущий тип страницы из перечисления <see cref="PagemapTypesEnum"/>.</returns>
-		public PagemapTypesEnum Type { get; private set; }
+        /// <summary>
+        /// Получает семантический тип страницы контента, определяющий её поведение в структуре навигации.
+        /// </summary>
+        /// <returns>Текущий тип страницы из перечисления <see cref="PagemapTypesEnum"/>.</returns>
+        public PagemapTypesEnum Type { get; private set; }
 
 
 		/// <summary>
@@ -179,12 +175,11 @@ namespace Ans.Net10.Web
 		public IReadOnlyCollection<PagemapItem> ChildPages { get; }
 
 
-		/// <summary>
-		/// Получает признак наличия дочерних страниц у текущего элемента карты страниц.
-		/// </summary>
-		/// <value>Значение <see langword="true"/>, если коллекция дочерних элементов содержит записи; иначе — <see langword="false"/>.</value>
-		/// <returns><see langword="true"/>, если есть дочерние элементы; иначе — <see langword="false"/>.</returns>
-		public bool HasChildPages
+        /// <summary>
+        /// Получает признак наличия дочерних страниц у текущего элемента карты страниц.
+        /// </summary>
+        /// <returns><see langword="true"/>, если есть дочерние элементы; иначе — <see langword="false"/>.</returns>
+        public bool HasChildPages
 			=> ChildPages is { Count: > 0 };
 
 
@@ -230,20 +225,27 @@ namespace Ans.Net10.Web
 		{
 			if (Name is not { Length: > 0 })
 				return string.Empty;
+
 			var parts1 = new List<string>();
 			var ancestors1 = GetParentPages();
+
 			if (ancestors1 is not null)
 				foreach (var ancestor1 in ancestors1)
 					if (ancestor1.Name is { Length: > 0 }
 						&& !string.Equals(ancestor1.Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))
 						parts1.Insert(0, ancestor1.Name);
+
 			if (!string.Equals(Name, LibWebConsts.INDEX_PAGE_NAME, StringComparison.OrdinalIgnoreCase))
 				parts1.Add(Name);
+
 			var nodePath1 = Node.Path;
+
 			if (parts1 is [])
 				return nodePath1 is { Length: 1 }
 					? "/" : nodePath1;
+
 			var pagesPath1 = string.Join('/', parts1);
+
 			return nodePath1 is { Length: 1 }
 				? $"/{pagesPath1}"
 				: $"{nodePath1}/{pagesPath1}";

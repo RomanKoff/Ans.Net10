@@ -1,0 +1,162 @@
+﻿<p><sample-ru />. <sample-ru />.</p>
+<p><sample-ru />. <sample-ru />.</p>
+
+
+
+<h2>h2. Пример заголовка раздела страницы. Содержит два предложения</h2>
+<div class="row">
+	<div class="col">
+
+		<p><sample-ru />. <sample-ru />.</p>
+		<p><sample-ru />. <sample-ru />.</p>
+
+		<h3>h3. Пример подзаголовка раздела страницы</h3>
+		<p><sample-ru />. <sample-ru />.</p>
+		<p><sample-ru />. <sample-ru />.</p>
+
+		<h3>h3. Еще один пример подзаголовка раздела страницы</h3>
+		<p><sample-ru />. <sample-ru />.</p>
+		<p><sample-ru />. <sample-ru />.</p>
+
+	</div>
+	<div class="col">
+
+		<p><sample-ru />. <sample-ru />.</p>
+		<ul>
+			<li><sample-ru />. <sample-ru />.</li>
+			<li><sample-ru />. <sample-ru />. <sample-ru />.</li>
+			<li><sample-ru />. <sample-ru />.</li>
+			<li><sample-ru />. <sample-ru />. <sample-ru />.</li>
+			<li><sample-ru />. <sample-ru />.</li>
+			<li><sample-ru />. <sample-ru />. <sample-ru />.</li>
+		</ul>
+		<p><sample-ru />. <sample-ru />.</p>
+
+	</div>
+</div>
+
+
+
+<h2>h2. Примеры списков</h2>
+
+<p>Маркерный список:</p>
+<ul>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+</ul>
+
+<p>Нумерованный список:</p>
+<ol start="123" reversed="reversed">
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+	<li><sample-ru />. <sample-ru />.</li>
+</ol>
+
+<p>Список терминов:</p>
+<dl>
+	<dt><sample-ru-small /></dt>
+	<dd><sample-ru />.</dd>
+	<dd><sample-ru />. <sample-ru />.</dd>
+	<dt><sample-ru-small /></dt>
+	<dd><sample-ru />. <sample-ru />.</dd>
+	<dd><sample-ru />.</dd>
+	<dt><sample-ru-small /></dt>
+	<dd><sample-ru />.</dd>
+	<dd><sample-ru />. <sample-ru />.</dd>
+	<dt><sample-ru-small /></dt>
+	<dd><sample-ru />. <sample-ru />.</dd>
+	<dd><sample-ru />.</dd>
+</dl>
+
+
+
+<h2>h2. Раздел страницы с табличными данными</h2>
+
+<table class="table table-bordered">
+	<caption style="caption-side: top;">
+		Таблица 1. Пример табличных данных (table-bordered)
+	</caption>
+	@{
+		await OutTableContentAsync();
+	}
+</table>
+
+
+<table class="table table-sm table-hover">
+	<caption style="caption-side: top;">
+		Таблица 2. Пример табличных данных (table-sm table-hover)
+	</caption>
+	@{
+		await OutTableContentAsync();
+	}
+</table>
+
+
+
+
+<h2>h2. Следующий раздел страницы с текстом и заголовками h5 и h6</h2>
+<div class="row">
+	<div class="col">
+
+		<h5>H5. <sample-ru /></h5>
+		<p><sample-ru />. <sample-ru />.</p>
+		<h5>H5. <sample-ru /></h5>
+		<p><sample-ru />. <sample-ru />.</p>
+		<h5>H5. <sample-ru /></h5>
+		<p><sample-ru />. <sample-ru />.</p>
+
+	</div>
+	<div class="col">
+
+		<h6>H6. <sample-ru /></h6>
+		<p><sample-ru />. <sample-ru />.</p>
+		<h6>H6. <sample-ru /></h6>
+		<p><sample-ru />. <sample-ru />.</p>
+		<h6>H6. <sample-ru /></h6>
+		<p><sample-ru />. <sample-ru />.</p>
+
+	</div>
+</div>
+
+
+
+@functions {
+
+#pragma warning disable 1998
+	async Task OutTableContentAsync()
+	{
+		<thead>
+			<tr>
+				<th>#</th>
+				<th><sample-ru-smaller /></th>
+				<th style="min-width: 40rem;"><sample-ru /></th>
+				<th><sample-ru-smaller /></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var i1 in new[] { 1, 2, 3, 4, 5, 6 })
+			{
+				<tr>
+					<td>@(i1).</td>
+					<td><sample-ru-smaller /></td>
+					<td>
+						<p><sample-ru />. <sample-ru />.</p>
+						<p><sample-ru />. <sample-ru />.</p>
+					</td>
+					<td><sample-ru-small /></td>
+				</tr>
+			}
+		</tbody>
+	}
+#pragma warning restore 1998
+
+}

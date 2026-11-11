@@ -21,4 +21,11 @@
 		<None Include="appsettings.Development.json" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Compile Remove="Views\**" />
+		<Content Remove="Views\**" />
+		<EmbeddedResource Remove="Views\**" />
+		<None Remove="Views\**" />
+	</ItemGroup>
+
 </Project>

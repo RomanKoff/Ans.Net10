@@ -1,0 +1,145 @@
+﻿@{
+    //Current.Page.UseDesignerMode = true;
+    var data1 = Current.WebApi.Get<SmartModel[]>("site:_main/guap-nav.json");
+    var main1 = data1.FirstOrDefault(x => x.Key == "main");
+}
+
+<style>
+    .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide {
+        margin: 1rem;
+        width: auto;
+    }
+
+    .swiper-button-next,
+    .swiper-button-prev {
+        color: #999;
+        top: 0;
+        margin-top: 0;
+        height: 100%;
+        width: 3em;
+        padding: 0 .2em;
+    }
+
+    .swiper-button-next {
+        background-image: linear-gradient(to left, white 25%, transparent);
+        right: 0;
+        justify-content: end;
+    }
+
+    .swiper-button-prev {
+        background-image: linear-gradient(to right, white 25%, transparent);
+        left: 0;
+        justify-content: start;
+    }
+
+    .swiper-button-disabled {
+        display: none;
+    }
+
+    .menu1-content {}
+
+    .menu1-item {}
+
+    .menu1-item-title {
+        font-size: 1.1rem;
+        font-weight: bold;
+        line-height: normal;
+    }
+
+    .menu1-item ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0 0 1rem 0;
+        font-size: .85rem;
+        line-height: 1;
+    }
+
+    .menu1-item ul li {
+        margin: .7rem 0;
+        padding: 0;
+    }
+</style>
+
+<div id="menu1" class="swiper swiper1">
+    <div class="swiper-wrapper">
+        @if (main1.HasGroups)
+        {
+            var i1 = 0;
+            foreach (var group1 in main1.Groups)
+            {
+                group1.Name = $"menu1_section_{i1++}";
+                <div class="swiper-slide accordion m-0">
+                    <a class="guap-collapse-toggle collapsed gap-1 m-0 px-3 py-1" data-bs-toggle="collapse" href="#@group1.Name" role="button" aria-expanded="false" aria-controls="@group1.Name">@group1.TitleHtml</a>
+                </div>
+            }
+        }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+@if (main1.HasGroups)
+{
+    <div id="menu1_content" class="menu1-content">
+        @foreach (var group1 in main1.Groups)
+        {
+            if (group1.HasSections)
+            {
+                <div id="@group1.Name" class="collapse border p-3" data-bs-parent="#menu1_content">
+                    <div class="ans-columns-4">
+                        @foreach (var section1 in group1.Sections)
+                        {
+                            <div class="menu1-item">
+                                <div class="menu1-item-title">@section1.TitleHtml</div>
+                                @if (section1.HasLinks)
+                                {
+                                    <ul>
+                                        @foreach (var link1 in section1.Links)
+                                        {
+                                            <li>@GetLink(link1).GetTag()</li>
+                                        }
+                                    </ul>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        var swiper = new Swiper(".swiper1", {
+            slidesPerView: "auto",
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+
+    });
+
+</script>
+
+
+
+@functions {
+
+    LinkBuilder GetLink(SmartModel item)
+    {
+        var link1 = new LinkBuilder(item.Url, item.Title);
+        if (item.Url[0] == '/')
+            link1.IsExternal = true;
+        return link1;
+    }
+
+}

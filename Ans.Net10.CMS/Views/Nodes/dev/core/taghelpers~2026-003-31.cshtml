@@ -1,0 +1,110 @@
+﻿<h2>Контейнеры контента</h2>
+
+<p>Контейнер контента уровня сайта</p>
+<pre><code class="language-razor line-numbers">
+    &lt;site-container>
+    &#9;content
+    &lt;/site-container>
+</code></pre>
+
+<p>Контейнер контента уровня узла</p>
+<pre><code class="language-razor line-numbers">
+    &lt;node-container>
+    &#9;content
+    &lt;/node-container>
+</code></pre>
+
+<p>Контейнер контента уровня страницы</p>
+<pre><code class="language-razor line-numbers">
+    &lt;page-container>
+    &#9;content
+    &lt;/page-container>
+</code></pre>
+
+<p>Контейнер контента уровня страницы с отключаемым отступом</p>
+<pre><code class="language-razor line-numbers">
+    @@{
+    &#9;Current.Page.UseDesignerMode = true;
+    }
+    ...
+    &lt;page-container-body>
+    &#9;content
+    &lt;/page-container-body>
+</code></pre>
+
+<p>Контейнер контента отображаемый только при просмотре из административных сетей</p>
+<pre><code class="language-razor line-numbers">
+    &lt;admin-container free="false">
+    &#9;content
+    &lt;/admin-container>
+</code></pre>
+
+
+
+<h2>Расширение стандартных тегов</h2>
+
+
+<h4 id="tag_a" class="ans-anchor">Ссылка <code>&lt;a>&lt;/a></code></h4>
+
+<p>Адрес электронной почты</p>
+<pre><code class="language-razor line-numbers">
+    &lt;a href-email="user@host.ru">&lt;/a>
+    &lt;a href-email="user@host.ru">Подпись&lt;/a>
+</code></pre>
+
+<p>Номер телефона</p>
+<pre><code class="language-razor line-numbers">
+    &lt;a href-tel="3122107">&lt;/a> — местный
+    &lt;a href-tel="+7981732162">&lt;/a> — федеральный
+    &lt;a href-tel="3122107,1234">&lt;/a> — с доп. кодом
+</code></pre>
+
+<p>Ссылка на страницу сайта</p>
+<pre><code class="language-razor line-numbers">
+    &lt;a href-site="sveden/struct">&lt;/a> — от корня сайта
+    &lt;a href-node="docs/forms">&lt;/a> — от корня текущего узла
+    &lt;a href-page="list">&lt;/a> — от текущей страницы
+</code></pre>
+
+<p>Ссылка на ресурс сайта. По умолчанию от корня '/wwwroot/content'</p>
+<pre><code class="language-razor line-numbers">
+    &lt;a href-site-res="data/nav.json">&lt;/a> — ресурс сайта
+    &lt;a href-node-res="docs/otchet.pdf">&lt;/a> — ресурс текущего узла
+    &lt;a href-page-res="img1.jpg">&lt;/a> — ресурс текущей страницы
+</code></pre>
+
+<p>Ссылка документ размещенный в документарном хранилище ГУАП (docs.guap.ru)</p>
+<pre><code class="language-razor line-numbers">
+    &lt;a href-guap-doc="pr_guap_05-452-25.pdf">Приказ ГУАП от 25.07.2025 № 05-452/25&lt;/a> — приказ ГУАП
+    &lt;a href-guap-doc="sveden/document/so-2014.pdf">&lt;/a> — документ из раздела Сведения
+</code></pre>
+
+
+<h4 id="tag_img" class="ans-anchor">Изображение <code>&lt;img/></code></h4>
+
+<p>По умолчанию от корня '/wwwroot/content'</p>
+<pre><code class="language-razor line-numbers">
+    &lt;img src-site-res="images/logo1.svg" /> — сайта
+    &lt;img src-node-res="persons/head.png" /> — текущего узла
+    &lt;img src-page-res="img1.jpg" /> — текущей страницы
+</code></pre>
+
+
+
+<h2>Шаблоны</h2>
+
+<p>Примеры текстовых рыб</p>
+<pre><code class="language-razor line-numbers">
+    &lt;sample-ru />
+    &lt;sample-ru-small />
+    &lt;sample-ru-smaller />
+</code></pre>
+
+
+
+<h2>Информеры</h2>
+
+<p>Текущий режим адаптивности окна браузера</p>
+<pre><code class="language-razor line-numbers">
+    &lt;info-display />
+</code></pre>

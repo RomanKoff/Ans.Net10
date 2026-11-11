@@ -18,7 +18,7 @@
 		<VersionPrefix>$(Version)</VersionPrefix>
 	</PropertyGroup>
 
-	<PropertyGroup Condition="'$(IsPackable)' != 'false'">
+	<PropertyGroup Condition="'$(IsPackable)'!='false'">
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<RepositoryType>git</RepositoryType>
@@ -26,7 +26,7 @@
 		<PackageProjectUrl>https://github.com/RomanKoff/Ans.Net10</PackageProjectUrl>
 	</PropertyGroup>
 
-	<ItemGroup Condition="'$(IsPackable)' != 'false'">
+	<ItemGroup Condition="'$(IsPackable)'!='false'">
 		<None Include="$(MSBuildThisFileDirectory)LICENSE.md" Pack="true" PackagePath="\" Link="LICENSE.md" />
 		<Content Remove="_Dev\**" />
 		<None Include="_Dev\**">

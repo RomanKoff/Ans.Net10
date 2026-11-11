@@ -1,0 +1,14 @@
+﻿@{
+    var styler1 = new TagStyler("bg-info", "font-size:2rem;border: dashed 4pt black;");
+    var styler2 = new TagStyler("border-danger border-3");
+}
+
+<div class="p-3" style="border: solid 1px red;" ans-styler='styler1'>
+    
+    text 1
+
+    <div class="border border-warning border-5" style="color:blue;" ans-styler='styler2'>test 2</div>
+
+    text 3
+
+</div>

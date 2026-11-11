@@ -1,0 +1,23 @@
+﻿@{
+	string host = "https://src.guap.ru/svg/errors";
+	var errors1 = new string[]
+	{
+"400.en.svg", "400.ru.svg", "400w.en.svg", "400w.ru.svg",
+"403.en.svg", "403.ru.svg", "403w.en.svg", "403w.ru.svg",
+"404.en.svg", "404.ru.svg", "404w.en.svg", "404w.ru.svg",
+"500.en.svg", "500.ru.svg", "500w.en.svg", "500w.ru.svg",
+"off.en.svg", "off.ru.svg", "offw.en.svg", "offw.ru.svg"
+	};
+}
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-3">
+	@foreach (var item1 in errors1)
+	{
+		var url1 = $"{host}/{item1}";
+		<div class="col">
+			<a target="_blank" href="@url1">
+				<img class="image-fluid border rounded" src="@url1" alt="@item1" />
+			</a>
+		</div>
+	}
+</div>

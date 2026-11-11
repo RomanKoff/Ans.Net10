@@ -1,0 +1,193 @@
+﻿@{
+	var colors1 = new[] {
+"primary",
+"secondary",
+"success",
+"info",
+"warning",
+"danger",
+"light",
+"dark",
+};
+
+	var colors2 = new[] {
+"blue",
+"indigo",
+"purple",
+"pink",
+"red",
+"orange",
+"yellow",
+"green",
+"teal",
+"cyan",
+"black",
+"white",
+"gray",
+"gray-dark",
+};
+
+}
+
+
+
+<h2>Css-классы</h2>
+
+<p>Цвет текста:</p>
+
+<table class="table table-bordered table-auto text-nowrap font-monospace lh-sm">
+	@foreach (var item1 in colors1)
+	{
+		<tr>
+			<td>
+				<div class="text-@(item1)">.text-@(item1)</div>
+				<div class="text-@(item1)-emphasis">.text-@(item1)-emphasis</div>
+			</td>
+			<td class="bg-light">
+				<div class="text-@(item1)">.text-@(item1)</div>
+				<div class="text-@(item1)-emphasis">.text-@(item1)-emphasis</div>
+			</td>
+			<td class="bg-dark">
+				<div class="text-@(item1)">.text-@(item1)</div>
+				<div class="text-@(item1)-emphasis">.text-@(item1)-emphasis</div>
+			</td>
+			<td class="bg-black">
+				<div class="text-@(item1)">.text-@(item1)</div>
+				<div class="text-@(item1)-emphasis">.text-@(item1)-emphasis</div>
+			</td>
+		</tr>
+	}
+</table>
+
+
+
+<p>Цвет фона:</p>
+
+<table class="table table-borderless table-sm table-auto text-nowrap font-monospace lh-sm">
+	@foreach (var item1 in colors1)
+	{
+		<tr>
+			<td>
+				<div class="text-bg-@(item1)">.text-bg-@(item1)</div>
+			</td>
+			<td>
+				<div class="bg-@(item1)">
+					<div class="text-white">.bg-@(item1)</div>
+					<div class="text-black">.bg-@(item1)</div>
+				</div>
+			</td>
+			<td>
+				<div class="bg-@(item1)-subtle">
+					<div class="text-white">.bg-@(item1)-subtle</div>
+					<div class="text-black">.bg-@(item1)-subtle</div>
+				</div>
+			</td>
+		</tr>
+	}
+</table>
+
+
+
+<p>Цвет рамок:</p>
+
+<table class="table table-borderless table-sm table-auto text-nowrap font-monospace lh-sm">
+	@foreach (var item1 in colors1)
+	{
+		<tr>
+			<td>
+				<div class="border border-4 border-@(item1)">.border-@(item1)</div>
+			</td>
+			<td>
+				<div class="border border-4 border-@(item1)-subtle">.border-@(item1)-subtle</div>
+			</td>
+		</tr>
+	}
+</table>
+
+
+
+<p>Alerts:</p>
+<div class="row">
+	@foreach (var item1 in colors1)
+	{
+		<div class="col-md-6">
+			<div class="alert alert-@(item1) p-2 fs-7 font-monospace">
+				class="alert-@(item1)"
+			</div>
+		</div>
+	}
+</div>
+
+
+<p>Buttons:</p>
+
+<div class="d-flex flex-wrap gap-3 my-3 bg-light p-3">
+	@foreach (var item1 in colors1)
+	{
+		<button class="btn btn-@(item1) p-2 fs-7 font-monospace">
+			class="btn-@(item1)"
+		</button>
+	}
+</div>
+
+<div class="d-flex flex-wrap gap-3 my-3 bg-dark p-3">
+	@foreach (var item1 in colors1)
+	{
+		<button class="btn btn-@(item1) p-2 fs-7 font-monospace">
+			class="btn-@(item1)"
+		</button>
+	}
+</div>
+
+<div class="d-flex flex-wrap gap-3 my-3 bg-light p-3">
+	@foreach (var item1 in colors1)
+	{
+		<button class="btn btn-outline-@(item1) p-2 fs-7 font-monospace">
+			class="btn-outline-@(item1)"
+		</button>
+	}
+</div>
+
+<div class="d-flex flex-wrap gap-3 my-3 bg-dark p-3">
+	@foreach (var item1 in colors1)
+	{
+		<button class="btn btn-outline-@(item1) p-2 fs-7 font-monospace">
+			class="btn-outline-@(item1)"
+		</button>
+	}
+</div>
+
+
+
+
+<h2>Css-переменные</h2>
+
+
+<table class="table table-borderless table-sm table-auto text-nowrap font-monospace lh-sm">
+	<thead>
+		<tr>
+			<th>text</th>
+			<th>background</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item1 in colors2)
+		{
+			var s1 = $"--bs-{item1}";
+			<tr>
+				<td>
+					<div class="">
+						<div class="bg-light" style="color:var(@s1);">@s1</div>
+						<div class="bg-dark" style="color:var(@s1);">@s1</div>
+					</div>
+				</td>
+				<td>
+					<div class="" style="background-color:var(@s1);">
+						<div class="text-white">@s1</div>
+						<div class="text-black">@s1</div>
+					</div>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

@@ -1,0 +1,130 @@
+﻿<p class="lead">
+    Partial: <code>Helpers/Guap/Contacts/Item</code>
+</p>
+
+<p>
+    Модель: <code>SmartModel</code>
+</p>
+
+<p>
+    Параметры:
+</p>
+<ans-table col-classes="text-code|text-code|">
+    Поле | Тип | Описание
+    Model.Template | string | шаблон отображения карточки контакта
+    Model.Stylers | DictTagStylers | словарь стайлеров тегов виджета
+    Model.Name | string
+    Model.Image | string | если не указано — заглушка, если <code>""</code> или <code>"none"</code> — не отображается
+    Model.Title | string
+    Model.Emails | string | список адресов эл. почты (через <code>;</code>)
+    Model.Phones | string | список номеров телефонов (через <code>;</code>)
+    Model.Medias | string | список медиа-ресурсов (через <code>;</code>)
+    Model.Adresses | string | список адресов (через <code>;</code>)
+</ans-table>
+
+<p>
+    Макет:
+</p>
+@await Html.PartialAsync("Helpers/CodeHtml", @"
+    DIV ^card
+        DIV
+            IMG ^card-img
+        DIV ^card-body
+            DIV ^card-body-header
+                DIV ^card-body-header-name
+                DIV ^card-body-header-title
+            DIV ^card-body-contacts
+")
+
+
+<h2>Пример использования</h2>
+
+
+@await Html.PartialAsync("Helpers/CodeHtml", @"
+    @await Html.PartialAsync(""Helpers/Guap/Contacts/Item"", new SmartModel
+    {
+        // Template = ""..."",
+        // Stylers = new(""key1|classes|styles"", ""key2|classes|styles""),
+        Name = ""Иванов Петр Александрович"",
+        Image = ""https://******"", // если не указано — заглушка; """" или ""none"" — не отображается
+        Title = ""специалист по всем вопросам"",
+        Emails = ""info@guap.ru;ais_team@guap.ru"",
+        Phones = ""4947082;3122107"",
+        Medias = ""https://t.me/new_guap;https://guap.ru"",
+        Addresses = ""bm67:01-01;gast15:ауд. 01-02"",
+    })")
+@await Html.PartialAsync("Helpers/Guap/Contacts/Item", new SmartModel
+{
+    Name = "Иванов Петр Александрович",
+    Title = "специалист по всем вопросам",
+    Emails = "info@guap.ru;ais_team@guap.ru",
+    Phones = "4947082;3122107",
+    Medias = "https://t.me/new_guap;https://guap.ru",
+    Addresses = "bm67:01-01;gast15:ауд. 01-02",
+})
+
+
+
+<h2>Шаблоны</h2>
+
+@{
+    var items1 = new[]
+    {
+        new SmartModel {
+            Template = "h-contacts",
+            Image="https://fs.guap.ru/_persons/trifonova_yuv/_pers.jpg?s=xs",
+            Name="Юлия Трифонова",
+            Title="начальник управления цифрового развития",
+            Emails="ulia@guap.ru",
+            Phones="4947082",
+            Addresses="bm67:13-48"
+        },
+        new SmartModel {
+            Template = "h-contacts-middle",
+            Image="https://media.guap.ru/2261/ladvez_de.jpg?s=xs",
+            Name="Дмитрий Ладвез",
+            Title="начальник отдела разработки цифровых сервисов",
+            Emails="dladvez@guap.ru",
+            Phones="4947058",
+            Addresses="bm67:52-24а"
+        },
+        new SmartModel {
+            Template = "h-contacts-sm",
+            Image="https://fs.guap.ru/_persons/luchkin_as/_face.jpg?s=xs",
+            Name="Арсений Лучкин",
+            Title="начальник отдела разработки информационных систем",
+            Emails="ais_team@guap.ru",
+            Phones="4947082",
+            Addresses="bm67:13-48"
+        },
+        new SmartModel {
+            Template = "start-box",
+            Image="https://fs.guap.ru/_persons/horoshev_mv/_face.jpg?s=lg",
+            Name="Михаил Хорошев",
+            Title="начальник отдела информационной безопасности",
+            Emails="horoshev@guap.ru",
+            Phones="4947082",
+            Addresses="bm67:13-48"
+        },
+        new SmartModel {
+            Template = "empty",
+            Name = "Иванов Петр Александрович",
+            Title = "специалист по всем вопросам",
+            Emails = "info@guap.ru;ais_team@guap.ru",
+            Phones = "4947082;3122107",
+            Medias = "https://t.me/new_guap;https://guap.ru",
+            Addresses = "bm67:01-01;gast15:ауд. 01-02",
+        },
+    };
+}
+
+
+<div class="row g-5">
+    @foreach (var item1 in items1)
+    {
+        <div class="col-md-6">
+            <code>Template = "@item1.Template"</code>
+            @await Html.PartialAsync("Helpers/Guap/Contacts/Item", item1)
+        </div>
+    }
+</div>

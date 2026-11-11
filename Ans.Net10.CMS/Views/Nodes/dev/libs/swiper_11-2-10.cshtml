@@ -1,0 +1,120 @@
+﻿@{
+
+    var data1 = new[] { "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь" };
+
+    var data2 = new[] { "001.jpg", "002.jpg", "003.jpg", "004.jpg", "005.jpg", "006.jpg", "007.jpg" };
+
+    var data3 = new[] {
+"https://media.guap.ru/23258/_title.jpg",
+"https://media.guap.ru/23258/001.jpg",
+"https://media.guap.ru/23258/002.jpg",
+"https://media.guap.ru/23258/003.jpg",
+"https://media.guap.ru/23258/004.jpg",
+"https://media.guap.ru/23258/005.jpg",
+"https://media.guap.ru/23258/007.jpg",
+"https://media.guap.ru/23258/008.jpg",
+"https://media.guap.ru/23258/009.jpg",
+};
+
+}
+
+
+
+<h2><code>.swiper-4321</code> — картинки одинакового размера</h2>
+<div class="prism-sample">
+    <div class="swiper swiper-4321">
+        <div class="swiper-wrapper">
+            @foreach (var item1 in data2)
+            {
+                <div class="swiper-slide">
+                    <img class="img-fluid rounded-3" src="/content/antiterror/note/@item1" alt="" />
+                </div>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-scrollbar"></div>
+    </div>
+</div>
+
+
+
+<h2><code>.swiper-4321</code> — модули с одинаковым соотношением сторон</h2>
+<div class="prism-sample">
+    <div class="swiper swiper-4321">
+        <div class="swiper-wrapper">
+            @foreach (var item1 in data1)
+            {
+                <div class="swiper-slide rounded p-3 d-flex align-items-start flex-column" style="background-color:antiquewhite;aspect-ratio:3/4;">
+                    <h4>@item1.ToHtml()</h4>
+                    <div><sample-ru-small /></div>
+                    <a class="btn btn-outline-primary mt-auto" href="#">Подробнее</a>
+                </div>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-scrollbar"></div>
+    </div>
+</div>
+
+
+
+<h2><code>.swiper-4321</code> — свободные по высоте модули (без навигации)</h2>
+<div class="prism-sample">
+    <div class="swiper swiper-4321">
+        <div class="swiper-wrapper">
+            @foreach (var item1 in data1)
+            {
+                <div class="swiper-slide rounded p-3" style="background-color:aliceblue;">
+                    <h4>@item1.ToHtml()</h4>
+                    <div class="my-3"><sample-ru /></div>
+                    <a class="btn btn-outline-primary" href="#">Подробнее</a>
+                </div>
+            }
+        </div>
+        <div class="swiper-scrollbar"></div>
+    </div>
+</div>
+
+
+
+<h2><code>.swiper-auto</code> — автоформат</h2>
+<div class="prism-sample">
+    <div class="swiper swiper-auto">
+        <div class="swiper-wrapper" style="height:8rem;">
+            @foreach (var item1 in data3)
+            {
+                <div class="swiper-slide" style="width:auto;height:100%;">
+                    <img class="img-fliud" src="@item1?s=sm" alt="" />
+                </div>
+            }
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-scrollbar"></div>
+    </div>
+</div>
+
+
+
+<h2><code>.swiper-slider</code> — слайдер</h2>
+<div class="prism-sample">
+    <div class="swiper swiper-slider">
+        <div class="swiper-wrapper" style="aspect-ratio: 2/1;">
+            @foreach (var item1 in data3)
+            {
+                <div class="swiper-slide text-white" style="background-image:url(@item1?s=md);">
+                    <div class="position-absolute bottom-0 start-0 p-3 bg-white bg-opacity-25" style="max-width:30rem;">
+                        <h4><sample-ru-small /></h4>
+                        <p><sample-ru />. <sample-ru />.</p>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-scrollbar"></div>
+    </div>
+</div>

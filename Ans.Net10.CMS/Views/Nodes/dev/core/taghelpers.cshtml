@@ -1,0 +1,134 @@
+﻿<h2 id="container" class="theme-anchor">Контейнеры контента</h2>
+
+<p>
+    <code>&lt;site-container>...&lt;/site-container></code><br />
+    — контент области сайта (SITE_HEADER, SITE_FOOTER)
+</p>
+
+<p>
+    <code>&lt;node-container>...&lt;/node-container></code><br />
+    — контент области узла (NODE_HEADER, NODE_NAV, NODE_FOOTER)
+</p>
+
+<p>
+    <code>&lt;page-container>...&lt;/page-container></code><br />
+    — контент страницы (PAGE_MAIN)
+</p>
+
+
+
+
+
+<h2 id="table" class="theme-anchor">Таблицы</h2>
+@await Html.PartialAsync("Helpers/CodeHtml", @"
+    <ans-table col-classes=""||text-code text-end"" col-styles=""|color:#990;"">
+        Заголовок 1 | Заголовок 3 | Заголовок 3
+        Первая строка | Значение 1 | 123,78
+        Другая строка | Другое <a href=""https://guap.ru"">значение</a> | 456,78
+        Последняя строка |  | 0,78
+    </ans-table>
+")
+<ans-table class="table-sm" col-classes="||text-code text-end" col-styles="|color:#990;">
+    Заголовок 1 | Заголовок 3 | Заголовок 3
+    Первая строка | Значение 1 | 123,78
+    Другая строка | Другое <a href="https://guap.ru">значение</a> | 456,78
+    Последняя строка | | 0,78
+</ans-table>
+
+
+
+
+<h2 id="a" class="theme-anchor">Расширение стандартных тегов</h2>
+
+<h4>Ссылка на медиаресурс</h4>
+
+<div class="my-5">
+    @await Html.PartialAsync("Helpers/CodeHtml", @"<a href-media=""https://t.me/new_guap""></a>")
+    <p>
+        <a href-media="https://t.me/new_guap"></a>
+    </p>
+</div>
+
+<div class="my-5">
+    @await Html.PartialAsync("Helpers/CodeHtml", @"<a href-media=""https://t.me/new_guap"">Канал ГУАП</a>")
+    <p>
+        <a href-media="https://t.me/new_guap">Канал ГУАП</a>
+    </p>
+</div>
+
+<div class="my-5">
+    @await Html.PartialAsync("Helpers/CodeHtml", @"<a class=""fs-2"" href-media=""https://t.me/new_guap"">Канал ГУАП</a>")
+    <p>
+        <a class="fs-2" href-media="https://t.me/new_guap">Канал ГУАП</a>
+    </p>
+</div>
+
+<div class="my-5">
+    @await Html.PartialAsync("Helpers/CodeHtml", @"<a class=""fs-2"" href-media=""https://t.me/new_guap"" media-auto-title=""false""></a>")
+    <p>
+        <a class="fs-2" href-media="https://t.me/new_guap" media-auto-title="false"></a>
+    </p>
+</div>
+
+<hr />
+
+<p>
+    &lt;a href-email="user@@host.ru">&lt;/a><br />
+    &lt;a href-tel="+7-123-123-12-12">&lt;/a><br />
+    &lt;a href-site-res="data/nav.json">&lt;/a><br />
+    &lt;a href-node-res="docs/otchet.pdf">&lt;/a><br />
+    &lt;a href-page-res="img1.jpg">&lt;/a><br />
+    &lt;a href-site="sveden/struct">&lt;/a><br />
+    &lt;a href-node="docs/forms">&lt;/a><br />
+    &lt;a href-page="list">&lt;/a><br />
+    <br />
+    &lt;img src-site-res="images/logo1.svg" /><br />
+    &lt;img src-node-res="persons/head.png" /><br />
+    &lt;img src-page-res="img1.jpg" /><br />
+</p>
+
+
+
+
+
+<h2 id="dict" class="theme-anchor">Словари</h2>
+
+<p>
+    &lt;app-dict-value name="" key="" /><br />
+    &lt;app-address-value key="" mode="0|1|2|3" /><br />
+    &lt;app-smart-address value="" /><br />
+    &lt;app-value key="" /><br />
+</p>
+
+
+
+
+
+<h2 id="forms" class="theme-anchor">Формы</h2>
+
+<p>
+    &lt;input-hidden for="@@Model.Field" /><br />
+</p>
+
+
+
+
+
+<h2 id="info" class="theme-anchor">Инфо</h2>
+
+<p>
+    &lt;info-version /><br />
+    &lt;info-display /><br />
+</p>
+
+
+
+
+
+<h2>samples</h2>
+
+<p>
+    &lt;sample-ru /><br />
+    &lt;sample-ru-small /><br />
+    &lt;sample-ru-smaller /><br />
+</p>

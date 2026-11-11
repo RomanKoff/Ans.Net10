@@ -1,0 +1,41 @@
+﻿<table class="table" id="cssVariables1"></table>
+
+<style>
+	.cs1 {
+		border: solid 1px black;
+		padding: 0 .1rem;
+	}
+</style>
+
+<script>
+
+	function isValidColor(colorString) {
+		const s1 = new Option().style;
+		s1.color = colorString;
+		return s1.color !== '';
+	}
+
+	const styles1 = getComputedStyle(document.documentElement);
+	const table1 = document.getElementById('cssVariables1')
+
+	let vars1 = {};
+	for (let i = 0; i < styles1.length; i++) {
+		const key1 = styles1[i];
+		if (key1.startsWith('--')) {
+			vars1[key1] = styles1.getPropertyValue(key1).trim();
+		}
+	}
+	let s1 = '';
+	for (let key1 in vars1) {
+		const value1 = vars1[key1];
+		let s2 = `<tr><td class="text-nowrap">${key1}</td><td><td class='text-nowrap'>`;
+		if (isValidColor(value1)){
+			s2 += `<div class='cs1'><span style='background-color:${value1}'>&nbsp;&nbsp;&nbsp;&nbsp;</span> `;
+			s2 += `<span style='color:${value1}'>text&nbsp;</span></div>`;
+		}
+		s2 += `</td></td><td><code>${value1}</code></td></tr>`;
+		s1 = s2 + s1;
+	}
+	table1.innerHTML = s1;
+
+</script>

@@ -1,0 +1,218 @@
+﻿<p class="lead">
+    Partial: <code>Helpers/Guap/Contacts/ListItems</code>
+</p>
+
+<p>
+    Модель: <code>SmartModel</code>
+</p>
+
+<p>
+    Параметры:
+</p>
+<ans-table col-classes="text-code|text-code|">
+    Поле | Тип | Описание
+    Model.Template | string | шаблон отображения карточек контакта по умолчанию
+    Model.Stylers | DictTagStylers | словарь стайлеров тегов виджета
+    Model.Items | SmartModel[] | коллекция данных карточек (как для <a href="item">Helpers/Guap/Contacts/Item</a>)
+</ans-table>
+
+<p>
+    Макет:
+</p>
+@await Html.PartialAsync("Helpers/CodeHtml", @"
+    DIV ^cardlist
+        DIV ^cardlist-item
+")
+
+
+<h2>Пример использования</h2>
+
+
+@await Html.PartialAsync("Helpers/CodeHtml", @"
+    @await Html.PartialAsync(""Helpers/Guap/Contacts/ListItems"", new SmartModel
+    {
+        // Template = """",
+        // Stylers = new(""key1|classes|styles"", ""key2|classes|styles""),
+        Items = new[]
+        {
+            new SmartModel {
+                Image=""https://fs.guap.ru/_persons/trifonova_yuv/_pers.jpg?s=xs"",
+                Name=""Юлия Трифонова"",
+                Title=""начальник управления цифрового развития"",
+                Emails=""ulia@guap.ru"",
+                Phones=""4947082"",
+                Addresses=""bm67:13-48""
+            },
+            new SmartModel {
+                Image=""https://media.guap.ru/2261/ladvez_de.jpg?s=xs"",
+                Name=""Дмитрий Ладвез"",
+                Title=""начальник отдела разработки цифровых сервисов"",
+                Emails=""dladvez@guap.ru"",
+                Phones=""4947058"",
+                Addresses=""bm67:52-24а""
+            },
+            ...
+        }
+    })
+")
+@await Html.PartialAsync("Helpers/Guap/Contacts/ListItems", new SmartModel
+{
+    Items = new[]
+    {
+        new SmartModel {
+            Image="https://fs.guap.ru/_persons/trifonova_yuv/_pers.jpg?s=xs",
+            Name="Юлия Трифонова",
+            Title="начальник управления цифрового развития",
+            Emails="ulia@guap.ru",
+            Phones="4947082",
+            Addresses="bm67:13-48"
+        },
+        new SmartModel {
+            Image="https://media.guap.ru/2261/ladvez_de.jpg?s=xs",
+            Name="Дмитрий Ладвез",
+            Title="начальник отдела разработки цифровых сервисов",
+            Emails="dladvez@guap.ru",
+            Phones="4947058",
+            Addresses="bm67:52-24а"
+        },
+        new SmartModel {
+            Image="https://fs.guap.ru/_persons/luchkin_as/_face.jpg?s=xs",
+            Name="Арсений Лучкин",
+            Title="начальник отдела разработки информационных систем",
+            Emails="ais_team@guap.ru",
+            Phones="4947082",
+            Addresses="bm67:13-48"
+        },
+        new SmartModel {
+            Image="https://fs.guap.ru/_persons/horoshev_mv/_face.jpg?s=lg",
+            Name="Михаил Хорошев",
+            Title="начальник отдела информационной безопасности",
+            Emails="horoshev@guap.ru",
+            Phones="4947082",
+            Addresses="bm67:13-48"
+        },
+        new SmartModel {
+            Image="https://fs.guap.ru/_persons/kanasheva_aa/_pers.jpg?s=xs",
+            Name="Анна Канашева",
+            Title="начальник отдела проектирования бизнес-процессов",
+            Emails="annkanasheva@guap.ru",
+            Phones="+79214016495",
+            Addresses="bm67:52-27",
+            Medias="https://t.me/ann_kan"
+        },
+        new SmartModel {
+            Image="https://fs.guap.ru/_persons/lisyukov_ds/_face.jpg?s=xs",
+            Name="Дмитрий Лисюков",
+            Title="начальник отдела образовательных ресурсов и анализа данных",
+            Emails="lisyukov@guap.ru",
+            Phones="6796453",
+            Addresses="bm67:52-30"
+        },
+        new SmartModel {
+            Image="https://fs.guap.ru/_persons/nadbitov_vv/_face.jpg?s=xs",
+            Name="Вадим Надбитов",
+            Title="начальник отдела технической поддержки и сопровождения",
+            Emails="nvv@guap.ru",
+            Phones="4947082",
+            Addresses="bm67:52-24а"
+        },
+        new SmartModel {
+            Image="https://fs.guap.ru/_persons/belyakov_ni/_face.jpg?s=xs",
+            Name="Никита Беляков",
+            Title="сотрудник отдела отдела сопровождения обучающихся",
+            Emails="mfc@guap.ru",
+            Phones="3124657",
+            Addresses="bm67:52-34б"
+        },
+    }
+})
+
+
+<hr />
+
+
+<h2>Шаблоны</h2>
+
+
+<div class="">
+    @foreach (var item1 in new[] { "row-3", "row-2", "h-contacts", "h-contacts-middle", "start-box", "empty" })
+    {
+        <div class="my-5">
+            <code>Template = "@item1"</code>
+
+            @await Html.PartialAsync("Helpers/Guap/Contacts/ListItems", new SmartModel
+            {
+                Template = item1,
+                Items = new[]
+                {
+                    new SmartModel {
+                        Image="https://fs.guap.ru/_persons/trifonova_yuv/_pers.jpg?s=xs",
+                        Name="Юлия Трифонова",
+                        Title="начальник управления цифрового развития",
+                        Emails="ulia@guap.ru",
+                        Phones="4947082",
+                        Addresses="bm67:13-48"
+                    },
+                    new SmartModel {
+                        Image="https://media.guap.ru/2261/ladvez_de.jpg?s=xs",
+                        Name="Дмитрий Ладвез",
+                        Title="начальник отдела разработки цифровых сервисов",
+                        Emails="dladvez@guap.ru",
+                        Phones="4947058",
+                        Addresses="bm67:52-24а"
+                    },
+                    new SmartModel {
+                        Image="https://fs.guap.ru/_persons/luchkin_as/_face.jpg?s=xs",
+                        Name="Арсений Лучкин",
+                        Title="начальник отдела разработки информационных систем",
+                        Emails="ais_team@guap.ru",
+                        Phones="4947082",
+                        Addresses="bm67:13-48"
+                    },
+                    new SmartModel {
+                        Image="https://fs.guap.ru/_persons/horoshev_mv/_face.jpg?s=lg",
+                        Name="Михаил Хорошев",
+                        Title="начальник отдела информационной безопасности",
+                        Emails="horoshev@guap.ru",
+                        Phones="4947082",
+                        Addresses="bm67:13-48"
+                    },
+                    new SmartModel {
+                        Image="https://fs.guap.ru/_persons/kanasheva_aa/_pers.jpg?s=xs",
+                        Name="Анна Канашева",
+                        Title="начальник отдела проектирования бизнес-процессов",
+                        Emails="annkanasheva@guap.ru",
+                        Phones="+79214016495",
+                        Addresses="bm67:52-27",
+                        Medias="https://t.me/ann_kan"
+                    },
+                    new SmartModel {
+                        Image="https://fs.guap.ru/_persons/lisyukov_ds/_face.jpg?s=xs",
+                        Name="Дмитрий Лисюков",
+                        Title="начальник отдела образовательных ресурсов и анализа данных",
+                        Emails="lisyukov@guap.ru",
+                        Phones="6796453",
+                        Addresses="bm67:52-30"
+                    },
+                    new SmartModel {
+                        Image="https://fs.guap.ru/_persons/nadbitov_vv/_face.jpg?s=xs",
+                        Name="Вадим Надбитов",
+                        Title="начальник отдела технической поддержки и сопровождения",
+                        Emails="nvv@guap.ru",
+                        Phones="4947082",
+                        Addresses="bm67:52-24а"
+                    },
+                    new SmartModel {
+                        Image="https://fs.guap.ru/_persons/belyakov_ni/_face.jpg?s=xs",
+                        Name="Никита Беляков",
+                        Title="сотрудник отдела отдела сопровождения обучающихся",
+                        Emails="mfc@guap.ru",
+                        Phones="3124657",
+                        Addresses="bm67:52-34б"
+                    },
+                }
+            })
+
+        </div>
+    }
+</div>

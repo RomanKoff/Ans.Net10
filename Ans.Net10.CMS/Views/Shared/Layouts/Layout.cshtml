@@ -2,98 +2,113 @@
 <html lang="@Current.Culture" class="h-100">
 <head>
 
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-	<title>@Current.BrowserTitleHtml</title>
+    <title>@Current.BrowserTitleHtml</title>
 
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-	<style>
-			code {
-				padding: .3rem .6rem;
-				background-color: antiquewhite;
-			}
-	</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+            code {
+                padding: .3rem .6rem;
+                background-color: antiquewhite;
+            }
+    </style>
 
 </head>
 <body class="d-flex flex-column h-100">
 
-	@* SITE HEADER *@
-	<header class="py-3 bg-light border-bottom">
-		<div class="container">
-			SITE HEADER
-		</div>
-	</header>
+    @* SITE HEADER *@
+    <header class="py-3 bg-light border-bottom">
+        <div class="container">
+            SITE HEADER
+        </div>
+    </header>
 
-	@* NODE HEADER *@
-	<header class="py-3 bg-light border-bottom">
-		<div class="container">
-			NODE HEADER
-		</div>
-	</header>
+    @* NODE HEADER *@
+    <header class="py-3 bg-light border-bottom">
+        <div class="container">
+            NODE HEADER
+        </div>
+    </header>
 
-	@* NODE NAVIGATOR *@
+    @* NODE NAVIGATOR *@
 
-	@* PAGE MAIN *@
-	<main role="main" class="py-3 mb-5">
-		<div class="container">
-			<partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
-			<partial name="/Areas/Ans/Helpers/PageTitle.cshtml" />
-			@RenderBody()
-			<hr />
-			<div class="row">
-				<div class="col">
-					<h4>Views:</h4>
-					<partial name="/Areas/Ans/Helpers/DebugNodes.cshtml" />
-				</div>
-				<div class="col">
-					<h4>Nodes:</h4>
-					<partial name="/Areas/Ans/Helpers/SubNodes.cshtml" />
-				</div>
-				<div class="col">
-					<h4>Pages:</h4>
-					<partial name="/Areas/Ans/Helpers/SubPages.cshtml" />
-				</div>
-			</div>
-			<hr />
-			<div class="row">
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Site" />
-				</div>
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node" />
-					<hr />
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node.MapItem" />
-				</div>
-				<div class="col">
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page" />
-					<hr />
-					<partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page.MapItem" />
-				</div>
-			</div>
-		</div>
-	</main>
+    @* PAGE MAIN *@
+    @await RenderSectionAsync("PageBefore", false)
+    <main role="main" class="py-3 mb-5">
+        <div class="container">
+            <partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
+            <partial name="/Areas/Ans/Helpers/PageTitle.cshtml" />
+            @RenderBody()
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <h4>Sub Nodes:</h4>
+                    <partial name="/Areas/Ans/Helpers/SubNodes.cshtml" />
+                </div>
+                <div class="col">
+                    <h4>Sub Pages:</h4>
+                    <partial name="/Areas/Ans/Helpers/SubPages.cshtml" />
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <h4>Nodes Mapper:</h4>
+                    <partial name="/Areas/Ans/Helpers/DebugNodesMapper.cshtml" />
+                </div>
+                <div class="col">
+                    <h4>Sitemap:</h4>
+                    <partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
+                </div>
+                <div class="col">
+                    <h4>Sitemap Nodes:</h4>
+                    <partial name="/Areas/Ans/Helpers/DebugSitemapNodes.cshtml" />
+                    <h4>Sitemap Pages:</h4>
+                    <partial name="/Areas/Ans/Helpers/DebugSitemapPages.cshtml" />
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col">
+                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Site" />
+                </div>
+                <div class="col">
+                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node" />
+                    <hr />
+                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node.MapItem" />
+                </div>
+                <div class="col">
+                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page" />
+                    <hr />
+                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page.MapItem" />
+                </div>
+            </div>
+        </div>
+    </main>
+    @await RenderSectionAsync("PageAfter", false)
 
 
-	<div class="mt-auto">
+    <div class="mt-auto">
 
-		@* NODE FOOTER *@
-		<footer class="py-3 bg-light border-top">
-			<div class="container">
-				NODE FOOTER
-			</div>
-		</footer>
+        @* NODE FOOTER *@
+        <footer class="py-3 bg-light border-top">
+            <div class="container">
+                NODE FOOTER
+            </div>
+        </footer>
 
-		@* SITE FOOTER *@
-		<footer class="py-3 bg-light border-top">
-			<div class="container">
-				SITE FOOTER
-			</div>
-		</footer>
+        @* SITE FOOTER *@
+        <footer class="py-3 bg-light border-top">
+            <div class="container">
+                SITE FOOTER
+            </div>
+        </footer>
 
-	</div>
+    </div>
 
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 
 </body>
 </html>

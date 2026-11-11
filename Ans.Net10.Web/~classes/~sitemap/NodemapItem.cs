@@ -1,4 +1,4 @@
-﻿// rev 2026-10-30
+﻿// rev 2026-11-05
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Http;
@@ -192,21 +192,19 @@ namespace Ans.Net10.Web
 		public IReadOnlyCollection<PagemapItem> AllTopPages { get; }
 
 
-		/// <summary>
-		/// Получает признак наличия дочерних узлов у текущего элемента карты узлов.
-		/// </summary>
-		/// <value>Значение <see langword="true"/>, если коллекция дочерних узлов содержит элементы; иначе — <see langword="false"/>.</value>
-		/// <returns><see langword="true"/>, если есть дочерние узлы; иначе — <see langword="false"/>.</returns>
-		public bool HasChildNodes
+        /// <summary>
+        /// Получает признак наличия дочерних узлов у текущего элемента карты узлов.
+        /// </summary>
+        /// <returns><see langword="true"/>, если есть дочерние узлы; иначе — <see langword="false"/>.</returns>
+        public bool HasChildNodes
 			=> ChildNodes is { Count: > 0 };
 
 
-		/// <summary>
-		/// Получает признак наличия страниц у текущего элемента карты узлов.
-		/// </summary>
-		/// <value>Значение <see langword="true"/>, если коллекция основных страниц содержит элементы; иначе — <see langword="false"/>.</value>
-		/// <returns><see langword="true"/>, если есть основные страницы; иначе — <see langword="false"/>.</returns>
-		public bool HasPages
+        /// <summary>
+        /// Получает признак наличия страниц у текущего элемента карты узлов.
+        /// </summary>
+        /// <returns><see langword="true"/>, если есть основные страницы; иначе — <see langword="false"/>.</returns>
+        public bool HasPages
 			=> TopPages is { Count: > 0 };
 
 

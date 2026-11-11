@@ -1,11 +1,11 @@
 @using Ans.Net10.Web.Nodes
+@inject NodesMapper Nodes
 @*
-	rev. 2026-011-01
+	rev. 2026-011-10
 	
 	Компонент библиотеки Ans.Net10.Web.
 	Код не предназначен для редактирования и компиляции во время выполнения!
 *@
-@inject NodesMapper Nodes
 @{
 	OutNodes(Nodes);
 }
@@ -14,6 +14,8 @@
 
 	void OutNodes(NodesMapper nodes)
 	{
+		if (nodes is null)
+			return;
 		<ul>
 			@foreach (var item1 in nodes.Map.OrderBy(x=>x.Key))
 			{

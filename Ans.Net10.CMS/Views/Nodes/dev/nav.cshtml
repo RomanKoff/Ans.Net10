@@ -1,0 +1,66 @@
+﻿@{
+    var data1 = Current.WebApi.Get<SmartModel[]>("site:_main/guap-nav.json");
+}
+
+
+@foreach (var item1 in data1)
+{
+    <div class="p-2">
+        @item1.Key
+        @{
+            OutGroups(item1);
+        }
+    </div>
+}
+
+
+@functions {
+
+    void OutGroups(SmartModel item)
+    {
+        if (item.HasGroups)
+            foreach (var item1 in item.Groups)
+            {
+                <div class="p-2">
+                    @item1.Title.ToHtml("{0}")
+                    @{
+                        OutSections(item1);
+                    }
+                </div>
+            }
+    }
+
+    void OutSections(SmartModel item)
+    {
+        if (item.HasSections)
+        {
+            foreach (var item1 in item.Sections)
+            {
+                <div class="p-2 lh-sm">
+                    @item1.Title.ToHtml("{0}")
+                    @item1.Image.ToHtml("<div class=\"font-monospace\">{0}</div>")
+                    @item1.Text.ToHtml("<div class=\"small opacity-50\">{0}</div>")
+                    @{
+                        OutLinks(item1);
+                    }
+                </div>
+            }
+        }
+    }
+
+    void OutLinks(SmartModel item)
+    {
+        if (item.HasLinks)
+        {
+            foreach (var item1 in item.Links)
+            {
+                <div class="m-1 lh-sm">
+                    <code>@item1.Url</code>
+                    @item1.Title.ToHtml("<span class=\"small opacity-50\">{0}</span>")
+                </div>
+            }
+
+        }
+    }
+
+}

@@ -1,0 +1,34 @@
+﻿<ol>
+    <li>
+        <p>
+            Применяются директивы из всех <code>_viewimports.cshtml</code> по пути к запрошенному представлению.
+        </p>
+        @await Html.PartialAsync("Helpers/CodeHtml", @"
+    @using ...
+    @addTagHelper *, ...
+    @inject ...
+    @model ...
+    @namespace ...
+    @inherits ...")
+    </li>
+    <li>
+        <p>
+            Выполняется программный код из всех <code>_viewstart.cshtml</code> по пути к запрошенному представлению.
+        </p>
+        @await Html.PartialAsync("Helpers/CodeHtml", @"
+    @{
+        Layout = ""_Layout"";
+        ...
+    }")
+    </li>
+    <li>
+        <p>
+            Рендер запрошенного представления <code>**/*.cshtml</code> и всех его частичных представлений.
+        </p>
+    </li>
+    <li>
+        <p>
+            Рендер последнего установленного <code>Layout</code> и всех его частичных представлений.
+        </p>
+    </li>
+</ol>

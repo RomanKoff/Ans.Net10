@@ -1,0 +1,170 @@
+﻿@using Guap.Site.Models.Api.News.V2
+@{
+
+    // api: https://api.guap.ru/news/v2/get-node-content
+    // models: https://api.guap.ru/news/Models/NewsV2
+    // swagger: https://api.guap.ru/news/swagger/index.html
+
+    var qs1 = new QueryStringHelper();
+    qs1.Append("nodeId", 9186); //157);
+
+    var query1 = qs1.MakeQueryString("https://api.guap.ru/news/v2/get-node-content");
+
+    var content1 = Current.WebApi.Get<ContentModel>(query1);
+
+    var linkAll1 = qs1.MakeQueryString(
+    "https://new.guap.ru/pubs", "nodeId")
+    .Replace("nodeId", "nodes");
+
+}
+
+
+<info-display />
+
+<div class="d-flex flex-column flex-xl-row gap-3">
+
+    @if (content1.Messages.HasEventsOrNotices)
+    {
+        <div class="d-flex flex-column flex-md-row flex-xl-column gap-3 order-xl-1">
+            @if (content1.Messages.HasNotices)
+            {
+                <div>
+                    <h4>Объявления (@content1.Messages.NoticesCount)</h4>
+                    @{
+                        ListNotices(content1.Messages.Notices);
+                    }
+                </div>
+            }
+            @if (content1.Messages.HasEvents)
+            {
+                <div>
+                    <h4>События (@content1.Messages.EventsCount)</h4>
+                    @{
+                        ListEvents(content1.Messages.Events);
+                    }
+                </div>
+            }
+        </div>
+    }
+
+    <div class="flex-fill order-xl-0">
+        <h4>Публикации (@content1.Pubs.ItemsCount)</h4>
+        <div class="row row-cols-1 row-cols-md-3 g-3 g-sm-4 pt-2">
+            @{
+                ListPubs(content1.Pubs.Items);
+            }
+        </div>
+    </div>
+
+</div>
+
+<hr class="my-5" />
+
+@if (content1.Messages.BannersCount > 0)
+{
+    <p>Баннеры (@content1.Messages.BannersCount):</p>
+    <ol>
+        @foreach (var item1 in content1.Messages.Banners)
+        {
+            <li>@item1.BannerImage</li>
+        }
+    </ol>
+}
+
+
+
+@functions {
+
+
+    void ListNotices(IEnumerable<MessageModel> notices)
+    {
+        var items1 = notices.OrderByDescending(x => x.Weight);
+        @foreach (var item1 in items1)
+        {
+            var url1 = SuppValues.Default(item1.ExternalLink, $"/messages/{item1.Id}");
+            <div class="mb-3 guap-notice-content">
+                <p class="fs-8">
+                    <a target="_blank" href="@url1">@item1.Text.ToHtml(true)</a>
+                </p>
+            </div>
+        }
+    }
+
+
+    void ListEvents(IEnumerable<MessageModel> events)
+    {
+        var MONTHS1 = Ans.Net10.Common._Consts.MONTHS2;
+        @foreach (var item1 in events)
+        {
+            var url1 = SuppValues.Default(item1.ExternalLink, $"/messages/{item1.Id}");
+            var begin1 = item1.DateBegin.Value;
+            var day1 = begin1.Day;
+            var month1 = MONTHS1[begin1.Month];
+            int year1 = Current.DateTimeHelper.Current.Year == begin1.Year ? 0 : begin1.Year;
+            var a1 = new List<string>();
+            if (item1.DateEnd != null)
+                a1.Add($"<nobr>{SuppDateTime.GetSpan(item1.DateBegin.Value, item1.DateEnd, false)}</nobr>");
+            if (!string.IsNullOrEmpty(item1.Place))
+                a1.Add(item1.Place);
+            if (item1.DateBegin.Value.HasDayTime())
+            {
+                var h1 = item1.DateBegin.Value.TimeOfDay.Hours;
+                var m1 = item1.DateBegin.Value.TimeOfDay.Minutes;
+                a1.Add($"<nobr>начало в {h1}:{m1:00}</nobr>");
+            }
+            <div class="d-flex mb-3 gap-2">
+                <div>
+                    <div class="d-flex flex-column align-items-center py-2 text-white bg-primary rounded lh-1" style="min-width: 3.2rem;">
+                        <span class="fs-3">@day1</span>
+                        <span class="fs-9">@month1.ToHtml()</span>
+                        @year1.Make("<span class=\"fs-9\">{0}</span>").ToHtml()
+                    </div>
+                </div>
+                <div class="lh-sm">
+                    <div class="fs-8">
+                        <a target="_blank" href="@url1">@item1.Text.ToHtml(true)</a>
+                    </div>
+                    @if (item1.DateEnd != null)
+                    {
+                        <div class="mt-1 fs-9 opacity-50">до @Current.DateTimeHelper.GetPassed(item1.DateEnd, false, false)</div>
+                    }
+                </div>
+            </div>
+        }
+    }
+
+
+    void ListPubs(IEnumerable<PubModel> pubs)
+    {
+        <style>
+            .pub1 {
+                box-shadow: 0 0 1rem rgba(51, 123, 187, 0.2);
+            }
+
+            .pub1-img {
+                height: auto;
+                width: 100%;
+                background-color: var(--bs-light);
+                aspect-ratio: 3/2;
+            }
+        </style>
+        @foreach (var item1 in pubs)
+        {
+            var url1 = SuppValues.Default(item1.ExternalLink, $"/pubs/{item1.Id}");
+            var img1 = SuppValues.Default(item1.CustomTitlePicture,
+            $"https://media.guap.ru/{item1.MediaCatalog}/_title.jpg?s=n");
+            <div class="col">
+                <div class="pub1 position-relative bg-white rounded">
+                    <img class="pub1-img rounded-top border-bottom" src="@img1" alt="" />
+                    <div class="p-3 overflow-hidden fs-8" style="height: 8rem;">
+                        <div class="mb-2">@Current.DateTimeHelper.GetPassed(item1.Date, false, true).ToHtml()</div>
+                        <div class="lh-sm">
+                            <a class="stretched-link text-decoration-none" href="@url1">@item1.Title.ToHtml(true)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+}

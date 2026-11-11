@@ -1,0 +1,37 @@
+﻿<h2>Стандартные</h2>
+
+<div class="row">
+	@foreach (var item1 in new[] { "primary", "secondary", "success", "info", "warning", "danger", "light", "dark" })
+	{
+		<div class="col-lg-6">
+			<h3><code>.alert-@(item1)</code></h3>
+			<div class="prism-sample maxw-60rem">
+				<div class="alert alert-@(item1)" role="alert">
+					<h4><sample-ru-small /></h4>
+					<p><sample-ru-small /> <a class="alert-link" href="/"><sample-ru-small /></a> <sample-ru-small />. <a href="/"><sample-ru-small /></a> <sample-ru />.</p>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+
+
+<h2>С иконками</h2>
+
+<div class="row">
+	@foreach (var item1 in new[] { "primary|bi-clock", "secondary|bi-check-circle", "success|bi-hand-thumbs-up", "info|bi-info-circle", "warning|bi-exclamation-circle", "danger|bi-sign-stop", "light|bi-question-circle", "dark|bi-universal-access-circle" })
+	{
+		var a1 = item1.Split('|');
+		<div class="col-lg-6">
+			<div class="prism-sample">
+				<div class="alert alert-@(a1[0]) d-flex gap-3 maxw-40rem" role="alert">
+					<i class="fs-2 @(a1[1])"></i>
+					<div>
+						<sample-ru />. <sample-ru />
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>
