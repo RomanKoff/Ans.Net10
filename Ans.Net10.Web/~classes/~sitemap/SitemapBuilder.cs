@@ -1,4 +1,4 @@
-﻿// rev 2026-11-10
+﻿// rev 2026-11-12
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
@@ -62,6 +62,15 @@ namespace Ans.Net10.Web
         }
 
 
+        /* properties */
+
+
+        /// <summary>
+        /// Получает или задает делегат для программного дополнения карты сайта при каждой её инициализации.
+        /// </summary>
+        public Action<SitemapBuilder>? CustomBuilder { get; set; }
+
+
         /* readonly properties */
 
 
@@ -111,40 +120,51 @@ namespace Ans.Net10.Web
             try
             {
                 _log.BuildStarted(_logger);
-                string mapnodesFilename1 = Path.Combine(SitemapPath, MAPNODES_FILENAME);
-                if (!File.Exists(mapnodesFilename1))
-                {
-                    _log.MainConfigNotFound(_logger, mapnodesFilename1);
-                    return false;
-                }
-
-                NodesXmlDto? nodesDto1;
-                try
-                {
-                    nodesDto1 = await SuppXml
-                        .GetSoftObjectFromXmlFileAsync<NodesXmlDto>(mapnodesFilename1)
-                        .ConfigureAwait(false);
-                }
-                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException)
-                {
-                    _log.MainConfigDeserializationError(_logger, mapnodesFilename1, ex.Message, ex);
-                    return false;
-                }
-
-                if (nodesDto1?.Items is null)
-                {
-                    _log.MainConfigEmptyOrInvalid(_logger, mapnodesFilename1);
-                    return false;
-                }
 
                 var tempTopNodes1 = new List<NodemapItem>();
-                await _parseNodesXmlAsync(
-                    nodesDto1.Items, tempTopNodes1, cancellationToken)
-                    .ConfigureAwait(false);
+
+                if (!string.IsNullOrEmpty(SitemapPath))
+                {
+                    string mapnodesFilename1 = Path.Combine(SitemapPath, MAPNODES_FILENAME);
+                    if (!File.Exists(mapnodesFilename1))
+                    {
+                        _log.MainConfigNotFound(_logger, mapnodesFilename1);
+                        return false;
+                    }
+
+                    NodesXmlDto? nodesDto1;
+                    try
+                    {
+                        nodesDto1 = await SuppXml
+                            .GetSoftObjectFromXmlFileAsync<NodesXmlDto>(mapnodesFilename1)
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException)
+                    {
+                        _log.MainConfigDeserializationError(_logger, mapnodesFilename1, ex.Message, ex);
+                        return false;
+                    }
+
+                    if (nodesDto1?.Items is null)
+                    {
+                        _log.MainConfigEmptyOrInvalid(_logger, mapnodesFilename1);
+                        return false;
+                    }
+
+                    await _parseNodesXmlAsync(
+                        nodesDto1.Items, tempTopNodes1, cancellationToken)
+                        .ConfigureAwait(false);
+                }
 
                 _topNodes.Clear();
                 _topNodes.AddRange(tempTopNodes1);
                 _buildIndexes();
+
+                if (CustomBuilder is not null)
+                {
+                    CustomBuilder(this);
+                    _buildIndexes();
+                }
 
                 _log.BuildCompleted(_logger, NodesIndex.Count, PagesIndex.Count);
                 return true;

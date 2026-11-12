@@ -2605,11 +2605,12 @@
             Вызывается, если переданный параметр <paramref name="builder"/> равен <see langword="null"/>.
             </exception>
         </member>
-        <member name="M:Ans.Net10.Web.LibWebStartup.Use_AnsNet10WebAsync(Microsoft.AspNetCore.Builder.WebApplication)">
+        <member name="M:Ans.Net10.Web.LibWebStartup.Use_AnsNet10WebAsync(Microsoft.AspNetCore.Builder.WebApplication,System.Action{Ans.Net10.Web.SitemapBuilder})">
             <summary>
-            Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline)
+            Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline).
             </summary>
             <param name="app">Экземпляр выполняемого веб-приложения <see cref="T:Microsoft.AspNetCore.Builder.WebApplication"/>.</param>
+            <param name="sitemapBuilder">Опциональный делегат для программной настройки или дополнения карты сайта.</param>
             <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="app"/> равен <see langword="null"/>.</exception>
         </member>
@@ -6554,6 +6555,11 @@
             <param name="options">Конфигурационные параметры навигации и путей к XML-файлам.</param>
             <param name="logger">Экземпляр логгера для записи событий сборки структуры.</param>
             <exception cref="T:System.ArgumentNullException">Вызывается, если один из переданных параметров равен <see langword="null"/>.</exception>
+        </member>
+        <member name="P:Ans.Net10.Web.SitemapBuilder.CustomBuilder">
+            <summary>
+            Получает или задает делегат для программного дополнения карты сайта при каждой её инициализации.
+            </summary>
         </member>
         <member name="P:Ans.Net10.Web.SitemapBuilder.SitemapPath">
             <summary>

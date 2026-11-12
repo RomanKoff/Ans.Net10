@@ -1,4 +1,4 @@
-﻿// rev 2026-11-10
+﻿// rev 2026-11-12
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -239,13 +239,15 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-        /// Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline)
+        /// Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline).
         /// </summary>
         /// <param name="app">Экземпляр выполняемого веб-приложения <see cref="WebApplication"/>.</param>
+        /// <param name="sitemapBuilder">Опциональный делегат для программной настройки или дополнения карты сайта.</param>
         /// <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
         /// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="app"/> равен <see langword="null"/>.</exception>
         public static async Task Use_AnsNet10WebAsync(
-            this WebApplication app)
+            this WebApplication app,
+            Action<SitemapBuilder>? sitemapBuilder = null)
         {
             ArgumentNullException.ThrowIfNull(app);
 
@@ -329,9 +331,10 @@ namespace Ans.Net10.Web
             app.MapRazorPages();
 
             //--- sitemap initialization
-            if (options1.XmlSitemap is not null)
+            if (options1.XmlSitemap is not null || sitemapBuilder is not null)
             {
-                var sitemapBuilder1 = app.Services.GetRequiredService<SitemapBuilder>();                
+                var sitemapBuilder1 = app.Services.GetRequiredService<SitemapBuilder>();
+                sitemapBuilder1.CustomBuilder = sitemapBuilder;
                 await sitemapBuilder1.InitializeAsync(app.Lifetime.ApplicationStarted)
                     .ConfigureAwait(false);
             }
