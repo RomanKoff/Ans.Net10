@@ -1,4 +1,4 @@
-﻿// rev 2026-09-29
+﻿// rev 2026-11-12
 
 using Microsoft.AspNetCore.Mvc;
 using System.ServiceModel.Syndication;

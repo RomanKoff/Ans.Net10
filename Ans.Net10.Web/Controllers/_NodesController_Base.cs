@@ -1,4 +1,6 @@
-﻿using Ans.Net10.Web.Nodes;
+﻿// rev 2026-11-18
+
+using Ans.Net10.Web.Nodes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ans.Net10.Web.Controllers
@@ -8,14 +10,9 @@ namespace Ans.Net10.Web.Controllers
     /// Абстрактный базовый класс для контроллеров динамического рендеринга страниц.
     /// Предоставляет встроенный конвейер разрешения ЧПУ-путей через карту представлений.
     /// </summary>
-    //[ApiExplorerSettings(IgnoreApi = true)]
-    //[Route("/")]
     public abstract class _NodesController_Base
         : Controller
     {
-
-        private readonly NodesMapper _mapper;
-
 
         /* ctor */
 
@@ -24,24 +21,36 @@ namespace Ans.Net10.Web.Controllers
         /// Инициализирует новый экземпляр класса <see cref="_NodesController_Base"/>.
         /// </summary>
         /// <param name="mapper">Исполнитель карты путей к Razor-представлениям.</param>
-        /// <exception cref="ArgumentNullException">Инициируется, если переданный маппер равен null.</exception>
+        /// <exception cref="ArgumentNullException">Инициируется, если переданный маппер равен <see langword="null"/>.</exception>
+        //[ApiExplorerSettings(IgnoreApi = true)]
+        //[Route("/")]
         protected _NodesController_Base(
             NodesMapper mapper)
         {
             ArgumentNullException.ThrowIfNull(mapper);
-            _mapper = mapper;
+            Mapper = mapper;
         }
+
+
+        /* readonly properties */
+
+
+        /// <summary>
+        /// Получает исполнитель карты путей к Razor-представлениям динамических узлов.
+        /// </summary>
+        /// <returns>Экземпляр <see cref="NodesMapper"/>.</returns>
+        protected NodesMapper Mapper { get; }
 
 
         /* actions */
 
 
         /// <summary>
-        /// Перехватывает любые многосегментные HTTP-запросы и выполняет рендеринг соответствующего узла или страницы.
+        /// Перехватывает многосегментные HTTP-запросы и выполняет рендеринг соответствующего узла или страницы.
         /// </summary>
         /// <param name="path">Динамический относительный ЧПУ-путь из входящего URL-адреса. Допускает значение <see langword="null"/>.</param>
         /// <returns>
-        /// Экземпляр <see cref="ViewResult"/> с физическим путем к .cshtml файлу в случае успеха, 
+        /// Экземпляр <see cref="ViewResult"/> с виртуальным путем к <c>.cshtml</c> файлу в случае успеха, 
         /// либо <see cref="NotFoundResult"/> (HTTP 404), если страница отсутствует в карте.
         /// </returns>
         //[HttpGet("{*path}")]
@@ -51,7 +60,7 @@ namespace Ans.Net10.Web.Controllers
             string cleanPath1 = path is not null
                 ? path.Trim('/')
                 : string.Empty;
-            if (_mapper.TryGetView(cleanPath1, out var viewPath1) && viewPath1 is not null)
+            if (Mapper.TryGetView(cleanPath1, out string? viewPath1) && viewPath1 is not null)
                 return View(viewPath1, model: cleanPath1);
             return NotFound();
         }

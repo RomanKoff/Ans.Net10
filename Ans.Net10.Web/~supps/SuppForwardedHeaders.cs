@@ -1,4 +1,4 @@
-﻿// rev 2026-09-30
+﻿// rev 2026-11-15
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -32,26 +32,26 @@ namespace Ans.Net10.Web
 		/// Настраивает параметры обработки прокси-заголовков на основе конфигурации библиотеки, 
 		/// используя современные типы данных платформы .NET 10.
 		/// </summary>
-		/// <param name="options">Системные опции ForwardedHeaders платформы.</param>
-		/// <param name="webOptions">Загруженные параметры конфигурации библиотеки.</param>
+		/// <param name="forwardedHeadersOptions">Системные опции ForwardedHeaders платформы.</param>
+		/// <param name="libWebAppOptions">Загруженные параметры конфигурации библиотеки.</param>
 		/// <exception cref="ArgumentNullException">
-		/// Вызывается, если параметры <paramref name="options"/> или <paramref name="webOptions"/> равны <see langword="null"/>.
+		/// Вызывается, если параметры <paramref name="forwardedHeadersOptions"/> или <paramref name="libWebAppOptions"/> равны <see langword="null"/>.
 		/// </exception>
 		public static void Configure(
-			ForwardedHeadersOptions options,
-			LibWebOptions webOptions)
+			ForwardedHeadersOptions forwardedHeadersOptions,
+			LibWebOptions libWebAppOptions)
 		{
-			ArgumentNullException.ThrowIfNull(options);
-			ArgumentNullException.ThrowIfNull(webOptions);
-			if (webOptions.Proxy?.UseForwardedHeaders != true)
+			ArgumentNullException.ThrowIfNull(forwardedHeadersOptions);
+			ArgumentNullException.ThrowIfNull(libWebAppOptions);
+			if (libWebAppOptions.Proxy?.UseForwardedHeaders != true)
 				return;
-			options.ForwardedHeaders =
+			forwardedHeadersOptions.ForwardedHeaders =
 				ForwardedHeaders.XForwardedFor
 				| ForwardedHeaders.XForwardedProto
 				| ForwardedHeaders.XForwardedHost;
-			options.KnownIPNetworks.Clear();
-			options.KnownProxies.Clear();
-			var knownProxiesStr1 = webOptions.Proxy.KnownProxies;
+			forwardedHeadersOptions.KnownIPNetworks.Clear();
+			forwardedHeadersOptions.KnownProxies.Clear();
+			var knownProxiesStr1 = libWebAppOptions.Proxy.KnownProxies;
 
 			if (!string.IsNullOrEmpty(knownProxiesStr1))
 			{
@@ -59,14 +59,14 @@ namespace Ans.Net10.Web
 					';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 				foreach (var s1 in ips1)
 					if (IPAddress.TryParse(s1, out var ip1))
-						options.KnownProxies.Add(ip1);
+						forwardedHeadersOptions.KnownProxies.Add(ip1);
 					else if (System.Net.IPNetwork.TryParse(s1, out var network1))
-						options.KnownIPNetworks.Add(network1);
+						forwardedHeadersOptions.KnownIPNetworks.Add(network1);
 			}
 			else
 			{
-				options.KnownProxies.Add(IPAddress.Loopback);
-				options.KnownProxies.Add(IPAddress.IPv6Loopback);
+				forwardedHeadersOptions.KnownProxies.Add(IPAddress.Loopback);
+				forwardedHeadersOptions.KnownProxies.Add(IPAddress.IPv6Loopback);
 			}
 		}
 

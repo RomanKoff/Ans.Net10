@@ -5,38 +5,20 @@ using Microsoft.AspNetCore.Mvc;
 namespace Ans.Net10.CMS.Controllers
 {
 
-	/// <summary>
-	/// Централизованный CMS-контроллер, обеспечивающий перехват динамических ЧПУ-маршрутов, 
-	/// их разрешение через внутренний реестр представлений и рендеринг контента.
-	/// </summary>	
-	[ApiExplorerSettings(IgnoreApi = true)]
-	[Route("/")]
-	public class NodesController
-		: _NodesController_Base
-	{
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [Route("/")]
+    public class NodesController(
+        NodesMapper mapper)
+        : _NodesController_Base(mapper)
+    {
 
-		/* ctor */
+        [HttpGet("{*path}")]
+        public override IActionResult Render(
+            string? path)
+        {
+            return base.Render(path);
+        }
 
-
-		/// <inheritdoc/>
-		public NodesController(
-			NodesMapper mapper)
-			: base(mapper)
-		{
-		}
-
-
-		/* actions */
-
-
-		/// <inheritdoc/>
-		[HttpGet("{*path}")]
-		public override IActionResult Render(
-			string? path)
-		{
-			return base.Render(path);
-		}
-
-	}
+    }
 
 }

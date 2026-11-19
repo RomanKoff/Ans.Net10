@@ -1,4 +1,4 @@
-﻿// rev 2026-09-30
+﻿// rev 2026-11-12
 
 namespace Ans.Net10.Web
 {
@@ -40,6 +40,7 @@ namespace Ans.Net10.Web
 		public const string AUTH_POLICY_ADMINS
 			= $"{CLAIMS_AUTH_POLICY_NAME}_ADMINS";
 
+
 		/// <summary>
 		/// Маркер уровня доступа для политики администраторов. Соответствует значению <c>"4"</c>.
 		/// </summary>
@@ -51,6 +52,7 @@ namespace Ans.Net10.Web
 		/// </summary>
 		public const string AUTH_POLICY_MODERATORS
 			= $"{CLAIMS_AUTH_POLICY_NAME}_MODERATORS";
+
 
 		/// <summary>
 		/// Маркер уровня доступа для политики модераторов. Соответствует значению <c>"3"</c>.
@@ -64,6 +66,7 @@ namespace Ans.Net10.Web
 		public const string AUTH_POLICY_WRITERS
 			= $"{CLAIMS_AUTH_POLICY_NAME}_WRITERS";
 
+
 		/// <summary>
 		/// Маркер уровня доступа для политики редакторов. Соответствует значению <c>"2"</c>.
 		/// </summary>
@@ -76,6 +79,7 @@ namespace Ans.Net10.Web
 		public const string AUTH_POLICY_READERS
 			= $"{CLAIMS_AUTH_POLICY_NAME}_READERS";
 
+
 		/// <summary>
 		/// Маркер уровня доступа для политики читателей. Соответствует значению <c>"1"</c>.
 		/// </summary>
@@ -87,6 +91,7 @@ namespace Ans.Net10.Web
 		/// </summary>
 		public const string AUTH_POLICY_USERS
 			= $"{CLAIMS_AUTH_POLICY_NAME}_USERS";
+
 
 		/// <summary>
 		/// Маркер уровня доступа для стандартных пользователей. Соответствует значению <c>"0"</c>.

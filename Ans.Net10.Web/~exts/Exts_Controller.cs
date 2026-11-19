@@ -1,4 +1,4 @@
-﻿// rev 2026-010-01
+﻿// rev 2026-11-12
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Mvc;

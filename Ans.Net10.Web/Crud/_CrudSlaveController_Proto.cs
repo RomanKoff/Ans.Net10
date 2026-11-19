@@ -1,4 +1,4 @@
-﻿// rev 2026-10-01
+﻿// rev 2026-11-12
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Crud;

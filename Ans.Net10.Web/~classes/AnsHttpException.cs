@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿// rev 2026-11-12
+
+using System.Net;
 
 namespace Ans.Net10.Web
 {

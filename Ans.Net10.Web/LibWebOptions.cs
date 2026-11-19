@@ -1,4 +1,4 @@
-﻿// rev 2026-11-05
+﻿// rev 2026-11-19
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -24,18 +24,11 @@ namespace Ans.Net10.Web
 
 
         /// <inheritdoc />
-        /// <remarks>
-        /// Выполняет каскадную валидацию всех дочерних секций параметров, если они были инициализированы.
-        /// </remarks>
         public override void Test()
         {
             if (string.IsNullOrEmpty(DefaultCulture))
                 throw GetExceptionParamRequired("DefaultCulture");
-            if (XmlSitemap is not null)
-            {
-                if (string.IsNullOrEmpty(XmlSitemap.Path))
-                    throw GetExceptionParamRequired("XmlSitemap.Path");
-            }
+
             if (MailService is not null)
             {
                 if (string.IsNullOrEmpty(MailService.SmtpServer))
@@ -47,15 +40,13 @@ namespace Ans.Net10.Web
                 if (string.IsNullOrEmpty(MailService.DefaultFromAddress))
                     throw GetExceptionParamRequired("MailService.DefaultFromAddress");
             }
+
             if (PuppeteerSharpService is not null)
             {
                 if (string.IsNullOrEmpty(PuppeteerSharpService.AppPath))
                     throw GetExceptionParamRequired("PuppeteerSharpService.AppPath");
             }
         }
-
-
-        /* options */
 
 
         /// <summary>
@@ -126,9 +117,9 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-        /// Получает или задает флаг режима разработки.
+        /// Получает или задает системный токен безопасности приложения.
         /// </summary>
-        public bool UseDeveloperMode { get; set; } = false;
+        public string? SystemToken { get; set; } = null;
 
 
         /// <summary>
@@ -138,22 +129,15 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-        /// Получает или задает флаг автоматического подключения иерархических информационных узлов карты сайта.
+        /// Получает или задает флаг режима разработки.
         /// </summary>
-        /// <returns><see langword="true"/>, если поддержка навигационных узлов активирована; иначе — <see langword="false"/>.</returns>
-        public bool UseNodes { get; set; } = false;
+        public bool UseDeveloperMode { get; set; } = false;
 
 
         /// <summary>
         /// Получает или задает флаг использования серверных пользовательских сессий.
         /// </summary>
         public bool UseSession { get; set; } = false;
-
-
-        /// <summary>
-        /// Получает или задает системный токен безопасности приложения.
-        /// </summary>
-        public string? SystemToken { get; set; } = null;
 
 
         /// <summary>
@@ -169,23 +153,16 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-        /// Получает или задает параметры конфигурации встроенной системы логирования Serilog.
-        /// </summary>
-        /// <returns>Объект конфигурации логера <see cref="SerilogOptions"/>.</returns>
-        public SerilogOptions Serilog { get; set; } = new();
-
-
-        /// <summary>
         /// Получает или задает настройки отображения и обработки ошибок.
         /// </summary>
         public ErrorsOptions Errors { get; set; } = new();
 
 
         /// <summary>
-        /// Получает или задает параметры конфигурации и пути к файлам XML-карт сайта (Sitemap).
+        /// Получает или задает параметры конфигурации встроенной системы логирования Serilog.
         /// </summary>
-        /// <returns>Объект конфигурации XML-карты <see cref="XmlSitemapOptions"/> или <see langword="null"/>, если карта отключена.</returns>
-        public XmlSitemapOptions? XmlSitemap { get; set; } = null;
+        /// <returns>Объект конфигурации логера <see cref="SerilogOptions"/>.</returns>
+        public SerilogOptions Serilog { get; set; } = new();
 
 
         /// <summary>
@@ -223,43 +200,20 @@ namespace Ans.Net10.Web
         public MailServiceOptions? MailService { get; set; } = null;
 
 
+        /// <summary>
+        /// Получает или задает параметры сервиса работы с браузером <c>PuppeteerSharp</c>.
+        /// </summary>
         public PuppeteerSharpServiceOptions? PuppeteerSharpService { get; set; } = null;
 
     }
 
 
 
-    /*---*/
-
-
-
-    /// <summary>
-    /// Настройки встроенной интеграции логера Serilog.
-    /// </summary>
-    public sealed class SerilogOptions
-    {
-        /// <summary>
-        /// Получает или задает флаг автоматической активации Serilog при старте приложения.
-        /// </summary>
-        /// <returns><see langword="true"/>, если встроенный логер должен быть автоматически настроен; иначе — <see langword="false"/>.</returns>
-        public bool Enabled { get; set; } = true;
-
-        /// <summary>
-        /// Получает или задает базовый путь для сохранения файлов логов. 
-        /// Поддерживает относительные пути (например, "logs"),
-        /// маркеры выхода из каталога (например, "../logs")
-        /// и абсолютные пути (например, "/var/log/my_apps" или "C:/Logs/MyProject").
-        /// </summary>
-        /// <returns>Строка базового пути к каталогу логов (по умолчанию — "logs").</returns>
-        public string Path { get; set; } = "logs";
-
-        /// <summary>
-        /// Получает или задает минимальный уровень логирования для всего приложения.
-        /// Поддерживает стандартные текстовые значения: "Debug", "Information", "Warning", "Error", "Fatal".
-        /// </summary>
-        /// <returns>Строковое представление минимального уровня логирования (по умолчанию — "Warning").</returns>
-        public string MinimumLevel { get; set; } = "Warning";
-    }
+    /* 
+     * ========================================================================
+     * Options Classes
+     * ========================================================================
+     */
 
 
 
@@ -311,11 +265,31 @@ namespace Ans.Net10.Web
 
 
     /// <summary>
-    /// Параметры конфигурации расположения и путей файловой карты сайта XML.
+    /// Настройки встроенной интеграции логера Serilog.
     /// </summary>
-    public class XmlSitemapOptions
+    public sealed class SerilogOptions
     {
-        public string Path { get; set; } = string.Empty;
+        /// <summary>
+        /// Получает или задает флаг автоматической активации Serilog при старте приложения.
+        /// </summary>
+        /// <returns><see langword="true"/>, если встроенный логер должен быть автоматически настроен; иначе — <see langword="false"/>.</returns>
+        public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// Получает или задает базовый путь для сохранения файлов логов. 
+        /// Поддерживает относительные пути (например, "logs"),
+        /// маркеры выхода из каталога (например, "../logs")
+        /// и абсолютные пути (например, "/var/log/my_apps" или "C:/Logs/MyProject").
+        /// </summary>
+        /// <returns>Строка базового пути к каталогу логов (по умолчанию — "logs").</returns>
+        public string Path { get; set; } = "logs";
+
+        /// <summary>
+        /// Получает или задает минимальный уровень логирования для всего приложения.
+        /// Поддерживает стандартные текстовые значения: "Debug", "Information", "Warning", "Error", "Fatal".
+        /// </summary>
+        /// <returns>Строковое представление минимального уровня логирования (по умолчанию — "Warning").</returns>
+        public string MinimumLevel { get; set; } = "Warning";
     }
 
 
@@ -383,7 +357,6 @@ namespace Ans.Net10.Web
     /// </summary>
     public class CorsOptions
     {
-
         /// <summary>
         /// Получает или задает имя активного профиля CORS, применяемого ко всему приложению по умолчанию.
         /// </summary>
@@ -396,7 +369,6 @@ namespace Ans.Net10.Web
         /// </remarks>
         public string? Profile { get; set; } = null;
 
-
         /// <summary>
         /// Получает или задает коллекцию локальных адресов источников (Origins) разработчиков, 
         /// используемых для междоменной отладки клиентских интерфейсов.
@@ -405,7 +377,6 @@ namespace Ans.Net10.Web
         /// Массив строковых URL-адресов локальных хостов (например, <c>["http://localhost:3000", "http://localhost:5173"]</c>).
         /// </value>
         public string[]? LocalOrigins { get; set; } = null;
-
 
         /// <summary>
         /// Получает или задает коллекцию доверенных корпоративных или внешних адресов источников (Origins), 
@@ -419,7 +390,6 @@ namespace Ans.Net10.Web
         /// <see cref="SuppCors.CORS_ALLOW_TRUSTED"/> и <see cref="SuppCors.CORS_ALLOW_CREDENTIALS"/>.
         /// </remarks>
         public string[]? TrustedOrigins { get; set; } = null;
-
     }
 
 
@@ -438,20 +408,24 @@ namespace Ans.Net10.Web
         /// </summary>
         public string? Admin { get; set; } = null;
 
+
         /// <summary>
         /// Получает или задает сырую CIDR-строку безопасных подсетей.
         /// </summary>
         public string? Safe { get; set; } = null;
+
 
         /// <summary>
         /// Получает или задает сырую CIDR-строку небезопасных подсетей.
         /// </summary>
         public string? Unsafe { get; set; } = null;
 
+
         /// <summary>
         /// Получает или задает сырую CIDR-строку разрешенных подсетей.
         /// </summary>
         public string? Allow { get; set; } = null;
+
 
         /// <summary>
         /// Получает или задает сырую CIDR-строку запрещенных подсетей.
@@ -469,12 +443,14 @@ namespace Ans.Net10.Web
         public IPSubnetsList? AdminSubnets
             => _getSubnets(Admin, ref field);
 
+
         /// <summary>
         /// Возвращает типизированный список безопасных подсетей с ленивой инициализацией.
         /// </summary>
         /// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если CIDR-строка безопасной зоны не задана.</returns>
         public IPSubnetsList? SafeSubnets
             => _getSubnets(Safe, ref field);
+
 
         /// <summary>
         /// Возвращает типизированный список небезопасных подсетей с ленивой инициализацией.
@@ -483,12 +459,14 @@ namespace Ans.Net10.Web
         public IPSubnetsList? UnsafeSubnets
             => _getSubnets(Unsafe, ref field);
 
+
         /// <summary>
         /// Возвращает типизированный список разрешенных подсетей с ленивой инициализацией.
         /// </summary>
         /// <returns>Объект списка подсетей <see cref="IPSubnetsList"/> или <see langword="null"/>, если белый список CIDR не задан.</returns>
         public IPSubnetsList? AllowSubnets
             => _getSubnets(Allow, ref field);
+
 
         /// <summary>
         /// Возвращает типизированный список запрещенных подсетей с ленивой инициализацией.
@@ -547,9 +525,20 @@ namespace Ans.Net10.Web
     }
 
 
+    /// <summary>
+    /// Параметры конфигурации сервиса работы с браузером <c>PuppeteerSharp</c>.
+    /// </summary>
     public class PuppeteerSharpServiceOptions
     {
+        /// <summary>
+        /// Путь к каталогу для загрузки и хранения исполняемых файлов браузера.
+        /// </summary>
         public string AppPath { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Максимальное количество одновременно открытых вкладок браузера при генерации документов (по умолчанию 4).
+        /// </summary>
+        public int MaxConcurrentPages { get; set; } = 4;
     }
 
 }

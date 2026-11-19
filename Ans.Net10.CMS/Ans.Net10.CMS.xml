@@ -4,18 +4,6 @@
         <name>Ans.Net10.CMS</name>
     </assembly>
     <members>
-        <member name="T:Ans.Net10.CMS.Controllers.NodesController">
-            <summary>
-            Централизованный CMS-контроллер, обеспечивающий перехват динамических ЧПУ-маршрутов, 
-            их разрешение через внутренний реестр представлений и рендеринг контента.
-            </summary>	
-        </member>
-        <member name="M:Ans.Net10.CMS.Controllers.NodesController.#ctor(Ans.Net10.Web.Nodes.NodesMapper)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Ans.Net10.CMS.Controllers.NodesController.Render(System.String)">
-            <inheritdoc/>
-        </member>
         <member name="T:Program">
             <summary>
             Auto-generated public partial Program class for top-level statement apps.

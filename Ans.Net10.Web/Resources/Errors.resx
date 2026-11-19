@@ -156,4 +156,22 @@
   <data name="Text_TheTextOfTheErrorMessage" xml:space="preserve">
     <value>Текст сообщения об ошибке</value>
   </data>
+  <data name="Exception_RoutesEmpty" xml:space="preserve">
+    <value>Список определений маршрутов не может быть пустым!</value>
+  </data>
+  <data name="Exception_RouteFormat" xml:space="preserve">
+    <value>Маршрут должен строго соответствовать формату: 'name|template|controller|action'!</value>
+  </data>
+  <data name="Exception_AConfigurationParameterIsRequired" xml:space="preserve">
+    <value>Требуется параметр конфигурации!</value>
+  </data>
+  <data name="Exception_SectionIsMissingOrInvalid" xml:space="preserve">
+    <value>Раздел отсутствует или недействителен!</value>
+  </data>
+  <data name="Exception_AccessDeniedBySubnetPolicy" xml:space="preserve">
+    <value>Доступ запрещен политикой подсети.</value>
+  </data>
+  <data name="Exception_TheRecipientsAddressCannotBeEmpty" xml:space="preserve">
+    <value>Адрес получателя не может быть пустым.</value>
+  </data>
 </root>

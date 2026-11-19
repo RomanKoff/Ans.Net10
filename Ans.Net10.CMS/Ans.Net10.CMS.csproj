@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<IsPackable>false</IsPackable>
 		<WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
-		
+
 		<SatelliteResourceLanguages>ru-RU,en-US</SatelliteResourceLanguages>
 		<CopyRefAssembliesToPublishDirectory>true</CopyRefAssembliesToPublishDirectory>
 	</PropertyGroup>

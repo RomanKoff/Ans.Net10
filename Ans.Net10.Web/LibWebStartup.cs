@@ -1,4 +1,4 @@
-﻿// rev 2026-11-12
+﻿// rev 2026-11-19
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using System.Globalization;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace Ans.Net10.Web
 {
@@ -30,19 +30,17 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-        /// Выполняет централизованную регистрацию сервисов библиотеки.
-        /// </summary>
-        /// <param name="builder">Архитектурный строитель веб-приложения <see cref="WebApplicationBuilder"/>.</param>
-        /// <returns>Строитель <see cref="WebApplicationBuilder "/> для последующей кастомизации конвейера MVC фреймворка.</returns>
-        /// <exception cref="ArgumentNullException">
-        /// Вызывается, если переданный параметр <paramref name="builder"/> равен <see langword="null"/>.
-        /// </exception>
-        public static WebApplicationBuilder Add_AnsNet10Web(
+		/// Выполняет централизованную регистрацию сервисов библиотеки.
+		/// </summary>
+		/// <param name="builder">Архитектурный строитель веб-приложения <see cref="WebApplicationBuilder"/>.</param>
+		/// <returns>Строитель <see cref="WebApplicationBuilder"/> для последующей кастомизации конвейера MVC фреймворка.</returns>
+		/// <exception cref="ArgumentNullException">
+		/// Вызывается, если переданный параметр <paramref name="builder"/> равен <see langword="null"/>.
+		/// </exception>
+		public static WebApplicationBuilder Add_AnsNet10Web(
             this WebApplicationBuilder builder)
         {
             ArgumentNullException.ThrowIfNull(builder);
-
-            SuppCulture.AddCodePagesSupport();
 
             var options1 = AppSettingsFactory.GetOptions<LibWebOptions>(builder.Configuration);
             builder.Services.AddSingleton(options1);
@@ -50,6 +48,8 @@ namespace Ans.Net10.Web
             var env1 = builder.Environment;
             var appName1 = options1.AppName ?? env1.ApplicationName;
 
+            //--- culture
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             builder.Services.Configure<RequestLocalizationOptions>(o =>
             {
                 var defaultCulture1 = new CultureInfo(options1.DefaultCulture);
@@ -58,7 +58,8 @@ namespace Ans.Net10.Web
                 o.SupportedUICultures = [defaultCulture1];
             });
 
-            if (options1.Serilog.Enabled)
+            //--- lib Serilog
+            if (options1.Serilog is not null && options1.Serilog.Enabled)
             {
                 const string logTemplate1 = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}\n";
                 static DateTime funcLogHourKey1(LogEvent x) =>
@@ -136,6 +137,7 @@ namespace Ans.Net10.Web
                 });
             }
 
+            //--- data protection
             var dpBasePath1 = string.IsNullOrWhiteSpace(options1.DataProtection.Path)
                 ? "data-protection"
                 : options1.DataProtection.Path.TrimEnd('/');
@@ -156,6 +158,7 @@ namespace Ans.Net10.Web
                 }
             }
 
+            //---
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddHybridCache(o =>
             {
@@ -163,52 +166,53 @@ namespace Ans.Net10.Web
             });
             builder.Services.AddHttpClient();
             builder.Services.AddResponseCaching();
-            builder.Services.AddExceptionHandler<Ans_ExceptionHandler>();
+            builder.Services.AddExceptionHandler<AnsExceptionHandler>();
 
-            builder.Services.AddCors(o => SuppCors.RegisterPolicies(o, options1));
-
+            //--- sessions
             if (options1.UseSession)
             {
                 builder.Services.AddDistributedMemoryCache();
                 builder.Services.AddSession();
             }
 
-            //--- Nodes mapping setup
-            if (options1.UseNodes)
-            {
-                builder.Services.AddSingleton<NodesMapper>();
-                builder.Services.AddHostedService<NodesWatcherService>();
-            }
+            //--- cors
+            builder.Services.AddCors(o => SuppCors.RegisterPolicies(o, options1));
 
-            //--- XmlSitemap
+            //--- nodes & sitemap
             builder.Services.AddSingleton<SitemapBuilder>();
-            if (options1.XmlSitemap is not null)
-                builder.Services.AddHostedService<SitemapWatcherService>();
+            builder.Services.AddSingleton<NodesMapper>();
+            builder.Services.AddHostedService<ViewsWatcherService>();
 
-            //--- mail MailService
+            //--- mail service
             if (options1.MailService is not null)
                 builder.Services.AddSingleton<IMailerService, Ans_MailerService>(
                     _ => new Ans_MailerService(options1.MailService));
             else
                 builder.Services.AddSingleton<IMailerService, Fake_MailerService>();
 
-            //--- PuppeteerSharpService
+            //--- lib PuppeteerSharp
             if (options1.PuppeteerSharpService is not null)
+            {
                 builder.Services.AddSingleton<IBrowserFactory, PuppeteerBrowserFactory>(
                     _ => new PuppeteerBrowserFactory(options1.PuppeteerSharpService));
+                builder.Services.AddScoped<IPdfService, AnsPdfService>();
+            }
 
-            builder.Services.AddScoped<IViewRenderService, Ans_ViewRenderService>();
+            //---
+            builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
             builder.Services.AddScoped<CurrentContext>();
-
             builder.Services.AddRazorPages();
 
+            //--- mvc
             var mvcBuilder1 = builder.Services
                 .AddControllersWithViews(o =>
                 {
                     o.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
                         _ => Common.Resources.Form.Text_ValueIsRequired);
+
                     foreach (var profile1 in SuppWebCache.HTTP_CACHE_PROFILES)
                         o.CacheProfiles.Add(profile1.Key, profile1.Value);
+
                     if (options1.UseSession)
                         o.Filters.Add(new ResponseCacheAttribute
                         {
@@ -216,6 +220,7 @@ namespace Ans.Net10.Web
                         });
                 });
 
+            //--- json
             mvcBuilder1.AddJsonOptions(o =>
             {
                 var baseOptions1 = SuppJson.DEFAULT_JSON_SERIALIZER_OPTIONS;
@@ -225,10 +230,11 @@ namespace Ans.Net10.Web
                 o.JsonSerializerOptions.Encoder = baseOptions1.Encoder;
             });
 
+            //--- runtime compilation
             if (options1.UseRuntimeCompilation)
                 mvcBuilder1.AddRazorRuntimeCompilation();
 
-            SuppConsole.WriteColor(ConsoleColor.Yellow, "\nAdd_AnsNet10Web — OK");
+            SuppConsole.WriteColor(ConsoleColor.Yellow, "\nAdd_AnsNet10WebApp() — OK");
             SuppConsole.WriteColor(ConsoleColor.Yellow, "\n======================================\n\n");
 
             return builder;
@@ -242,7 +248,7 @@ namespace Ans.Net10.Web
         /// Асинхронно конфигурирует конвейер обработки входящих HTTP-запросов (Middleware Pipeline).
         /// </summary>
         /// <param name="app">Экземпляр выполняемого веб-приложения <see cref="WebApplication"/>.</param>
-        /// <param name="sitemapBuilder">Опциональный делегат для программной настройки или дополнения карты сайта.</param>
+        /// <param name="sitemapBuilder">Опциональный делегат для программного дополнения карты сайта при инициализации.</param>
         /// <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
         /// <exception cref="ArgumentNullException">Вызывается, если параметр <paramref name="app"/> равен <see langword="null"/>.</exception>
         public static async Task Use_AnsNet10WebAsync(
@@ -253,8 +259,10 @@ namespace Ans.Net10.Web
 
             var options1 = app.Services.GetRequiredService<LibWebOptions>();
 
+            //--- localization
             app.UseRequestLocalization();
 
+            //--- errors
             if (options1.UseDeveloperMode)
             {
                 app.UseDeveloperExceptionPage();
@@ -267,6 +275,7 @@ namespace Ans.Net10.Web
                 app.UseStatusCodePagesWithReExecute(path1, "?code={0}");
             }
 
+            //--- Https
             if (!options1.UseDeveloperMode)
                 app.UseHsts();
             app.UseHttpsRedirection();
@@ -282,15 +291,18 @@ namespace Ans.Net10.Web
             //--- fix url
             app.UseMiddleware<AnsUrlCanonicalizationMiddleware>();
 
-            //--- sitemap profiler
-            if (options1.XmlSitemap is not null)
-                app.UseMiddleware<AnsSitemapProfilerMiddleware>();
-
+            //--- caching
             app.UseResponseCaching();
 
             //--- sessions
             if (options1.UseSession)
                 app.UseSession();
+
+            //--- cors
+            if (string.IsNullOrWhiteSpace(options1.Cors?.Profile))
+                app.UseCors(SuppCors.CORS_ALLOW_ALL);
+            else
+                app.UseCors(options1.Cors.Profile);
 
             //--- static files
             if (!options1.UseRuntimeCompilation)
@@ -316,48 +328,31 @@ namespace Ans.Net10.Web
             else
                 app.UseStaticFiles();
 
+            //--- sitemap profiler
+            app.UseMiddleware<AnsSitemapProfilerMiddleware>();
+
+            //--- mvc
             app.UseRouting();
-
-            //--- cors
-            if (string.IsNullOrWhiteSpace(options1.Cors?.Profile))
-                app.UseCors(SuppCors.CORS_ALLOW_ALL);
-            else
-                app.UseCors(options1.Cors.Profile);
-
             if (options1.Routes != null)
                 app.AddRoutes(options1.Routes);
-
             app.MapControllers();
             app.MapRazorPages();
 
             //--- sitemap initialization
-            if (options1.XmlSitemap is not null || sitemapBuilder is not null)
-            {
-                var sitemapBuilder1 = app.Services.GetRequiredService<SitemapBuilder>();
-                sitemapBuilder1.CustomBuilder = sitemapBuilder;
-                await sitemapBuilder1.InitializeAsync(app.Lifetime.ApplicationStarted)
-                    .ConfigureAwait(false);
-            }
+            var sitemapBuilder1 = app.Services.GetRequiredService<SitemapBuilder>();
+            sitemapBuilder1.CustomBuilder = sitemapBuilder;
+            await sitemapBuilder1
+                .InitializeAsync(app.Lifetime.ApplicationStarted)
+                .ConfigureAwait(false);
 
             //--- nodes views initialization
-            if (options1.UseNodes)
-            {
-                var nodesMapper1 = app.Services.GetRequiredService<NodesMapper>();
-                await nodesMapper1.InitializeAsync(app.Lifetime.ApplicationStarted)
-                    .ConfigureAwait(false);
-            }
+            var nodesMapper1 = app.Services.GetRequiredService<NodesMapper>();
+            await nodesMapper1
+                .InitializeAsync(app.Lifetime.ApplicationStarted)
+                .ConfigureAwait(false);
 
-            SuppConsole.WriteColor(ConsoleColor.Yellow, "\nUse_AnsNet10WebAsync — OK");
+            SuppConsole.WriteColor(ConsoleColor.Yellow, "\nUse_AnsNet10WebAppAsync() — OK");
             SuppConsole.WriteColor(ConsoleColor.Yellow, "\n======================================\n\n");
-
-
-            // Принудительно очищаем ресурсы при остановке веб-сервера
-            var lifetime1 = app.Services.GetRequiredService<IHostApplicationLifetime>();
-            lifetime1.ApplicationStopping.Register(() =>
-            {
-                if (app.Services.GetService<IBrowserFactory>() is IAsyncDisposable factory1)
-                    Task.Run(async () => { await factory1.DisposeAsync(); }).GetAwaiter().GetResult();
-            });
         }
 
     }

@@ -16,15 +16,6 @@ namespace Ans.Net10.Common
 
 
 		/// <summary>
-		/// Добавляет регистрацию расширенных кодовых страниц (включая Windows-1251 и CP866) в инфраструктуру .NET 10.
-		/// </summary>
-		public static void AddCodePagesSupport()
-		{
-			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-		}
-
-
-		/// <summary>
 		/// Устанавливает заданную культуру для текущего потока и его асинхронного контекста.
 		/// </summary>
 		/// <param name="culture">Объект информации о культуре <see cref="CultureInfo"/>.</param>

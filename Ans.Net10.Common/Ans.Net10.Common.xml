@@ -7699,11 +7699,6 @@
             Вспомогательный класс для управления региональными настройками (культурой) приложения.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Common.SuppCulture.AddCodePagesSupport">
-            <summary>
-            Добавляет регистрацию расширенных кодовых страниц (включая Windows-1251 и CP866) в инфраструктуру .NET 10.
-            </summary>
-        </member>
         <member name="M:Ans.Net10.Common.SuppCulture.SetCulture(System.Globalization.CultureInfo)">
             <summary>
             Устанавливает заданную культуру для текущего потока и его асинхронного контекста.

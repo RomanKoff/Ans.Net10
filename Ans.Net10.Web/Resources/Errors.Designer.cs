@@ -61,6 +61,60 @@ namespace Ans.Net10.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Доступ запрещен политикой подсети..
+        /// </summary>
+        public static string Exception_AccessDeniedBySubnetPolicy {
+            get {
+                return ResourceManager.GetString("Exception_AccessDeniedBySubnetPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Требуется параметр конфигурации!.
+        /// </summary>
+        public static string Exception_AConfigurationParameterIsRequired {
+            get {
+                return ResourceManager.GetString("Exception_AConfigurationParameterIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Маршрут должен строго соответствовать формату: &apos;name|template|controller|action&apos;!.
+        /// </summary>
+        public static string Exception_RouteFormat {
+            get {
+                return ResourceManager.GetString("Exception_RouteFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Список определений маршрутов не может быть пустым!.
+        /// </summary>
+        public static string Exception_RoutesEmpty {
+            get {
+                return ResourceManager.GetString("Exception_RoutesEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Раздел отсутствует или недействителен!.
+        /// </summary>
+        public static string Exception_SectionIsMissingOrInvalid {
+            get {
+                return ResourceManager.GetString("Exception_SectionIsMissingOrInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Адрес получателя не может быть пустым..
+        /// </summary>
+        public static string Exception_TheRecipientsAddressCannotBeEmpty {
+            get {
+                return ResourceManager.GetString("Exception_TheRecipientsAddressCannotBeEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ошибка обработки HTTP-запроса {0}!.
         /// </summary>
         public static string Template_HttpError {

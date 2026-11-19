@@ -1,4 +1,4 @@
-﻿// rev 2026-09-30
+﻿// rev 2026-11-12
 
 using System.Security.Claims;
 using System.Text;
