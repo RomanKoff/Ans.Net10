@@ -1,4 +1,4 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-19
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Razor.TagHelpers;

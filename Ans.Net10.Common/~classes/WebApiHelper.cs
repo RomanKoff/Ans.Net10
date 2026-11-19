@@ -1,4 +1,4 @@
-﻿// rev 2026-09-25
+﻿// rev 2026-11-19
 
 using Microsoft.Extensions.Caching.Hybrid;
 using System.Text;
@@ -113,8 +113,8 @@ namespace Ans.Net10.Common
 			string cacheKey1 = _getCacheKey(queryString);
 			return await _cache.GetOrCreateAsync(
 				cacheKey1,
-				async token => await _sendInternalAsync(
-					HttpMethod.Get, queryString, null, encoding, configureRequest, token),
+				async token1 => await _sendInternalAsync(
+					HttpMethod.Get, queryString, null, encoding, configureRequest, token1),
 				CacheOptions,
 				cancellationToken: cancellationToken);
 		}
@@ -234,18 +234,20 @@ namespace Ans.Net10.Common
 				}
 				response1 = await _httpClient.SendAsync(request1, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
 				result1.StatusCode = response1.StatusCode;
-				result1.Headers = response1.Headers;
+				result1.Headers = response1.GetHeadersDictionary();
 				if (response1.IsSuccessStatusCode)
 				{
 					try
 					{
 						using var stream1 = await response1.Content.ReadAsStreamAsync(cancellationToken);
 						if (JsonTypeInfo != null && (encoding == null || encoding.Equals(Encoding.UTF8)))
-							result1.Content = await SuppJson.GetObjectFromJsonStreamGenAsync(stream1, JsonTypeInfo);
+							result1.Content = await SuppJson.GetObjectFromJsonStreamGenAsync(
+								stream1, JsonTypeInfo, cancellationToken);
 						else
 						{
 							if (encoding == null || encoding.Equals(Encoding.UTF8))
-								result1.Content = await SuppJson.GetObjectFromJsonStreamAsync<T>(stream1, JsonOptions);
+								result1.Content = await SuppJson.GetObjectFromJsonStreamAsync<T>(
+									stream1, JsonOptions, cancellationToken);
 							else
 							{
 								using var reader1 = new StreamReader(stream1, encoding);
@@ -271,7 +273,7 @@ namespace Ans.Net10.Common
 				if (response1 != null)
 				{
 					result1.StatusCode = response1.StatusCode;
-					result1.Headers = response1.Headers;
+					result1.Headers = response1.GetHeadersDictionary();
 				}
 				result1.ErrorBody = $"[Ans.Net10.Common] Сетевая ошибка REST-клиента (HttpRequestException): {ex.Message}";
 			}

@@ -1,6 +1,6 @@
-﻿// rev 2026-11-18
+﻿// rev 2026-11-19
 
-namespace Ans.Net10.Web.Nodes
+namespace Ans.Net10.Web
 {
 
     /// <summary>

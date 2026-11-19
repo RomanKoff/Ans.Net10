@@ -5271,10 +5271,10 @@
         </member>
         <member name="P:Ans.Net10.Common._WebResult_Base`1.Headers">
             <summary>
-            Возвращает или задает коллекцию заголовков HTTP-ответа, полученную от сервера.
+            Возвращает или задает коллекцию заголовков HTTP-ответа в сериализуемом формате словаря.
             </summary>
             <value>
-            Объект <see cref="T:System.Net.Http.Headers.HttpResponseHeaders"/>, содержащий заголовки ответа, или <see langword="null"/>, если заголовки отсутствуют.
+            Словарь <see cref="T:System.Collections.Generic.Dictionary`2"/>, содержащий заголовки ответа, или <see langword="null"/>, если заголовки отсутствуют.
             </value>
         </member>
         <member name="P:Ans.Net10.Common._WebResult_Base`1.IsDeserializationError">
@@ -5289,6 +5289,7 @@
         <member name="P:Ans.Net10.Common._WebResult_Base`1.DeserializationException">
             <summary>
             Возвращает или задает исключение, возникшее в процессе десериализации данных.
+            Не сериализуется при сохранении результата в распределенный кэш.
             </summary>
             <value>
             Объект <see cref="T:System.Exception"/>, описывающий ошибку парсинга, или <see langword="null"/>, 
@@ -5302,6 +5303,15 @@
             <value>
             Необработанная строка ответа сервера (например, HTML-страница ошибки или JSON-описание проблемы), 
             возвращенная при неуспешном HTTP-статусе, или <see langword="null"/>.
+            </value>
+        </member>
+        <member name="P:Ans.Net10.Common._WebResult_Base`1.IsSuccess">
+            <summary>
+            Возвращает признак успешного выполнения HTTP-запроса и десериализации данных.
+            </summary>
+            <value>
+            Значение <see langword="true"/>, если код статуса находится в диапазоне 200–299, не возникло ошибок десериализации и <see cref="P:Ans.Net10.Common._WebResult_Base`1.Content"/> не равен <see langword="null"/>; 
+            иначе — <see langword="false"/>.
             </value>
         </member>
         <member name="T:Ans.Net10.Common.Exts_Assembly">
@@ -5501,7 +5511,7 @@
             и автоматическую десериализацию данных в форматах JSON, XML и GRID с поддержкой гибридного кэширования .NET 10.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetJsonResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.FetchJsonResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.JsonSerializerOptions,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
             Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
             и десериализует JSON-ответ в объект типа T. Безопасно обрабатывает сетевые сбои и ошибки парсинга.
@@ -5518,7 +5528,7 @@
             <returns>Объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными данными из кэша или напрямую от API.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="client"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равны <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetJsonGenResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.FetchJsonGenResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Text.Json.Serialization.Metadata.JsonTypeInfo{``0},Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
             (Source Gen) Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
             и десериализует JSON-ответ в объект типа <typeparamref name="T"/> без использования рантайм-рефлексии на основе сгенерированных метаданных. 
@@ -5536,7 +5546,7 @@
             <returns>Задача, результатом которой является объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными данными из кэша или напрямую от API.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="requestUri"/>, <paramref name="cache"/> или <paramref name="jsonTypeInfo"/> равен <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetXmlResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.FetchXmlResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Text.Encoding,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
             Выполняет асинхронный GET-запрос с поддержкой современного гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/> 
             и десериализует XML-ответ в объект типа <typeparamref name="T"/>. Безопасно перехватывает ошибки валидации схемы.
@@ -5553,7 +5563,7 @@
             <returns>Задача, результатом которой является объект ответа <see cref="T:Ans.Net10.Common.WebApiResult`1"/> с десериализованными XML-данными из кэша или напрямую от API.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равен <see langword="null"/>.</exception>
         </member>
-        <member name="M:Ans.Net10.Common.Exts_HttpClient.GetGridResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
+        <member name="M:Ans.Net10.Common.Exts_HttpClient.FetchGridResultAsync``1(System.Net.Http.HttpClient,System.String,Microsoft.Extensions.Caching.Hybrid.HybridCache,System.Func{Ans.Net10.Common.GridRowParser,``0},System.IFormatProvider,System.Text.Encoding,Microsoft.Extensions.Caching.Hybrid.HybridCacheEntryOptions,System.Action{System.Net.Http.HttpRequestMessage},System.Threading.CancellationToken)">
             <summary>
             Выполняет асинхронный GET-запрос с поддержкой гибридного кэширования <see cref="T:Microsoft.Extensions.Caching.Hybrid.HybridCache"/>, 
             безопасно и неблокирующе парсит построчные текстовые данные в формате GRID из HTTP-потока 
@@ -5584,6 +5594,19 @@
             <param name="cancellationToken">Токен отмены асинхронной операции.</param>
             <returns>Структура <see cref="T:System.Threading.Tasks.ValueTask"/>, представляющая асинхронную операцию удаления записи из кэша.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="client"/>, <paramref name="format"/>, <paramref name="requestUri"/> или <paramref name="cache"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="T:Ans.Net10.Common.Exts_HttpResponseMessage">
+            <summary>
+            Методы расширения для стандартного ответа <see cref="T:System.Net.Http.HttpResponseMessage"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Common.Exts_HttpResponseMessage.GetHeadersDictionary(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            Извлекает HTTP-заголовки ответа и преобразует их в регистронезависимый словарь.
+            </summary>
+            <param name="message">Экземпляр HTTP-ответа <see cref="T:System.Net.Http.HttpResponseMessage"/>.</param>
+            <returns>Словарь <see cref="T:System.Collections.Generic.Dictionary`2"/>, где ключом является имя заголовка, а значением — массив его строковых значений.</returns>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="message"/> равен <see langword="null"/>.</exception>
         </member>
         <member name="T:Ans.Net10.Common.Exts_IPAddress">
             <summary>

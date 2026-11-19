@@ -1,0 +1,36 @@
+<div class="lh-sm maxw-40rem">
+    @{
+        OutNode(Current.Sitemap.TopNodes);
+    }
+</div>
+
+@functions {
+
+    void OutNode(IEnumerable<NodemapItem> items)
+    {
+        var items2 = items.Where(x => x.IsDisplayed("sitemap"));
+        if (!items.Any())
+            return;
+        foreach (var item1 in items2)
+        {
+            if (item1.Type == NodemapTypesEnum.Group)
+            {
+                <div class="h4 mt-4 mb-3">@item1.TitleHtml</div>
+                OutNode(item1.ChildNodes);
+            }
+            else
+            {
+                <div class="my-3">@item1.GetLink(Current.HttpContext).GetTag($"{item1.TitleHtml}")</div>
+                if (item1.HasChildNodes)
+                {
+                    <div class="ps-3">
+                        @{
+                            OutNode(item1.ChildNodes);
+                        }
+                    </div>
+                }
+            }
+        }
+    }
+
+}

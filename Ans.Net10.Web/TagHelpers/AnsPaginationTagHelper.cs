@@ -1,4 +1,4 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-19
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,8 +12,7 @@ namespace Ans.Net10.Web.TagHelpers
     /// в стиле CSS-фреймворка Bootstrap 5 на основе объектной модели <see cref="PaginationModel"/>.
     /// </summary>
     /// <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
-    [HtmlTargetElement("ans-pagination", Attributes = _ATTR_MODEL)]
-    [HtmlTargetElement("ans-pagination", Attributes = _ATTR_URL_TEMPLATE)]
+    [HtmlTargetElement("ans-pagination", Attributes = _ATTR_MODEL, TagStructure = TagStructure.WithoutEndTag)]
     public class AnsPaginationTagHelper(
         CurrentContext current)
         : _AnsTagHelper_Base(current)
@@ -21,6 +20,7 @@ namespace Ans.Net10.Web.TagHelpers
 
         private const string _ATTR_MODEL = "model";
         private const string _ATTR_URL_TEMPLATE = "url-template";
+        private const string _ATTR_PAGE_PARAM = "page-param";
 
 
         /* attributes */
@@ -35,12 +35,19 @@ namespace Ans.Net10.Web.TagHelpers
 
 
         /// <summary>
-        /// Шаблон URL-адреса для генерации гиперссылок переходов. 
-        /// Должен содержать маркер составного форматирования <c>"{0}"</c>, 
-        /// вместо которого будет подставляться номер целевой страницы (например, "/catalog?page={0}").
+        /// Опциональный шаблон URL-адреса для генерации гиперссылок переходов. 
+        /// Если задан, должен содержать маркер <c>"{0}"</c> для номера страницы (например, <c>"/catalog/page-{0}"</c>).
+        /// Если не указан, ссылки строятся автоматически через <see cref="CurrentContext.QueryString"/> с сохранением текущих параметров запроса.
         /// </summary>
         [HtmlAttributeName(_ATTR_URL_TEMPLATE)]
-        public string UrlTemplate { get; set; } = string.Empty;
+        public string? UrlTemplate { get; set; }
+
+
+        /// <summary>
+        /// Имя параметра строки запроса для номера страницы при автоматической генерации URL (по умолчанию <c>"page"</c>).
+        /// </summary>
+        [HtmlAttributeName(_ATTR_PAGE_PARAM)]
+        public string PageParam { get; set; } = "page";
 
 
         /* methods */
@@ -52,17 +59,29 @@ namespace Ans.Net10.Web.TagHelpers
         /// <param name="context">Контекст выполнения, содержащий информацию о текущем HTML-теге.</param>
         /// <param name="output">Выходной контекст, используемый для формирования результирующего HTML-кода.</param>
         /// <returns>Задача, представляющая асинхронную операцию выполнения генерации тега.</returns>
-        public override async Task ProcessAsync(
+        /// <exception cref="ArgumentNullException">
+        /// Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
+        /// </exception>
+        public override Task ProcessAsync(
             TagHelperContext context,
             TagHelperOutput output)
         {
+            ArgumentNullException.ThrowIfNull(context);
+            ArgumentNullException.ThrowIfNull(output);
+
             if (Model.TotalPages <= 1)
             {
                 output.SuppressOutput();
-                return;
+                return Task.CompletedTask;
             }
+
             output.TagName = "nav";
+            output.TagMode = TagMode.StartTagAndEndTag;
             output.Attributes.SetAttribute("aria-label", "Page navigation");
+            output.AddAttributeIfPresent("class", ClassBefore, Class, ClassAfter);
+            output.AddAttributeIfPresent("style", Style);
+            output.AddAttributeIfPresent("title", Title);
+
             var ul1 = new TagBuilderExt("ul", TagRenderMode.Normal);
             ul1.Apply("pagination justify-content-center", null, null);
 
@@ -90,8 +109,8 @@ namespace Ans.Net10.Web.TagHelpers
             // Кнопка "Вперед"
             _appendPageItem(ul1, Model.CurrentPage + 1, "»", Model.ActiveLastPage);
 
-            output.Content.SetHtmlContent(ul1.ToHtml());
-            await Task.CompletedTask;
+            output.Content.SetHtmlContent(ul1);
+            return Task.CompletedTask;
         }
 
 
@@ -106,16 +125,33 @@ namespace Ans.Net10.Web.TagHelpers
             bool isActive = false)
         {
             var li1 = new TagBuilderExt("li", TagRenderMode.Normal);
-            var liClass1 = "page-item" + (isActive ? " active" : "") + (isDisabled ? " disabled" : "");
-            li1.Apply(liClass1, null, null);
+            var activeClass1 = isActive ? " active" : string.Empty;
+            var disabledClass1 = isDisabled ? " disabled" : string.Empty;
+            li1.Apply($"page-item{activeClass1}{disabledClass1}", null, null);
 
-            var url1 = string.Format(UrlTemplate, page);
+            var url1 = _buildPageUrl(page);
             var link1 = new LinkBuilder(url1, text, isDisabled);
             var a1 = link1.GetTag(null);
             a1.ExpandClassAttribute("page-link");
 
-            li1.InnerHtml.AppendHtml(a1.ToString());
-            ul.InnerHtml.AppendHtml(li1.ToString());
+            li1.InnerHtml.AppendHtml(a1);
+            ul.InnerHtml.AppendHtml(li1);
+        }
+
+
+        private string _buildPageUrl(
+            int page)
+        {
+            if (!string.IsNullOrWhiteSpace(UrlTemplate))
+                return string.Format(UrlTemplate, page);
+
+            var queryHelper1 = Current.QueryString.GetHelper();
+            if (page > 1)
+                queryHelper1.AppendString(PageParam, page.ToString());
+            else
+                queryHelper1.Remove(PageParam);
+
+            return queryHelper1.MakeQueryString(Current.Request.RelativeUrl);
         }
 
 
@@ -124,8 +160,8 @@ namespace Ans.Net10.Web.TagHelpers
         {
             var li1 = new TagBuilderExt("li", TagRenderMode.Normal);
             li1.Apply("page-item disabled", null, null);
-            li1.InnerHtml.AppendHtml("<span class=\"page-link\">...</span>");
-            ul.InnerHtml.AppendHtml(li1.ToString());
+            li1.InnerHtml.AppendHtml("""<span class="page-link">...</span>""");
+            ul.InnerHtml.AppendHtml(li1);
         }
 
     }

@@ -1,10 +1,10 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-19
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Http;
 
-namespace Ans.Net10.Web.Nodes
+namespace Ans.Net10.Web
 {
 
     /// <summary>

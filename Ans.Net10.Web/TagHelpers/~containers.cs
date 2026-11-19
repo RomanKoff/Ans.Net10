@@ -1,4 +1,4 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-19
 
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
@@ -6,10 +6,12 @@ namespace Ans.Net10.Web.TagHelpers
 {
 
     /*
-	 * <site-container>...</site-container>
-	 * <node-container>...</node-container>
-	 * <page-container>...</page-container>	 
-	 * <net-admin-container free="false">...</net-admin-container>	 
+      
+        <site-container>...</site-container>
+        <node-container>...</node-container>
+        <page-container>...</page-container>
+        <net-admin-container free="false">...</net-admin-container>	 
+
 	 */
 
 
@@ -112,7 +114,7 @@ namespace Ans.Net10.Web.TagHelpers
     /// Инициализирует новый экземпляр класса <see cref="NetAdminContainerTagHelper"/> с внедрением контекста.
     /// </remarks>
     /// <param name="current">Текущий оркестровый контекст выполнения HTTP-запроса.</param>
-    [HtmlTargetElement("net-admin-container", Attributes = _ATTR_FREE)]
+    [HtmlTargetElement("net-admin-container")]
     public class NetAdminContainerTagHelper(
         CurrentContext current)
         : _AnsTagHelper_Base(current)
@@ -147,35 +149,33 @@ namespace Ans.Net10.Web.TagHelpers
         /// <exception cref="ArgumentNullException">
         /// Вызывается, если параметр <paramref name="context"/> или <paramref name="output"/> равен <see langword="null"/>.
         /// </exception>
-        /// <remarks>
-        /// Метод использует службу <see cref="NetworkService"/> для проверки прав. Если клиент не является 
-        /// администратором, контент полностью очищается, предотвращая утечку данных. Если доступ разрешен 
-        /// и параметр <see cref="IsFree"/> равен <see langword="false"/>, содержимое оборачивается в тег <c>div</c> 
-        /// с предупреждающим фоном Bootstrap.
-        /// </remarks>
-        public override async Task ProcessAsync(
+        public override Task ProcessAsync(
             TagHelperContext context,
             TagHelperOutput output)
         {
             ArgumentNullException.ThrowIfNull(context);
             ArgumentNullException.ThrowIfNull(output);
-            UseAutoContent = true;
-            output.TagName = null;
+
             if (!Current.Network.IsAdmin)
             {
                 output.SuppressOutput();
-                output.Content.Clear();
-                return;
+                return Task.CompletedTask;
             }
+
+            UseAutoContent = true;
+            output.TagName = null;
+
             if (!IsFree)
             {
                 output.TagMode = TagMode.StartTagAndEndTag;
                 output.TagName = "div";
-                Class = "bg-warning-subtle";
+                ClassBefore = "bg-warning-subtle";
             }
-            await base.ProcessAsync(context, output);
+
+            return base.ProcessAsync(context, output);
         }
 
     }
+
 
 }

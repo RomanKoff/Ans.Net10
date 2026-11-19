@@ -1,11 +1,11 @@
-﻿// rev 2026-11-18
+﻿// rev 2026-11-19
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Collections.Frozen;
 
-namespace Ans.Net10.Web.Nodes
+namespace Ans.Net10.Web
 {
 
     /// <summary>

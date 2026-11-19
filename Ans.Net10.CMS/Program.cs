@@ -1,5 +1,4 @@
 using Ans.Net10.Web;
-using Ans.Net10.Web.Nodes;
 
 
 
@@ -17,7 +16,7 @@ var app = builder.Build();
 await app.Use_AnsNet10WebAsync(sitemap =>
 {
     sitemap.AddTopNodeDef(
-        new NodemapDef("_system", "Системный модуль", topPages: [
+        new NodemapDef("_system", "Системный модуль", display: "none", topPages: [
             new PagemapDef("tests", "Тестирование приложения", true, childPages: [
                 new PagemapDef("pages", "Проверка страниц")
             ]),
