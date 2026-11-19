@@ -1,8 +1,9 @@
 @echo off
 
 rem set /p host="Enter host path: "
-set host=W:\priem.guap.ru_new
-set site=https://priem.guap.ru/new
+rem set /p site="Enter site url: "
+rem set host=W:\site1
+rem set site=https://site1
 if "%host%"=="" goto END
 echo.
 
@@ -22,6 +23,7 @@ rd /s %host%\Areas
 rd /s %host%\en
 rd /s %host%\refs
 rd /s %host%\runtimes
+erase %host%\Ans.Net10*.xml
 erase %host%\*.endpoints.json
 erase %host%\*.runtimeconfig.json
 erase %host%\*.deps.json
@@ -37,6 +39,8 @@ xcopy Areas %host%\Areas /s /e /i
 xcopy en %host%\en /s /e /i
 xcopy refs %host%\refs /s /e /i
 xcopy runtimes %host%\runtimes /s /e /i
+xcopy Ans.Net10*.xml %host% /i
+xcopy *.endpoints.json %host% /i
 xcopy *.runtimeconfig.json %host% /i
 xcopy *.deps.json %host% /i
 xcopy *.dll %host% /i

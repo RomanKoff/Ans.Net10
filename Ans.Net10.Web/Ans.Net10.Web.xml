@@ -2219,6 +2219,30 @@
             Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultOgImage">
+            <summary>
+            Получает или задает путь к изображению по умолчанию для протокола Open Graph (<c>og:image</c>).
+            Поддерживает семантические префиксы ресурсов (например, <c>"site:images/og-default.jpg"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultOgImageWidth">
+            <summary>
+            Получает или задает ширину изображения Open Graph по умолчанию в пикселях (<c>og:image:width</c>).
+            Применяется только при использовании <see cref="P:Ans.Net10.Web.LibWebOptions.DefaultOgImage"/>. Значение по умолчанию: <c>1200</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultOgImageHeight">
+            <summary>
+            Получает или задает высоту изображения Open Graph по умолчанию в пикселях (<c>og:image:height</c>).
+            Применяется только при использовании <see cref="P:Ans.Net10.Web.LibWebOptions.DefaultOgImage"/>. Значение по умолчанию: <c>630</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultVkImage">
+            <summary>
+            Получает или задает путь к специализированному изображению по умолчанию для превью ВКонтакте (<c>vk:image</c>).
+            Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.DefaultCulture">
             <summary>
             Получает или задает культуру по умолчанию (например, "ru", "en").
@@ -5154,6 +5178,12 @@
             </summary>
             <returns>Экземпляр класса данных маршрута <see cref="T:Ans.Net10.Web.RequestData"/>.</returns>
         </member>
+        <member name="P:Ans.Net10.Web.CurrentContext.Meta">
+            <summary>
+            Получает управляющий контейнер SEO и Open Graph метатегов текущей страницы.
+            </summary>
+            <returns>Экземпляр класса <see cref="T:Ans.Net10.Web.MetaData"/>.</returns>
+        </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Cache">
             <summary>
             Получает прикладную службу гибридного кэширования текущего контекста.
@@ -5452,6 +5482,177 @@
             <c>"https://mysite.com/app_name"</c>,
             <c>"http://localhost:5173"</c> или
             <c>"http://localhost:5173/app_name"</c>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.MetaData">
+            <summary>
+            Управляющий контейнер SEO-метаданных и разметки Open Graph для секции <c>&lt;head&gt;</c> текущей веб-страницы.
+            </summary>
+            <param name="current">Текущий оркестровый контекст HTTP-запроса.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.MetaData.#ctor(Ans.Net10.Web.CurrentContext)">
+            <summary>
+            Управляющий контейнер SEO-метаданных и разметки Open Graph для секции <c>&lt;head&gt;</c> текущей веб-страницы.
+            </summary>
+            <param name="current">Текущий оркестровый контекст HTTP-запроса.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.UseAutoCanonical">
+            <summary>
+            Получает или задает признак автоматической генерации канонического URL (<c>link rel="canonical"</c>)
+            на основе чистого пути запроса без query-параметров. Значение по умолчанию: <see langword="true"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Description">
+            <summary>
+            Получает или задает краткое описание содержимого страницы (<c>meta name="description"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Keywords">
+            <summary>
+            Получает или задает ключевые слова страницы (<c>meta name="keywords"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Robots">
+            <summary>
+            Получает или задает директивы индексирования для поисковых роботов (<c>meta name="robots"</c>, например, <c>"noindex, nofollow"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.CanonicalUrl">
+            <summary>
+            Получает или задает канонический URL-адрес страницы (<c>link rel="canonical"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Article_PublishedTime">
+            <summary>
+            Получает или задает дату и время первичной публикации статьи (<c>article:published_time</c> в формате ISO 8601).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Article_ModifiedTime">
+            <summary>
+            Получает или задает дату и время последнего обновления статьи (<c>article:modified_time</c> в формате ISO 8601).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Article_Section">
+            <summary>
+            Получает или задает название рубрики или раздела публикации (<c>article:section</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Article_Tags">
+            <summary>
+            Получает или задает массив ключевых тегов публикации (<c>article:tag</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.ThemeColor">
+            <summary>
+            Получает или задает цвет верхней панели браузера и системной строки состояния на мобильных устройствах (<c>meta name="theme-color"</c>, например, <c>"#0d6efd"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.ColorScheme">
+            <summary>
+            Получает или задает поддерживаемые страницей цветовые схемы интерфейса (<c>meta name="color-scheme"</c>, например, <c>"light dark"</c> или <c>"only light"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.FormatDetection">
+            <summary>
+            Получает или задает политику автоматического распознавания данных мобильными браузерами (<c>meta name="format-detection"</c>, например, <c>"telephone=no"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Referrer">
+            <summary>
+            Получает или задает политику передачи HTTP-заголовка <c>Referer</c> при переходах со страницы (<c>meta name="referrer"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Vk_Image">
+            <summary>
+            Получает или задает путь или URL-адрес специализированного превью-изображения для ВКонтакте (<c>vk:image</c>).
+            Поддерживает префиксы ресурсов (<c>site:</c>, <c>node:</c>, <c>page:</c>).
+            Рекомендуемый размер для ленты ВК — 537×240 или 1074×480 пикселей (пропорция ~2.2:1).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_SiteName">
+            <summary>
+            Получает или задает название сайта для протокола Open Graph (<c>og:site_name</c>).
+            По умолчанию инициализируется из заголовка сайта (<c>Current.Site.Title</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_Title">
+            <summary>
+            Получает или задает заголовок страницы для протокола Open Graph (<c>og:title</c>).
+            По умолчанию вычисляется на основе заголовка текущей страницы, узла или сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_Description">
+            <summary>
+            Получает или задает описание страницы для протокола Open Graph (<c>og:description</c>).
+            Если не задано явно, наследует значение свойства <see cref="P:Ans.Net10.Web.MetaData.Description"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_Image">
+            <summary>
+            Получает или задает путь или URL-адрес превью-изображения для протокола Open Graph (<c>og:image</c>).
+            Поддерживает префиксы ресурсов (<c>site:</c>, <c>node:</c>, <c>page:</c>).
+            Рекомендуемое соотношение сторон — 1.91:1 (например, 1200×630 пикселей), чтобы картинка не обрезалась в мессенджерах.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_ImageWidth">
+            <summary>
+            Получает или задает ширину изображения Open Graph в пикселях (<c>og:image:width</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_ImageHeight">
+            <summary>
+            Получает или задает высоту изображения Open Graph в пикселях (<c>og:image:height</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_Url">
+            <summary>
+            Получает или задает канонический URL объекта для протокола Open Graph (<c>og:url</c>).
+            По умолчанию инициализируется из <see cref="P:Ans.Net10.Web.RequestData.AbsoluteUrl"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaData.Og_Type">
+            <summary>
+            Получает или задает тип контента для протокола Open Graph (<c>og:type</c>).
+            Значение по умолчанию: <c>"website"</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MetaData.RobotsOff">
+            <summary>
+            Запрещает поисковым роботам индексировать текущую страницу и переходить по ссылкам на ней,
+            устанавливая свойство <see cref="P:Ans.Net10.Web.MetaData.Robots"/> в значение <c>"noindex, nofollow"</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MetaData.SetCanonical(System.String)">
+            <summary>
+            Формирует канонический URL (<see cref="P:Ans.Net10.Web.MetaData.CanonicalUrl"/>) на основе текущего пути запроса
+            с опциональной строкой значимых query-параметров (например, <c>"page=2"</c> или <c>"year=2026"</c>).
+            </summary>
+            <param name="queryString">Строка значимых параметров запроса без ведущего знака вопроса, либо <see langword="null"/> для чистого URL.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.MetaData.CanonicalOff">
+            <summary>
+            Отключает автоматическую и ручную генерацию тега <c>link rel="canonical"</c> для текущей страницы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MetaData.SetArticle(System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset},System.String,System.String[])">
+            <summary>
+            Устанавливает тип Open Graph (<see cref="P:Ans.Net10.Web.MetaData.Og_Type"/>) в значение <c>"article"</c> и опционально заполняет метаданные публикации.
+            </summary>
+            <param name="publishedTime">Дата и время публикации статьи.</param>
+            <param name="modifiedTime">Дата и время последнего изменения статьи.</param>
+            <param name="section">Название рубрики публикации.</param>
+            <param name="tags">Набор тегов публикации.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.MetaData.DisableTelephoneDetection">
+            <summary>
+            Отключает автоматическое преобразование числовых последовательностей (артикулов, индексов, кодов) 
+            в кликабельные телефонные ссылки на мобильных устройствах (<c>format-detection="telephone=no"</c>).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.MetaData.Render">
+            <summary>
+            Формирует готовую HTML-разметку всех заполненных SEO и Open Graph метатегов для вставки в <c>&lt;head&gt;</c>.
+            </summary>
+            <returns>Безопасная строка разметки <see cref="T:Microsoft.AspNetCore.Html.HtmlString"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.RequestData">
             <summary>

@@ -71,6 +71,34 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
+        /// Получает или задает путь к изображению по умолчанию для протокола Open Graph (<c>og:image</c>).
+        /// Поддерживает семантические префиксы ресурсов (например, <c>"site:images/og-default.jpg"</c>).
+        /// </summary>
+        public string? DefaultOgImage { get; set; }
+
+
+        /// <summary>
+        /// Получает или задает ширину изображения Open Graph по умолчанию в пикселях (<c>og:image:width</c>).
+        /// Применяется только при использовании <see cref="DefaultOgImage"/>. Значение по умолчанию: <c>1200</c>.
+        /// </summary>
+        public int? DefaultOgImageWidth { get; set; } = 1200;
+
+
+        /// <summary>
+        /// Получает или задает высоту изображения Open Graph по умолчанию в пикселях (<c>og:image:height</c>).
+        /// Применяется только при использовании <see cref="DefaultOgImage"/>. Значение по умолчанию: <c>630</c>.
+        /// </summary>
+        public int? DefaultOgImageHeight { get; set; } = 630;
+
+
+        /// <summary>
+        /// Получает или задает путь к специализированному изображению по умолчанию для превью ВКонтакте (<c>vk:image</c>).
+        /// Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
+        /// </summary>
+        public string? DefaultVkImage { get; set; }
+
+
+        /// <summary>
         /// Получает или задает культуру по умолчанию (например, "ru", "en").
         /// </summary>
         public string DefaultCulture { get; set; } = string.Empty;

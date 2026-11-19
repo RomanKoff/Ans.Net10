@@ -86,6 +86,7 @@ namespace Ans.Net10.Web
             // data
             Host = new(this);
             Request = new(this);
+            Meta = new(this);
 
             // services
             Cache = new(this);
@@ -211,6 +212,13 @@ namespace Ans.Net10.Web
         /// </summary>
         /// <returns>Экземпляр класса данных маршрута <see cref="RequestData"/>.</returns>
         public RequestData Request { get; }
+
+
+        /// <summary>
+        /// Получает управляющий контейнер SEO и Open Graph метатегов текущей страницы.
+        /// </summary>
+        /// <returns>Экземпляр класса <see cref="MetaData"/>.</returns>
+        public MetaData Meta { get; }
 
 
         /* services readonly properties */

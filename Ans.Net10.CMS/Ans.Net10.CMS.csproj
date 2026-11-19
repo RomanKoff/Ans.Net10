@@ -17,6 +17,9 @@
 		<None Update="_app_offline.htm">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="__update.cmd">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<Content Remove="appsettings.Development.json" />
 		<None Include="appsettings.Development.json" />
 	</ItemGroup>

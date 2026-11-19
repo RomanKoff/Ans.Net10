@@ -14,7 +14,7 @@
 
 		<Authors>Roman Koff</Authors>
 		<Copyright>Copyright © $([System.DateTime]::Now.ToString("yyyy")) $(Authors)</Copyright>
-		<Version>10.2.0</Version>
+		<Version>10.3.0</Version>
 		<VersionPrefix>$(Version)</VersionPrefix>
 	</PropertyGroup>
 
