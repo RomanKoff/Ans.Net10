@@ -1,0 +1,97 @@
+{
+
+  "Ans.Net10.Web": {
+    "AppName": "MyPortal",
+    "AppTitle": "Официальный портал организации",
+    "CustomHomeUrl": null,
+    "DefaultCulture": "ru", // --- ОБЯЗАТЕЛЬНЫЙ ---
+    "DefaultLayout": "/Areas/Ans/Layouts/_Layout.cshtml",
+    "DefaultContainerClasses": "container",
+    "DefaultRegionPhoneCode": "7812",
+    "SystemLayout": null,
+    "SystemToken": "secret-system-token-here",
+    "UseRuntimeCompilation": false,
+    "UseDeveloperMode": false,
+    "UseSession": false,
+    "Mimetypes": [
+      ".webp|image/webp",
+      ".avif|image/avif"
+    ],
+    "Routes": null,
+
+    "Errors": {
+      "RazorPageErrorsPath": "/Ans/Errors",
+      "Layout": null,
+      "ShowInfo": false,
+      "Picture400": "site:images/errors/400.svg",
+      "Picture403": "site:images/errors/403.svg",
+      "Picture404": "site:images/errors/404.svg",
+      "Picture500": "site:images/errors/500.svg"
+    },
+
+    "Serilog": {
+      "Enabled": true,
+      "Path": "../logs",
+      "MinimumLevel": "Warning"
+    },
+
+    "DataProtection": {
+      "Path": "../data-protection",
+      "CertificatePath": null,
+      "CertificatePassword": null
+    },
+
+    "Proxy": {
+      "UseForwardedHeaders": true,
+      "KnownProxies": "127.0.0.1"
+    },
+
+    "Meta": {
+      "DefaultOgImage": "site:images/og-default.jpg",
+      "DefaultOgImageWidth": 1200,
+      "DefaultOgImageHeight": 630,
+      "DefaultVkImage": "site:images/vk-default.jpg"
+    },
+
+    "Cors": {
+      "Profile": "ALLOW TRUSTED",
+      "LocalOrigins": [
+        "http://localhost:3000",
+        "http://localhost:5173"
+      ],
+      "TrustedOrigins": [
+        "https://example.ru"
+      ]
+    },
+
+    "Subnets": {
+      "Admin": "127.0.0.1/32;10.0.0.0/8",
+      "Safe": "192.168.0.0/16",
+      "Unsafe": null,
+      "Allow": null,
+      "Deny": null
+    },
+
+    "MailService": { // --- ОПЦИОНАЛЬНЫЙ ---
+      "SmtpServer": "smtp.example.ru", // --- ОБЯЗАТЕЛЬНЫЙ, если есть "MailService" ---
+      "SmtpPort": 465,
+      "SmtpUseSsl": true,
+      "SmtpUsername": "noreply@example.ru", // --- ОБЯЗАТЕЛЬНЫЙ, если есть "MailService" ---
+      "SmtpPassword": "your-smtp-password", // --- ОБЯЗАТЕЛЬНЫЙ, если есть "MailService" ---
+      "DefaultFromAddress": "noreply@example.ru", // --- ОБЯЗАТЕЛЬНЫЙ, если есть "MailService" ---
+      "DefaultFromTitle": "Портал организации",
+      "DebugCc": null
+    },
+
+    "PuppeteerSharpService": { // --- ОПЦИОНАЛЬНЫЙ ---
+      "AppPath": "../chromium", // --- ОБЯЗАТЕЛЬНЫЙ, если есть "PuppeteerSharpService" ---
+      "MaxConcurrentPages": 4
+    }
+
+  },
+
+
+
+  "AllowedHosts": "*"
+
+}

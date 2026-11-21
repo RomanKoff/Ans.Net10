@@ -34,6 +34,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Update="__sample_*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Update="Resources\Common.Designer.cs">
 			<DesignTime>True</DesignTime>
 			<AutoGen>True</AutoGen>

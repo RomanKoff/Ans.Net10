@@ -401,8 +401,11 @@ FodyWeavers.xsd
 *.sln.iml
 
 
-**/_Dev/
-# **/Views/
 
 _docs/_site
 _docs/api
+
+**/_Dev/
+# **/Views/
+
+__update_*.cmd

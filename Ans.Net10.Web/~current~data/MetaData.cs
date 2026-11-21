@@ -1,4 +1,4 @@
-﻿// rev 2026-11-19
+﻿// rev 2026-11-21
 
 using Microsoft.AspNetCore.Html;
 using System.Net;
@@ -265,18 +265,18 @@ namespace Ans.Net10.Web
             if (!string.IsNullOrWhiteSpace(effectiveCanonical1))
                 _appendLine(sb1, $"""<link rel="canonical" href="{_encode(effectiveCanonical1)}" />""");
 
-            string? vkImage1 = _resolveOgImage(Vk_Image ?? _current.Options.DefaultVkImage);
+            string? vkImage1 = _resolveOgImage(Vk_Image ?? _current.Options.Meta?.DefaultVkImage);
             _appendMetaProperty(sb1, "vk:image", vkImage1);
 
             bool useDefaultOgImage1 = string.IsNullOrWhiteSpace(Og_Image);
             string? ogImage1 = _resolveOgImage(useDefaultOgImage1
-                ? _current.Options.DefaultOgImage
+                ? _current.Options.Meta?.DefaultOgImage
                 : Og_Image);
             int? ogImageWidth1 = useDefaultOgImage1
-                ? (Og_ImageWidth ?? _current.Options.DefaultOgImageWidth)
+                ? (Og_ImageWidth ?? _current.Options.Meta?.DefaultOgImageWidth)
                 : Og_ImageWidth;
             int? ogImageHeight1 = useDefaultOgImage1
-                ? (Og_ImageHeight ?? _current.Options.DefaultOgImageHeight)
+                ? (Og_ImageHeight ?? _current.Options.Meta?.DefaultOgImageHeight)
                 : Og_ImageHeight;
 
             string? ogSiteName1 = Og_SiteName ?? _current.Site.Title;

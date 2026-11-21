@@ -2219,30 +2219,6 @@
             Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultOgImage">
-            <summary>
-            Получает или задает путь к изображению по умолчанию для протокола Open Graph (<c>og:image</c>).
-            Поддерживает семантические префиксы ресурсов (например, <c>"site:images/og-default.jpg"</c>).
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultOgImageWidth">
-            <summary>
-            Получает или задает ширину изображения Open Graph по умолчанию в пикселях (<c>og:image:width</c>).
-            Применяется только при использовании <see cref="P:Ans.Net10.Web.LibWebOptions.DefaultOgImage"/>. Значение по умолчанию: <c>1200</c>.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultOgImageHeight">
-            <summary>
-            Получает или задает высоту изображения Open Graph по умолчанию в пикселях (<c>og:image:height</c>).
-            Применяется только при использовании <see cref="P:Ans.Net10.Web.LibWebOptions.DefaultOgImage"/>. Значение по умолчанию: <c>630</c>.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.DefaultVkImage">
-            <summary>
-            Получает или задает путь к специализированному изображению по умолчанию для превью ВКонтакте (<c>vk:image</c>).
-            Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.DefaultCulture">
             <summary>
             Получает или задает культуру по умолчанию (например, "ru", "en").
@@ -2335,6 +2311,12 @@
             <summary>
             Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
             </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.Meta">
+            <summary>
+            Получает или задает параметры конфигурации для мета-тегов секции HEAD.
+            </summary>
+            <returns>Объект конфигурации для мета-тегов секции HEAD <see cref="T:Ans.Net10.Web.MetaOptions"/>.</returns>
         </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Cors">
             <summary>
@@ -2473,6 +2455,35 @@
             Если пустой — по умолчанию доверяется локальной петле (Loopback).
             </summary>
             <returns>Строка с перечислением IP-адресов доверенных прокси-серверов через точку с запятой либо <see langword="null"/>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.MetaOptions">
+            <summary>
+            Описывает параметры конфигурации для мета-тегов секции HEAD.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaOptions.DefaultOgImage">
+            <summary>
+            Получает или задает путь к изображению по умолчанию для протокола Open Graph (<c>og:image</c>).
+            Поддерживает семантические префиксы ресурсов (например, <c>"site:images/og-default.jpg"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaOptions.DefaultOgImageWidth">
+            <summary>
+            Получает или задает ширину изображения Open Graph по умолчанию в пикселях (<c>og:image:width</c>).
+            Применяется только при использовании <see cref="P:Ans.Net10.Web.MetaOptions.DefaultOgImage"/>. Значение по умолчанию: <c>1200</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaOptions.DefaultOgImageHeight">
+            <summary>
+            Получает или задает высоту изображения Open Graph по умолчанию в пикселях (<c>og:image:height</c>).
+            Применяется только при использовании <see cref="P:Ans.Net10.Web.MetaOptions.DefaultOgImage"/>. Значение по умолчанию: <c>630</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.MetaOptions.DefaultVkImage">
+            <summary>
+            Получает или задает путь к специализированному изображению по умолчанию для превью ВКонтакте (<c>vk:image</c>).
+            Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
+            </summary>
         </member>
         <member name="T:Ans.Net10.Web.CorsOptions">
             <summary>

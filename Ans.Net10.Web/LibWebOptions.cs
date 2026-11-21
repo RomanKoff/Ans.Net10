@@ -1,4 +1,4 @@
-﻿// rev 2026-11-19
+﻿// rev 2026-11-20
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -68,34 +68,6 @@ namespace Ans.Net10.Web
         /// Если равен <see langword="null"/>, адрес определяется на основе базового пути запроса.
         /// </summary>
         public string? CustomHomeUrl { get; set; } = null;
-
-
-        /// <summary>
-        /// Получает или задает путь к изображению по умолчанию для протокола Open Graph (<c>og:image</c>).
-        /// Поддерживает семантические префиксы ресурсов (например, <c>"site:images/og-default.jpg"</c>).
-        /// </summary>
-        public string? DefaultOgImage { get; set; }
-
-
-        /// <summary>
-        /// Получает или задает ширину изображения Open Graph по умолчанию в пикселях (<c>og:image:width</c>).
-        /// Применяется только при использовании <see cref="DefaultOgImage"/>. Значение по умолчанию: <c>1200</c>.
-        /// </summary>
-        public int? DefaultOgImageWidth { get; set; } = 1200;
-
-
-        /// <summary>
-        /// Получает или задает высоту изображения Open Graph по умолчанию в пикселях (<c>og:image:height</c>).
-        /// Применяется только при использовании <see cref="DefaultOgImage"/>. Значение по умолчанию: <c>630</c>.
-        /// </summary>
-        public int? DefaultOgImageHeight { get; set; } = 630;
-
-
-        /// <summary>
-        /// Получает или задает путь к специализированному изображению по умолчанию для превью ВКонтакте (<c>vk:image</c>).
-        /// Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
-        /// </summary>
-        public string? DefaultVkImage { get; set; }
 
 
         /// <summary>
@@ -204,6 +176,13 @@ namespace Ans.Net10.Web
         /// Получает или задает параметры обработки заголовков обратного прокси-сервера (Nginx/IIS).
         /// </summary>
         public ProxyOptions? Proxy { get; set; } = null;
+
+
+        /// <summary>
+        /// Получает или задает параметры конфигурации для мета-тегов секции HEAD.
+        /// </summary>
+        /// <returns>Объект конфигурации для мета-тегов секции HEAD <see cref="MetaOptions"/>.</returns>
+        public MetaOptions Meta { get; set; } = new();
 
 
         /// <summary>
@@ -375,6 +354,43 @@ namespace Ans.Net10.Web
         /// </summary>
         /// <returns>Строка с перечислением IP-адресов доверенных прокси-серверов через точку с запятой либо <see langword="null"/>.</returns>
         public string? KnownProxies { get; set; } = null;
+    }
+
+
+
+    /// <summary>
+    /// Описывает параметры конфигурации для мета-тегов секции HEAD.
+    /// </summary>
+    public class MetaOptions
+    {
+
+
+        /// <summary>
+        /// Получает или задает путь к изображению по умолчанию для протокола Open Graph (<c>og:image</c>).
+        /// Поддерживает семантические префиксы ресурсов (например, <c>"site:images/og-default.jpg"</c>).
+        /// </summary>
+        public string? DefaultOgImage { get; set; }
+
+
+        /// <summary>
+        /// Получает или задает ширину изображения Open Graph по умолчанию в пикселях (<c>og:image:width</c>).
+        /// Применяется только при использовании <see cref="DefaultOgImage"/>. Значение по умолчанию: <c>1200</c>.
+        /// </summary>
+        public int? DefaultOgImageWidth { get; set; } = 1200;
+
+
+        /// <summary>
+        /// Получает или задает высоту изображения Open Graph по умолчанию в пикселях (<c>og:image:height</c>).
+        /// Применяется только при использовании <see cref="DefaultOgImage"/>. Значение по умолчанию: <c>630</c>.
+        /// </summary>
+        public int? DefaultOgImageHeight { get; set; } = 630;
+
+
+        /// <summary>
+        /// Получает или задает путь к специализированному изображению по умолчанию для превью ВКонтакте (<c>vk:image</c>).
+        /// Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
+        /// </summary>
+        public string? DefaultVkImage { get; set; }
     }
 
 
