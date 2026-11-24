@@ -1,4 +1,4 @@
-﻿// rev 2026-11-15
+﻿// rev 2026-11-22
 
 using Microsoft.Extensions.Configuration;
 using System.Collections.Concurrent;

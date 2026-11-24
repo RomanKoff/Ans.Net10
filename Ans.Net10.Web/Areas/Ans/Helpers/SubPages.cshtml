@@ -1,26 +1,20 @@
 @*
-	rev 2026-11-19
+	rev 2026-11-24
 
 	Компонент библиотеки Ans.Net10.Web.
 	Код не предназначен для редактирования и компиляции во время выполнения!
 *@
 
-@if (Current.Page.MapItem?.HasChildPages ?? false)
-{
-	OutItems(Current.Page.MapItem.ChildPages);
+@{
+	var pages1 = Current.GetSubpagesNav(1);
 }
 
-@functions {
-
-	void OutItems(IEnumerable<PagemapItem> items)
-	{
-		<ul>
-			@foreach (var item1 in items)
-			{
-				var tag1 = item1.GetLink(Context).GetTag();
-				<li class="nav-item">@tag1</li>
-			}
-		</ul>
-	}
-
+@if (pages1 is { Count: > 0 })
+{
+	<ul>
+		@foreach (var item1 in pages1)
+		{
+			<li class="nav-item">@item1.ToLinkBuilder().GetTag()</li>
+		}
+	</ul>
 }

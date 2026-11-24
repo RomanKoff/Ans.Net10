@@ -1,15 +1,17 @@
-﻿// rev 2026-11-19
+﻿// rev 2026-11-24
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
+using Ans.Net10.Web.Compilation;
 using Ans.Net10.Web.Middlewares;
-using Ans.Net10.Web;
 using Ans.Net10.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor.Compilation;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Serilog;
 using Serilog.Events;
 using System.Globalization;
@@ -62,19 +64,35 @@ namespace Ans.Net10.Web
             if (options1.Serilog is not null && options1.Serilog.Enabled)
             {
                 const string logTemplate1 = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{Exception}\n";
+
                 static DateTime funcLogHourKey1(LogEvent x) =>
                     new(x.Timestamp.Year, x.Timestamp.Month, x.Timestamp.Day, x.Timestamp.Hour, 0, 0, DateTimeKind.Utc);
+
                 var basePath1 = string.IsNullOrWhiteSpace(options1.Serilog.Path)
                     ? "logs" : options1.Serilog.Path.TrimEnd('/');
+
                 if (!Enum.TryParse<LogEventLevel>(options1.Serilog.MinimumLevel, true, out var rootLevel1))
                     rootLevel1 = LogEventLevel.Information;
+
+                AnsMemoryLogStore? memoryLogStore1 = null;
+                if (options1.Serilog.MemoryBufferCapacity > 0)
+                {
+                    memoryLogStore1 = new AnsMemoryLogStore(options1.Serilog.MemoryBufferCapacity);
+                    builder.Services.AddSingleton(memoryLogStore1);
+                }
+
                 builder.Host.UseSerilog((context, services, loggerConfiguration) =>
                 {
                     loggerConfiguration
                         .MinimumLevel.Is(rootLevel1)
                         .Enrich.FromLogContext()
-                        .WriteTo.Console()
+                        .WriteTo.Console();
 
+                    if (memoryLogStore1 is not null)
+                        loggerConfiguration.WriteTo.Sink(
+                            new AnsMemoryLogSink(memoryLogStore1, options1.Serilog.ExcludePaths));
+
+                    loggerConfiguration
                         // Debug
                         .WriteTo.Logger(lc => lc
                             .Filter.ByIncludingOnly(x => x.Level == LogEventLevel.Debug)
@@ -179,6 +197,7 @@ namespace Ans.Net10.Web
             builder.Services.AddCors(o => SuppCors.RegisterPolicies(o, options1));
 
             //--- nodes & sitemap
+            builder.Services.AddSitemapContributor<AnsSitemapContributor>();
             builder.Services.AddSingleton<SitemapBuilder>();
             builder.Services.AddSingleton<NodesMapper>();
             builder.Services.AddHostedService<ViewsWatcherService>();
@@ -230,9 +249,15 @@ namespace Ans.Net10.Web
                 o.JsonSerializerOptions.Encoder = baseOptions1.Encoder;
             });
 
-            //--- runtime compilation
-            if (options1.UseRuntimeCompilation)
-                mvcBuilder1.AddRazorRuntimeCompilation();
+            //--- dynamic compilation
+            if (options1.DynamicCompilation is not null)
+            {
+                builder.Services.AddSingleton<AnsMetadataReferenceProvider>();
+                builder.Services.AddSingleton<AnsRazorViewCompiler>();
+                builder.Services.AddSingleton<AnsAppCodeCompiler>();
+                builder.Services.Replace(
+                    ServiceDescriptor.Singleton<IViewCompilerProvider, AnsRazorViewCompilerProvider>());
+            }
 
             SuppConsole.WriteColor(ConsoleColor.Yellow, "\nAdd_AnsNet10WebApp() — OK");
             SuppConsole.WriteColor(ConsoleColor.Yellow, "\n======================================\n\n");
@@ -305,8 +330,7 @@ namespace Ans.Net10.Web
                 app.UseCors(options1.Cors.Profile);
 
             //--- static files
-            if (!options1.UseRuntimeCompilation)
-                app.MapStaticAssets();
+            app.MapStaticAssets();
             if (options1.Mimetypes is not null && options1.Mimetypes.Length > 0)
             {
                 var mimeProvider1 = new FileExtensionContentTypeProvider();
@@ -338,6 +362,15 @@ namespace Ans.Net10.Web
             app.MapControllers();
             app.MapRazorPages();
 
+            //--- dynamic compilation initialization
+            if (options1.DynamicCompilation is not null)
+            {
+                var appCodeCompiler1 = app.Services.GetRequiredService<AnsAppCodeCompiler>();
+                await appCodeCompiler1
+                    .CompileAsync(force: true, app.Lifetime.ApplicationStarted)
+                    .ConfigureAwait(false);
+            }
+
             //--- sitemap initialization
             var sitemapBuilder1 = app.Services.GetRequiredService<SitemapBuilder>();
             sitemapBuilder1.CustomBuilder = sitemapBuilder;
@@ -353,6 +386,24 @@ namespace Ans.Net10.Web
 
             SuppConsole.WriteColor(ConsoleColor.Yellow, "\nUse_AnsNet10WebAppAsync() — OK");
             SuppConsole.WriteColor(ConsoleColor.Yellow, "\n======================================\n\n");
+        }
+
+
+        /// <summary>
+        /// Регистрирует модульный поставщик программных узлов карты сайта в контейнере зависимостей.
+        /// </summary>
+        /// <typeparam name="TContributor">Тип поставщика, реализующего <see cref="ISitemapContributor"/>.</typeparam>
+        /// <param name="services">Коллекция дескрипторов сервисов.</param>
+        /// <returns>Коллекция <see cref="IServiceCollection"/> для цепочки вызовов.</returns>
+        public static IServiceCollection AddSitemapContributor<TContributor>(
+            this IServiceCollection services)
+            where TContributor
+            : class,
+            ISitemapContributor
+        {
+            ArgumentNullException.ThrowIfNull(services);
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ISitemapContributor, TContributor>());
+            return services;
         }
 
     }

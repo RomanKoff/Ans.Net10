@@ -1,7 +1,6 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-24
 
 using Ans.Net10.Common;
-using Ans.Net10.Web;
 
 namespace Ans.Net10.Web
 {
@@ -42,14 +41,23 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-        /// Возвращает объект ссылки <see cref="LinkBuilder"/> для текущего профиля узла.
+        /// Возвращает элемент навигации <see cref="NavItem"/> для текущего профиля узла
+        /// с учетом возможных переопределений заголовков в коде страницы.
         /// </summary>
-        /// <returns>Экземпляр <see cref="LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
-        public override LinkBuilder? GetLink()
+        /// <returns>Экземпляр <see cref="NavItem"/> или <see langword="null"/>, если элемент не может быть построен.</returns>
+        public override NavItem? GetNavItem()
         {
             if (MapItem is null)
                 return null;
-            return new LinkBuilder(Url, ShortTitle);
+            string? overrideTitle1 = !Title.Equals(MapItem.Title, StringComparison.Ordinal)
+                ? Title : null;
+            string? overrideShortTitle1 = !ShortTitle.Equals(MapItem.ShortTitle, StringComparison.Ordinal)
+                ? ShortTitle : null;
+            return new NavItem(
+                MapItem,
+                _Current.HttpContext,
+                overrideTitle: overrideTitle1,
+                overrideShortTitle: overrideShortTitle1);
         }
 
 
@@ -108,14 +116,10 @@ namespace Ans.Net10.Web
         {
             if (items is null || !items.Any())
                 return;
-            ParentsLinks = new List<LinkBuilder>();
+            Parents = [];
             foreach (var item1 in items)
-            {
-                var url1 = item1.GetUrl(_Current.HttpContext);
-                var link1 = new LinkBuilder(url1, item1.ShortTitle);
-                AddParent(link1);
-            }
-            ParentsLinks.Reverse();
+                AddParent(new NavItem(item1, _Current.HttpContext));
+            Parents.Reverse();
         }
 
     }

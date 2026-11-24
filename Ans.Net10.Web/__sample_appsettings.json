@@ -10,7 +10,9 @@
     "DefaultRegionPhoneCode": "7812",
     "SystemLayout": null,
     "SystemToken": "secret-system-token-here",
-    "UseRuntimeCompilation": false,
+    "DynamicCompilation": {
+      "AppCodePath": "App_Code"
+    },
     "UseDeveloperMode": false,
     "UseSession": false,
     "Mimetypes": [

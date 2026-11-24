@@ -1,4 +1,4 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-22
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,12 +32,12 @@ namespace Ans.Net10.Web
 		/// </exception>
 		public virtual IActionResult OnGet()
 		{
-			if (string.IsNullOrEmpty(Options.SystemToken))
-				throw Options.GetExceptionParamRequired("SystemToken");
-			var token1 = Current.QueryString.GetString("token");
-			if (string.Equals(token1, Options.SystemToken, StringComparison.Ordinal))
+			//if (string.IsNullOrEmpty(Options.SystemToken))
+			//	throw Options.GetExceptionParamRequired("SystemToken");
+			//var token1 = Current.QueryString.GetString("token");
+			//if (string.Equals(token1, Options.SystemToken, StringComparison.Ordinal))
 				return Page();
-			return NotFound();
+			//return NotFound();
 		}
 
 	}

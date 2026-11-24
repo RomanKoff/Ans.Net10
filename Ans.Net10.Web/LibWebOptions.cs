@@ -1,4 +1,4 @@
-﻿// rev 2026-11-20
+﻿// rev 2026-11-23
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -28,6 +28,12 @@ namespace Ans.Net10.Web
         {
             if (string.IsNullOrEmpty(DefaultCulture))
                 throw GetExceptionParamRequired("DefaultCulture");
+
+            if (DynamicCompilation is not null)
+            {
+                if (string.IsNullOrEmpty(DynamicCompilation.AppCodePath))
+                    throw GetExceptionParamRequired("DynamicCompilation.AppCodePath");
+            }
 
             if (MailService is not null)
             {
@@ -123,12 +129,6 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-        /// Получает или задает флаг включения Runtime-компиляции для представлений Razor.
-        /// </summary>
-        public bool UseRuntimeCompilation { get; set; } = false;
-
-
-        /// <summary>
         /// Получает или задает флаг режима разработки.
         /// </summary>
         public bool UseDeveloperMode { get; set; } = false;
@@ -183,6 +183,13 @@ namespace Ans.Net10.Web
         /// </summary>
         /// <returns>Объект конфигурации для мета-тегов секции HEAD <see cref="MetaOptions"/>.</returns>
         public MetaOptions Meta { get; set; } = new();
+
+
+        /// <summary>
+        /// Получает или задает параметры конфигурации собственного рантайм-компилятора Razor-представлений 
+        /// и загрузчика динамических сборок моделей вместо стандартного <c>RazorRuntimeCompilation</c>.
+        /// </summary>
+        public DynamicCompilationOptions? DynamicCompilation { get; set; } = null;
 
 
         /// <summary>
@@ -297,6 +304,21 @@ namespace Ans.Net10.Web
         /// </summary>
         /// <returns>Строковое представление минимального уровня логирования (по умолчанию — "Warning").</returns>
         public string MinimumLevel { get; set; } = "Warning";
+
+        /// <summary>
+        /// Получает или задает максимальное количество последних записей лога, 
+        /// удерживаемых в кольцевом буфере памяти для просмотра в веб-консоли.
+        /// Если значение меньше или равно <c>0</c>, буферизация в памяти отключается.
+        /// </summary>
+        /// <returns>Максимальная емкость буфера (по умолчанию — <c>1000</c>).</returns>
+        public int MemoryBufferCapacity { get; set; } = 1000;
+
+        /// <summary>
+        /// Получает или задает список префиксов путей HTTP-запросов, 
+        /// информационные логи которых исключаются из кольцевого буфера памяти 
+        /// (например, эндпоинт живого обновления веб-консоли).
+        /// </summary>
+        public string[] ExcludePaths { get; set; } = ["/_system/console", "/Ans/Console"];
     }
 
 
@@ -391,6 +413,21 @@ namespace Ans.Net10.Web
         /// Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
         /// </summary>
         public string? DefaultVkImage { get; set; }
+    }
+
+
+
+    /// <summary>
+    /// Параметры конфигурации собственного рантайм-компилятора Razor-представлений 
+    /// и компилятора исходного кода <c>App_Code</c> вместо стандартного <c>RazorRuntimeCompilation</c>.
+    /// </summary>
+    public class DynamicCompilationOptions
+    {
+        /// <summary>
+        /// Получает или задает относительный путь к каталогу исходных <c>.cs</c>-файлов 
+        /// общих моделей и бизнес-логики (по умолчанию <c>"App_Code"</c>).
+        /// </summary>
+        public string AppCodePath { get; set; } = "App_Code";
     }
 
 
@@ -567,6 +604,7 @@ namespace Ans.Net10.Web
         /// <inheritdoc />
         public string? DebugCc { get; set; } = null;
     }
+
 
 
     /// <summary>

@@ -1,5 +1,8 @@
 - name: Ans.Net10.CMS
-  href: ans_net10_cms/
+  href: Ans.Net10.CMS/
+
+- name: Ans.Net10.Web
+  href: Ans.Net10.Web/
 
 - name: Обзор
   href: article1.md

@@ -16,6 +16,7 @@ namespace Ans.Net10.Web
     {
 
         private readonly ILogger<SitemapBuilder> _logger;
+        private readonly ISitemapContributor[] _contributors;
         private readonly List<NodemapItem> _topNodes = [];
         private readonly SemaphoreSlim _syncSemaphore = new(1, 1);
 
@@ -29,16 +30,21 @@ namespace Ans.Net10.Web
         /// <param name="env">Окружение веб-приложения для определения корневого каталога.</param>
         /// <param name="options">Конфигурационные параметры навигации и путей к XML-файлам.</param>
         /// <param name="logger">Экземпляр логгера для записи событий сборки структуры.</param>
-        /// <exception cref="ArgumentNullException">Вызывается, если один из переданных параметров равен <see langword="null"/>.</exception>
+        /// <param name="contributors">Опциональная коллекция модульных поставщиков программных узлов карты сайта.</param>
+        /// <exception cref="ArgumentNullException">Вызывается, если один из обязательных параметров равен <see langword="null"/>.</exception>
         public SitemapBuilder(
             IWebHostEnvironment env,
             LibWebOptions options,
-            ILogger<SitemapBuilder> logger)
+            ILogger<SitemapBuilder> logger,
+            IEnumerable<ISitemapContributor>? contributors = null)
         {
             ArgumentNullException.ThrowIfNull(env);
             ArgumentNullException.ThrowIfNull(options);
             ArgumentNullException.ThrowIfNull(logger);
             _logger = logger;
+            _contributors = contributors is not null
+                ? [.. contributors]
+                : [];
             SitemapPath = Path.Combine(env.ContentRootPath, SuppNodes.NODES_ROOT);
             TopNodes = _topNodes.AsReadOnly();
         }
@@ -156,9 +162,12 @@ namespace Ans.Net10.Web
                 _topNodes.AddRange(tempTopNodes1);
                 _buildIndexes();
 
-                if (CustomBuilder is not null)
+                if (_contributors.Length > 0 || CustomBuilder is not null)
                 {
-                    CustomBuilder(this);
+                    foreach (var contributor1 in _contributors)
+                        contributor1.ConfigureSitemap(this);
+
+                    CustomBuilder?.Invoke(this);
                     _buildIndexes();
                 }
 

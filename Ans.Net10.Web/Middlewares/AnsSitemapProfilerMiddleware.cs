@@ -1,4 +1,4 @@
-﻿// rev 2026-11-19
+﻿// rev 2026-11-24
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Http;

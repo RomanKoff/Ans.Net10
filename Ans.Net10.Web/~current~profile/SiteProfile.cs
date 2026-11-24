@@ -1,4 +1,4 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-24
 
 namespace Ans.Net10.Web
 {
@@ -39,13 +39,13 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-		/// Возвращает объект ссылки <see cref="LinkBuilder"/> для текущего профиля сайта.
-		/// </summary>
-		/// <returns>Экземпляр <see cref="LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
-		public override LinkBuilder? GetLink()
+        /// Возвращает элемент навигации <see cref="NavItem"/> для текущего профиля сайта.
+        /// </summary>
+        /// <returns>Экземпляр <see cref="NavItem"/> или <see langword="null"/>, если элемент не может быть построен.</returns>
+        public override NavItem? GetNavItem()
         {
             var url1 = CustomHomeUrl ?? _Current.Host.VirtualPath ?? "/";
-            return new LinkBuilder(url1, ShortTitle);
+            return new NavItem(url1, ShortTitle);
         }
 
 

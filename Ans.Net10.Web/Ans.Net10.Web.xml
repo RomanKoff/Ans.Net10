@@ -4,6 +4,46 @@
         <name>Ans.Net10.Web</name>
     </assembly>
     <members>
+        <member name="T:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel">
+            <summary>
+            Модель технической страницы просмотра системного журнала в реальном времени.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.#ctor(Ans.Net10.Web.LibWebOptions,Ans.Net10.Web.Services.AnsMemoryLogStore)">
+            <summary>
+            Модель технической страницы просмотра системного журнала в реальном времени.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.IsEnabled">
+            <summary>
+            Возвращает признак того, что буферизация логов в памяти активна.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.Capacity">
+            <summary>
+            Возвращает максимальную емкость буфера логов.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.Entries">
+            <summary>
+            Начальный снимок записей лога при открытии страницы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.OnGet">
+            <summary>
+            Обрабатывает первичный GET-запрос страницы.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.OnGetUpdates(System.Int64,System.Nullable{Serilog.Events.LogEventLevel})">
+            <summary>
+            Возвращает новые записи лога в формате JSON для живого обновления терминала.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.OnPostClear">
+            <summary>
+            Очищает кольцевой буфер логов в памяти.
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.Attributes.ActionAccessAttribute">
             <summary>
             Декларативный атрибут для ограничения доступа к действиям контроллера 
@@ -85,6 +125,272 @@
         </member>
         <member name="M:Ans.Net10.Web.Attributes.SubnetAccessAttribute.CreateInstance(System.IServiceProvider)">
             <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult">
+            <summary>
+            Представляет результат компиляции исходных <c>.cs</c>-файлов каталога <c>App_Code</c>.
+            </summary>
+            <param name="Success">Признак успешного завершения компиляции.</param>
+            <param name="SourceFilesCount">Количество обработанных <c>.cs</c>-файлов.</param>
+            <param name="ExportedTypesCount">Количество публичных типов, экспортированных из скомпилированной сборки.</param>
+            <param name="ElapsedMilliseconds">Время выполнения компиляции в миллисекундах.</param>
+            <param name="Errors">Список ошибок компиляции, если сборка завершилась неудачно.</param>
+            <param name="CompiledAtUtc">Дата и время выполнения компиляции в формате UTC.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult.#ctor(System.Boolean,System.Int32,System.Int32,System.Int64,System.Collections.Generic.IReadOnlyList{Ans.Net10.Web.Compilation.AnsCompilationError},System.DateTime)">
+            <summary>
+            Представляет результат компиляции исходных <c>.cs</c>-файлов каталога <c>App_Code</c>.
+            </summary>
+            <param name="Success">Признак успешного завершения компиляции.</param>
+            <param name="SourceFilesCount">Количество обработанных <c>.cs</c>-файлов.</param>
+            <param name="ExportedTypesCount">Количество публичных типов, экспортированных из скомпилированной сборки.</param>
+            <param name="ElapsedMilliseconds">Время выполнения компиляции в миллисекундах.</param>
+            <param name="Errors">Список ошибок компиляции, если сборка завершилась неудачно.</param>
+            <param name="CompiledAtUtc">Дата и время выполнения компиляции в формате UTC.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult.Success">
+            <summary>Признак успешного завершения компиляции.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult.SourceFilesCount">
+            <summary>Количество обработанных <c>.cs</c>-файлов.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult.ExportedTypesCount">
+            <summary>Количество публичных типов, экспортированных из скомпилированной сборки.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult.ElapsedMilliseconds">
+            <summary>Время выполнения компиляции в миллисекундах.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult.Errors">
+            <summary>Список ошибок компиляции, если сборка завершилась неудачно.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult.CompiledAtUtc">
+            <summary>Дата и время выполнения компиляции в формате UTC.</summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsAppCodeCompiler">
+            <summary>
+            Динамический рантайм-компилятор исходных <c>.cs</c>-файлов из общего каталога <c>App_Code</c>
+            в единую коллекционную in-memory сборку с автоматическим отслеживанием изменений файлов 
+            и прозрачной интеграцией с <see cref="T:Ans.Net10.Web.Compilation.AnsRazorViewCompiler"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsAppCodeCompiler.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Ans.Net10.Web.LibWebOptions,Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider,Ans.Net10.Web.Compilation.AnsRazorViewCompiler,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Compilation.AnsAppCodeCompiler})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Compilation.AnsAppCodeCompiler"/> 
+            и запускает отслеживание изменений <c>.cs</c>-файлов в каталоге <c>App_Code</c>.
+            </summary>
+            <param name="env">Среда выполнения веб-приложения.</param>
+            <param name="options">Параметры конфигурации библиотеки <c>Ans.Net10.Web</c>.</param>
+            <param name="referenceProvider">Провайдер метаданных сборок для компилятора Roslyn.</param>
+            <param name="viewCompiler">Рантайм-компилятор Razor-представлений для сброса кэша при пересборке <c>App_Code</c>.</param>
+            <param name="logger">Экземпляр логгера.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompiler.LastResult">
+            <summary>
+            Возвращает результат последней выполненной компиляции каталога <c>App_Code</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsAppCodeCompiler.HasPendingChanges">
+            <summary>
+            Возвращает признак наличия нескомпилированных изменений в файлах каталога <c>App_Code</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsAppCodeCompiler.EnsureCompiledAsync(System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Проверяет наличие изменений в файлах <c>App_Code</c> и при необходимости 
+            выполняет асинхронную пересборку перед компиляцией Razor-представлений.
+            </summary>
+            <param name="throwOnError">
+            Если <see langword="true"/> и при компиляции возникли ошибки, 
+            выбрасывает <see cref="T:Ans.Net10.Web.Compilation.AnsRazorCompilationException"/> с полным списком проблемных строк.
+            </param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, представляющая асинхронную операцию проверки и компиляции.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsAppCodeCompiler.CompileAsync(System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Асинхронно компилирует все <c>.cs</c>-файлы из каталога <c>App_Code</c> в единую сборку в памяти,
+            обновляет ссылки в <see cref="T:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider"/> и сбрасывает кэш представлений.
+            </summary>
+            <param name="force">Если <see langword="true"/>, выполняет принудительную пересборку даже при отсутствии изменений.</param>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Задача, результатом которой является отчет <see cref="T:Ans.Net10.Web.Compilation.AnsAppCodeCompileResult"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsAppCodeCompiler.Dispose">
+            <summary>
+            Освобождает ресурсы компилятора, отменяет подписку на изменения файлов и выгружает сборку <c>App_Code</c>.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsAppCodeCompiler._log.__CompilationSucceededStruct">
+            <summary> This API supports the logging infrastructure and is not intended to be used directly from your code. It is subject to change in the future. </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider">
+            <summary>
+            Потокобезопасный провайдер метаданных сборок (<see cref="T:Microsoft.CodeAnalysis.MetadataReference"/>), 
+            обеспечивающий компилятор Roslyn ссылками на базовые библиотеки платформы и динамические сборки моделей.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider.#ctor">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider.GetAllReferences">
+            <summary>
+            Возвращает полный актуальный набор ссылок на метаданные сборок, 
+            объединяющий базовые сборки приложения и текущие динамические сборки моделей.
+            </summary>
+            <returns>Неизменяемый массив ссылок <see cref="T:Microsoft.CodeAnalysis.MetadataReference"/> для компиляции.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider.GetBaseReferences">
+            <summary>
+            Возвращает только базовые ссылки на метаданные стандартных и подключенных при старте сборок.
+            </summary>
+            <returns>Неизменяемый массив базовых ссылок <see cref="T:Microsoft.CodeAnalysis.MetadataReference"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider.SetDynamicReferences(System.Collections.Generic.IEnumerable{Microsoft.CodeAnalysis.MetadataReference})">
+            <summary>
+            Атомарно обновляет набор метаданных для динамически загружаемых сборок моделей.
+            </summary>
+            <param name="references">Новая коллекция ссылок <see cref="T:Microsoft.CodeAnalysis.MetadataReference"/> динамических сборок.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider.ClearDynamicReferences">
+            <summary>
+            Очищает ссылки на динамически загруженные сборки моделей.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsCompilationError">
+            <summary>
+            Представляет структурированную информацию об отдельной ошибке компиляции Razor-представления или C#-кода.
+            </summary>
+            <param name="FilePath">Виртуальный или физический путь к исходному файлу, в котором обнаружена ошибка.</param>
+            <param name="Line">Номер строки с ошибкой (индексация с 1).</param>
+            <param name="Column">Номер столбца (символа) с ошибкой (индексация с 1).</param>
+            <param name="ErrorCode">Системный идентификатор ошибки компилятора (например, <c>"CS1002"</c> или <c>"RZ1001"</c>).</param>
+            <param name="Message">Текстовое описание причины ошибки.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsCompilationError.#ctor(System.String,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Представляет структурированную информацию об отдельной ошибке компиляции Razor-представления или C#-кода.
+            </summary>
+            <param name="FilePath">Виртуальный или физический путь к исходному файлу, в котором обнаружена ошибка.</param>
+            <param name="Line">Номер строки с ошибкой (индексация с 1).</param>
+            <param name="Column">Номер столбца (символа) с ошибкой (индексация с 1).</param>
+            <param name="ErrorCode">Системный идентификатор ошибки компилятора (например, <c>"CS1002"</c> или <c>"RZ1001"</c>).</param>
+            <param name="Message">Текстовое описание причины ошибки.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsCompilationError.FilePath">
+            <summary>Виртуальный или физический путь к исходному файлу, в котором обнаружена ошибка.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsCompilationError.Line">
+            <summary>Номер строки с ошибкой (индексация с 1).</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsCompilationError.Column">
+            <summary>Номер столбца (символа) с ошибкой (индексация с 1).</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsCompilationError.ErrorCode">
+            <summary>Системный идентификатор ошибки компилятора (например, <c>"CS1002"</c> или <c>"RZ1001"</c>).</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsCompilationError.Message">
+            <summary>Текстовое описание причины ошибки.</summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsCompilationError.ToString">
+            <summary>
+            Возвращает форматированную строку ошибки с указанием файла, номера строки, столбца и кода диагностики.
+            </summary>
+            <returns>Строковое представление ошибки вида <c>"File.cshtml (12,5): CS1002: ; expected"</c>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsRazorCompilationException">
+            <summary>
+            Исключение, возникающее при обнаружении синтаксических или семантических ошибок 
+            в процессе динамической компиляции Razor-представления.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorCompilationException.#ctor(System.String,System.Collections.Generic.IReadOnlyList{Ans.Net10.Web.Compilation.AnsCompilationError},System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Compilation.AnsRazorCompilationException"/>.
+            </summary>
+            <param name="viewPath">Виртуальный путь к компилируемому Razor-представлению.</param>
+            <param name="errors">Коллекция обнаруженных ошибок компиляции.</param>
+            <param name="generatedCode">Опциональный сгенерированный C#-код представления для диагностики.</param>
+            <param name="sourceCode">Опциональный исходный текст Razor-представления (<c>.cshtml</c>) для отображения контекста строки.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsRazorCompilationException.ViewPath">
+            <summary>
+            Возвращает виртуальный путь к представлению, в котором произошла ошибка компиляции.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsRazorCompilationException.Errors">
+            <summary>
+            Возвращает коллекцию всех ошибок, зафиксированных при компиляции.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsRazorCompilationException.GeneratedCode">
+            <summary>
+            Возвращает исходный C#-код, сгенерированный движком Razor перед передачей в Roslyn, либо <see langword="null"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsRazorCompilationException.SourceCode">
+            <summary>
+            Возвращает исходный текст Razor-представления (<c>.cshtml</c>), либо <see langword="null"/>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Compilation.AnsRazorCompilationException.CompilationFailures">
+            <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsRazorViewCompiler">
+            <summary>
+            Высокопроизводительный рантайм-компилятор Razor-представлений (<c>.cshtml</c>) 
+            на базе <see cref="T:Microsoft.AspNetCore.Razor.Language.RazorProjectEngine"/> и Roslyn (<see cref="T:Microsoft.CodeAnalysis.CSharp.CSharpCompilation"/>),
+            полностью заменяющий устаревший механизм <c>Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation</c>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompiler.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider,Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Compilation.AnsRazorViewCompiler})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Compilation.AnsRazorViewCompiler"/>.
+            </summary>
+            <param name="env">Среда выполнения веб-приложения для определения физического корня контента.</param>
+            <param name="referenceProvider">Провайдер ссылок на метаданные сборок.</param>
+            <param name="partManager">Менеджер прикладных частей приложения для обнаружения встроенных скомпилированных представлений.</param>
+            <param name="services">Провайдер сервисов приложения для ленивого разрешения <see cref="T:Ans.Net10.Web.Compilation.AnsAppCodeCompiler"/>.</param>
+            <param name="logger">Экземпляр логгера компилятора.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompiler.CompileAsync(System.String)">
+            <summary>
+            Асинхронно компилирует или извлекает из кэша дескриптор Razor-представления по его виртуальному пути.
+            </summary>
+            <param name="relativePath">Относительный виртуальный путь к <c>.cshtml</c>-файлу (например, <c>"/Views/Home/Index.cshtml"</c>).</param>
+            <returns>Задача, результатом которой является готовый дескриптор <see cref="T:Microsoft.AspNetCore.Mvc.Razor.Compilation.CompiledViewDescriptor"/>.</returns>
+            <exception cref="T:Ans.Net10.Web.Compilation.AnsRazorCompilationException">Вызывается при обнаружении ошибок синтаксиса Razor или C# в представлении.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompiler.ResetCache">
+            <summary>
+            Принудительно очищает кэш динамически скомпилированных представлений, 
+            восстанавливает предкомпилированные RCL-представления, пересоздает движок Razor 
+            с актуальными метаданными сборок и выгружает предыдущий контекст сборок представлений.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompiler.Dispose">
+            <summary>
+            Освобождает ресурсы компилятора и выгружает динамический контекст сборок представлений.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Compilation.AnsRazorViewCompilerProvider">
+            <summary>
+            Провайдер компилятора представлений MVC, предоставляющий экземпляр <see cref="T:Ans.Net10.Web.Compilation.AnsRazorViewCompiler"/> 
+            в конвейер рендеринга ASP.NET Core.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompilerProvider.#ctor(Ans.Net10.Web.Compilation.AnsRazorViewCompiler)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Compilation.AnsRazorViewCompilerProvider"/>.
+            </summary>
+            <param name="compiler">Экземпляр рантайм-компилятора представлений.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompilerProvider.GetCompiler">
+            <summary>
+            Возвращает активный экземпляр компилятора Razor-представлений.
+            </summary>
+            <returns>Экземпляр <see cref="T:Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompiler"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Controllers._NodesController_Base">
             <summary>
@@ -2265,11 +2571,6 @@
             Получает или задает системный токен безопасности приложения.
             </summary>
         </member>
-        <member name="P:Ans.Net10.Web.LibWebOptions.UseRuntimeCompilation">
-            <summary>
-            Получает или задает флаг включения Runtime-компиляции для представлений Razor.
-            </summary>
-        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.UseDeveloperMode">
             <summary>
             Получает или задает флаг режима разработки.
@@ -2317,6 +2618,12 @@
             Получает или задает параметры конфигурации для мета-тегов секции HEAD.
             </summary>
             <returns>Объект конфигурации для мета-тегов секции HEAD <see cref="T:Ans.Net10.Web.MetaOptions"/>.</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.DynamicCompilation">
+            <summary>
+            Получает или задает параметры конфигурации собственного рантайм-компилятора Razor-представлений 
+            и загрузчика динамических сборок моделей вместо стандартного <c>RazorRuntimeCompilation</c>.
+            </summary>
         </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Cors">
             <summary>
@@ -2413,6 +2720,21 @@
             </summary>
             <returns>Строковое представление минимального уровня логирования (по умолчанию — "Warning").</returns>
         </member>
+        <member name="P:Ans.Net10.Web.SerilogOptions.MemoryBufferCapacity">
+            <summary>
+            Получает или задает максимальное количество последних записей лога, 
+            удерживаемых в кольцевом буфере памяти для просмотра в веб-консоли.
+            Если значение меньше или равно <c>0</c>, буферизация в памяти отключается.
+            </summary>
+            <returns>Максимальная емкость буфера (по умолчанию — <c>1000</c>).</returns>
+        </member>
+        <member name="P:Ans.Net10.Web.SerilogOptions.ExcludePaths">
+            <summary>
+            Получает или задает список префиксов путей HTTP-запросов, 
+            информационные логи которых исключаются из кольцевого буфера памяти 
+            (например, эндпоинт живого обновления веб-консоли).
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.DataProtectionOptions">
             <summary>
             Настройки встроенной интеграции службы ASP.NET Core Data Protection.
@@ -2483,6 +2805,18 @@
             <summary>
             Получает или задает путь к специализированному изображению по умолчанию для превью ВКонтакте (<c>vk:image</c>).
             Поддерживает семантические префиксы ресурсов (например, <c>"site:images/vk-default.jpg"</c>).
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.DynamicCompilationOptions">
+            <summary>
+            Параметры конфигурации собственного рантайм-компилятора Razor-представлений 
+            и компилятора исходного кода <c>App_Code</c> вместо стандартного <c>RazorRuntimeCompilation</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.DynamicCompilationOptions.AppCodePath">
+            <summary>
+            Получает или задает относительный путь к каталогу исходных <c>.cs</c>-файлов 
+            общих моделей и бизнес-логики (по умолчанию <c>"App_Code"</c>).
             </summary>
         </member>
         <member name="T:Ans.Net10.Web.CorsOptions">
@@ -2654,6 +2988,14 @@
             <param name="sitemapBuilder">Опциональный делегат для программного дополнения карты сайта при инициализации.</param>
             <returns>Задача, представляющая асинхронную операцию настройки конвейера.</returns>
             <exception cref="T:System.ArgumentNullException">Вызывается, если параметр <paramref name="app"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.LibWebStartup.AddSitemapContributor``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Регистрирует модульный поставщик программных узлов карты сайта в контейнере зависимостей.
+            </summary>
+            <typeparam name="TContributor">Тип поставщика, реализующего <see cref="T:Ans.Net10.Web.ISitemapContributor"/>.</typeparam>
+            <param name="services">Коллекция дескрипторов сервисов.</param>
+            <returns>Коллекция <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> для цепочки вызовов.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Middlewares.AnsLocalizationMiddleware">
             <summary>
@@ -2919,6 +3261,112 @@
             <exception cref="T:System.ArgumentNullException">
             Вызывается, если переданный параметр <paramref name="httpContext"/> или <paramref name="exception"/> равен <see langword="null"/>.
             </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.AnsLogEntry">
+            <summary>
+            Представляет отдельную запись журнала событий в кольцевом буфере памяти.
+            </summary>
+            <param name="Id">Уникальный последовательный порядковый номер записи с момента старта приложения.</param>
+            <param name="Timestamp">Метка времени события с учетом часового пояса.</param>
+            <param name="Level">Уровень важности события Serilog.</param>
+            <param name="Message">Отформатированный текст сообщения.</param>
+            <param name="Exception">Текстовое представление исключения и стека вызовов, либо <see langword="null"/>.</param>
+            <param name="SourceContext">Имя категории/класса-источника события, либо <see langword="null"/>.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsLogEntry.#ctor(System.Int64,System.DateTimeOffset,Serilog.Events.LogEventLevel,System.String,System.String,System.String)">
+            <summary>
+            Представляет отдельную запись журнала событий в кольцевом буфере памяти.
+            </summary>
+            <param name="Id">Уникальный последовательный порядковый номер записи с момента старта приложения.</param>
+            <param name="Timestamp">Метка времени события с учетом часового пояса.</param>
+            <param name="Level">Уровень важности события Serilog.</param>
+            <param name="Message">Отформатированный текст сообщения.</param>
+            <param name="Exception">Текстовое представление исключения и стека вызовов, либо <see langword="null"/>.</param>
+            <param name="SourceContext">Имя категории/класса-источника события, либо <see langword="null"/>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsLogEntry.Id">
+            <summary>Уникальный последовательный порядковый номер записи с момента старта приложения.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsLogEntry.Timestamp">
+            <summary>Метка времени события с учетом часового пояса.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsLogEntry.Level">
+            <summary>Уровень важности события Serilog.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsLogEntry.Message">
+            <summary>Отформатированный текст сообщения.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsLogEntry.Exception">
+            <summary>Текстовое представление исключения и стека вызовов, либо <see langword="null"/>.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsLogEntry.SourceContext">
+            <summary>Имя категории/класса-источника события, либо <see langword="null"/>.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsLogEntry.LevelShortName">
+            <summary>
+            Возвращает трехбуквенный код уровня логирования (например, <c>"INF"</c>, <c>"WRN"</c>, <c>"ERR"</c>).
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.AnsMemoryLogStore">
+            <summary>
+            Потокобезопасный кольцевой буфер в памяти для хранения последних записей системного журнала
+            и их последующего отображения в веб-интерфейсе консоли.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsMemoryLogStore.#ctor(System.Int32)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Services.AnsMemoryLogStore"/> с указанной максимальной емкостью.
+            </summary>
+            <param name="capacity">Максимальное количество хранимых записей в буфере (минимум 10).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsMemoryLogStore.Count">
+            <summary>
+            Возвращает текущее количество записей, находящихся в буфере.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsMemoryLogStore.Capacity">
+            <summary>
+            Возвращает максимальную емкость кольцевого буфера.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsMemoryLogStore.GetEntries(System.Int64,System.Nullable{Serilog.Events.LogEventLevel})">
+            <summary>
+            Возвращает снимок записей из буфера с поддержкой инкрементальной выборки и фильтрации по уровню.
+            </summary>
+            <param name="afterId">Возвращать только записи с идентификатором строго больше указанного (для фонового обновления).</param>
+            <param name="minLevel">Опциональный минимальный уровень важности для фильтрации.</param>
+            <returns>Массив записей журнала <see cref="T:Ans.Net10.Web.Services.AnsLogEntry"/> в хронологическом порядке.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsMemoryLogStore.Add(System.DateTimeOffset,Serilog.Events.LogEventLevel,System.String,System.String,System.String)">
+            <summary>
+            Добавляет новую запись в кольцевой буфер, вытесняя самую старую при достижении лимита емкости.
+            </summary>
+            <param name="timestamp">Время возникновения события.</param>
+            <param name="level">Уровень важности события.</param>
+            <param name="message">Текст сообщения.</param>
+            <param name="exception">Текст исключения (если есть).</param>
+            <param name="sourceContext">Категория источника (если есть).</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsMemoryLogStore.Clear">
+            <summary>
+            Полностью очищает все накопленные записи в буфере памяти.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.AnsMemoryLogSink">
+            <summary>
+            Приемник событий Serilog (<see cref="T:Serilog.Core.ILogEventSink"/>), транслирующий сообщения в <see cref="T:Ans.Net10.Web.Services.AnsMemoryLogStore"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsMemoryLogSink.#ctor(Ans.Net10.Web.Services.AnsMemoryLogStore,System.String[],System.IFormatProvider)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Services.AnsMemoryLogSink"/>.
+            </summary>
+            <param name="store">Экземпляр кольцевого буфера памяти.</param>
+            <param name="excludePaths">Опциональный список префиксов путей запросов, исключаемых из буфера (для уровней ниже <see cref="F:Serilog.Events.LogEventLevel.Warning"/>).</param>
+            <param name="formatProvider">Опциональный провайдер форматирования сообщений.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsMemoryLogSink.Emit(Serilog.Events.LogEvent)">
+            <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Web.Services.IPdfService">
             <summary>
@@ -4583,6 +5031,112 @@
             Возвращает начальное текстовое значение многострочного поля ввода.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.AnsBatchViewsCompileResult">
+            <summary>
+            Представляет сводный результат пакетной проверки и прогрева компиляции всех Razor-представлений сайта.
+            </summary>
+            <param name="TotalViewsCount">Общее количество проверенных <c>.cshtml</c>-файлов.</param>
+            <param name="SucceededCount">Количество успешно скомпилированных представлений.</param>
+            <param name="FailedCount">Количество представлений, в которых обнаружены ошибки компиляции.</param>
+            <param name="ElapsedMilliseconds">Общее время выполнения пакетной компиляции в миллисекундах.</param>
+            <param name="Errors">Сводный список всех ошибок компиляции по всем проблемным файлам.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsBatchViewsCompileResult.#ctor(System.Int32,System.Int32,System.Int32,System.Int64,System.Collections.Generic.IReadOnlyList{Ans.Net10.Web.Compilation.AnsCompilationError})">
+            <summary>
+            Представляет сводный результат пакетной проверки и прогрева компиляции всех Razor-представлений сайта.
+            </summary>
+            <param name="TotalViewsCount">Общее количество проверенных <c>.cshtml</c>-файлов.</param>
+            <param name="SucceededCount">Количество успешно скомпилированных представлений.</param>
+            <param name="FailedCount">Количество представлений, в которых обнаружены ошибки компиляции.</param>
+            <param name="ElapsedMilliseconds">Общее время выполнения пакетной компиляции в миллисекундах.</param>
+            <param name="Errors">Сводный список всех ошибок компиляции по всем проблемным файлам.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsBatchViewsCompileResult.TotalViewsCount">
+            <summary>Общее количество проверенных <c>.cshtml</c>-файлов.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsBatchViewsCompileResult.SucceededCount">
+            <summary>Количество успешно скомпилированных представлений.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsBatchViewsCompileResult.FailedCount">
+            <summary>Количество представлений, в которых обнаружены ошибки компиляции.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsBatchViewsCompileResult.ElapsedMilliseconds">
+            <summary>Общее время выполнения пакетной компиляции в миллисекундах.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsBatchViewsCompileResult.Errors">
+            <summary>Сводный список всех ошибок компиляции по всем проблемным файлам.</summary>
+        </member>
+        <member name="T:Ans.Net10.Web.AnsDynamicModelsPageModel">
+            <summary>
+            Базовая модель системной страницы администратора для управления пересборкой <c>App_Code</c> 
+            и диагностики рантайм-компиляции Razor-представлений.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+            <param name="appCodeCompiler">Опциональный компилятор исходников <c>App_Code</c> (если включен режим <c>DynamicCompilation</c>).</param>
+            <param name="viewCompiler">Опциональный рантайм-компилятор Razor-представлений (если включен режим <c>DynamicCompilation</c>).</param>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsDynamicModelsPageModel.#ctor(Ans.Net10.Web.CurrentContext,Ans.Net10.Web.Compilation.AnsAppCodeCompiler,Ans.Net10.Web.Compilation.AnsRazorViewCompiler)">
+            <summary>
+            Базовая модель системной страницы администратора для управления пересборкой <c>App_Code</c> 
+            и диагностики рантайм-компиляции Razor-представлений.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки запроса.</param>
+            <param name="appCodeCompiler">Опциональный компилятор исходников <c>App_Code</c> (если включен режим <c>DynamicCompilation</c>).</param>
+            <param name="viewCompiler">Опциональный рантайм-компилятор Razor-представлений (если включен режим <c>DynamicCompilation</c>).</param>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsDynamicModelsPageModel.IsDynamicCompilationEnabled">
+            <summary>
+            Возвращает признак того, что подсистема динамической компиляции <c>DynamicCompilation</c> активна и настроена.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsDynamicModelsPageModel.TestViewPath">
+            <summary>
+            Получает или задает виртуальный путь к <c>.cshtml</c>-файлу для точечной тестовой проверки компиляции.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsDynamicModelsPageModel.CompileResult">
+            <summary>
+            Возвращает результат последней выполненной компиляции каталога <c>App_Code</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsDynamicModelsPageModel.TestViewSuccess">
+            <summary>
+            Возвращает признак успешности точечной тестовой компиляции представления.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsDynamicModelsPageModel.TestViewErrors">
+            <summary>
+            Возвращает список ошибок компиляции, зафиксированных при точечной проверке представления.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.AnsDynamicModelsPageModel.BatchResult">
+            <summary>
+            Возвращает сводный отчет пакетной проверки компиляции всех представлений сайта.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsDynamicModelsPageModel.OnPostReloadAsync(System.Threading.CancellationToken)">
+            <summary>
+            Выполняет принудительную асинхронную пересборку всех <c>.cs</c>-файлов каталога <c>App_Code</c> 
+            и сбрасывает кэш скомпилированных представлений.
+            </summary>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Результат выполнения действия страницы <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsDynamicModelsPageModel.OnPostCompileViewAsync">
+            <summary>
+            Выполняет принудительную тестовую компиляцию указанного Razor-представления 
+            для проверки совместимости с текущими типами <c>App_Code</c>.
+            </summary>
+            <returns>Результат выполнения действия страницы <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsDynamicModelsPageModel.OnPostCompileAllViewsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Выполняет пакетную компиляцию и прогрев кэша всех Razor-представлений (<c>.cshtml</c>), 
+            обнаруженных в каталогах <c>Views</c> и <c>Pages</c> веб-приложения.
+            </summary>
+            <param name="cancellationToken">Токен отмены асинхронной операции.</param>
+            <returns>Результат выполнения действия страницы <see cref="T:Microsoft.AspNetCore.Mvc.IActionResult"/>.</returns>
+        </member>
         <member name="T:Ans.Net10.Web.AnsPageErrorModel">
             <summary>
             Базовая модель страницы для отображения и анализа системных или HTTP ошибок приложения.
@@ -4774,6 +5328,48 @@
         </member>
         <member name="P:Ans.Net10.Web.AuthorizeDataModel.AuthenticationSchemes">
             <inheritdoc />
+        </member>
+        <member name="T:Ans.Net10.Web.NavRenderOptions">
+            <summary>
+            Параметры рендеринга частичных представлений навигации на базе <see cref="T:Ans.Net10.Web.NavItem"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NavRenderOptions.#ctor(System.String,System.Nullable{System.Int32},System.Boolean,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NavRenderOptions"/>.
+            </summary>
+            <param name="tags">Строка тегов навигатора через запятую (например, <c>"header"</c> или <c>"science,main"</c>).</param>
+            <param name="maxDepth">Максимальная глубина отрисовки дерева (<see langword="null"/> — без ограничений).</param>
+            <param name="useShortTitle">Если <see langword="true"/>, используется сокращенный заголовок <see cref="P:Ans.Net10.Web.NavItem.ShortTitle"/>.</param>
+            <param name="cssClass">Дополнительные CSS-классы для корневого контейнера меню.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.NavRenderOptions.Tags">
+            <summary>
+            Получает массив активных тегов навигатора.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavRenderOptions.MaxDepth">
+            <summary>
+            Получает максимальную глубину вложенности дерева.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavRenderOptions.UseShortTitle">
+            <summary>
+            Получает признак использования сокращенного заголовка элемента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavRenderOptions.CssClass">
+            <summary>
+            Получает дополнительные CSS-классы корневого элемента.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NavRenderOptions.Resolve(System.Object)">
+            <summary>
+            Безопасно извлекает параметры рендеринга из произвольной модели представления.
+            Поддерживает экземпляры <see cref="T:Ans.Net10.Web.NavRenderOptions"/> и строковые списки тегов.
+            </summary>
+            <param name="model">Модель, переданная в частичное представление.</param>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.NavRenderOptions"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.QueryStringHelper">
             <summary>
@@ -5097,7 +5693,7 @@
             </exception>
             <exception cref="T:System.Exception">
             Вызывается при критическом сбое системы, если текущий контекст <see cref="P:Ans.Net10.Web.CurrentContext.HttpContext"/> недоступен через аксессор.
-            </exception>
+            </exception>		
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Logger">
             <summary>
@@ -5265,11 +5861,10 @@
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.Breadcrumbs">
             <summary>
-            Возвращает последовательность элементов навигационной цепочки («хлебных крошек») 
-            от главной страницы сайта до текущего активного элемента контента.
+            Возвращает последовательность элементов навигационной цепочки («хлебных крошек»)
+            от корневого элемента до текущей активной страницы с учетом правил видимости по умолчанию.
             </summary>
-            <value>Неизменяемая коллекция объектов <see cref="T:Ans.Net10.Web.LinkBuilder"/>, представляющих элементы навигации.</value>
-            <returns>Только для чтения коллекция хлебных крошек в виде <see cref="T:System.Collections.Generic.IReadOnlyCollection`1"/>.</returns>
+            <returns>Только для чтения список элементов навигации <see cref="T:System.Collections.Generic.IReadOnlyList`1"/>.</returns>
         </member>
         <member name="P:Ans.Net10.Web.CurrentContext.DefaultLayout">
             <summary>
@@ -5309,6 +5904,49 @@
             Используется в прикладных сценариях авторизации контента для немедленной блокировки несанкционированного доступа.
             </remarks>
             <exception cref="T:Ans.Net10.Web.AnsHttpException">Вызывается всегда при выполнении метода со статусом <see cref="F:System.Net.HttpStatusCode.Forbidden"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetBreadcrumbs(System.String[])">
+            <summary>
+            Формирует и кэширует в рамках текущего запроса цепочку «хлебных крошек»
+            для заданного набора активных тегов навигатора.
+            </summary>
+            <param name="tags">Опциональный набор тегов контекста (например, <c>"science"</c>, <c>"breadcrumbs"</c>).</param>
+            <returns>Упорядоченный сверху вниз список элементов <see cref="T:System.Collections.Generic.IReadOnlyList`1"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetNodesNav(System.Nullable{System.Int32},System.String[])">
+            <summary>
+            Формирует и кэширует в рамках текущего запроса иерархическое дерево узлов сайта
+            с фильтрацией по тегам и автоматическим схлопыванием сквозных элементов и пустых групп.
+            </summary>
+            <param name="maxDepth">Максимальная глубина вложенности (1 — только верхний уровень, <see langword="null"/> — без ограничений).</param>
+            <param name="tags">Опциональный набор активных тегов навигатора.</param>
+            <returns>Список корневых элементов дерева узлов <see cref="T:System.Collections.Generic.IReadOnlyList`1"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetSubnodesNav(System.Nullable{System.Int32},System.String[])">
+            <summary>
+            Формирует и кэширует в рамках текущего запроса дерево дочерних узлов текущего информационного узла
+            с фильтрацией по тегам и автоматическим схлопыванием сквозных элементов и пустых групп.
+            </summary>
+            <param name="maxDepth">Максимальная глубина вложенности (1 — только прямые потомки, <see langword="null"/> — без ограничений).</param>
+            <param name="tags">Опциональный набор активных тегов навигатора.</param>
+            <returns>Список дочерних узлов <see cref="T:System.Collections.Generic.IReadOnlyList`1"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetPagesNav(System.Nullable{System.Int32},System.String[])">
+            <summary>
+            Формирует и кэширует в рамках текущего запроса дерево страниц текущего информационного узла
+            с фильтрацией по тегам и автоматическим схлопыванием сквозных элементов.
+            </summary>
+            <param name="maxDepth">Максимальная глубина вложенности (<see langword="null"/> — без ограничений).</param>
+            <param name="tags">Опциональный набор активных тегов навигатора.</param>
+            <returns>Список корневых страниц узла <see cref="T:System.Collections.Generic.IReadOnlyList`1"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetSubpagesNav(System.Nullable{System.Int32},System.String[])">
+            <summary>
+            Формирует и кэширует в рамках текущего запроса дерево дочерних подстраниц текущей активной страницы.
+            </summary>
+            <param name="maxDepth">Максимальная глубина вложенности (<see langword="null"/> — без ограничений).</param>
+            <param name="tags">Опциональный набор активных тегов навигатора.</param>
+            <returns>Список дочерних подстраниц <see cref="T:System.Collections.Generic.IReadOnlyList`1"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Web.CurrentContext.GetAbsoluteUrl(System.String)">
             <summary>
@@ -5730,6 +6368,146 @@
             <summary>
             Получает уникальный строковый идентификатор выполненного действия в формате ЧПУ нижнего регистра.
             </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.NavItem">
+            <summary>
+            Представляет спроецированный на текущий HTTP-запрос элемент навигации
+            (для построения меню, деревьев разделов и цепочек «хлебных крошек»).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NavItem.#ctor(Ans.Net10.Web._MapItem_Proto,Microsoft.AspNetCore.Http.HttpContext,System.Boolean,System.Boolean,System.Collections.Generic.IReadOnlyList{Ans.Net10.Web.NavItem},System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.NavItem"/> на основе узла или страницы карты сайта
+            с возможностью переопределения заголовков из профиля запроса.
+            </summary>
+            <param name="source">Исходный элемент карты сайта (<see cref="T:Ans.Net10.Web.NodemapItem"/> или <see cref="T:Ans.Net10.Web.PagemapItem"/>).</param>
+            <param name="httpContext">Контекст текущего HTTP-запроса для вычисления URL.</param>
+            <param name="isActive">Признак точного совпадения элемента с текущим запросом.</param>
+            <param name="isActiveBranch">Признак нахождения элемента в активной ветке предков текущего запроса.</param>
+            <param name="children">Коллекция отфильтрованных дочерних элементов навигации.</param>
+            <param name="overrideTitle">Переопределенный полный заголовок (если изменен в профиле).</param>
+            <param name="overrideShortTitle">Переопределенный сокращенный заголовок (если изменен в профиле).</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если <paramref name="source"/> или <paramref name="httpContext"/> равен <see langword="null"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.NavItem.#ctor(System.String,System.String,System.String,System.Boolean,System.Boolean,System.String,System.String)">
+            <summary>
+            Инициализирует новый экземпляр синтетического (ручного) элемента навигации,
+            не привязанного к статической карте сайта.
+            </summary>
+            <param name="url">URL-адрес ссылки.</param>
+            <param name="title">Отображаемый заголовок элемента.</param>
+            <param name="shortTitle">Опциональный сокращенный заголовок. Если не задан, используется <paramref name="title"/>.</param>
+            <param name="isDisabled">Признак отключения кликабельности ссылки.</param>
+            <param name="isActive">Признак активного состояния текущего элемента.</param>
+            <param name="display">Декларативное правило видимости в формате <c>"теги_показа|теги_скрытия"</c>.</param>
+            <param name="passthroughs">Декларативное правило сквозного прохода в формате <c>"теги_включения|теги_исключения"</c>.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.Source">
+            <summary>
+            Получает исходный узел или страницу карты сайта, если элемент построен на основе карты.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.Title">
+            <summary>
+            Получает полный заголовок элемента навигации.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.ShortTitle">
+            <summary>
+            Получает сокращенный заголовок элемента навигации.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.TitleHtml">
+            <summary>
+            Получает безопасное HTML-представление полного заголовка с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.ShortTitleHtml">
+            <summary>
+            Получает безопасное HTML-представление сокращенного заголовка с типографикой.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.Url">
+            <summary>
+            Получает вычисленный виртуальный или внешний URL-адрес элемента.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.IsGroup">
+            <summary>
+            Получает признак того, является ли элемент декоративным заголовком группы без ссылки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.IsDisabled">
+            <summary>
+            Получает признак того, что ссылка на элемент отключена (например, из-за <c>HasNoIndex</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.IsExternal">
+            <summary>
+            Получает признак того, что элемент ведет на внешний ресурс.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.IsActive">
+            <summary>
+            Получает признак точного совпадения элемента с текущей открытой страницей или узлом.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.IsActiveBranch">
+            <summary>
+            Получает признак того, что элемент является предком текущей открытой страницы или узла.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.Children">
+            <summary>
+            Получает коллекцию отфильтрованных дочерних элементов навигации.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.NavItem.HasChildren">
+            <summary>
+            Получает признак наличия дочерних элементов навигации.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.NavItem.IsDisplayed(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Проверяет, разрешено ли отображение элемента для указанного набора активных тегов.
+            </summary>
+            <param name="activeTags">Коллекция активных тегов навигатора.</param>
+            <returns><see langword="true"/>, если элемент должен отображаться; иначе — <see langword="false"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.NavItem.IsPassthrough(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Проверяет, является ли элемент прозрачным (сквозным) для указанного набора активных тегов.
+            </summary>
+            <param name="activeTags">Коллекция активных тегов навигатора.</param>
+            <returns><see langword="true"/>, если элемент должен быть пропущен с подъемом потомков; иначе — <see langword="false"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.NavItem.ToLinkBuilder(System.Boolean)">
+            <summary>
+            Преобразует элемент навигации в строитель HTML-ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/>
+            с автоматическим переносом состояний активности, блокировки и внешних ссылок.
+            </summary>
+            <param name="useShortTitle">Если <see langword="true"/>, использует <see cref="P:Ans.Net10.Web.NavItem.ShortTitle"/>; иначе — <see cref="P:Ans.Net10.Web.NavItem.Title"/>.</param>
+            <returns>Настроенный экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.ISitemapContributor">
+            <summary>
+            Определяет контракт поставщика программных элементов карты сайта, 
+            позволяющий библиотекам и модулям регистрировать собственные информационные узлы и страницы при сборке <see cref="T:Ans.Net10.Web.SitemapBuilder"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.ISitemapContributor.ConfigureSitemap(Ans.Net10.Web.SitemapBuilder)">
+            <summary>
+            Выполняет программное добавление или модификацию узлов и страниц в переданном строителе карты сайта.
+            </summary>
+            <param name="sitemap">Активный экземпляр строителя карты сайта <see cref="T:Ans.Net10.Web.SitemapBuilder"/>.</param>
+        </member>
+        <member name="T:Ans.Net10.Web.AnsSitemapContributor">
+            <summary>
+            Встроенный поставщик системных узлов и сервисных страниц библиотеки <c>Ans.Net10.Web</c> (<c>/Areas/Ans/Pages</c>).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.AnsSitemapContributor.ConfigureSitemap(Ans.Net10.Web.SitemapBuilder)">
+            <inheritdoc />
         </member>
         <member name="T:Ans.Net10.Web.NodemapDef">
             <summary>
@@ -6181,14 +6959,15 @@
             регистронезависимый поиск узлов и страниц карты сайта в оперативной памяти.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.SitemapBuilder.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Ans.Net10.Web.LibWebOptions,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.SitemapBuilder})">
+        <member name="M:Ans.Net10.Web.SitemapBuilder.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Ans.Net10.Web.LibWebOptions,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.SitemapBuilder},System.Collections.Generic.IEnumerable{Ans.Net10.Web.ISitemapContributor})">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.SitemapBuilder"/> с вычислением базового пути к файлам карт.
             </summary>
             <param name="env">Окружение веб-приложения для определения корневого каталога.</param>
             <param name="options">Конфигурационные параметры навигации и путей к XML-файлам.</param>
             <param name="logger">Экземпляр логгера для записи событий сборки структуры.</param>
-            <exception cref="T:System.ArgumentNullException">Вызывается, если один из переданных параметров равен <see langword="null"/>.</exception>
+            <param name="contributors">Опциональная коллекция модульных поставщиков программных узлов карты сайта.</param>
+            <exception cref="T:System.ArgumentNullException">Вызывается, если один из обязательных параметров равен <see langword="null"/>.</exception>
         </member>
         <member name="P:Ans.Net10.Web.SitemapBuilder.CustomBuilder">
             <summary>
@@ -6626,11 +7405,12 @@
             <inheritdoc />
             <returns>URL-адрес каталога ресурсов, выделенного для данного информационного узла.</returns>
         </member>
-        <member name="M:Ans.Net10.Web.NodeProfile.GetLink">
+        <member name="M:Ans.Net10.Web.NodeProfile.GetNavItem">
             <summary>
-            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля узла.
+            Возвращает элемент навигации <see cref="T:Ans.Net10.Web.NavItem"/> для текущего профиля узла
+            с учетом возможных переопределений заголовков в коде страницы.
             </summary>
-            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.NavItem"/> или <see langword="null"/>, если элемент не может быть построен.</returns>
         </member>
         <member name="P:Ans.Net10.Web.NodeProfile.MapItem">
             <summary>
@@ -6674,11 +7454,12 @@
             <inheritdoc />
             <returns>URL-адрес каталога ресурсов, выделенного для данной контентной страницы.</returns>
         </member>
-        <member name="M:Ans.Net10.Web.PageProfile.GetLink">
+        <member name="M:Ans.Net10.Web.PageProfile.GetNavItem">
             <summary>
-            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля страницы.
+            Возвращает элемент навигации <see cref="T:Ans.Net10.Web.NavItem"/> для текущего профиля страницы
+            с учетом возможных переопределений заголовков в коде страницы.
             </summary>
-            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.NavItem"/> или <see langword="null"/>, если элемент не может быть построен.</returns>
         </member>
         <member name="P:Ans.Net10.Web.PageProfile.MapItem">
             <summary>
@@ -6736,11 +7517,11 @@
             <inheritdoc />
             <returns>URL-адрес каталога статических ресурсов контента сайта.</returns>
         </member>
-        <member name="M:Ans.Net10.Web.SiteProfile.GetLink">
+        <member name="M:Ans.Net10.Web.SiteProfile.GetNavItem">
             <summary>
-            Возвращает объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля сайта.
+            Возвращает элемент навигации <see cref="T:Ans.Net10.Web.NavItem"/> для текущего профиля сайта.
             </summary>
-            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.NavItem"/> или <see langword="null"/>, если элемент не может быть построен.</returns>
         </member>
         <member name="P:Ans.Net10.Web.SiteProfile.CustomHomeUrl">
             <summary>
@@ -6784,11 +7565,11 @@
             </summary>
             <returns>Строка URL-адреса ресурса либо <see langword="null"/>.</returns>
         </member>
-        <member name="M:Ans.Net10.Web._Profile_Proto.GetLink">
+        <member name="M:Ans.Net10.Web._Profile_Proto.GetNavItem">
             <summary>
-            При переопределении в производном классе формирует объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/> для текущего профиля.
+            При переопределении в производном классе формирует элемент навигации <see cref="T:Ans.Net10.Web.NavItem"/> для текущего профиля.
             </summary>
-            <returns>Экземпляр <see cref="T:Ans.Net10.Web.LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
+            <returns>Экземпляр <see cref="T:Ans.Net10.Web.NavItem"/> или <see langword="null"/>, если элемент не может быть построен.</returns>
         </member>
         <member name="P:Ans.Net10.Web._Profile_Proto.Title">
             <summary>
@@ -6825,35 +7606,29 @@
             <value>Значение <see langword="true"/>, если сокращенный заголовок задан и не совпадает с основным; иначе — <see langword="false"/>.</value>
             <returns><see langword="true"/>, если сокращенный заголовок уникален; иначе — <see langword="false"/>.</returns>
         </member>
-        <member name="P:Ans.Net10.Web._Profile_Proto.ParentsLinks">
+        <member name="P:Ans.Net10.Web._Profile_Proto.Parents">
             <summary>
-            Получает список ссылок на вышестоящие родительские элементы текущего профиля.
+            Получает список элементов навигации вышестоящих родительских узлов или страниц текущего профиля.
             </summary>
-            <value>Коллекция объектов <see cref="T:Ans.Net10.Web.LinkBuilder"/>.</value>
-            <returns>Изменяемый список ссылок на родительские элементы.</returns>
+            <returns>Изменяемый список родительских элементов <see cref="T:Ans.Net10.Web.NavItem"/>.</returns>
         </member>
-        <member name="P:Ans.Net10.Web._Profile_Proto.ParentLink">
+        <member name="P:Ans.Net10.Web._Profile_Proto.ParentItem">
             <summary>
-            Получает лениво инициализируемую ссылку на прямого родителя текущего элемента.
+            Получает лениво инициализируемый элемент прямого родителя текущего профиля.
             </summary>
-            <value>Объект <see cref="T:Ans.Net10.Web.LinkBuilder"/> прямого родителя или <see langword="null"/>, если предки отсутствуют.</value>
-            <returns>Ссылка на прямого родителя либо <see langword="null"/>.</returns>
+            <returns>Элемент <see cref="T:Ans.Net10.Web.NavItem"/> прямого родителя либо <see langword="null"/>.</returns>
         </member>
         <member name="P:Ans.Net10.Web._Profile_Proto.HasParents">
             <summary>
             Получает признак наличия зарегистрированных родительских элементов.
             </summary>
-            <value>Значение <see langword="true"/>, если список родителей содержит элементы; иначе — <see langword="false"/>.</value>
             <returns><see langword="true"/>, если у профиля есть родительские элементы; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Web._Profile_Proto.GetDirectParent">
             <summary>
-            Возвращает ссылку на прямого родителя текущего элемента (ближайшего предка в иерархии).
+            Возвращает элемент прямого родителя текущего профиля (ближайшего предка в иерархии).
             </summary>
-            <returns>
-            Объект <see cref="T:Ans.Net10.Web.LinkBuilder"/>, представляющий прямого родителя, 
-            либо <see langword="null"/>, если у текущего элемента нет зарегистрированных предков.
-            </returns>
+            <returns>Объект <see cref="T:Ans.Net10.Web.NavItem"/> прямого родителя либо <see langword="null"/>.</returns>
         </member>
         <member name="M:Ans.Net10.Web._Profile_Proto.GetParentsTitles">
             <summary>
@@ -6863,40 +7638,61 @@
         </member>
         <member name="M:Ans.Net10.Web._Profile_Proto.GetBreadcrumbsPart">
             <summary>
-            Формирует и возвращает ленивую локальную часть коллекции элементов цепочки навигации («хлебных крошек»).
+            Формирует локальную последовательность элементов цепочки навигации («хлебных крошек»)
+            для текущего профиля с учетом правил видимости и сквозного прохода.
             </summary>
-            <returns>Перечисление объектов <see cref="T:Ans.Net10.Web.LinkBuilder"/>, включающее родителей и текущий элемент.</returns>
+            <returns>Последовательность элементов <see cref="T:Ans.Net10.Web.NavItem"/>, включающая родителей и текущий элемент.</returns>
         </member>
-        <member name="M:Ans.Net10.Web._Profile_Proto.AddParent(Ans.Net10.Web.LinkBuilder)">
+        <member name="M:Ans.Net10.Web._Profile_Proto.AddParent(Ans.Net10.Web.NavItem)">
             <summary>
-            Добавляет готовый объект ссылки родительского элемента в конец текущей коллекции.
+            Добавляет готовый элемент навигации родителя в конец текущей коллекции.
             </summary>
-            <param name="link">Объект ссылки <see cref="T:Ans.Net10.Web.LinkBuilder"/>.</param>
+            <param name="item">Элемент навигации <see cref="T:Ans.Net10.Web.NavItem"/>.</param>
         </member>
-        <member name="M:Ans.Net10.Web._Profile_Proto.AddParent(System.String,System.String)">
+        <member name="M:Ans.Net10.Web._Profile_Proto.AddParent(System.String,System.String,System.String,System.String)">
             <summary>
-            Формирует и добавляет ссылку родительского элемента по указанному URL и заголовку.
+            Формирует и добавляет элемент навигации родителя по указанному URL и заголовку.
             </summary>
+            <param name="url">URL-адрес ссылки.</param>
+            <param name="title">Заголовок элемента.</param>
+            <param name="display">Опциональное правило видимости (<c>"показ|скрытие"</c>).</param>
+            <param name="passthroughs">Опциональное правило сквозного прохода (<c>"включение|исключение"</c>).</param>
         </member>
         <member name="M:Ans.Net10.Web._Profile_Proto.AddParentFromAction(System.String,System.String,System.Object,System.String)">
             <summary>
-            Формирует и добавляет ссылку родительского элемента на основе MVC-действия (Action).
+            Формирует и добавляет элемент навигации родителя на основе MVC-действия (Action).
             </summary>
+            <param name="action">Имя действия контроллера.</param>
+            <param name="controller">Имя контроллера.</param>
+            <param name="routes">Объект параметров маршрута.</param>
+            <param name="title">Заголовок элемента.</param>
         </member>
-        <member name="M:Ans.Net10.Web._Profile_Proto.InsertParent(System.Int32,Ans.Net10.Web.LinkBuilder)">
+        <member name="M:Ans.Net10.Web._Profile_Proto.InsertParent(System.Int32,Ans.Net10.Web.NavItem)">
             <summary>
-            Вставляет готовый объект ссылки родительского элемента в указанную позицию списка.
+            Вставляет готовый элемент навигации родителя в указанную позицию списка.
             </summary>
+            <param name="index">Порядковый индекс позиции вставки.</param>
+            <param name="item">Элемент навигации <see cref="T:Ans.Net10.Web.NavItem"/>.</param>
         </member>
-        <member name="M:Ans.Net10.Web._Profile_Proto.InsertParent(System.Int32,System.String,System.String)">
+        <member name="M:Ans.Net10.Web._Profile_Proto.InsertParent(System.Int32,System.String,System.String,System.String,System.String)">
             <summary>
-            Формирует и вставляет ссылку родительского элемента в указанную позицию списка по URL и заголовку.
+            Формирует и вставляет элемент навигации родителя в указанную позицию списка по URL и заголовку.
             </summary>
+            <param name="index">Порядковый индекс позиции вставки.</param>
+            <param name="url">URL-адрес ссылки.</param>
+            <param name="title">Заголовок элемента.</param>
+            <param name="display">Опциональное правило видимости (<c>"показ|скрытие"</c>).</param>
+            <param name="passthroughs">Опциональное правило сквозного прохода (<c>"включение|исключение"</c>).</param>
         </member>
         <member name="M:Ans.Net10.Web._Profile_Proto.InsertParentFromAction(System.Int32,System.String,System.String,System.Object,System.String)">
             <summary>
-            Формирует и вставляет ссылку родительского элемента на основе MVC-действия в указанную позицию.
+            Формирует и вставляет элемент навигации родителя на основе MVC-действия в указанную позицию.
             </summary>
+            <param name="index">Порядковый индекс позиции вставки.</param>
+            <param name="action">Имя действия контроллера.</param>
+            <param name="controller">Имя контроллера.</param>
+            <param name="routes">Объект параметров маршрута.</param>
+            <param name="title">Заголовок элемента.</param>
         </member>
         <member name="M:Ans.Net10.Web._Profile_Proto.RemoveParent(System.Int32)">
             <summary>

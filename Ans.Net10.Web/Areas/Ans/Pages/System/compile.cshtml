@@ -1,0 +1,195 @@
+﻿@*
+	rev 2026-11-24
+	
+	Компонент библиотеки Ans.Net10.Web
+	Код не предназначен для редактирования и компиляции во время выполнения!
+*@
+@page
+@model AnsDynamicModelsPageModel
+@{
+    Layout = Model.Current.SystemLayout;
+    ViewData["Title"] = "Динамическая компиляция моделей и представлений";
+    var token = Model.Current.QueryString.GetString("token");
+    var appCodePath = Model.Options.DynamicCompilation?.AppCodePath ?? "Не настроено";
+}
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+        <div>
+            <h1 class="h3 mb-1">@ViewData["Title"]</h1>
+            <div class="text-muted small">
+                Каталог сборок моделей: <code>@appCodePath</code>
+            </div>
+        </div>
+        @if (Model.IsDynamicCompilationEnabled)
+        {
+            <div class="d-flex flex-wrap gap-2">
+                <form method="post" asp-page-handler="Reload" asp-route-token="@token">
+                    <button type="submit" class="btn btn-primary">
+                        Перезагрузить модели и сбросить кэш
+                    </button>
+                </form>
+                <form method="post" asp-page-handler="CompileAllViews" asp-route-token="@token">
+                    <button type="submit" class="btn btn-outline-primary">
+                        Проверить все представления сайта
+                    </button>
+                </form>
+            </div>
+        }
+    </div>
+
+    @if (!Model.IsDynamicCompilationEnabled)
+    {
+        <div class="alert alert-warning">
+            Подсистема <code>DynamicCompilation</code> не активирована в конфигурации <code>appsettings.json</code>.
+        </div>
+    }
+    else if (Model.CompileResult is { } res)
+    {
+        <div class="card mb-4 @(res.Success ? "border-success" : "border-danger")">
+            <div class="card-header d-flex justify-content-between align-items-center @(res.Success ? "bg-success-subtle text-success-emphasis" : "bg-danger-subtle text-danger-emphasis")">
+                <strong>
+                    @(res.Success ? "Сборка App_Code активна" : "Ошибка компиляции App_Code (сохранена предыдущая версия)")
+                </strong>
+                <span class="small">Собрано за @res.ElapsedMilliseconds мс (UTC: @res.CompiledAtUtc.ToString("yyyy-MM-dd HH:mm:ss"))</span>
+            </div>
+            <div class="card-body">
+                <div class="row g-3 mb-2">
+                    <div class="col-auto">
+                        <span class="badge text-bg-secondary">Файлов .cs: @res.SourceFilesCount</span>
+                    </div>
+                    <div class="col-auto">
+                        <span class="badge text-bg-info">Экспортировано типов: @res.ExportedTypesCount</span>
+                    </div>
+                </div>
+
+                @if (res.Errors.Count > 0)
+                {
+                    <div class="alert alert-danger mt-3 mb-0">
+                        <div class="fw-semibold mb-1">Обнаруженные ошибки:</div>
+                        <ul class="mb-0">
+                            @foreach (var err in res.Errors)
+                            {
+                                <li><code>@err</code></li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+
+    @if (Model.IsDynamicCompilationEnabled && Model.BatchResult is { } batch)
+    {
+        <div class="card mb-4 @(batch.FailedCount == 0 ? "border-success" : "border-danger")">
+            <div class="card-header d-flex justify-content-between align-items-center @(batch.FailedCount == 0 ? "bg-success-subtle text-success-emphasis" : "bg-danger-subtle text-danger-emphasis")">
+                <strong>
+                    @(batch.FailedCount == 0
+                        ? "Пакетная проверка завершена успешно"
+                        : $"Обнаружены ошибки в представлениях ({batch.FailedCount} из {batch.TotalViewsCount})")
+                </strong>
+                <span class="small">Время сборки: @batch.ElapsedMilliseconds мс</span>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap gap-2 mb-@(batch.Errors.Count > 0 ? "3" : "0")">
+                    <span class="badge text-bg-secondary">Всего: @batch.TotalViewsCount</span>
+                    <span class="badge text-bg-success">Успешно: @batch.SucceededCount</span>
+                    <span class="badge text-bg-danger">С ошибками: @batch.FailedCount</span>
+                </div>
+
+                @if (batch.Errors.Count > 0)
+                {
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered bg-white mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Код</th>
+                                    <th>Файл</th>
+                                    <th>Строка:Столбец</th>
+                                    <th>Описание</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var err in batch.Errors)
+                                {
+                                    <tr>
+                                        <td class="font-monospace text-danger">@err.ErrorCode</td>
+                                        <td class="font-monospace small">@err.FilePath</td>
+                                        <td class="font-monospace text-nowrap">@err.Line:@err.Column</td>
+                                        <td>@err.Message</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+
+    @if (Model.IsDynamicCompilationEnabled)
+    {
+        <div class="card">
+            <div class="card-header fw-semibold">
+                Точечная диагностика Razor-представления (.cshtml)
+            </div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="CompileView" asp-route-token="@token" class="row g-2 align-items-end">
+                    <div class="col-md-9">
+                        <label asp-for="TestViewPath" class="form-label small text-muted">
+                            Виртуальный путь к представлению
+                        </label>
+                        <input asp-for="TestViewPath"
+                               class="form-control font-monospace"
+                               placeholder="/Views/Home/Index.cshtml" />
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-outline-secondary w-100">
+                            Проверить компиляцию
+                        </button>
+                    </div>
+                </form>
+
+                @if (Model.TestViewSuccess == true)
+                {
+                    <div class="alert alert-success mt-3 mb-0">
+                        Представление <code>@Model.TestViewPath</code> успешно скомпилировано без ошибок.
+                    </div>
+                }
+                else if (Model.TestViewSuccess == false)
+                {
+                    <div class="alert alert-danger mt-3 mb-0">
+                        <div class="fw-semibold mb-2">
+                            Ошибки при компиляции <code>@Model.TestViewPath</code> (@Model.TestViewErrors.Count):
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered bg-white mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Код</th>
+                                        <th>Файл</th>
+                                        <th>Строка:Столбец</th>
+                                        <th>Описание</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var err in Model.TestViewErrors)
+                                    {
+                                        <tr>
+                                            <td class="font-monospace text-danger">@err.ErrorCode</td>
+                                            <td class="font-monospace small">@err.FilePath</td>
+                                            <td class="font-monospace text-nowrap">@err.Line:@err.Column</td>
+                                            <td>@err.Message</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

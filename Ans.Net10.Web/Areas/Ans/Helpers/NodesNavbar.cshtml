@@ -1,0 +1,78 @@
+@*
+	rev 2026-11-24
+	
+	Компонент библиотеки Ans.Net10.Web.
+	Код не предназначен для редактирования и компиляции во время выполнения!
+
+	================================================================
+	Верхнее горизонтальное меню Bootstrap 5 с dropdown, разделителем
+	для кликабельных родительских узлов и dropdown-header для Group.
+	================================================================
+
+*@
+@model object?
+
+@{
+	var opts1 = NavRenderOptions.Resolve(Model);
+	var nodes1 = Current.GetNodesNav(opts1.MaxDepth ?? 2, opts1.Tags);
+}
+
+@if (nodes1 is { Count: > 0 })
+{
+	<ul class="navbar-nav @opts1.CssClass">
+		@foreach (var item1 in nodes1)
+		{
+			var titleHtml1 = opts1.UseShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
+			if (item1.HasChildren)
+			{
+				var activeClass1 = (item1.IsActive || item1.IsActiveBranch) ? "active" : null;
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle @activeClass1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">@titleHtml1</a>
+					<ul class="dropdown-menu">
+						@if (!item1.IsGroup && !item1.IsDisabled && !string.IsNullOrEmpty(item1.Url))
+						{
+							var overviewLink1 = item1.ToLinkBuilder(opts1.UseShortTitle);
+							overviewLink1.CssClass = "dropdown-item fw-semibold";
+							<li>@overviewLink1.GetTag().ToHtml()</li>
+							<li><hr class="dropdown-divider" /></li>
+						}
+						@{
+							OutDropdownItems(item1.Children, opts1.UseShortTitle);
+						}
+					</ul>
+				</li>
+			}
+			else
+			{
+				var link1 = item1.ToLinkBuilder(opts1.UseShortTitle);
+				link1.CssClass = "nav-link";
+				<li class="nav-item">@link1.GetTag().ToHtml()</li>
+			}
+		}
+	</ul>
+}
+
+@functions {
+
+	void OutDropdownItems(IReadOnlyList<NavItem> items, bool useShortTitle)
+	{
+		foreach (var item1 in items)
+		{
+			if (item1.IsGroup)
+			{
+				<li><h6 class="dropdown-header">@(useShortTitle ? item1.ShortTitleHtml : item1.TitleHtml)</h6></li>
+				if (item1.HasChildren)
+				{
+					OutDropdownItems(item1.Children, useShortTitle);
+				}
+			}
+			else
+			{
+				var link1 = item1.ToLinkBuilder(useShortTitle);
+				link1.CssClass = "dropdown-item";
+				<li>@link1.GetTag().ToHtml()</li>
+			}
+		}
+	}
+
+}

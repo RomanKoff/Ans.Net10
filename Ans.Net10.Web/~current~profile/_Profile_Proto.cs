@@ -1,4 +1,4 @@
-﻿// rev 2026-11-16
+﻿// rev 2026-11-24
 
 using Ans.Net10.Common;
 using Microsoft.AspNetCore.Html;
@@ -54,10 +54,10 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-		/// При переопределении в производном классе формирует объект ссылки <see cref="LinkBuilder"/> для текущего профиля.
-		/// </summary>
-		/// <returns>Экземпляр <see cref="LinkBuilder"/> или <see langword="null"/>, если ссылка не может быть построена.</returns>
-		public abstract LinkBuilder? GetLink();
+        /// При переопределении в производном классе формирует элемент навигации <see cref="NavItem"/> для текущего профиля.
+        /// </summary>
+        /// <returns>Экземпляр <see cref="NavItem"/> или <see langword="null"/>, если элемент не может быть построен.</returns>
+        public abstract NavItem? GetNavItem();
 
 
         /* properties */
@@ -137,151 +137,163 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
-		/// Получает список ссылок на вышестоящие родительские элементы текущего профиля.
-		/// </summary>
-		/// <value>Коллекция объектов <see cref="LinkBuilder"/>.</value>
-		/// <returns>Изменяемый список ссылок на родительские элементы.</returns>
-		public List<LinkBuilder> ParentsLinks { get; internal set; } = [];
+        /// Получает список элементов навигации вышестоящих родительских узлов или страниц текущего профиля.
+        /// </summary>
+        /// <returns>Изменяемый список родительских элементов <see cref="NavItem"/>.</returns>
+        public List<NavItem> Parents { get; internal set; } = [];
 
 
         /// <summary>
-		/// Получает лениво инициализируемую ссылку на прямого родителя текущего элемента.
-		/// </summary>
-		/// <value>Объект <see cref="LinkBuilder"/> прямого родителя или <see langword="null"/>, если предки отсутствуют.</value>
-		/// <returns>Ссылка на прямого родителя либо <see langword="null"/>.</returns>
-		public LinkBuilder? ParentLink
+        /// Получает лениво инициализируемый элемент прямого родителя текущего профиля.
+        /// </summary>
+        /// <returns>Элемент <see cref="NavItem"/> прямого родителя либо <see langword="null"/>.</returns>
+        public NavItem? ParentItem
             => field ??= GetDirectParent();
 
 
         /// <summary>
-		/// Получает признак наличия зарегистрированных родительских элементов.
-		/// </summary>
-		/// <value>Значение <see langword="true"/>, если список родителей содержит элементы; иначе — <see langword="false"/>.</value>
-		/// <returns><see langword="true"/>, если у профиля есть родительские элементы; иначе — <see langword="false"/>.</returns>
-		public bool HasParents
-            => ParentsLinks is not [];
+        /// Получает признак наличия зарегистрированных родительских элементов.
+        /// </summary>
+        /// <returns><see langword="true"/>, если у профиля есть родительские элементы; иначе — <see langword="false"/>.</returns>
+        public bool HasParents
+            => Parents is not [];
 
 
         /* functions */
 
 
         /// <summary>
-		/// Возвращает ссылку на прямого родителя текущего элемента (ближайшего предка в иерархии).
-		/// </summary>
-		/// <returns>
-		/// Объект <see cref="LinkBuilder"/>, представляющий прямого родителя, 
-		/// либо <see langword="null"/>, если у текущего элемента нет зарегистрированных предков.
-		/// </returns>
-		public LinkBuilder? GetDirectParent()
+        /// Возвращает элемент прямого родителя текущего профиля (ближайшего предка в иерархии).
+        /// </summary>
+        /// <returns>Объект <see cref="NavItem"/> прямого родителя либо <see langword="null"/>.</returns>
+        public NavItem? GetDirectParent()
         {
             return HasParents
-                ? ParentsLinks[^1] : null;
+                ? Parents[^1] : null;
         }
 
 
         /// <summary>
-		/// Возвращает объединенную строку из оттипографленных заголовков всех родительских элементов.
-		/// </summary>
-		/// <returns>Строка текстовой иерархии предков с разделителем.</returns>
-		public string GetParentsTitles()
+        /// Возвращает объединенную строку из оттипографленных заголовков всех родительских элементов.
+        /// </summary>
+        /// <returns>Строка текстовой иерархии предков с разделителем.</returns>
+        public string GetParentsTitles()
         {
             return _parentsTitles ??= HasParents
                 ? SuppTypograph.GetTypografMin(
-                    $"{string.Join(". ", ParentsLinks.Select(x => x.InnerHtml))}. ")
+                    $"{string.Join(". ", Parents.Select(x => x.ShortTitleHtml))}. ")
                 : string.Empty;
         }
         private string? _parentsTitles = null;
 
 
         /// <summary>
-		/// Формирует и возвращает ленивую локальную часть коллекции элементов цепочки навигации («хлебных крошек»).
-		/// </summary>
-		/// <returns>Перечисление объектов <see cref="LinkBuilder"/>, включающее родителей и текущий элемент.</returns>
-		public IEnumerable<LinkBuilder> GetBreadcrumbsPart()
+        /// Формирует локальную последовательность элементов цепочки навигации («хлебных крошек»)
+        /// для текущего профиля с учетом правил видимости и сквозного прохода.
+        /// </summary>
+        /// <returns>Последовательность элементов <see cref="NavItem"/>, включающая родителей и текущий элемент.</returns>
+        public IEnumerable<NavItem> GetBreadcrumbsPart()
         {
-            if (_breadcrumbsPart is not null)
-                return _breadcrumbsPart;
-            var items1 = new List<LinkBuilder>();
             if (HasParents)
-                items1.AddRange(ParentsLinks);
-            var item1 = GetLink();
-            if (item1 is not null && item1.InnerHtml is { Length: > 0 })
-                items1.Add(item1);
-            _breadcrumbsPart = items1.AsReadOnly();
-            return _breadcrumbsPart;
+                foreach (var parent1 in Parents)
+                    yield return parent1;
+
+            var current1 = GetNavItem();
+            if (current1 is not null && current1.ShortTitle is { Length: > 0 })
+                yield return current1;
         }
-        private IEnumerable<LinkBuilder>? _breadcrumbsPart = null;
 
 
         /* methods */
 
 
         /// <summary>
-		/// Добавляет готовый объект ссылки родительского элемента в конец текущей коллекции.
-		/// </summary>
-		/// <param name="link">Объект ссылки <see cref="LinkBuilder"/>.</param>
-		public void AddParent(
-            LinkBuilder link)
+        /// Добавляет готовый элемент навигации родителя в конец текущей коллекции.
+        /// </summary>
+        /// <param name="item">Элемент навигации <see cref="NavItem"/>.</param>
+        public void AddParent(
+            NavItem item)
         {
             _resetParents();
-            ParentsLinks.Add(link);
+            Parents.Add(item);
         }
 
 
         /// <summary>
-        /// Формирует и добавляет ссылку родительского элемента по указанному URL и заголовку.
+        /// Формирует и добавляет элемент навигации родителя по указанному URL и заголовку.
         /// </summary>
+        /// <param name="url">URL-адрес ссылки.</param>
+        /// <param name="title">Заголовок элемента.</param>
+        /// <param name="display">Опциональное правило видимости (<c>"показ|скрытие"</c>).</param>
+        /// <param name="passthroughs">Опциональное правило сквозного прохода (<c>"включение|исключение"</c>).</param>
         public void AddParent(
             string url,
-            string title)
+            string title,
+            string? display = null,
+            string? passthroughs = null)
         {
-            _resetParents();
-            AddParent(_getLink(url, title));
+            AddParent(_getNavItem(url, title, display, passthroughs));
         }
 
 
         /// <summary>
-        /// Формирует и добавляет ссылку родительского элемента на основе MVC-действия (Action).
+        /// Формирует и добавляет элемент навигации родителя на основе MVC-действия (Action).
         /// </summary>
+        /// <param name="action">Имя действия контроллера.</param>
+        /// <param name="controller">Имя контроллера.</param>
+        /// <param name="routes">Объект параметров маршрута.</param>
+        /// <param name="title">Заголовок элемента.</param>
         public void AddParentFromAction(
             string action,
             string controller,
             object routes,
             string title)
         {
-            _resetParents();
-            AddParent(_getLink(action, controller, routes, title));
+            AddParent(_getNavItem(action, controller, routes, title));
         }
 
 
         /// <summary>
-        /// Вставляет готовый объект ссылки родительского элемента в указанную позицию списка.
+        /// Вставляет готовый элемент навигации родителя в указанную позицию списка.
         /// </summary>
+        /// <param name="index">Порядковый индекс позиции вставки.</param>
+        /// <param name="item">Элемент навигации <see cref="NavItem"/>.</param>
         public void InsertParent(
             int index,
-            LinkBuilder link)
+            NavItem item)
         {
             _resetParents();
-            ParentsLinks.Insert(index, link);
+            Parents.Insert(index, item);
         }
 
 
         /// <summary>
-        /// Формирует и вставляет ссылку родительского элемента в указанную позицию списка по URL и заголовку.
+        /// Формирует и вставляет элемент навигации родителя в указанную позицию списка по URL и заголовку.
         /// </summary>
+        /// <param name="index">Порядковый индекс позиции вставки.</param>
+        /// <param name="url">URL-адрес ссылки.</param>
+        /// <param name="title">Заголовок элемента.</param>
+        /// <param name="display">Опциональное правило видимости (<c>"показ|скрытие"</c>).</param>
+        /// <param name="passthroughs">Опциональное правило сквозного прохода (<c>"включение|исключение"</c>).</param>
         public void InsertParent(
             int index,
             string url,
-            string title)
+            string title,
+            string? display = null,
+            string? passthroughs = null)
         {
-            _resetParents();
-            InsertParent(index, _getLink(url, title));
+            InsertParent(index, _getNavItem(url, title, display, passthroughs));
         }
 
 
         /// <summary>
-        /// Формирует и вставляет ссылку родительского элемента на основе MVC-действия в указанную позицию.
+        /// Формирует и вставляет элемент навигации родителя на основе MVC-действия в указанную позицию.
         /// </summary>
+        /// <param name="index">Порядковый индекс позиции вставки.</param>
+        /// <param name="action">Имя действия контроллера.</param>
+        /// <param name="controller">Имя контроллера.</param>
+        /// <param name="routes">Объект параметров маршрута.</param>
+        /// <param name="title">Заголовок элемента.</param>
         public void InsertParentFromAction(
             int index,
             string action,
@@ -289,8 +301,7 @@ namespace Ans.Net10.Web
             object routes,
             string title)
         {
-            _resetParents();
-            InsertParent(index, _getLink(action, controller, routes, title));
+            InsertParent(index, _getNavItem(action, controller, routes, title));
         }
 
 
@@ -302,8 +313,8 @@ namespace Ans.Net10.Web
             int index)
         {
             _resetParents();
-            if (ParentsLinks.Count > index)
-                ParentsLinks.RemoveAt(index);
+            if (Parents.Count > index)
+                Parents.RemoveAt(index);
         }
 
 
@@ -313,8 +324,8 @@ namespace Ans.Net10.Web
         public void RemoveParentLast()
         {
             _resetParents();
-            if (ParentsLinks is not [])
-                ParentsLinks.RemoveAt(ParentsLinks.Count - 1);
+            if (Parents is not [])
+                Parents.RemoveAt(Parents.Count - 1);
         }
 
 
@@ -324,27 +335,29 @@ namespace Ans.Net10.Web
         private void _resetParents()
         {
             _parentsTitles = null;
-            _breadcrumbsPart = null;
+            _Current._ResetBreadcrumbsCache();
         }
 
 
-        private LinkBuilder _getLink(
+        private NavItem _getNavItem(
             string url,
-            string title)
+            string title,
+            string? display = null,
+            string? passthroughs = null)
         {
             var url1 = _Current.GetSmartUrl(url);
-            return new LinkBuilder(url1, title);
+            return new NavItem(url1, title, display: display, passthroughs: passthroughs);
         }
 
 
-        private LinkBuilder _getLink(
+        private NavItem _getNavItem(
             string action,
             string controller,
             object routes,
             string title)
         {
             var url1 = _Current.LinkGenerator.GetPathByAction(action, controller, routes);
-            return new LinkBuilder(url1, title);
+            return new NavItem(url1, title);
         }
 
     }
