@@ -1,0 +1,64 @@
+@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+
+    ================================================================
+    Адаптивная сетка карточек дочерних узлов текущего раздела
+    (Bootstrap 5 Grid + Card) для разводящих страниц портала.
+    ================================================================
+
+*@
+@model object?
+
+@{
+    var opts1 = NavRenderOptions.Resolve(Model);
+    var nodes1 = Current.GetSubnodesNav(opts1.MaxDepth ?? 1, opts1.Tags);
+}
+
+@if (nodes1 is { Count: > 0 })
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 @opts1.CssClass">
+        @foreach (var item1 in nodes1)
+        {
+            var titleHtml1 = opts1.UseShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-2">
+                            @if (item1.IsGroup || item1.IsDisabled || string.IsNullOrEmpty(item1.Url))
+                            {
+                                <span>@titleHtml1</span>
+                            }
+                            else
+                            {
+                                var link1 = item1.ToLinkBuilder(opts1.UseShortTitle);
+                                link1.CssClass = "stretched-link text-decoration-none";
+                                @link1.GetTag().ToHtml()
+                            }
+                        </h5>
+                        @if (item1.HasChildren)
+                        {
+                            <ul class="list-unstyled small text-body-secondary mb-0 mt-auto pt-2 border-top position-relative" style="z-index: 2;">
+                                @foreach (var sub1 in item1.Children)
+                                {
+                                    <li class="py-1">
+                                        @if (sub1.IsGroup)
+                                        {
+                                            <span class="fw-semibold">@(opts1.UseShortTitle ? sub1.ShortTitleHtml : sub1.TitleHtml)</span>
+                                        }
+                                        else
+                                        {
+                                            @sub1.ToLinkBuilder(opts1.UseShortTitle).GetTag().ToHtml()
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

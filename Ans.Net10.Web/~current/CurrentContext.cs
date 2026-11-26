@@ -1,4 +1,4 @@
-﻿// rev 2026-11-24
+﻿// rev 2026-11-26
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -398,16 +398,35 @@ namespace Ans.Net10.Web
 		}
 
 
-		/* functions */
+        /* functions */
 
 
-		/// <summary>
-		/// Формирует и кэширует в рамках текущего запроса цепочку «хлебных крошек»
-		/// для заданного набора активных тегов навигатора.
-		/// </summary>
-		/// <param name="tags">Опциональный набор тегов контекста (например, <c>"science"</c>, <c>"breadcrumbs"</c>).</param>
-		/// <returns>Упорядоченный сверху вниз список элементов <see cref="IReadOnlyList{NavItem}"/>.</returns>
-		public IReadOnlyList<NavItem> GetBreadcrumbs(
+        /// <summary>
+        /// Формирует полный базовый URL для клиентских запросов к API библиотеки 
+        /// с учетом виртуального каталога приложения (<see cref="HostData.VirtualPath"/>).
+        /// </summary>
+        /// <param name="model">Опциональный переопределенный путь маршрута (обычно передается из <c>Model</c> представления).</param>
+        /// <param name="defaultPattern">Базовый маршрут по умолчанию (например, <c>"/api/ans/console"</c>).</param>
+        /// <returns>Нормализованный относительный URL от корня домена (например, <c>"/test2/_system/console"</c>).</returns>
+        public string GetAnsApiBaseUrl(
+            object? model,
+            string defaultPattern)
+        {
+            var rawApi1 = model as string;
+            var routePath1 = string.IsNullOrWhiteSpace(rawApi1)
+                ? defaultPattern
+                : $"/{rawApi1.Trim().Trim('/')}";
+            return $"{Host.VirtualPath}{routePath1}";
+        }
+
+
+        /// <summary>
+        /// Формирует и кэширует в рамках текущего запроса цепочку «хлебных крошек»
+        /// для заданного набора активных тегов навигатора.
+        /// </summary>
+        /// <param name="tags">Опциональный набор тегов контекста (например, <c>"science"</c>, <c>"breadcrumbs"</c>).</param>
+        /// <returns>Упорядоченный сверху вниз список элементов <see cref="IReadOnlyList{NavItem}"/>.</returns>
+        public IReadOnlyList<NavItem> GetBreadcrumbs(
 			params string[]? tags)
 		{
 			string key1 = _getTagsCacheKey(tags);

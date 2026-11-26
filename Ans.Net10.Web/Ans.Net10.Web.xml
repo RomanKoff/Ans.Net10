@@ -4,45 +4,62 @@
         <name>Ans.Net10.Web</name>
     </assembly>
     <members>
-        <member name="T:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel">
+        <member name="T:Ans.Net10.Web.Api.AnsBatchViewsCompileResult">
             <summary>
-            Модель технической страницы просмотра системного журнала в реальном времени.
+            Представляет сводный результат пакетной проверки и прогрева компиляции всех Razor-представлений сайта.
+            </summary>
+            <param name="TotalViewsCount">Общее количество проверенных <c>.cshtml</c>-файлов.</param>
+            <param name="SucceededCount">Количество успешно скомпилированных представлений.</param>
+            <param name="FailedCount">Количество представлений, в которых обнаружены ошибки компиляции.</param>
+            <param name="ElapsedMilliseconds">Общее время выполнения пакетной компиляции в миллисекундах.</param>
+            <param name="Errors">Сводный список всех ошибок компиляции по всем проблемным файлам.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Api.AnsBatchViewsCompileResult.#ctor(System.Int32,System.Int32,System.Int32,System.Int64,System.Collections.Generic.IReadOnlyList{Ans.Net10.Web.Compilation.AnsCompilationError})">
+            <summary>
+            Представляет сводный результат пакетной проверки и прогрева компиляции всех Razor-представлений сайта.
+            </summary>
+            <param name="TotalViewsCount">Общее количество проверенных <c>.cshtml</c>-файлов.</param>
+            <param name="SucceededCount">Количество успешно скомпилированных представлений.</param>
+            <param name="FailedCount">Количество представлений, в которых обнаружены ошибки компиляции.</param>
+            <param name="ElapsedMilliseconds">Общее время выполнения пакетной компиляции в миллисекундах.</param>
+            <param name="Errors">Сводный список всех ошибок компиляции по всем проблемным файлам.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Api.AnsBatchViewsCompileResult.TotalViewsCount">
+            <summary>Общее количество проверенных <c>.cshtml</c>-файлов.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Api.AnsBatchViewsCompileResult.SucceededCount">
+            <summary>Количество успешно скомпилированных представлений.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Api.AnsBatchViewsCompileResult.FailedCount">
+            <summary>Количество представлений, в которых обнаружены ошибки компиляции.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Api.AnsBatchViewsCompileResult.ElapsedMilliseconds">
+            <summary>Общее время выполнения пакетной компиляции в миллисекундах.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Api.AnsBatchViewsCompileResult.Errors">
+            <summary>Сводный список всех ошибок компиляции по всем проблемным файлам.</summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Api.Exts_AnsApi">
+            <summary>
+            Методы расширения для подключения диагностических и административных API-обработчиков библиотеки в конечном приложении.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.#ctor(Ans.Net10.Web.LibWebOptions,Ans.Net10.Web.Services.AnsMemoryLogStore)">
+        <member name="M:Ans.Net10.Web.Api.Exts_AnsApi.AnsApi_Console(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)">
             <summary>
-            Модель технической страницы просмотра системного журнала в реальном времени.
+            Регистрирует конечные точки получения новых записей журнала (<c>/updates</c>) и очистки буфера (<c>/clear</c>).
             </summary>
+            <param name="endpoints">Построитель маршрутов приложения.</param>
+            <param name="pattern">Базовый префикс маршрута API консоли (по умолчанию <c>"/api/ans/console"</c>).</param>
+            <returns>Группа маршрутов <see cref="T:Microsoft.AspNetCore.Routing.RouteGroupBuilder"/> для настройки авторизации.</returns>
         </member>
-        <member name="P:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.IsEnabled">
+        <member name="M:Ans.Net10.Web.Api.Exts_AnsApi.AnsApi_Compile(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)">
             <summary>
-            Возвращает признак того, что буферизация логов в памяти активна.
+            Регистрирует конечные точки управления динамической компиляцией <c>App_Code</c>
+            и диагностики Razor-представлений (<c>/reload</c>, <c>/batch</c>, <c>/view</c>).
             </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.Capacity">
-            <summary>
-            Возвращает максимальную емкость буфера логов.
-            </summary>
-        </member>
-        <member name="P:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.Entries">
-            <summary>
-            Начальный снимок записей лога при открытии страницы.
-            </summary>
-        </member>
-        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.OnGet">
-            <summary>
-            Обрабатывает первичный GET-запрос страницы.
-            </summary>
-        </member>
-        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.OnGetUpdates(System.Int64,System.Nullable{Serilog.Events.LogEventLevel})">
-            <summary>
-            Возвращает новые записи лога в формате JSON для живого обновления терминала.
-            </summary>
-        </member>
-        <member name="M:Ans.Net10.Web.Areas.Ans.Pages.System.ConsoleModel.OnPostClear">
-            <summary>
-            Очищает кольцевой буфер логов в памяти.
-            </summary>
+            <param name="endpoints">Построитель маршрутов приложения.</param>
+            <param name="pattern">Базовый префикс маршрута API компиляции (по умолчанию <c>"/api/ans/compile"</c>).</param>
+            <returns>Группа маршрутов <see cref="T:Microsoft.AspNetCore.Routing.RouteGroupBuilder"/> для настройки авторизации.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Attributes.ActionAccessAttribute">
             <summary>
@@ -344,11 +361,12 @@
             полностью заменяющий устаревший механизм <c>Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation</c>.
             </summary>
         </member>
-        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompiler.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider,Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Compilation.AnsRazorViewCompiler})">
+        <member name="M:Ans.Net10.Web.Compilation.AnsRazorViewCompiler.#ctor(Microsoft.AspNetCore.Hosting.IWebHostEnvironment,Ans.Net10.Web.LibWebOptions,Ans.Net10.Web.Compilation.AnsMetadataReferenceProvider,Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartManager,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Compilation.AnsRazorViewCompiler})">
             <summary>
             Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Compilation.AnsRazorViewCompiler"/>.
             </summary>
             <param name="env">Среда выполнения веб-приложения для определения физического корня контента.</param>
+            <param name="options">Параметры конфигурации библиотеки <c>Ans.Net10.Web</c>.</param>
             <param name="referenceProvider">Провайдер ссылок на метаданные сборок.</param>
             <param name="partManager">Менеджер прикладных частей приложения для обнаружения встроенных скомпилированных представлений.</param>
             <param name="services">Провайдер сервисов приложения для ленивого разрешения <see cref="T:Ans.Net10.Web.Compilation.AnsAppCodeCompiler"/>.</param>
@@ -2816,7 +2834,13 @@
         <member name="P:Ans.Net10.Web.DynamicCompilationOptions.AppCodePath">
             <summary>
             Получает или задает относительный путь к каталогу исходных <c>.cs</c>-файлов 
-            общих моделей и бизнес-логики (по умолчанию <c>"App_Code"</c>).
+            общих моделей и бизнес-логики (например: <c>"Views/Models"</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.DynamicCompilationOptions.AdditionalUsings">
+            <summary>
+            Получает или задает список дополнительных пространств имен (C# namespaces),
+            автоматически подключаемых ко всем динамически компилируемым Razor-представлениям.
             </summary>
         </member>
         <member name="T:Ans.Net10.Web.CorsOptions">
@@ -5904,6 +5928,15 @@
             Используется в прикладных сценариях авторизации контента для немедленной блокировки несанкционированного доступа.
             </remarks>
             <exception cref="T:Ans.Net10.Web.AnsHttpException">Вызывается всегда при выполнении метода со статусом <see cref="F:System.Net.HttpStatusCode.Forbidden"/>.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.CurrentContext.GetAnsApiBaseUrl(System.Object,System.String)">
+            <summary>
+            Формирует полный базовый URL для клиентских запросов к API библиотеки 
+            с учетом виртуального каталога приложения (<see cref="P:Ans.Net10.Web.HostData.VirtualPath"/>).
+            </summary>
+            <param name="model">Опциональный переопределенный путь маршрута (обычно передается из <c>Model</c> представления).</param>
+            <param name="defaultPattern">Базовый маршрут по умолчанию (например, <c>"/api/ans/console"</c>).</param>
+            <returns>Нормализованный относительный URL от корня домена (например, <c>"/test2/_system/console"</c>).</returns>
         </member>
         <member name="M:Ans.Net10.Web.CurrentContext.GetBreadcrumbs(System.String[])">
             <summary>

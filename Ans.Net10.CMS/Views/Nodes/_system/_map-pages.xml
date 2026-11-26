@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="urn:ans:net10:web:map-pages"
+	   xsi:schemaLocation="urn:ans:net10:web:map-pages https://raw.githubusercontent.com/RomanKoff/Ans.Net10/refs/heads/main/Ans.Net10.Web/_Docs/MapPages.xsd">
+
+	<item target="compilation" face="Агрегатор Dynamic Compilation"/>
+	<item target="console" face="Output приложения"/>
+	<item target="info" face="Информация о системе"/>
+	<item target="testpages" face="Тестирование состояния страниц узлов сайта в структуре Views/Nodes"/>
+
+</pages>

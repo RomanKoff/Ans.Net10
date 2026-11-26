@@ -1,0 +1,272 @@
+@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+    
+    ====================
+    Информация о системе
+    ====================
+
+*@
+@model object?
+@using System.Diagnostics
+@using System.Reflection
+@using System.Runtime.InteropServices
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.AspNetCore.Mvc.ViewEngines
+@using Microsoft.Extensions.Configuration
+@inject IWebHostEnvironment WebHostEnvironment
+@inject IConfiguration Configuration
+@inject ICompositeViewEngine ViewEngine
+
+@{
+    Current.Meta.RobotsOff();
+
+    var info1 = new CompileDiagnosticInfo(WebHostEnvironment, Configuration, ViewEngine);
+}
+
+<div class="d-flex flex-column gap-4">
+
+    @* Сводка среды выполнения *@
+    <div class="card shadow-sm">
+        <div class="card-header fw-semibold">Среда выполнения и приложение</div>
+        <div class="card-body p-0">
+            <table class="table table-sm table-hover mb-0 font-monospace" style="font-size: 0.82rem;">
+                <tbody>
+                    <tr>
+                        <th class="ps-3 w-25 text-body-secondary">Приложение</th>
+                        <td>@WebHostEnvironment.ApplicationName</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-body-secondary">Окружение (Environment)</th>
+                        <td><span class="badge text-bg-primary">@WebHostEnvironment.EnvironmentName</span></td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-body-secondary">.NET Runtime</th>
+                        <td>@RuntimeInformation.FrameworkDescription (@RuntimeInformation.ProcessArchitecture)</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-body-secondary">ОС / Хост</th>
+                        <td>@RuntimeInformation.OSDescription — @Environment.MachineName</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-body-secondary">ContentRootPath</th>
+                        <td>@WebHostEnvironment.ContentRootPath</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-body-secondary">WebRootPath</th>
+                        <td>@WebHostEnvironment.WebRootPath</td>
+                    </tr>
+                    <tr>
+                        <th class="ps-3 text-body-secondary">Процесс / Аптайм</th>
+                        <td>PID: @Environment.ProcessId | Старт: @info1.ProcessStartTime.ToString("yyyy-MM-dd HH:mm:ss") | Память: @info1.WorkingSetMb МБ</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    @* Переменные окружения и конфигурация *@
+    <div class="card shadow-sm">
+        <div class="card-header fw-semibold">Переменные окружения (DOTNET_ / ASPNETCORE_)</div>
+        <div class="card-body p-0 overflow-x-auto">
+            <table class="table table-sm table-hover mb-0 font-monospace" style="font-size: 0.78rem;">
+                <tbody>
+                    @foreach (var env1 in info1.EnvVars)
+                    {
+                        <tr>
+                            <th class="ps-3 w-25 text-body-secondary">@env1.Key</th>
+                            <td class="text-break">@env1.Value</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @* Проверка компиляции Razor-представлений (.cshtml) *@
+    <div class="card shadow-sm">
+        <div class="card-header d-flex align-items-center">
+            <span class="fw-semibold me-auto">Проверка Razor-представлений (.cshtml)</span>
+            @if (info1.ViewErrors.Count == 0)
+            {
+                <span class="badge text-bg-success">OK (@info1.TotalViewsChecked проверено)</span>
+            }
+            else
+            {
+                <span class="badge text-bg-danger">Ошибок: @info1.ViewErrors.Count из @info1.TotalViewsChecked</span>
+            }
+        </div>
+        @if (info1.ViewErrors.Count > 0)
+        {
+            <div class="card-body bg-body-tertiary font-monospace" style="font-size: 0.78rem;">
+                @foreach (var err1 in info1.ViewErrors)
+                {
+                    <div class="border-bottom border-secondary-subtle py-2">
+                        <div class="fw-bold text-danger-emphasis">@err1.ViewPath</div>
+                        <div class="text-body-secondary mt-1" style="white-space: pre-wrap;">@err1.Message</div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    @* Загруженные сборки *@
+    <div class="card shadow-sm">
+        <div class="card-header d-flex align-items-center">
+            <span class="fw-semibold me-auto">Загруженные сборки (AppDomain)</span>
+            <span class="badge text-bg-secondary">Всего: @info1.Assemblies.Count</span>
+        </div>
+        <div class="card-body p-0 overflow-x-auto">
+            <table class="table table-sm table-hover mb-0 font-monospace" style="font-size: 0.78rem;">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">Сборка</th>
+                        <th>Версия</th>
+                        <th>Конфигурация</th>
+                        <th>Время сборки (UTC)</th>
+                        <th>Расположение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var asm1 in info1.Assemblies)
+                    {
+                        var rowClass1 = asm1.IsAns ? "fw-semibold" : null;
+                        <tr class="@rowClass1">
+                            <td class="ps-3">@asm1.Name</td>
+                            <td>@asm1.Version</td>
+                            <td>
+                                @if (asm1.IsDebug is true)
+                                {
+                                    <span class="badge text-bg-warning">Debug</span>
+                                }
+                                else if (asm1.IsDebug is false)
+                                {
+                                    <span class="badge text-bg-success">Release</span>
+                                }
+                                else
+                                {
+                                    <span class="text-body-secondary">—</span>
+                                }
+                            </td>
+                            <td class="text-body-secondary">@(asm1.BuildTimeUtc?.ToString("yyyy-MM-dd HH:mm:ss") ?? "—")</td>
+                            <td class="text-body-secondary text-truncate" style="max-width: 28rem;" title="@asm1.Location">@asm1.Location</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+@functions {
+
+    sealed class CompileDiagnosticInfo
+    {
+        public CompileDiagnosticInfo(
+            IWebHostEnvironment env,
+            IConfiguration config,
+            ICompositeViewEngine viewEngine)
+        {
+            using var proc1 = Process.GetCurrentProcess();
+            ProcessStartTime = proc1.StartTime;
+            WorkingSetMb = Math.Round(proc1.WorkingSet64 / 1024d / 1024d, 1);
+
+            Assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => !a.IsDynamic)
+                .Select(a => new AssemblyItemInfo(a))
+                .OrderByDescending(a => a.IsAns)
+                .ThenBy(a => a.Name)
+                .ToArray();
+
+            EnvVars = Environment.GetEnvironmentVariables()
+                .Cast<System.Collections.DictionaryEntry>()
+                .Select(e => new KeyValuePair<string, string>(e.Key?.ToString() ?? string.Empty, e.Value?.ToString() ?? string.Empty))
+                .Where(kv => kv.Key.StartsWith("ASPNETCORE_", StringComparison.OrdinalIgnoreCase)
+                    || kv.Key.StartsWith("DOTNET_", StringComparison.OrdinalIgnoreCase))
+                .OrderBy(kv => kv.Key)
+                .ToArray();
+
+            var viewsRoot1 = System.IO.Path.Combine(env.ContentRootPath, "Views");
+            var errors1 = new List<ViewErrorItem>();
+            int checkedCount1 = 0;
+
+            if (Directory.Exists(viewsRoot1))
+            {
+                foreach (var file1 in Directory.EnumerateFiles(viewsRoot1, "*.cshtml", SearchOption.AllDirectories))
+                {
+                    var name1 = System.IO.Path.GetFileName(file1);
+                    if (name1.StartsWith('_') || name1.Contains('~'))
+                        continue;
+
+                    var rel1 = System.IO.Path.GetRelativePath(env.ContentRootPath, file1).Replace('\\', '/');
+                    var appPath1 = $"~/{rel1}";
+                    checkedCount1++;
+                    try
+                    {
+                        var res1 = viewEngine.GetView(null, appPath1, isMainPage: true);
+                        if (!res1.Success)
+                            errors1.Add(new ViewErrorItem(appPath1, "Представление не найдено движком Razor."));
+                    }
+                    catch (Exception ex1)
+                    {
+                        errors1.Add(new ViewErrorItem(appPath1, ex1.Message));
+                    }
+                }
+            }
+
+            TotalViewsChecked = checkedCount1;
+            ViewErrors = errors1;
+        }
+
+        public DateTime ProcessStartTime { get; }
+        public double WorkingSetMb { get; }
+        public IReadOnlyList<AssemblyItemInfo> Assemblies { get; }
+        public IReadOnlyList<KeyValuePair<string, string>> EnvVars { get; }
+        public int TotalViewsChecked { get; }
+        public IReadOnlyList<ViewErrorItem> ViewErrors { get; }
+    }
+
+
+    sealed class AssemblyItemInfo
+    {
+        public AssemblyItemInfo(Assembly asm)
+        {
+            var asmName1 = asm.GetName();
+            Name = asmName1.Name ?? string.Empty;
+            Version = asmName1.Version?.ToString() ?? "—";
+            IsAns = Name.StartsWith("Ans.", StringComparison.OrdinalIgnoreCase);
+
+            var dbgAttr1 = asm.GetCustomAttribute<DebuggableAttribute>();
+            IsDebug = dbgAttr1 is not null
+                ? dbgAttr1.IsJITOptimizerDisabled
+                : null;
+
+            try
+            {
+                Location = asm.Location;
+                if (!string.IsNullOrEmpty(Location) && File.Exists(Location))
+                    BuildTimeUtc = File.GetLastWriteTimeUtc(Location);
+            }
+            catch
+            {
+                Location = string.Empty;
+            }
+        }
+
+        public string Name { get; }
+        public string Version { get; }
+        public bool IsAns { get; }
+        public bool? IsDebug { get; }
+        public DateTime? BuildTimeUtc { get; }
+        public string Location { get; } = string.Empty;
+    }
+
+
+    sealed record ViewErrorItem(string ViewPath, string Message);
+
+}

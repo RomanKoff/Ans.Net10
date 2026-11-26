@@ -31,17 +31,17 @@ namespace Ans.Net10.Web
         {
             ArgumentNullException.ThrowIfNull(sitemap);
 
-            sitemap.AddTopNodeDef(
-                new NodemapDef("ans", "CMS", display: "none", passthroughs: "|all", topPages:
-                [
-                    new PagemapDef("system", "Система", childPages:
-                    [
-                        new PagemapDef("console", "Серверная консоль"),
-                        new PagemapDef("compile", "Сборка представлений и моделей"),
-                        new PagemapDef("pages", "Проверка страниц")
-                    ])
-                ])
-            );
+            //sitemap.AddTopNodeDef(
+            //    new NodemapDef("ans", "CMS", display: "none", passthroughs: "|all", topPages:
+            //    [
+            //        new PagemapDef("system", "Система", childPages:
+            //        [
+            //            new PagemapDef("console", "Серверная консоль"),
+            //            new PagemapDef("compile", "Сборка представлений и моделей"),
+            //            new PagemapDef("pages", "Проверка страниц")
+            //        ])
+            //    ])
+            //);
         }
     }
 

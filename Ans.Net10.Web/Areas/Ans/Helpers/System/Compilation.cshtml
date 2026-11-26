@@ -1,0 +1,201 @@
+@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+    
+    =============================
+    Агрегатор Dynamic Compilation
+    =============================
+
+*@
+@model object?
+@using Ans.Net10.Web.Compilation
+@inject LibWebOptions Options
+@inject AnsAppCodeCompiler? AppCodeCompiler
+@inject AnsRazorViewCompiler? ViewCompiler
+
+@{
+    Current.Meta.RobotsOff();
+
+    var apiBaseUrl1 = Current.GetAnsApiBaseUrl(Model, "/api/ans/compile");
+
+    var isEnabled1 = AppCodeCompiler is not null && ViewCompiler is not null;
+    var appCodePath1 = Options.DynamicCompilation?.AppCodePath ?? "Не настроено";
+    var res1 = AppCodeCompiler?.LastResult;
+}
+
+<div id="ansCompileRoot" data-api-base="@apiBaseUrl1">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+        <div class="text-body-secondary small">
+            Каталог сборок моделей: <code>@appCodePath1</code>
+        </div>
+        @if (isEnabled1)
+        {
+            <div class="d-flex flex-wrap gap-2">
+                <button type="button" id="ansCompileReloadBtn" class="btn btn-primary">
+                    Перезагрузить модели и сбросить кэш
+                </button>
+                <button type="button" id="ansCompileBatchBtn" class="btn btn-outline-primary">
+                    Проверить все представления сайта
+                </button>
+            </div>
+        }
+    </div>
+
+    @if (!isEnabled1)
+    {
+        <div class="alert alert-warning mb-0">
+            Подсистема <code>DynamicCompilation</code> не активирована в конфигурации <code>appsettings.json</code>.
+        </div>
+    }
+    else
+    {
+        <div id="ansCompileAppCodeBox">
+            @if (res1 is not null)
+            {
+                <div class="card mb-4 @(res1.Success ? "border-success" : "border-danger")">
+                    <div class="card-header d-flex justify-content-between align-items-center @(res1.Success ? "bg-success-subtle text-success-emphasis" : "bg-danger-subtle text-danger-emphasis")">
+                        <strong>
+                            @(res1.Success ? $"Сборка [{appCodePath1}] активна" : $"Ошибка компиляции [{appCodePath1}] (сохранена предыдущая версия)")
+                        </strong>
+                        <span class="small">Собрано за @res1.ElapsedMilliseconds мс (UTC: @res1.CompiledAtUtc.ToString("yyyy-MM-dd HH:mm:ss"))</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge text-bg-secondary">Файлов .cs: @res1.SourceFilesCount</span>
+                            <span class="badge text-bg-info">Экспортировано типов: @res1.ExportedTypesCount</span>
+                        </div>
+                        @if (res1.Errors.Count > 0)
+                        {
+                            <div class="table-responsive mt-3">
+                                <table class="table table-sm table-bordered mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Код</th>
+                                            <th>Файл</th>
+                                            <th>Строка:Столбец</th>
+                                            <th>Описание</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var err1 in res1.Errors)
+                                        {
+                                            <tr>
+                                                <td class="font-monospace text-danger">@err1.ErrorCode</td>
+                                                <td class="font-monospace small">@err1.FilePath</td>
+                                                <td class="font-monospace text-nowrap">@err1.Line:@err1.Column</td>
+                                                <td>@err1.Message</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div id="ansCompileBatchBox"></div>
+    }
+</div>
+
+<script defer>
+    (() => {
+        const root = document.getElementById('ansCompileRoot');
+        const reloadBtn = document.getElementById('ansCompileReloadBtn');
+        const batchBtn = document.getElementById('ansCompileBatchBtn');
+        const appCodeBox = document.getElementById('ansCompileAppCodeBox');
+        const batchBox = document.getElementById('ansCompileBatchBox');
+        if (!root || !reloadBtn || !batchBtn || !appCodeBox || !batchBox)
+            return;
+
+        const rawBase = (root.dataset.apiBase || '/api/ans/compile').replace(/\/+$/, '');
+        const apiBase = rawBase.startsWith('/') || rawBase.startsWith('http')
+            ? rawBase
+            : `/${rawBase}`;
+        const tokenParam = new URLSearchParams(window.location.search).get('token');
+
+        function buildUrl(action) {
+            return tokenParam ? `${apiBase}/${action}?token=${encodeURIComponent(tokenParam)}` : `${apiBase}/${action}`;
+        }
+
+        function esc(s) {
+            return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function renderErrorsTable(errors) {
+            if (!errors || !errors.length)
+                return '';
+            const rows = errors.map(e => `<tr>
+                <td class="font-monospace text-danger">${esc(e.errorCode)}</td>
+                <td class="font-monospace small">${esc(e.filePath)}</td>
+                <td class="font-monospace text-nowrap">${e.line}:${e.column}</td>
+                <td>${esc(e.message)}</td>
+            </tr>`).join('');
+            return `<div class="table-responsive mt-3"><table class="table table-sm table-bordered mb-0">
+                <thead class="table-light"><tr><th>Код</th><th>Файл</th><th>Строка:Столбец</th><th>Описание</th></tr></thead>
+                <tbody>${rows}</tbody></table>
+            </div>`;
+        }
+        
+        async function postJson(action, btn) {
+            const origHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>${origHtml}`;
+            try {
+                const res = await fetch(buildUrl(action), { method: 'POST' });
+                return res.ok
+                    ? await res.json()
+                    : null;
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = origHtml;
+            }
+        }
+        
+        reloadBtn.addEventListener('click', async () => {
+            const data = await postJson('reload', reloadBtn);
+            if (!data)
+                return;
+            const ok = data.success;
+            const dt = new Date(data.compiledAtUtc).toISOString().replace('T', ' ').substring(0, 19);
+            appCodeBox.innerHTML = `<div class="card mb-4 ${ok ? 'border-success' : 'border-danger'}">
+                <div class="card-header d-flex justify-content-between align-items-center ${ok ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis'}">
+                    <strong>${ok ? 'Сборка [@(appCodePath1)] активна' : 'Ошибка компиляции [@(appCodePath1)] (сохранена предыдущая версия)'}</strong>
+                    <span class="small">Собрано за ${data.elapsedMilliseconds} мс (UTC: ${dt})</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge text-bg-secondary">Файлов .cs: ${data.sourceFilesCount}</span>
+                        <span class="badge text-bg-info">Экспортировано типов: ${data.exportedTypesCount}</span>
+                    </div>
+                    ${renderErrorsTable(data.errors)}
+                </div>
+            </div>`;
+        });
+        
+        batchBtn.addEventListener('click', async () => {
+            const data = await postJson('batch', batchBtn);
+            if (!data)
+                return;
+            const ok = data.failedCount === 0;
+            batchBox.innerHTML = `<div class="card mb-4 ${ok ? 'border-success' : 'border-danger'}">
+                <div class="card-header d-flex justify-content-between align-items-center ${ok ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis'}">
+                    <strong>${ok ? 'Пакетная проверка завершена успешно' : `Обнаружены ошибки в представлениях (${data.failedCount} из ${data.totalViewsCount})`}</strong>
+                    <span class="small">Время сборки: ${data.elapsedMilliseconds} мс</span>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge text-bg-secondary">Всего: ${data.totalViewsCount}</span>
+                        <span class="badge text-bg-success">Успешно: ${data.succeededCount}</span>
+                        <span class="badge text-bg-danger">С ошибками: ${data.failedCount}</span>
+                    </div>
+                    ${renderErrorsTable(data.errors)}
+                </div>
+            </div>`;
+        });
+        
+    })();
+</script>

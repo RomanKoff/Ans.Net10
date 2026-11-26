@@ -1,65 +1,72 @@
-﻿@*
-	rev 2026-11-24
-	
-	Компонент библиотеки Ans.Net10.Web
-	Код не предназначен для редактирования и компиляции во время выполнения!
+@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+
+    ==================================================================
+    Тестирование состояния страниц узлов сайта в структуре Views/Nodes
+    ==================================================================
+
 *@
-@page
+@model object?
 @using System.Collections.Frozen
 @using System.IO
 @using Microsoft.AspNetCore.Hosting
 @inject IWebHostEnvironment WebHostEnvironment
-@model AnsPageModel
+
 @{
-    var site1 = new SiteInfo(new DirectoryInfo($"{WebHostEnvironment.ContentRootPath}/Views/Nodes"));
+    Current.Meta.RobotsOff();
+
+    var nodesDir1 = new DirectoryInfo(System.IO.Path.Combine(WebHostEnvironment.ContentRootPath, "Views", "Nodes"));
+    var site1 = nodesDir1.Exists
+        ? new SiteInfo(nodesDir1)
+        : null;
 }
-
-
 
 <div class="row">
     <div class="col-md-7">
-
-
         <h2>Узлы и страницы (.cshtml) в Views/Nodes</h2>
-        <div id="site_pages" class="d-flex flex-wrap gap-3">
-            @foreach (var node1 in site1.Nodes)
-            {
-                var url1 = $"{Current.Host.VirtualPath}{node1.Url}";
-                <div class="my-4 node1" style="width:20rem;">
-                    <h4 class="m-0">
-                        <a target="_blank" href="@url1"><code>@node1.Name</code></a>
-                        @node1.Catalog.HasViewStart.ToHtml("<small class=\"text-secondary\" title=\"ViewStart\">+VS</small>")
-                        @node1.Catalog.HasLayout.ToHtml("<small class=\"text-secondary\" title=\"Layout\">+L</small>")
-                    </h4>
-                    @{
-                        OutCatalogInfo(node1.Catalog);
-                    }
-                </div>
-            }
-        </div>
-
-
+        @if (site1 is not null)
+        {
+            <div id="site_pages" class="d-flex flex-wrap gap-3">
+                @foreach (var node1 in site1.Nodes)
+                {
+                    var url1 = $"{Current.Host.VirtualPath}{node1.Url}";
+                    <div class="my-4 node1" style="width:20rem;">
+                        <h4 class="m-0">
+                            <a target="_blank" href="@url1"><code>@node1.Name</code></a>
+                            @node1.Catalog.HasViewStart.ToHtml("<small class=\"text-secondary\" title=\"ViewStart\">+VS</small>")
+                            @node1.Catalog.HasLayout.ToHtml("<small class=\"text-secondary\" title=\"Layout\">+L</small>")
+                        </h4>
+                        @{
+                            OutCatalogInfo(node1.Catalog);
+                        }
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">Каталог <code>Views/Nodes</code> не найден.</p>
+        }
     </div>
     <div class="col-md-5">
-
-
         <h2>Индексы страниц в карте сайта</h2>
         @{
             OutNodes(Current.Sitemap.NodesIndex);
         }
-
-
     </div>
 </div>
 
-
-
 <script defer>
 
-    document.querySelectorAll('.page1').forEach((e1) => {
-        const
-            info1 = e1.querySelector('span'),
-            url1 = e1.dataset.path;
+    document.querySelectorAll('.js-page-check').forEach((e1) => {
+        const info1 = e1.querySelector('span');
+        const url1 = e1.dataset.path;
+        if (!info1 || !url1)
+            return;
+
         checkUrl(url1).then(status1 => {
             switch (status1) {
                 case 200:
@@ -79,8 +86,12 @@
     });
 
     async function checkUrl(url) {
-        const response1 = await fetch(url, { method: 'GET' });
-        return response1.status;
+        try {
+            const res1 = await fetch(url, { method: 'GET', cache: 'no-store' });
+            return res1.status;
+        } catch {
+            return 'ERR';
+        }
     }
 
 </script>
@@ -92,22 +103,21 @@
 
     void OutNodes(FrozenDictionary<string, NodemapItem> nodes)
     {
-        if (nodes.Count > 0)
+        if (nodes is { Count: > 0 })
             foreach (var node1 in nodes.OrderBy(x => x.Value.Name))
-            {
                 OutPages(node1.Value.AllTopPages);
-            }
     }
 
 
     void OutPages(IReadOnlyCollection<PagemapItem> pages)
     {
-        if (pages.Count > 0)
+        if (pages is { Count: > 0 })
             foreach (var page1 in pages)
             {
-                var url1 = page1.GetUrl(HttpContext);
+                var url1 = page1.GetUrl(Context);
                 string? pref1 = null;
                 string? title1 = null;
+                bool isExternal1 = false;
                 switch (page1.Type)
                 {
                     case PagemapTypesEnum.Catalog:
@@ -123,6 +133,7 @@
                     case PagemapTypesEnum.ExternalUrl:
                         pref1 = "(ext)";
                         title1 = page1.Target;
+                        isExternal1 = true;
                         break;
                 }
 
@@ -133,9 +144,16 @@
                         <span>@title1</span>
                     </div>
                 }
+                else if (isExternal1)
+                {
+                    <div class="ps-2">
+                        <small class="opacity-50">@page1.Node.Name</small>
+                        @pref1.ToHtml("{0}&nbsp;")<a target="_blank" rel="noopener noreferrer" href="@url1">@title1</a>
+                    </div>
+                }
                 else
                 {
-                    <div class="page1 ps-2" data-path="@url1">
+                    <div class="js-page-check ps-2" data-path="@url1">
                         <small class="opacity-50">@page1.Node.Name</small>
                         @pref1.ToHtml("{0}&nbsp;")<a target="_blank" href="@url1">@title1</a>
                         <span></span>
@@ -149,27 +167,24 @@
     void OutCatalogInfo(CatalogInfo catalog)
     {
         <div class="catalog1">
-            @if (catalog.Catalogs?.Count() > 0)
-                foreach (var catalog1 in catalog.Catalogs)
-                {
-                    OutCatalogInfo(catalog1);
-                }
-            @if (catalog.Pages?.Count() > 0)
-                foreach (var page1 in catalog.Pages)
-                {
-                    var url1 = $"{Current.Host.VirtualPath}{page1.Url}";
-                    <div class="page1 ps-2" data-path="@url1">
-                        <small class="opacity-50">@catalog.Url</small>
-                        <a target="_blank" href="@url1">@page1.Name</a>
-                        <span></span>
-                    </div>
-                }
+            @foreach (var catalog1 in catalog.Catalogs)
+            {
+                OutCatalogInfo(catalog1);
+            }
+            @foreach (var page1 in catalog.Pages)
+            {
+                var url1 = $"{Current.Host.VirtualPath}{page1.Url}";
+                <div class="js-page-check ps-2" data-path="@url1">
+                    <small class="opacity-50">@catalog.Url</small>
+                    <a target="_blank" href="@url1">@page1.Name</a>
+                    <span></span>
+                </div>
+            }
         </div>
     }
 
 
-
-    class SiteInfo
+    sealed class SiteInfo
     {
         public SiteInfo(DirectoryInfo dir)
         {
@@ -182,8 +197,7 @@
     }
 
 
-
-    class NodeInfo
+    sealed class NodeInfo
     {
         public NodeInfo(DirectoryInfo dir)
         {
@@ -198,23 +212,21 @@
     }
 
 
-
-    class CatalogInfo
+    sealed class CatalogInfo
     {
         public CatalogInfo(string url, DirectoryInfo dir)
         {
             var files1 = dir
                 .GetFiles("*.cshtml")
-                .Where(x => x.Name.IndexOf('~') == -1)
-                .OrderBy(x => x.Name);
+                .Where(x => !x.Name.Contains('~'))
+                .OrderBy(x => x.Name)
+                .ToArray();
             Name = dir.Name;
             Url = url;
             HasViewStart = files1.Any(
-                x => x.Name.Equals("_viewstart.cshtml",
-                StringComparison.InvariantCultureIgnoreCase));
+                x => x.Name.Equals("_viewstart.cshtml", StringComparison.OrdinalIgnoreCase));
             HasLayout = files1.Any(
-                x => x.Name.Equals("_layout.cshtml",
-                StringComparison.InvariantCultureIgnoreCase));
+                x => x.Name.Equals("_layout.cshtml", StringComparison.OrdinalIgnoreCase));
             Catalogs = dir.GetDirectories()
                 .OrderBy(x => x.Name)
                 .Select(x => new CatalogInfo($"{Url}{x.Name}/", x));
@@ -232,13 +244,12 @@
     }
 
 
-
-    class PageInfo
+    sealed class PageInfo
     {
         public PageInfo(string url, FileInfo page)
         {
             Name = page.Name[..^7];
-            Url = $"{url}{Name}".ReplaceEnd("/start", null);
+            Url = $"{url}{Name}".ReplaceEnd("/start", null) is { Length: > 0 } u1 ? u1 : "/";
         }
 
         public string Name { get; }

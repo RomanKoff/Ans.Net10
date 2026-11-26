@@ -1,4 +1,4 @@
-﻿// rev 2026-11-24
+﻿// rev 2026-11-26
 
 using Ans.Net10.Common;
 

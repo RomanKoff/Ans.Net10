@@ -1,0 +1,190 @@
+@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+    
+    =================
+    Output приложения
+    =================
+
+*@
+@model object?
+@using Ans.Net10.Web.Services
+@using Serilog.Events
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@inject AnsMemoryLogStore? LogStore
+
+@{
+    Current.Meta.RobotsOff();
+
+    var apiBaseUrl1 = Current.GetAnsApiBaseUrl(Model, "/api/ans/console");
+
+    var entries1 = LogStore?.GetEntries() ?? Array.Empty<AnsLogEntry>();
+    var lastId1 = entries1.Length > 0 ? entries1[^1].Id : 0;
+    var xsrfToken1 = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+<div class="card shadow-sm">
+    <div class="card-header d-flex flex-wrap align-items-center gap-3 py-2">
+        <span class="fw-semibold me-auto">
+            Системный журнал
+            <span class="badge text-bg-secondary ms-1">Буфер: @(LogStore?.Capacity ?? 0)</span>
+        </span>
+
+        <select id="ansConsoleLevelFilter" class="form-select form-select-sm w-auto" aria-label="Фильтр уровня логирования">
+            <option value="">Все уровни</option>
+            <option value="1">DBG+</option>
+            <option value="2">INF+</option>
+            <option value="3" selected>WRN+</option>
+            <option value="4">ERR+</option>
+            <option value="5">FTL</option>
+        </select>
+
+        <div class="form-check form-switch m-0">
+            <input class="form-check-input" type="checkbox" id="ansConsoleLiveCheck" checked />
+            <label class="form-check-label small" for="ansConsoleLiveCheck">Live (2с)</label>
+        </div>
+
+        <button type="button" id="ansConsoleClearBtn" class="btn btn-sm btn-outline-danger">Очистить</button>
+    </div>
+
+    <div id="ansConsoleTerminal"
+         class="card-body bg-body-tertiary font-monospace small overflow-y-auto p-3"
+         style="height: 65vh; font-size: 0.75rem; line-height: 1.2;"
+         data-api-base="@apiBaseUrl1">
+        @if (LogStore is null)
+        {
+            <div class="text-warning-emphasis">Буферизация логов в памяти отключена (Serilog.MemoryBufferCapacity &lt;= 0).</div>
+        }
+        else
+        {
+            foreach (var item1 in entries1.Reverse())
+            {
+                var lvlClass1 = item1.Level switch
+                {
+                    LogEventLevel.Information => "text-success-emphasis",
+                    LogEventLevel.Warning => "text-warning-emphasis",
+                    LogEventLevel.Error => "text-danger-emphasis",
+                    LogEventLevel.Fatal => "badge text-bg-danger",
+                    _ => "text-body-secondary"
+                };
+                <div class="border-bottom border-secondary-subtle py-1 text-break" data-lvl="@((int)item1.Level)">
+                    <span class="text-body-secondary">@item1.Timestamp.ToString("HH:mm:ss.fff")</span>
+                    <span class="fw-bold @lvlClass1">[@item1.LevelShortName]</span>
+                    @if (!string.IsNullOrEmpty(item1.SourceContext))
+                    {
+                        <span class="text-info-emphasis">[@item1.SourceContext]</span>
+                    }
+                    <span style="white-space: pre-wrap;">@item1.Message</span>
+                    @if (!string.IsNullOrEmpty(item1.Exception))
+                    {
+                        <div class="text-danger-emphasis border-start border-2 border-danger ps-3 mt-1" style="white-space: pre-wrap;">@item1.Exception</div>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<script defer>
+    (() => {
+
+        let lastId = @lastId1;
+        
+        const terminal = document.getElementById('ansConsoleTerminal');
+        const levelFilter = document.getElementById('ansConsoleLevelFilter');
+        const liveCheck = document.getElementById('ansConsoleLiveCheck');
+        const clearBtn = document.getElementById('ansConsoleClearBtn');
+
+        if (!terminal || !levelFilter || !liveCheck || !clearBtn)
+            return;
+
+        const rawBase = (terminal.dataset.apiBase || '/api/ans/console').replace(/\/+$/, '');
+        const apiBase = rawBase.startsWith('/') || rawBase.startsWith('http') ? rawBase : `/${rawBase}`;
+        const tokenParam = new URLSearchParams(window.location.search).get('token');
+        const lvlNames = [
+            'VRB',
+            'DBG',
+            'INF',
+            'WRN',
+            'ERR',
+            'FTL'
+        ];
+        const lvlClasses = [
+            'text-body-secondary',
+            'text-body-secondary',
+            'text-success-emphasis',
+            'text-warning-emphasis',
+            'text-danger-emphasis',
+            'badge text-bg-danger'
+        ];
+
+        function buildUrl(action, extra = {}) {
+            const q = new URLSearchParams(extra);
+            if (tokenParam)
+                q.set('token', tokenParam);
+            const qs = q.toString();
+            return qs ? `${apiBase}/${action}?${qs}` : `${apiBase}/${action}`;
+        }
+
+        function applyFilter() {
+            const min = levelFilter.value ? parseInt(levelFilter.value, 10) : 0;
+            for (const row of terminal.children) {
+                const lvl = parseInt(row.dataset.lvl || '0', 10);
+                row.classList.toggle('d-none', lvl < min);
+            }
+        }
+        
+        function esc(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+        
+        async function pollUpdates() {
+            if (!liveCheck.checked)
+                return;
+            try {
+                const res = await fetch(buildUrl('updates', { afterId: lastId }));
+                if (!res.ok)
+                    return;
+                const items = await res.json();
+                if (!items.length)
+                    return;
+                const min = levelFilter.value ? parseInt(levelFilter.value, 10) : 0;
+                for (const item of items) {
+                    lastId = Math.max(lastId, item.id);
+                    const code = lvlNames[item.level] || 'UNK';
+                    const cls = lvlClasses[item.level] || 'text-body-secondary';
+                    const div = document.createElement('div');
+                    div.className = 'border-bottom border-secondary-subtle py-1 text-break';
+                    div.dataset.lvl = item.level;
+                    if (item.level < min)
+                        div.classList.add('d-none');
+                    const d = new Date(item.timestamp);
+                    const ts = d.toTimeString().split(' ')[0] + '.' + String(d.getMilliseconds()).padStart(3, '0');
+                    div.innerHTML = `<span class="text-body-secondary">${ts}</span> `
+                        + `<span class="fw-bold ${cls}">[${code}]</span> `
+                        + (item.sourceContext ? `<span class="text-info-emphasis">[${esc(item.sourceContext)}]</span> ` : '')
+                        + `<span style="white-space: pre-wrap;">${esc(item.message)}</span>`
+                        + (item.exception ? `<div class="text-danger-emphasis border-start border-2 border-danger ps-3 mt-1" style="white-space: pre-wrap;">${esc(item.exception)}</div>` : '');
+                    terminal.prepend(div);
+                }
+            } catch { }
+        }
+
+        levelFilter.addEventListener('change', applyFilter);
+        
+        clearBtn.addEventListener('click', async () => {
+            await fetch(buildUrl('clear'), {
+                method: 'POST',
+                headers: { 'RequestVerificationToken': '@xsrfToken1' }
+            });
+            terminal.innerHTML = '';
+        });
+        
+        applyFilter();
+        terminal.scrollTop = 0;
+        setInterval(pollUpdates, 2000);
+
+    })();
+</script>

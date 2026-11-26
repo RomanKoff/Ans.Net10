@@ -1,41 +1,41 @@
 @*
-	rev 2026-11-24
-	
-	Компонент библиотеки Ans.Net10.Web.
-	Код не предназначен для редактирования и компиляции во время выполнения!
+    rev 2026-11-24
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
 
-	===========================================
-	Элемент навигации страницы «Хлебные крошки»
-	===========================================
+    ===========================================
+    Элемент навигации страницы «Хлебные крошки»
+    ===========================================
 
 *@
 @model object?
 
 @{
-	var opts1 = NavRenderOptions.Resolve(Model);
-	var crumbs1 = Current.GetBreadcrumbs(opts1.Tags);
+    var opts1 = NavRenderOptions.Resolve(Model);
+    var crumbs1 = Current.GetBreadcrumbs(opts1.Tags);
 }
 
 @if (crumbs1 is { Count: > 0 })
 {
-	<nav aria-label="breadcrumb" class="@opts1.CssClass">
-		<ol class="breadcrumb">
-			@{
-				int count1 = crumbs1.Count;
-			}
-			@for (int i1 = 0; i1 < count1; i1++)
-			{
-				var item1 = crumbs1[i1];
-				var titleHtml1 = opts1.UseShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
-				if (i1 == count1 - 1)
-				{
-					<li class="breadcrumb-item active" aria-current="page">@titleHtml1</li>
-				}
-				else
-				{
-					<li class="breadcrumb-item">@item1.ToLinkBuilder(opts1.UseShortTitle).GetTag().ToHtml()</li>
-				}
-			}
-		</ol>
-	</nav>
+    <nav aria-label="breadcrumb" class="@opts1.CssClass">
+        <ol class="breadcrumb">
+            @{
+                int count1 = crumbs1.Count;
+            }
+            @for (int i1 = 0; i1 < count1; i1++)
+            {
+                var item1 = crumbs1[i1];
+                var titleHtml1 = opts1.UseShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
+                if (i1 == count1 - 1)
+                {
+                    <li class="breadcrumb-item active" aria-current="page">@titleHtml1</li>
+                }
+                else
+                {
+                    <li class="breadcrumb-item">@item1.ToLinkBuilder(opts1.UseShortTitle).GetTag().ToHtml()</li>
+                }
+            }
+        </ol>
+    </nav>
 }

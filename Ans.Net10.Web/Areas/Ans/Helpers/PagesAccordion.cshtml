@@ -1,0 +1,88 @@
+@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+
+    =================================================================
+    Боковое многоуровневое меню страниц раздела со сворачиваемыми
+    ветками (Bootstrap 5 Collapse) и авто-раскрытием активного пути.
+    =================================================================
+
+*@
+@model object?
+
+@{
+    var opts1 = NavRenderOptions.Resolve(Model);
+    var pages1 = Current.GetPagesNav(opts1.MaxDepth, opts1.Tags);
+    var uid1 = $"ansAcc_{Guid.NewGuid():N}";
+    int seq1 = 0;
+}
+
+@if (pages1 is { Count: > 0 })
+{
+    OutAccordionTree(pages1, opts1.UseShortTitle, uid1, ref seq1, $"nav flex-column {opts1.CssClass}");
+}
+
+@functions {
+
+    void OutAccordionTree(
+        IReadOnlyList<NavItem> items,
+        bool useShortTitle,
+        string prefix,
+        ref int seq,
+        string ulClass = "nav flex-column ps-3 border-start ms-2")
+    {
+        <ul class="@ulClass">
+            @foreach (var item1 in items)
+            {
+                var titleHtml1 = useShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
+                if (item1.IsGroup)
+                {
+                    <li class="nav-item mt-2">
+                        <span class="nav-link disabled fw-semibold text-uppercase small py-1">@titleHtml1</span>
+                        @if (item1.HasChildren)
+                        {
+                            OutAccordionTree(item1.Children, useShortTitle, prefix, ref seq, "nav flex-column");
+                        }
+                    </li>
+                }
+                else if (item1.HasChildren)
+                {
+                    seq++;
+                    var targetId1 = $"{prefix}_{seq}";
+                    var isOpen1 = item1.IsActive || item1.IsActiveBranch;
+                    var link1 = item1.ToLinkBuilder(useShortTitle);
+                    link1.CssClass = isOpen1 ? "nav-link fw-semibold flex-grow-1" : "nav-link flex-grow-1";
+
+                    <li class="nav-item">
+                        <div class="d-flex align-items-center">
+                            @link1.GetTag().ToHtml()
+                            <button class="btn btn-sm btn-link text-body-secondary text-decoration-none px-2 @(isOpen1 ? null : "collapsed")"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#@targetId1"
+                                    aria-expanded="@(isOpen1 ? "true" : "false")"
+                                    aria-controls="@targetId1"
+                                    aria-label="Развернуть подраздел">
+                                &#9662;
+                            </button>
+                        </div>
+                        <div class="collapse @(isOpen1 ? "show" : null)" id="@targetId1">
+                            @{
+                                OutAccordionTree(item1.Children, useShortTitle, prefix, ref seq);
+                            }
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    var link1 = item1.ToLinkBuilder(useShortTitle);
+                    link1.CssClass = "nav-link";
+                    <li class="nav-item">@link1.GetTag().ToHtml()</li>
+                }
+            }
+        </ul>
+    }
+
+}

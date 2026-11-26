@@ -9,6 +9,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Views\Nodes\dev\**" />
+	  <Content Remove="Views\Nodes\dev\**" />
+	  <EmbeddedResource Remove="Views\Nodes\dev\**" />
+	  <None Remove="Views\Nodes\dev\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
 		<ProjectReference Include="..\Ans.Net10.Web\Ans.Net10.Web.csproj" />
 	</ItemGroup>
@@ -24,10 +31,6 @@
 
 		<Content Remove="appsettings.Development.json" />
 		<None Include="appsettings.Development.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="App_Code\" />
 	</ItemGroup>
 
 </Project>

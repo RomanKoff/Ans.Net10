@@ -1,20 +1,20 @@
 @*
-	rev 2026-11-24
+    rev 2026-11-24
 
-	Компонент библиотеки Ans.Net10.Web.
-	Код не предназначен для редактирования и компиляции во время выполнения!
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
 *@
 
 @{
-	var pages1 = Current.GetSubpagesNav(1);
+    var pages1 = Current.GetSubpagesNav(1);
 }
 
 @if (pages1 is { Count: > 0 })
 {
-	<ul>
-		@foreach (var item1 in pages1)
-		{
-			<li class="nav-item">@item1.ToLinkBuilder().GetTag()</li>
-		}
-	</ul>
+    <ul>
+        @foreach (var item1 in pages1)
+        {
+            <li class="nav-item">@item1.ToLinkBuilder().GetTag()</li>
+        }
+    </ul>
 }

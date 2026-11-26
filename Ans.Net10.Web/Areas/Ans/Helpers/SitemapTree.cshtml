@@ -1,50 +1,51 @@
-@*
-	rev 2026-11-24
-	
-	Компонент библиотеки Ans.Net10.Web.
-	Код не предназначен для редактирования и компиляции во время выполнения!
+﻿@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
 
-	==============================================================================
-	Рекурсивное многоуровневое универсальное дерево узлов для карты сайта и футера
-	==============================================================================
+    ==============================================================================
+    Рекурсивное многоуровневое универсальное дерево узлов для карты сайта и футера
+    ==============================================================================
 
 *@
 @model object?
 
 @{
-	var opts1 = NavRenderOptions.Resolve(Model);
-	var nodes1 = Current.GetNodesNav(opts1.MaxDepth, opts1.Tags);
+    var opts1 = NavRenderOptions.Resolve(Model);
+    var nodes1 = Current.GetNodesNav(opts1.MaxDepth, opts1.Tags);
+    var rootClass1 = string.IsNullOrWhiteSpace(opts1.CssClass) ? "list-unstyled mb-0" : opts1.CssClass;
 }
 
 @if (nodes1 is { Count: > 0 })
 {
-	OutTree(nodes1, opts1.UseShortTitle, opts1.CssClass);
+    OutTree(nodes1, opts1.UseShortTitle, rootClass1);
 }
 
 @functions {
 
-	void OutTree(IReadOnlyList<NavItem> items, bool useShortTitle, string? cssClass = null)
-	{
-		<ul class="@cssClass">
-			@foreach (var item1 in items)
-			{
-				var liClass1 = item1.IsActive ? "active" : item1.IsActiveBranch ? "active-branch" : null;
-				<li class="@liClass1">
-					@if (item1.IsGroup)
-					{
-						<span class="fw-semibold">@(useShortTitle ? item1.ShortTitleHtml : item1.TitleHtml)</span>
-					}
-					else
-					{
-						@item1.ToLinkBuilder(useShortTitle).GetTag().ToHtml()
-					}
-					@if (item1.HasChildren)
-					{
-						OutTree(item1.Children, useShortTitle);
-					}
-				</li>
-			}
-		</ul>
-	}
+    void OutTree(IReadOnlyList<NavItem> items, bool useShortTitle, string? cssClass = "list-unstyled ps-3")
+    {
+        <ul class="@cssClass">
+            @foreach (var item1 in items)
+            {
+                var liClass1 = item1.IsActive ? "active" : item1.IsActiveBranch ? "active-branch" : null;
+                <li class="@liClass1">
+                    @if (item1.IsGroup)
+                    {
+                        <span class="fw-semibold">@(useShortTitle ? item1.ShortTitleHtml : item1.TitleHtml)</span>
+                    }
+                    else
+                    {
+                        @item1.ToLinkBuilder(useShortTitle).GetTag().ToHtml()
+                    }
+                    @if (item1.HasChildren)
+                    {
+                        OutTree(item1.Children, useShortTitle);
+                    }
+                </li>
+            }
+        </ul>
+    }
 
 }

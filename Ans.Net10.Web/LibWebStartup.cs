@@ -197,7 +197,7 @@ namespace Ans.Net10.Web
             builder.Services.AddCors(o => SuppCors.RegisterPolicies(o, options1));
 
             //--- nodes & sitemap
-            builder.Services.AddSitemapContributor<AnsSitemapContributor>();
+            //builder.Services.AddSitemapContributor<AnsSitemapContributor>();
             builder.Services.AddSingleton<SitemapBuilder>();
             builder.Services.AddSingleton<NodesMapper>();
             builder.Services.AddHostedService<ViewsWatcherService>();

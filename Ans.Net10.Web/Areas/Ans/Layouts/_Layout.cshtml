@@ -25,118 +25,88 @@
 
 
     @* SITE HEADER *@
-    <header class="py-3 bg-light border-bottom">
-        <site-container>
-            SITE HEADER
-        </site-container>
-    </header>
+    @if (Current.IsKeyNotOff("Site.Header") && !await this.TrySectionAsync("CustomSiteHeaderSection"))
+    {
+        <header class="py-3 bg-light border-bottom">
+            <site-container>
+                @Current.Site.TitleHtml
+            </site-container>
+        </header>
+    }
 
 
     @* NODE HEADER *@
-    <header class="py-3 bg-light border-bottom">
-        <node-container>
-            NODE HEADER
-        </node-container>
-    </header>
+    @if (Current.IsKeyNotOff("Node.Header") && !await this.TrySectionAsync("CustomNodeHeaderSection") && Current.Node.Title != null)
+    {
+        <header class="py-3 bg-light border-bottom">
+            <node-container>
+                @Current.Node.TitleHtml
+            </node-container>
+        </header>
+    }
 
 
-    <header class="py-3 bg-light border-bottom">
-        <node-container>
-            <partial name="/Areas/Ans/Helpers/NodesNavbar.cshtml" />
-        </node-container>
-    </header>
-
+    @* NODE NAVIGATOR *@
+    @if (Current.IsKeyNotOff("Node.Navigator") && Current.GetPagesNav(1).Count > 0 && !await this.TrySectionAsync("CustomNodeNavigatorSection"))
+    {
+        <header class="py-3 bg-light border-bottom">
+            <node-container>
+                <partial name="/Areas/Ans/Helpers/PagesTree.cshtml" />
+            </node-container>
+        </header>
+    }
+    
 
     @* PAGE MAIN *@
-    @await RenderSectionAsync("PageBefore", false)
-    <main role="main" class="py-3 mb-5">
-        <page-container>
-            <partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
-            <partial name="/Areas/Ans/Helpers/PageTitle.cshtml" />
-            @RenderBody()
-            <partial name="/Areas/Ans/Helpers/PagesTree.cshtml" />
-
-            <hr />
-
-            <div class="row">
-                <div class="col">
-                    <h4>Sub Nodes:</h4>
-                    <partial name="/Areas/Ans/Helpers/SubNodes.cshtml" />
-                </div>
-                <div class="col">
-                    <h4>Sub Pages:</h4>
+    <main role="main">
+        @if (Current.IsKeyNotOff("Page.Header"))
+        {
+            <page-container>
+                @if (Current.IsKeyNotOff("Breadcrumbs"))
+                {
+                    <partial name="/Areas/Ans/Helpers/Breadcrumbs.cshtml" />
+                }
+                @if (Current.IsKeyNotOff("Page.Title") && !string.IsNullOrEmpty(Current.Page.Title))
+                {
+                    <partial name="/Areas/Ans/Helpers/PageTitle.cshtml" />
+                }
+                @if (Current.IsKeyOn("Page.SubPages"))
+                {
                     <partial name="/Areas/Ans/Helpers/SubPages.cshtml" />
-                </div>
-            </div>
-            <hr />
-            
-            <div class="row">
-                <div class="col">
-                    <h4>Nodes Mapper:</h4>
-                    <partial name="/Areas/Ans/Helpers/DebugNodesMapper.cshtml" />
-                </div>
-                <div class="col">
-                    <h4>Sitemap:</h4>
-                    <partial name="/Areas/Ans/Helpers/SitemapTree.cshtml" />
-                    <partial name="/Areas/Ans/Helpers/DebugSitemap.cshtml" />
-                </div>
-                <div class="col">
-                    <h4>Sitemap Nodes:</h4>
-                    <partial name="/Areas/Ans/Helpers/DebugSitemapNodes.cshtml" />
-                    <h4>Sitemap Pages:</h4>
-                    <partial name="/Areas/Ans/Helpers/DebugSitemapPages.cshtml" />
-                </div>
-            </div>
-            <hr />
-
-            <div class="row">
-                <div class="col">
-                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Host" />
-                </div>
-                <div class="col">
-                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Request" />
-                </div>
-            </div>
-            <hr />
-
-            <div class="row">
-                <div class="col">
-                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Site" />
-                </div>
-                <div class="col">
-                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node" />
-                    <hr />
-                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Node.MapItem" />
-                </div>
-                <div class="col">
-                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page" />
-                    <hr />
-                    <partial name="/Areas/Ans/Helpers/ObjInfo.cshtml" model="Current.Page.MapItem" />
-                </div>
-            </div>
-                    
+                }
+            </page-container>
+        }
+        @await RenderSectionAsync("PageBefore", false)
+        <page-container class="content mb-5">
+            @RenderBody()
         </page-container>
+        @await RenderSectionAsync("PageAfter", false)
     </main>
-    @await RenderSectionAsync("PageAfter", false)
 
 
     <div class="mt-auto">
 
 
         @* NODE FOOTER *@
-        <footer class="py-3 bg-light border-top">
-            <node-container>
-                NODE FOOTER
-            </node-container>
-        </footer>
+        @if (Current.IsKeyOn("Node.Footer") && !await this.TrySectionAsync("CustomNodeFooterSection") && Current.Node.Title != null)
+        {
+            <footer class="py-3 bg-light border-top">
+                <node-container>
+                    @Current.Node.TitleHtml
+                </node-container>
+            </footer>
+        }
 
 
         @* SITE FOOTER *@
-        <footer class="py-3 bg-light border-top">
-            <site-container>
-                SITE FOOTER
-            </site-container>
-        </footer>
+        @if (Current.IsKeyNotOff("Site.Footer") && !await this.TrySectionAsync("CustomSiteFooterSection"))
+        {
+            <footer class="py-3 bg-light border-top">
+                <site-container>
+                    @Current.Site.TitleHtml
+                </site-container>
+            </footer>
+        }
 
 
     </div>

@@ -1,0 +1,293 @@
+﻿@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+
+    =================================================================
+    Адаптивный горизонтальный навигатор страниц текущего раздела:
+    десктоп-бар с многоуровневым dropdown, авто-сборкой лишних
+    пунктов в «Ещё» (ResizeObserver) и мобильной шторкой Offcanvas.
+    =================================================================
+
+*@
+@model object?
+
+@{
+    var opts1 = NavRenderOptions.Resolve(Model);
+    var pages1 = Current.GetPagesNav(opts1.MaxDepth ?? 3, opts1.Tags);
+    var uid1 = $"ansPagesNav_{Guid.NewGuid():N}";
+    var offcanvasId1 = $"{uid1}_oc";
+    var activeItem1 = FindActiveItem(pages1);
+    var activeLabel1 = activeItem1 is not null
+        ? (opts1.UseShortTitle ? activeItem1.ShortTitleHtml : activeItem1.TitleHtml)
+        : Current.Node.ShortTitleHtml;
+}
+
+@if (pages1 is { Count: > 0 })
+{
+    <nav id="@uid1" class="ans-pages-navbar @opts1.CssClass" aria-label="Навигация по разделу">
+        @* Мобильная кнопка открытия Offcanvas (< lg) *@
+        <div class="d-flex d-lg-none align-items-center justify-content-between gap-2">
+            <span class="fw-semibold text-truncate">@activeLabel1</span>
+            <button class="btn btn-sm btn-outline-secondary text-nowrap"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#@offcanvasId1"
+                    aria-controls="@offcanvasId1">
+                Разделы &#9776;
+            </button>
+        </div>
+
+        @* Десктопный горизонтальный бар (>= lg) *@
+        <ul class="nav flex-nowrap align-items-center gap-1 d-none d-lg-flex" data-nav-list>
+            @for (int i = 0; i < pages1.Count; i++)
+            {
+                var item1 = pages1[i];
+                if (item1.IsGroup)
+                {
+                    continue;
+                }
+                var titleHtml1 = opts1.UseShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
+                var isOpen1 = item1.IsActive || item1.IsActiveBranch;
+                if (item1.HasChildren)
+                {
+                    <li class="nav-item dropdown text-nowrap" data-nav-idx="@i">
+                        <a class="nav-link dropdown-toggle @(isOpen1 ? "active" : null)"
+                           href="#"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           data-bs-auto-close="outside"
+                           aria-expanded="false"
+                           style="max-width: 18rem;">
+                            <span class="d-inline-block text-truncate align-bottom" style="max-width: 15.5rem;">@titleHtml1</span>
+                        </a>
+                        <ul class="dropdown-menu shadow-sm" style="min-width: 16rem; max-width: 24rem;">
+                            @if (!item1.IsDisabled && !string.IsNullOrEmpty(item1.Url))
+                            {
+                                var rootLink1 = item1.ToLinkBuilder(opts1.UseShortTitle);
+                                rootLink1.CssClass = "dropdown-item fw-semibold text-wrap";
+                                <li>@rootLink1.GetTag().ToHtml()</li>
+                                <li><hr class="dropdown-divider" /></li>
+                            }
+                            @{
+                                OutDesktopDropdownItems(item1.Children, opts1.UseShortTitle, 0);
+                            }
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    var link1 = item1.ToLinkBuilder(opts1.UseShortTitle);
+                    link1.CssClass = isOpen1 ? "nav-link active text-nowrap" : "nav-link text-nowrap";
+                    <li class="nav-item" data-nav-idx="@i">
+                        @link1.GetTag().ToHtml()
+                    </li>
+                }
+            }
+
+            @* Выпадающий пункт «Ещё» для невлезающих пунктов 1-го уровня *@
+            <li class="nav-item dropdown d-none" data-nav-more>
+                <a class="nav-link dropdown-toggle"
+                   href="#"
+                   role="button"
+                   data-bs-toggle="dropdown"
+                   data-bs-auto-close="outside"
+                   aria-expanded="false">
+                    Ещё
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="min-width: 16rem; max-width: 24rem;" data-nav-more-menu></ul>
+            </li>
+        </ul>
+
+        @* Мобильная шторка Offcanvas *@
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="@offcanvasId1" aria-labelledby="@($"{offcanvasId1}_lbl")">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title text-truncate" id="@($"{offcanvasId1}_lbl")">@Current.Node.ShortTitleHtml</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Закрыть"></button>
+            </div>
+            <div class="offcanvas-body">
+                @{
+                    int seq1 = 0;
+                    OutMobileTree(pages1, opts1.UseShortTitle, $"{uid1}_m", ref seq1, "nav flex-column");
+                }
+            </div>
+        </div>
+    </nav>
+}
+
+
+
+@functions {
+
+    NavItem? FindActiveItem(IReadOnlyList<NavItem> items)
+    {
+        foreach (var item1 in items)
+        {
+            if (item1.IsActive)
+                return item1;
+            if (item1.HasChildren)
+            {
+                var found1 = FindActiveItem(item1.Children);
+                if (found1 is not null)
+                    return found1;
+            }
+        }
+        return null;
+    }
+
+    void OutDesktopDropdownItems(IReadOnlyList<NavItem> items, bool useShortTitle, int level)
+    {
+        var padClass1 = level switch
+        {
+            0 => null,
+            1 => "ps-4 small",
+            _ => "ps-5 small"
+        };
+
+        foreach (var item1 in items)
+        {
+            var titleHtml1 = useShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
+            if (item1.IsGroup)
+            {
+                <li><h6 class="dropdown-header @padClass1">@titleHtml1</h6></li>
+            }
+            else
+            {
+                var link1 = item1.ToLinkBuilder(useShortTitle);
+                link1.CssClass = $"dropdown-item text-wrap {padClass1} {(item1.IsActive ? "active" : null)}".Trim();
+                <li>@link1.GetTag().ToHtml()</li>
+            }
+
+            if (item1.HasChildren)
+            {
+                OutDesktopDropdownItems(item1.Children, useShortTitle, level + 1);
+            }
+        }
+    }
+
+    void OutMobileTree(
+        IReadOnlyList<NavItem> items,
+        bool useShortTitle,
+        string prefix,
+        ref int seq,
+        string ulClass = "nav flex-column ps-3 border-start ms-2")
+    {
+        <ul class="@ulClass">
+            @foreach (var item1 in items)
+            {
+                var titleHtml1 = useShortTitle ? item1.ShortTitleHtml : item1.TitleHtml;
+                if (item1.IsGroup)
+                {
+                    <li class="nav-item mt-2">
+                        <span class="nav-link disabled fw-semibold text-uppercase small py-1">@titleHtml1</span>
+                        @if (item1.HasChildren)
+                        {
+                            OutMobileTree(item1.Children, useShortTitle, prefix, ref seq, "nav flex-column");
+                        }
+                    </li>
+                }
+                else if (item1.HasChildren)
+                {
+                    seq++;
+                    var targetId1 = $"{prefix}_{seq}";
+                    var isOpen1 = item1.IsActive || item1.IsActiveBranch;
+                    var link1 = item1.ToLinkBuilder(useShortTitle);
+                    link1.CssClass = isOpen1 ? "nav-link fw-semibold flex-grow-1" : "nav-link flex-grow-1";
+
+                    <li class="nav-item">
+                        <div class="d-flex align-items-center">
+                            @link1.GetTag().ToHtml()
+                            <button class="btn btn-sm btn-link text-body-secondary text-decoration-none px-2 @(isOpen1 ? null : "collapsed")"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#@targetId1"
+                                    aria-expanded="@(isOpen1 ? "true" : "false")"
+                                    aria-controls="@targetId1"
+                                    aria-label="Развернуть подраздел">
+                                &#9662;
+                            </button>
+                        </div>
+                        <div class="collapse @(isOpen1 ? "show" : null)" id="@targetId1">
+                            @{
+                                OutMobileTree(item1.Children, useShortTitle, prefix, ref seq);
+                            }
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    var link1 = item1.ToLinkBuilder(useShortTitle);
+                    link1.CssClass = item1.IsActive ? "nav-link active fw-semibold" : "nav-link";
+                    <li class="nav-item">@link1.GetTag().ToHtml()</li>
+                }
+            }
+        </ul>
+    }
+
+}
+
+<script defer>
+    (() => {
+        const root = document.getElementById('@uid1');
+        if (!root) return;
+        const list = root.querySelector('[data-nav-list]');
+        const moreItem = root.querySelector('[data-nav-more]');
+        const moreMenu = root.querySelector('[data-nav-more-menu]');
+        const moreLink = moreItem?.querySelector('.nav-link');
+        if (!list || !moreItem || !moreMenu || !moreLink) return;
+
+        const items = Array.from(list.querySelectorAll(':scope > [data-nav-idx]'));
+        if (!items.length) return;
+
+        function updateOverflow() {
+            if (list.offsetParent === null) return;
+
+            moreMenu.innerHTML = '';
+            moreItem.classList.add('d-none');
+            moreLink.classList.remove('active');
+            for (const li of items) {
+                li.classList.remove('d-none');
+            }
+
+            const maxWidth = list.clientWidth;
+            if (list.scrollWidth <= maxWidth) return;
+
+            moreItem.classList.remove('d-none');
+            let hasActiveHidden = false;
+
+            for (let i = items.length - 1; i >= 0; i--) {
+                if (list.scrollWidth <= maxWidth) break;
+                const li = items[i];
+                li.classList.add('d-none');
+                if (li.querySelector('.nav-link.active')) hasActiveHidden = true;
+
+                const cloneWrap = document.createElement('li');
+                const link = li.querySelector(':scope > .nav-link');
+                const subMenu = li.querySelector(':scope > .dropdown-menu');
+
+                if (subMenu) {
+                    const header = document.createElement('h6');
+                    header.className = 'dropdown-header fw-semibold text-wrap';
+                    header.innerHTML = link ? link.innerHTML : '';
+                    cloneWrap.appendChild(header);
+                    for (const subLi of subMenu.children) {
+                        cloneWrap.appendChild(subLi.cloneNode(true));
+                    }
+                    cloneWrap.appendChild(document.createElement('hr')).className = 'dropdown-divider';
+                } else if (link) {
+                    const a = link.cloneNode(true);
+                    a.className = 'dropdown-item text-wrap' + (link.classList.contains('active') ? ' active' : '');
+                    cloneWrap.appendChild(a);
+                }
+                moreMenu.prepend(cloneWrap);
+            }
+
+            if (hasActiveHidden) moreLink.classList.add('active');
+        }
+
+        const ro = new ResizeObserver(updateOverflow);
+        ro.observe(list);
+        updateOverflow();
+    })();
+</script>

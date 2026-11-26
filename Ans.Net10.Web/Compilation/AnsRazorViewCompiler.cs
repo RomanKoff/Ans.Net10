@@ -1,4 +1,4 @@
-﻿// rev 2026-11-23
+﻿// rev 2026-11-26
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -33,6 +33,7 @@ namespace Ans.Net10.Web.Compilation
     {
 
         private readonly IWebHostEnvironment _env;
+        private readonly LibWebOptions _options;
         private readonly AnsMetadataReferenceProvider _referenceProvider;
         private readonly ApplicationPartManager _partManager;
         private readonly IServiceProvider _services;
@@ -55,24 +56,28 @@ namespace Ans.Net10.Web.Compilation
         /// Инициализирует новый экземпляр класса <see cref="AnsRazorViewCompiler"/>.
         /// </summary>
         /// <param name="env">Среда выполнения веб-приложения для определения физического корня контента.</param>
+        /// <param name="options">Параметры конфигурации библиотеки <c>Ans.Net10.Web</c>.</param>
         /// <param name="referenceProvider">Провайдер ссылок на метаданные сборок.</param>
         /// <param name="partManager">Менеджер прикладных частей приложения для обнаружения встроенных скомпилированных представлений.</param>
         /// <param name="services">Провайдер сервисов приложения для ленивого разрешения <see cref="AnsAppCodeCompiler"/>.</param>
         /// <param name="logger">Экземпляр логгера компилятора.</param>
         public AnsRazorViewCompiler(
             IWebHostEnvironment env,
+            LibWebOptions options,
             AnsMetadataReferenceProvider referenceProvider,
             ApplicationPartManager partManager,
             IServiceProvider services,
             ILogger<AnsRazorViewCompiler> logger)
         {
             ArgumentNullException.ThrowIfNull(env);
+            ArgumentNullException.ThrowIfNull(options);
             ArgumentNullException.ThrowIfNull(referenceProvider);
             ArgumentNullException.ThrowIfNull(partManager);
             ArgumentNullException.ThrowIfNull(services);
             ArgumentNullException.ThrowIfNull(logger);
 
             _env = env;
+            _options = options;
             _referenceProvider = referenceProvider;
             _partManager = partManager;
             _services = services;
@@ -412,7 +417,7 @@ namespace Ans.Net10.Web.Compilation
                 dir1 = lastSlash1 <= 0 ? "/" : dir1[..lastSlash1];
             }
         }
-        
+
 
         private RazorProjectEngine _getOrCreateProjectEngine()
         {
@@ -433,11 +438,14 @@ namespace Ans.Net10.Web.Compilation
                     extensions: []);
 
                 var references1 = _referenceProvider.GetAllReferences();
+                var additionalUsings1 = _buildAdditionalUsings();
                 var tagHelperImports1 = _buildTagHelperImports();
 
                 engine1 = RazorProjectEngine.Create(configuration1, fileSystem1, builder =>
                 {
                     RazorExtensions.Register(builder);
+
+                    builder.SetCSharpLanguageVersion(LanguageVersion.Latest);
 
                     builder.Features.Add(new _MetadataReferenceFeature(references1));
                     builder.Features.Add(new CompilationTagHelperFeature());
@@ -446,13 +454,18 @@ namespace Ans.Net10.Web.Compilation
                     builder.AddDefaultImports($"""
 					@using System
 					@using System.Collections.Generic
+					@using System.IO
 					@using System.Linq
+					@using System.Net.Http
+					@using System.Threading
 					@using System.Threading.Tasks
+					@using Microsoft.AspNetCore.Http
 					@using Microsoft.AspNetCore.Mvc
 					@using Microsoft.AspNetCore.Mvc.Rendering
 					@using Microsoft.AspNetCore.Mvc.ViewFeatures
 					@using Ans.Net10.Common
 					@using Ans.Net10.Web
+					{additionalUsings1}
 					@inject Microsoft.AspNetCore.Mvc.Rendering.IHtmlHelper<TModel> Html
 					@inject Microsoft.AspNetCore.Mvc.IUrlHelper Url
 					@inject Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider ModelExpressionProvider
@@ -464,6 +477,35 @@ namespace Ans.Net10.Web.Compilation
                 _projectEngine = engine1;
                 return engine1;
             }
+        }
+
+
+        private string _buildAdditionalUsings()
+        {
+            var usings1 = _options.DynamicCompilation?.AdditionalUsings;
+            if (usings1 is not { Length: > 0 })
+                return string.Empty;
+
+            var sb1 = new StringBuilder();
+            var added1 = new HashSet<string>(StringComparer.Ordinal);
+
+            foreach (var item1 in usings1)
+            {
+                if (string.IsNullOrWhiteSpace(item1))
+                    continue;
+
+                var clean1 = item1.Trim();
+                if (clean1.StartsWith("@using ", StringComparison.Ordinal))
+                    clean1 = clean1[7..].Trim();
+                else if (clean1.StartsWith("using ", StringComparison.Ordinal))
+                    clean1 = clean1[6..].Trim();
+                clean1 = clean1.TrimEnd(';');
+
+                if (clean1.Length > 0 && added1.Add(clean1))
+                    sb1.AppendLine($"@using {clean1}");
+            }
+
+            return sb1.ToString();
         }
 
 
@@ -487,7 +529,7 @@ namespace Ans.Net10.Web.Compilation
             return sb1.ToString();
         }
 
-        
+
         private static bool _isCacheValid(
             _CachedViewEntry entry)
         {

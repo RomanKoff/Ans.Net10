@@ -1,45 +1,58 @@
-@*
-	rev 2026-11-24
-	
-	Компонент библиотеки Ans.Net10.Web.
-	Код не предназначен для редактирования и компиляции во время выполнения!
+﻿@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
 
-	==============================================================
-	Многоуровневое меню страниц текущего раздела с выделением
-	активного пути (IsActiveBranch) и текущей страницы (IsActive).
-	==============================================================
+    ==============================================================
+    Многоуровневое меню страниц текущего раздела с выделением
+    активного пути (IsActiveBranch) и текущей страницы (IsActive).
+    ==============================================================
 
 *@
 @model object?
 
 @{
-	var opts1 = NavRenderOptions.Resolve(Model);
-	var pages1 = Current.GetPagesNav(opts1.MaxDepth, opts1.Tags);
+    var opts1 = NavRenderOptions.Resolve(Model);
+    var pages1 = Current.GetPagesNav(opts1.MaxDepth, opts1.Tags);
 }
 
 @if (pages1 is { Count: > 0 })
 {
-	OutPagesTree(pages1, opts1.UseShortTitle, $"nav flex-column {opts1.CssClass}");
+    OutPagesTree(pages1, opts1.UseShortTitle, $"nav flex-column {opts1.CssClass}");
 }
 
 @functions {
 
-	void OutPagesTree(IReadOnlyList<NavItem> items, bool useShortTitle, string? ulClass = "nav flex-column ps-3")
-	{
-		<ul class="@ulClass">
-			@foreach (var item1 in items)
-			{
-				var link1 = item1.ToLinkBuilder(useShortTitle);
-				link1.CssClass = item1.IsActiveBranch ? "nav-link fw-semibold" : "nav-link";
-				<li class="nav-item">
-					@link1.GetTag().ToHtml()
-					@if (item1.HasChildren)
-					{
-						OutPagesTree(item1.Children, useShortTitle);
-					}
-				</li>
-			}
-		</ul>
-	}
+    void OutPagesTree(IReadOnlyList<NavItem> items, bool useShortTitle, string? ulClass = "nav flex-column ps-3 border-start ms-2")
+    {
+        <ul class="@ulClass">
+            @foreach (var item1 in items)
+            {
+                if (item1.IsGroup)
+                {
+                    <li class="nav-item mt-2">
+                        <span class="nav-link disabled fw-semibold text-uppercase small py-1">@(useShortTitle ? item1.ShortTitleHtml : item1.TitleHtml)</span>
+                        @if (item1.HasChildren)
+                        {
+                            OutPagesTree(item1.Children, useShortTitle, "nav flex-column");
+                        }
+                    </li>
+                }
+                else
+                {
+                    var link1 = item1.ToLinkBuilder(useShortTitle);
+                    link1.CssClass = item1.IsActiveBranch ? "nav-link fw-semibold" : "nav-link";
+                    <li class="nav-item">
+                        @link1.GetTag().ToHtml()
+                        @if (item1.HasChildren)
+                        {
+                            OutPagesTree(item1.Children, useShortTitle);
+                        }
+                    </li>
+                }
+            }
+        </ul>
+    }
 
 }

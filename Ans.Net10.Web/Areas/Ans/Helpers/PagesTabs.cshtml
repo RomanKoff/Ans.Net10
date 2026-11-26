@@ -1,0 +1,35 @@
+@*
+    rev 2026-11-26
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+
+    ================================================================
+    Горизонтальные вкладки/пилюли первого уровня (Bootstrap 5 Nav)
+    для быстрого переключения между страницами текущего раздела.
+    ================================================================
+
+*@
+@model object?
+
+@{
+    var opts1 = NavRenderOptions.Resolve(Model);
+    var pages1 = Current.GetPagesNav(1, opts1.Tags);
+    var navStyle1 = string.IsNullOrWhiteSpace(opts1.CssClass) ? "nav-pills" : opts1.CssClass;
+}
+
+@if (pages1 is { Count: > 0 })
+{
+    <ul class="nav @navStyle1">
+        @foreach (var item1 in pages1)
+        {
+            if (item1.IsGroup)
+            {
+                continue;
+            }
+            var link1 = item1.ToLinkBuilder(opts1.UseShortTitle);
+            link1.CssClass = (item1.IsActive || item1.IsActiveBranch) ? "nav-link active" : "nav-link";
+            <li class="nav-item">@link1.GetTag().ToHtml()</li>
+        }
+    </ul>
+}

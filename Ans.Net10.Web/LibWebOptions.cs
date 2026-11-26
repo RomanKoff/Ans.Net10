@@ -1,4 +1,4 @@
-﻿// rev 2026-11-23
+﻿// rev 2026-11-25
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -425,9 +425,15 @@ namespace Ans.Net10.Web
     {
         /// <summary>
         /// Получает или задает относительный путь к каталогу исходных <c>.cs</c>-файлов 
-        /// общих моделей и бизнес-логики (по умолчанию <c>"App_Code"</c>).
+        /// общих моделей и бизнес-логики (например: <c>"Views/Models"</c>).
         /// </summary>
-        public string AppCodePath { get; set; } = "App_Code";
+        public string AppCodePath { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Получает или задает список дополнительных пространств имен (C# namespaces),
+        /// автоматически подключаемых ко всем динамически компилируемым Razor-представлениям.
+        /// </summary>
+        public string[]? AdditionalUsings { get; set; }
     }
 
 
