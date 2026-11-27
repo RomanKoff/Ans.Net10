@@ -1,0 +1,88 @@
+﻿@*
+    rev 2026-11-27
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+    
+    ===============================================
+    Барьер авторизации и сессии системного доступа
+    ===============================================
+
+*@
+@model bool
+@using Ans.Net10.Web.Services
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@inject LibWebOptions Options
+@inject AnsSystemAccessService AccessService
+
+@{
+    var apiBaseUrl1 = Current.GetAnsApiBaseUrl(
+        Options.SystemHelpers.SystemAccessApiUrl, "/api/ans/access");
+    var xsrfToken1 = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+    var keyUser1 = AccessService.AuthenticatedKeyUser;
+
+    var i18n1 = new
+    {
+        errInvalid = Ans.Net10.Web.Resources.SystemHelpers.Access_ErrorInvalidCredentials,
+        errRateLimit = Ans.Net10.Web.Resources.SystemHelpers.Access_ErrorTooManyAttempts,
+        errGeneric = Ans.Net10.Web.Resources.SystemHelpers.Access_ErrorGeneric
+    };
+}
+
+@if (Model)
+{
+    if (keyUser1 is not null)
+    {
+        <div id="ansSysAccessBar"
+             class="d-flex justify-content-end align-items-center gap-2 mb-3 small text-body-secondary"
+             data-api-base="@apiBaseUrl1"
+             data-xsrf="@xsrfToken1">
+            <span>@string.Format(Ans.Net10.Web.Resources.SystemHelpers.Access_SignedInAsFormat, keyUser1)</span>
+            <button type="button" id="ansSysLogoutBtn" class="btn btn-sm btn-outline-secondary py-0 px-2">
+                @Ans.Net10.Web.Resources.SystemHelpers.Access_LogoutBtn
+            </button>
+        </div>
+        <script src="~/_content/Ans.Net10.Web/Areas/Ans/Helpers/System/_AccessGate.cshtml.js" defer></script>
+    }
+}
+else if (AccessService.HasAccessList)
+{
+    <div id="ansSysLoginBox"
+         class="card shadow-sm mx-auto my-5"
+         style="max-width: 24rem;"
+         data-api-base="@apiBaseUrl1"
+         data-xsrf="@xsrfToken1"
+         data-i18n='@Json.Serialize(i18n1)'>
+        <div class="card-header fw-semibold">
+            @Ans.Net10.Web.Resources.SystemHelpers.Access_Title
+        </div>
+        <form id="ansSysLoginForm" class="card-body d-flex flex-column gap-3">
+            <div>
+                <label class="form-label small mb-1" for="ansSysUserInput">
+                    @Ans.Net10.Web.Resources.SystemHelpers.Access_UsernameLabel
+                </label>
+                <input type="text"
+                       id="ansSysUserInput"
+                       class="form-control"
+                       autocomplete="username"
+                       required />
+            </div>
+            <div>
+                <label class="form-label small mb-1" for="ansSysKeyInput">
+                    @Ans.Net10.Web.Resources.SystemHelpers.Access_KeyLabel
+                </label>
+                <input type="password"
+                       id="ansSysKeyInput"
+                       class="form-control font-monospace"
+                       autocomplete="current-password"
+                       required />
+            </div>
+            <div id="ansSysLoginError" class="alert alert-danger py-2 px-3 small mb-0 d-none"></div>
+            <button type="submit" id="ansSysLoginBtn" class="btn btn-primary w-100">
+                @Ans.Net10.Web.Resources.SystemHelpers.Access_LoginBtn
+            </button>
+        </form>
+    </div>
+
+    <script src="~/_content/Ans.Net10.Web/Areas/Ans/Helpers/System/_AccessGate.cshtml.js" defer></script>
+}

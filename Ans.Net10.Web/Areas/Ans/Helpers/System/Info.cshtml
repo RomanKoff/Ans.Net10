@@ -1,5 +1,5 @@
-@*
-    rev 2026-11-26
+﻿@*
+    rev 2026-11-27
     
     Компонент библиотеки Ans.Net10.Web.
     Код не предназначен для редактирования и компиляции во время выполнения!
@@ -13,33 +13,47 @@
 @using System.Diagnostics
 @using System.Reflection
 @using System.Runtime.InteropServices
+@using Ans.Net10.Web.Services
 @using Microsoft.AspNetCore.Hosting
-@using Microsoft.AspNetCore.Mvc.ViewEngines
-@using Microsoft.Extensions.Configuration
+@inject AnsSystemAccessService AccessService
 @inject IWebHostEnvironment WebHostEnvironment
-@inject IConfiguration Configuration
-@inject ICompositeViewEngine ViewEngine
 
 @{
     Current.Meta.RobotsOff();
 
-    var info1 = new CompileDiagnosticInfo(WebHostEnvironment, Configuration, ViewEngine);
+    var hasAccess1 = await AccessService.HasAccessAsync();
+    if (!hasAccess1 && !AccessService.HasAccessList)
+    {
+        Current.ThrowNotFound();
+        return;
+    }
+}
+
+<partial name="/Areas/Ans/Helpers/System/_AccessGate.cshtml" model="hasAccess1" />
+
+@if (!hasAccess1)
+{
+    return;
+}
+
+@{
+    var info1 = new SystemDiagnosticInfo(WebHostEnvironment);
 }
 
 <div class="d-flex flex-column gap-4">
 
     @* Сводка среды выполнения *@
     <div class="card shadow-sm">
-        <div class="card-header fw-semibold">Среда выполнения и приложение</div>
+        <div class="card-header fw-semibold">@Ans.Net10.Web.Resources.SystemHelpers.Info_RuntimeSectionTitle</div>
         <div class="card-body p-0">
             <table class="table table-sm table-hover mb-0 font-monospace" style="font-size: 0.82rem;">
                 <tbody>
                     <tr>
-                        <th class="ps-3 w-25 text-body-secondary">Приложение</th>
+                        <th class="ps-3 w-25 text-body-secondary">@Ans.Net10.Web.Resources.SystemHelpers.Info_Application</th>
                         <td>@WebHostEnvironment.ApplicationName</td>
                     </tr>
                     <tr>
-                        <th class="ps-3 text-body-secondary">Окружение (Environment)</th>
+                        <th class="ps-3 text-body-secondary">@Ans.Net10.Web.Resources.SystemHelpers.Info_Environment</th>
                         <td><span class="badge text-bg-primary">@WebHostEnvironment.EnvironmentName</span></td>
                     </tr>
                     <tr>
@@ -47,7 +61,7 @@
                         <td>@RuntimeInformation.FrameworkDescription (@RuntimeInformation.ProcessArchitecture)</td>
                     </tr>
                     <tr>
-                        <th class="ps-3 text-body-secondary">ОС / Хост</th>
+                        <th class="ps-3 text-body-secondary">@Ans.Net10.Web.Resources.SystemHelpers.Info_OsHost</th>
                         <td>@RuntimeInformation.OSDescription — @Environment.MachineName</td>
                     </tr>
                     <tr>
@@ -59,17 +73,17 @@
                         <td>@WebHostEnvironment.WebRootPath</td>
                     </tr>
                     <tr>
-                        <th class="ps-3 text-body-secondary">Процесс / Аптайм</th>
-                        <td>PID: @Environment.ProcessId | Старт: @info1.ProcessStartTime.ToString("yyyy-MM-dd HH:mm:ss") | Память: @info1.WorkingSetMb МБ</td>
+                        <th class="ps-3 text-body-secondary">@Ans.Net10.Web.Resources.SystemHelpers.Info_ProcessUptime</th>
+                        <td>@string.Format(Ans.Net10.Web.Resources.SystemHelpers.Info_ProcessStatsFormat, Environment.ProcessId, info1.ProcessStartTime.ToString("yyyy-MM-dd HH:mm:ss"), info1.WorkingSetMb)</td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    
-    @* Переменные окружения и конфигурация *@
+
+    @* Переменные окружения *@
     <div class="card shadow-sm">
-        <div class="card-header fw-semibold">Переменные окружения (DOTNET_ / ASPNETCORE_)</div>
+        <div class="card-header fw-semibold">@Ans.Net10.Web.Resources.SystemHelpers.Info_EnvVarsSectionTitle</div>
         <div class="card-body p-0 overflow-x-auto">
             <table class="table table-sm table-hover mb-0 font-monospace" style="font-size: 0.78rem;">
                 <tbody>
@@ -85,48 +99,21 @@
         </div>
     </div>
 
-    @* Проверка компиляции Razor-представлений (.cshtml) *@
-    <div class="card shadow-sm">
-        <div class="card-header d-flex align-items-center">
-            <span class="fw-semibold me-auto">Проверка Razor-представлений (.cshtml)</span>
-            @if (info1.ViewErrors.Count == 0)
-            {
-                <span class="badge text-bg-success">OK (@info1.TotalViewsChecked проверено)</span>
-            }
-            else
-            {
-                <span class="badge text-bg-danger">Ошибок: @info1.ViewErrors.Count из @info1.TotalViewsChecked</span>
-            }
-        </div>
-        @if (info1.ViewErrors.Count > 0)
-        {
-            <div class="card-body bg-body-tertiary font-monospace" style="font-size: 0.78rem;">
-                @foreach (var err1 in info1.ViewErrors)
-                {
-                    <div class="border-bottom border-secondary-subtle py-2">
-                        <div class="fw-bold text-danger-emphasis">@err1.ViewPath</div>
-                        <div class="text-body-secondary mt-1" style="white-space: pre-wrap;">@err1.Message</div>
-                    </div>
-                }
-            </div>
-        }
-    </div>
-
     @* Загруженные сборки *@
     <div class="card shadow-sm">
         <div class="card-header d-flex align-items-center">
-            <span class="fw-semibold me-auto">Загруженные сборки (AppDomain)</span>
-            <span class="badge text-bg-secondary">Всего: @info1.Assemblies.Count</span>
+            <span class="fw-semibold me-auto">@Ans.Net10.Web.Resources.SystemHelpers.Info_AssembliesSectionTitle</span>
+            <span class="badge text-bg-secondary">@string.Format(Ans.Net10.Web.Resources.SystemHelpers.Info_TotalFormat, info1.Assemblies.Count)</span>
         </div>
         <div class="card-body p-0 overflow-x-auto">
             <table class="table table-sm table-hover mb-0 font-monospace" style="font-size: 0.78rem;">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-3">Сборка</th>
-                        <th>Версия</th>
-                        <th>Конфигурация</th>
-                        <th>Время сборки (UTC)</th>
-                        <th>Расположение</th>
+                        <th class="ps-3">@Ans.Net10.Web.Resources.SystemHelpers.Col_Assembly</th>
+                        <th>@Ans.Net10.Web.Resources.SystemHelpers.Col_Version</th>
+                        <th>@Ans.Net10.Web.Resources.SystemHelpers.Col_Configuration</th>
+                        <th>@Ans.Net10.Web.Resources.SystemHelpers.Col_BuildTimeUtc</th>
+                        <th>@Ans.Net10.Web.Resources.SystemHelpers.Col_Location</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -161,16 +148,12 @@
 
 </div>
 
-
-
 @functions {
 
-    sealed class CompileDiagnosticInfo
+    sealed class SystemDiagnosticInfo
     {
-        public CompileDiagnosticInfo(
-            IWebHostEnvironment env,
-            IConfiguration config,
-            ICompositeViewEngine viewEngine)
+        public SystemDiagnosticInfo(
+            IWebHostEnvironment env)
         {
             using var proc1 = Process.GetCurrentProcess();
             ProcessStartTime = proc1.StartTime;
@@ -190,45 +173,12 @@
                     || kv.Key.StartsWith("DOTNET_", StringComparison.OrdinalIgnoreCase))
                 .OrderBy(kv => kv.Key)
                 .ToArray();
-
-            var viewsRoot1 = System.IO.Path.Combine(env.ContentRootPath, "Views");
-            var errors1 = new List<ViewErrorItem>();
-            int checkedCount1 = 0;
-
-            if (Directory.Exists(viewsRoot1))
-            {
-                foreach (var file1 in Directory.EnumerateFiles(viewsRoot1, "*.cshtml", SearchOption.AllDirectories))
-                {
-                    var name1 = System.IO.Path.GetFileName(file1);
-                    if (name1.StartsWith('_') || name1.Contains('~'))
-                        continue;
-
-                    var rel1 = System.IO.Path.GetRelativePath(env.ContentRootPath, file1).Replace('\\', '/');
-                    var appPath1 = $"~/{rel1}";
-                    checkedCount1++;
-                    try
-                    {
-                        var res1 = viewEngine.GetView(null, appPath1, isMainPage: true);
-                        if (!res1.Success)
-                            errors1.Add(new ViewErrorItem(appPath1, "Представление не найдено движком Razor."));
-                    }
-                    catch (Exception ex1)
-                    {
-                        errors1.Add(new ViewErrorItem(appPath1, ex1.Message));
-                    }
-                }
-            }
-
-            TotalViewsChecked = checkedCount1;
-            ViewErrors = errors1;
         }
 
         public DateTime ProcessStartTime { get; }
         public double WorkingSetMb { get; }
         public IReadOnlyList<AssemblyItemInfo> Assemblies { get; }
         public IReadOnlyList<KeyValuePair<string, string>> EnvVars { get; }
-        public int TotalViewsChecked { get; }
-        public IReadOnlyList<ViewErrorItem> ViewErrors { get; }
     }
 
 
@@ -265,8 +215,5 @@
         public DateTime? BuildTimeUtc { get; }
         public string Location { get; } = string.Empty;
     }
-
-
-    sealed record ViewErrorItem(string ViewPath, string Message);
 
 }

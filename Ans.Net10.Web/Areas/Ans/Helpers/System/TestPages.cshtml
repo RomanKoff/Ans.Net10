@@ -1,5 +1,5 @@
-@*
-    rev 2026-11-26
+﻿@*
+    rev 2026-11-27
     
     Компонент библиотеки Ans.Net10.Web.
     Код не предназначен для редактирования и компиляции во время выполнения!
@@ -12,12 +12,30 @@
 @model object?
 @using System.Collections.Frozen
 @using System.IO
+@using Ans.Net10.Web.Services
 @using Microsoft.AspNetCore.Hosting
+@inject AnsSystemAccessService AccessService
 @inject IWebHostEnvironment WebHostEnvironment
 
 @{
     Current.Meta.RobotsOff();
 
+    var hasAccess1 = await AccessService.HasAccessAsync();
+    if (!hasAccess1 && !AccessService.HasAccessList)
+    {
+        Current.ThrowNotFound();
+        return;
+    }
+}
+
+<partial name="/Areas/Ans/Helpers/System/_AccessGate.cshtml" model="hasAccess1" />
+
+@if (!hasAccess1)
+{
+    return;
+}
+
+@{
     var nodesDir1 = new DirectoryInfo(System.IO.Path.Combine(WebHostEnvironment.ContentRootPath, "Views", "Nodes"));
     var site1 = nodesDir1.Exists
         ? new SiteInfo(nodesDir1)
@@ -26,7 +44,7 @@
 
 <div class="row">
     <div class="col-md-7">
-        <h2>Узлы и страницы (.cshtml) в Views/Nodes</h2>
+        <h2>@Ans.Net10.Web.Resources.SystemHelpers.TestPages_NodesTitle</h2>
         @if (site1 is not null)
         {
             <div id="site_pages" class="d-flex flex-wrap gap-3">
@@ -48,58 +66,20 @@
         }
         else
         {
-            <p class="text-muted">Каталог <code>Views/Nodes</code> не найден.</p>
+            <p class="text-muted">@Html.Raw(Ans.Net10.Web.Resources.SystemHelpers.TestPages_NodesNotFoundHtml)</p>
         }
     </div>
     <div class="col-md-5">
-        <h2>Индексы страниц в карте сайта</h2>
+        <h2>@Ans.Net10.Web.Resources.SystemHelpers.TestPages_SitemapTitle</h2>
         @{
             OutNodes(Current.Sitemap.NodesIndex);
         }
     </div>
 </div>
 
-<script defer>
-
-    document.querySelectorAll('.js-page-check').forEach((e1) => {
-        const info1 = e1.querySelector('span');
-        const url1 = e1.dataset.path;
-        if (!info1 || !url1)
-            return;
-
-        checkUrl(url1).then(status1 => {
-            switch (status1) {
-                case 200:
-                    info1.innerHTML = '&nbsp;—&nbsp;<em class="text-success">OK</em>';
-                    break;
-                case 404:
-                    info1.innerHTML = '&nbsp;—&nbsp;<em class="text-danger">404</em>';
-                    break;
-                case 500:
-                    info1.innerHTML = '&nbsp;—&nbsp;<em class="text-danger">500</em>';
-                    break;
-                default:
-                    info1.innerHTML = `&nbsp;—&nbsp;<em class="text-danger">${status1}</em>`;
-                    break;
-            }
-        });
-    });
-
-    async function checkUrl(url) {
-        try {
-            const res1 = await fetch(url, { method: 'GET', cache: 'no-store' });
-            return res1.status;
-        } catch {
-            return 'ERR';
-        }
-    }
-
-</script>
-
-
+<script src="~/_content/Ans.Net10.Web/Areas/Ans/Helpers/System/TestPages.cshtml.js" defer></script>
 
 @functions {
-
 
     void OutNodes(FrozenDictionary<string, NodemapItem> nodes)
     {

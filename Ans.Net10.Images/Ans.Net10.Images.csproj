@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<ItemGroup>
-		<PackageReference Include="Magick.NET-Q16-AnyCPU" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Magick.NET-Q16-AnyCPU" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Ans.Net10.Common\Ans.Net10.Common.csproj" />
+    </ItemGroup>
 
 </Project>

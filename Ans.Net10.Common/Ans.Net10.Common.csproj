@@ -1,53 +1,53 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<ItemGroup>
-		<PackageReference Include="CsvHelper" />
-		<PackageReference Include="MailKit" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-		<PackageReference Include="System.Security.Cryptography.Pkcs" />
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="CsvHelper" />
+        <PackageReference Include="MailKit" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+        <PackageReference Include="System.Security.Cryptography.Pkcs" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Resources\Common.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Common.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resources\Exceptions.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Exceptions.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resources\Faces.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Faces.resx</DependentUpon>
-		</Compile>
-		<Compile Update="Resources\Form.Designer.cs">
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-			<DependentUpon>Form.resx</DependentUpon>
-		</Compile>
-	</ItemGroup>
+    <ItemGroup>
+        <Compile Update="Resources\Common.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Common.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Exceptions.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Exceptions.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Faces.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Faces.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\Form.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Form.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
 
-	<ItemGroup>
-		<EmbeddedResource Update="Resources\Common.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Common.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Exceptions.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Faces.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Faces.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-		<EmbeddedResource Update="Resources\Form.resx">
-			<Generator>PublicResXFileCodeGenerator</Generator>
-			<LastGenOutput>Form.Designer.cs</LastGenOutput>
-		</EmbeddedResource>
-	</ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Update="Resources\Common.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Common.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Exceptions.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Exceptions.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Faces.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Faces.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\Form.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Form.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+    </ItemGroup>
 
 </Project>

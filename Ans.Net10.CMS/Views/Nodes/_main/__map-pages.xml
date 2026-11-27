@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="urn:ans:net10:web:map-pages"
+	   xsi:schemaLocation="urn:ans:net10:web:map-pages https://raw.githubusercontent.com/RomanKoff/Ans.Net10/refs/heads/main/Ans.Net10.Web/_Docs/MapPages.xsd">
+
+    <item target="sitemap" face="Карта сайта">
+        <item target="map_bm" face="Навигация по Б.Морской 67" />
+        <item target="map_gast" face="Навигация по Гастелло 15" />
+        <item target="map_lens" face="Навигация по Ленсовета 14" />
+        <item target="map_mosk" face="Навигация по Московскому 149" />
+    </item>
+    
+    <item target="search" face="Поиск по сайту" />
+    <item target="search_pubs" face="Поиск по новостям" />
+    <item display="none" target="vcard" face="Визитная катрочка" />
+
+    <item target="pay" face="Оплата услуг">
+        <item target="edu" face="Оплата обучения в ГУАП (контракт)" />
+        <item target="dom" face="Оплата проживания в общежитиях ГУАП" />
+        <item target="cop" face="Оплата обучения на подготовительных курсах ГУАП" />
+        <item target="park" face="Оплата парковки ГУАП" />
+    </item>
+
+    <item target="antimonopoly" face="Антимонопольный комплаенс" />
+    <item target="income"
+		face="Сведения о доходах, расходах, об имуществе и обязательствах имущественного характера, представленные руководителями высших учебных заведений" />
+    <item target="awards" face="Достижения, награды, благодарности" />
+    <item target="brand" face="Фирменный стиль" />
+    <item target="dods" face="Дни открытых дверей ГУАП" />
+    <item target="empbook" face="Электронная трудовая книжка" />
+    <item target="faq" face="Вопросы и ответы" />
+    <item target="fip" face="Федеральная инновационная площадка" />
+    <item target="gramot" face="Благодарности, благодарственные письма, грамоты" />
+    <item target="greeting" face="Приветствие ректора" />
+    <item target="media" face="Официальные медиаплощадки" />
+    <item target="mission" face="Миссия ГУАП" />
+    <item target="sch-partners"
+		face="Перечень учебных заведений, с которыми у вуза имеются договорные отношения" />
+    <item target="smi" face="СМИ о ГУАП" />
+    <item target="sport" face="Спортивные достижения|{0} студентов ГУАП" />
+    <item target="vitrina4"
+		face="Витрина проектов|Витрина проектов института информационных технологий и программирования" />
+    <item target="vitrinafspo"
+		face="Витрина проектов ФСПО|Витрина проектов факультета среднего профессионального образования" />
+
+    <item target="rasp" face="Расписание занятий" />
+    <item target="rasp_sm" face="Расписание занятий" />
+    <item target="rasp-exam" face="Расписание экзаменационной сессии" />
+
+</pages>

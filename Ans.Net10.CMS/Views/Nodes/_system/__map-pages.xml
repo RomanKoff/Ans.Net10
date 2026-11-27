@@ -7,5 +7,6 @@
 	<item target="console" face="Output приложения"/>
 	<item target="info" face="Информация о системе"/>
 	<item target="testpages" face="Тестирование состояния страниц узлов сайта в структуре Views/Nodes"/>
+    <item target="keygen" face="Генератор ключа безопасности"/>
 
 </pages>

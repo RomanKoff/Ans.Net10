@@ -1,7 +1,8 @@
-﻿// rev 2026-11-24
+﻿// rev 2026-11-27
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
+using Ans.Net10.Web.Api;
 using Ans.Net10.Web.Compilation;
 using Ans.Net10.Web.Middlewares;
 using Ans.Net10.Web.Services;
@@ -218,8 +219,10 @@ namespace Ans.Net10.Web
             }
 
             //---
+            builder.Services.AddMemoryCache();
             builder.Services.AddScoped<IViewRenderService, AnsViewRenderService>();
             builder.Services.AddScoped<CurrentContext>();
+            builder.Services.AddScoped<AnsSystemAccessService>();
             builder.Services.AddRazorPages();
 
             //--- mvc
@@ -361,6 +364,11 @@ namespace Ans.Net10.Web
                 app.AddRoutes(options1.Routes);
             app.MapControllers();
             app.MapRazorPages();
+
+            //--- system access api
+            if (options1.SystemHelpers.AccessList is { Count: > 0 }
+                && string.IsNullOrWhiteSpace(options1.SystemHelpers.SystemAccessApiUrl))
+                app.AnsApi_SystemAccess();
 
             //--- dynamic compilation initialization
             if (options1.DynamicCompilation is not null)

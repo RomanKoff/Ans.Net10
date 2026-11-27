@@ -31,12 +31,12 @@ namespace Ans.Net10.Web
         /// <summary>
         /// Имя конфигурационного файла структуры информационных узлов.
         /// </summary>
-        public const string MAPNODES_FILENAME = "_map-nodes.xml";
+        public const string MAPNODES_FILENAME = "__map-nodes.xml";
 
         /// <summary>
         /// Имя конфигурационного файла структуры страниц контента внутри узла.
         /// </summary>
-        public const string MAPPAGES_FILENAME = "_map-pages.xml";
+        public const string MAPPAGES_FILENAME = "__map-pages.xml";
 
         /// <summary>
         /// Системное имя корневого информационного узла по умолчанию.

@@ -50,6 +50,11 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Errors.resx</DependentUpon>
         </Compile>
+        <Compile Update="Resources\SystemHelpers.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>SystemHelpers.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -60,6 +65,10 @@
         <EmbeddedResource Update="Resources\Errors.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
             <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\SystemHelpers.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+          <LastGenOutput>SystemHelpers.Designer.cs</LastGenOutput>
         </EmbeddedResource>
     </ItemGroup>
 

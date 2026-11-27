@@ -4,6 +4,15 @@
         <name>Ans.Net10.Web</name>
     </assembly>
     <members>
+        <member name="T:Ans.Net10.Web.Api.AnsSystemAccessEndpointFilter">
+            <summary>
+            Фильтр конечных точек Minimal API, ограничивающий доступ к диагностическим 
+            и административным обработчикам на основе правил <see cref="T:Ans.Net10.Web.Services.AnsSystemAccessService"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Api.AnsSystemAccessEndpointFilter.InvokeAsync(Microsoft.AspNetCore.Http.EndpointFilterInvocationContext,Microsoft.AspNetCore.Http.EndpointFilterDelegate)">
+            <inheritdoc />
+        </member>
         <member name="T:Ans.Net10.Web.Api.AnsBatchViewsCompileResult">
             <summary>
             Представляет сводный результат пакетной проверки и прогрева компиляции всех Razor-представлений сайта.
@@ -39,6 +48,26 @@
         <member name="P:Ans.Net10.Web.Api.AnsBatchViewsCompileResult.Errors">
             <summary>Сводный список всех ошибок компиляции по всем проблемным файлам.</summary>
         </member>
+        <member name="T:Ans.Net10.Web.Api.AnsSystemAccessLoginRequest">
+            <summary>
+            Представляет данные запроса на аутентификацию по персональному ключу системного доступа.
+            </summary>
+            <param name="Username">Имя пользователя из списка доступа.</param>
+            <param name="Key">Персональный ключ доступа.</param>
+        </member>
+        <member name="M:Ans.Net10.Web.Api.AnsSystemAccessLoginRequest.#ctor(System.String,System.String)">
+            <summary>
+            Представляет данные запроса на аутентификацию по персональному ключу системного доступа.
+            </summary>
+            <param name="Username">Имя пользователя из списка доступа.</param>
+            <param name="Key">Персональный ключ доступа.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Api.AnsSystemAccessLoginRequest.Username">
+            <summary>Имя пользователя из списка доступа.</summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Api.AnsSystemAccessLoginRequest.Key">
+            <summary>Персональный ключ доступа.</summary>
+        </member>
         <member name="T:Ans.Net10.Web.Api.Exts_AnsApi">
             <summary>
             Методы расширения для подключения диагностических и административных API-обработчиков библиотеки в конечном приложении.
@@ -46,20 +75,31 @@
         </member>
         <member name="M:Ans.Net10.Web.Api.Exts_AnsApi.AnsApi_Console(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)">
             <summary>
-            Регистрирует конечные точки получения новых записей журнала (<c>/updates</c>) и очистки буфера (<c>/clear</c>).
+            Регистрирует конечные точки получения новых записей журнала (<c>/updates</c>) и очистки буфера (<c>/clear</c>),
+            защищенные фильтром <see cref="T:Ans.Net10.Web.Api.AnsSystemAccessEndpointFilter"/>.
             </summary>
             <param name="endpoints">Построитель маршрутов приложения.</param>
             <param name="pattern">Базовый префикс маршрута API консоли (по умолчанию <c>"/api/ans/console"</c>).</param>
-            <returns>Группа маршрутов <see cref="T:Microsoft.AspNetCore.Routing.RouteGroupBuilder"/> для настройки авторизации.</returns>
+            <returns>Группа маршрутов <see cref="T:Microsoft.AspNetCore.Routing.RouteGroupBuilder"/> для дополнительной настройки.</returns>
         </member>
         <member name="M:Ans.Net10.Web.Api.Exts_AnsApi.AnsApi_Compile(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)">
             <summary>
             Регистрирует конечные точки управления динамической компиляцией <c>App_Code</c>
-            и диагностики Razor-представлений (<c>/reload</c>, <c>/batch</c>, <c>/view</c>).
+            и диагностики Razor-представлений (<c>/reload</c>, <c>/batch</c>),
+            защищенные фильтром <see cref="T:Ans.Net10.Web.Api.AnsSystemAccessEndpointFilter"/>.
             </summary>
             <param name="endpoints">Построитель маршрутов приложения.</param>
             <param name="pattern">Базовый префикс маршрута API компиляции (по умолчанию <c>"/api/ans/compile"</c>).</param>
-            <returns>Группа маршрутов <see cref="T:Microsoft.AspNetCore.Routing.RouteGroupBuilder"/> для настройки авторизации.</returns>
+            <returns>Группа маршрутов <see cref="T:Microsoft.AspNetCore.Routing.RouteGroupBuilder"/> для дополнительной настройки.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Api.Exts_AnsApi.AnsApi_SystemAccess(Microsoft.AspNetCore.Routing.IEndpointRouteBuilder,System.String)">
+            <summary>
+            Регистрирует конечные точки входа (<c>/login</c>) и выхода (<c>/logout</c>) 
+            по персональному ключу системного доступа.
+            </summary>
+            <param name="endpoints">Построитель маршрутов приложения.</param>
+            <param name="pattern">Базовый префикс маршрута API доступа (по умолчанию <c>"/api/ans/access"</c>).</param>
+            <returns>Группа маршрутов <see cref="T:Microsoft.AspNetCore.Routing.RouteGroupBuilder"/> для дополнительной настройки.</returns>
         </member>
         <member name="T:Ans.Net10.Web.Attributes.ActionAccessAttribute">
             <summary>
@@ -2609,6 +2649,11 @@
             Получает или задает список кастомных маршрутов роутинга.
             </summary>
         </member>
+        <member name="P:Ans.Net10.Web.LibWebOptions.SystemHelpers">
+            <summary>
+            Получает или задает параметры маршрутизации и защиты системных диагностических хелперов и API-обработчиков библиотеки.
+            </summary>
+        </member>
         <member name="P:Ans.Net10.Web.LibWebOptions.Errors">
             <summary>
             Получает или задает настройки отображения и обработки ошибок.
@@ -2665,6 +2710,56 @@
         <member name="P:Ans.Net10.Web.LibWebOptions.PuppeteerSharpService">
             <summary>
             Получает или задает параметры сервиса работы с браузером <c>PuppeteerSharp</c>.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.SystemHelpersOptions">
+            <summary>
+            Параметры конфигурации базовых маршрутов и правил защиты системных диагностических хелперов и API-обработчиков библиотеки.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.ConsoleApiUrl">
+            <summary>
+            Возвращает зарегистрированный базовый маршрут API системной консоли.
+            Заполняется автоматически при вызове <c>AnsApi_Console</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.CompileApiUrl">
+            <summary>
+            Возвращает зарегистрированный базовый маршрут API динамической компиляции.
+            Заполняется автоматически при вызове <c>AnsApi_Compile</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.SystemAccessApiUrl">
+            <summary>
+            Возвращает зарегистрированный базовый маршрут API управления системным доступом.
+            Заполняется автоматически при вызове <c>AnsApi_SystemAccess</c>.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.AllowedSubnet">
+            <summary>
+            Получает или задает имя разрешенной группы подсетей из <see cref="T:Ans.Net10.Web.SubnetsOptions"/>
+            (<c>"Admin"</c>, <c>"Safe"</c> или <c>"Allow"</c>), достаточной для доступа к системным ресурсам.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.RequiredPolicy">
+            <summary>
+            Получает или задает имя политики авторизации ASP.NET Core (например, <see cref="F:Ans.Net10.Web.SuppClaims.AUTH_POLICY_ADMINS"/>),
+            достаточной для доступа к системным ресурсам.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.AccessList">
+            <summary>
+            Получает или задает словарь доверенных пользователей и PBKDF2-хэшей их персональных ключей доступа.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.CookieLifetimeHours">
+            <summary>
+            Получает или задает время жизни сессионной куки системного доступа в часах (по умолчанию <c>8</c>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.SystemHelpersOptions.AllowInDeveloperMode">
+            <summary>
+            Получает или задает флаг автоматического разрешения доступа в режиме разработки (<see cref="P:Ans.Net10.Web.LibWebOptions.UseDeveloperMode"/>).
             </summary>
         </member>
         <member name="T:Ans.Net10.Web.ErrorsOptions">
@@ -3263,6 +3358,332 @@
               Looks up a localized string similar to Текст сообщения об ошибке.
             </summary>
         </member>
+        <member name="T:Ans.Net10.Web.Resources.SystemHelpers">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_ErrorGeneric">
+            <summary>
+              Looks up a localized string similar to Ошибка проверки доступа..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_ErrorInvalidCredentials">
+            <summary>
+              Looks up a localized string similar to Неверное имя пользователя или персональный ключ..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_ErrorInvalidToken">
+            <summary>
+              Looks up a localized string similar to Недействительный токен безопасности запроса..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_ErrorTooManyAttempts">
+            <summary>
+              Looks up a localized string similar to Слишком много неудачных попыток. Повторите позже..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_KeyLabel">
+            <summary>
+              Looks up a localized string similar to Персональный ключ.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_LoginBtn">
+            <summary>
+              Looks up a localized string similar to Войти.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_LogoutBtn">
+            <summary>
+              Looks up a localized string similar to Выйти.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_SignedInAsFormat">
+            <summary>
+              Looks up a localized string similar to Доступ открыт: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_Title">
+            <summary>
+              Looks up a localized string similar to Системный доступ.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Access_UsernameLabel">
+            <summary>
+              Looks up a localized string similar to Имя пользователя.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_Assembly">
+            <summary>
+              Looks up a localized string similar to Сборка.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_BuildTimeUtc">
+            <summary>
+              Looks up a localized string similar to Время сборки (UTC).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_Code">
+            <summary>
+              Looks up a localized string similar to Код.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_Configuration">
+            <summary>
+              Looks up a localized string similar to Конфигурация.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_Description">
+            <summary>
+              Looks up a localized string similar to Описание.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_File">
+            <summary>
+              Looks up a localized string similar to Файл.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_LineColumn">
+            <summary>
+              Looks up a localized string similar to Строка:Столбец.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_Location">
+            <summary>
+              Looks up a localized string similar to Расположение.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Col_Version">
+            <summary>
+              Looks up a localized string similar to Версия.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_AssemblyActiveFormat">
+            <summary>
+              Looks up a localized string similar to Сборка [{0}] активна.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_AssemblyErrorFormat">
+            <summary>
+              Looks up a localized string similar to Ошибка компиляции [{0}] (сохранена предыдущая версия).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_BatchCheckBtn">
+            <summary>
+              Looks up a localized string similar to Проверить все представления сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_BatchErrorFormat">
+            <summary>
+              Looks up a localized string similar to Обнаружены ошибки в представлениях ({0} из {1}).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_BatchSuccess">
+            <summary>
+              Looks up a localized string similar to Пакетная проверка завершена успешно.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_BuildTimeFormat">
+            <summary>
+              Looks up a localized string similar to Время сборки: {0} мс.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_BuiltInFormat">
+            <summary>
+              Looks up a localized string similar to Собрано за {0} мс (UTC: {1}).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_ExportedTypesFormat">
+            <summary>
+              Looks up a localized string similar to Экспортировано типов: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_FailedFormat">
+            <summary>
+              Looks up a localized string similar to С ошибками: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_FilesCsFormat">
+            <summary>
+              Looks up a localized string similar to Файлов .cs: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_ModelsDirectoryLabel">
+            <summary>
+              Looks up a localized string similar to Каталог сборок моделей.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_ReloadModelsBtn">
+            <summary>
+              Looks up a localized string similar to Перезагрузить модели и сбросить кэш.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_SubsystemDisabledHtml">
+            <summary>
+              Looks up a localized string similar to Подсистема &lt;code&gt;DynamicCompilation&lt;/code&gt; не активирована в конфигурации &lt;code&gt;appsettings.json&lt;/code&gt;..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_SucceededFormat">
+            <summary>
+              Looks up a localized string similar to Успешно: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Compile_TotalFormat">
+            <summary>
+              Looks up a localized string similar to Всего: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Console_AllLevels">
+            <summary>
+              Looks up a localized string similar to Все уровни.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Console_BufferFormat">
+            <summary>
+              Looks up a localized string similar to Буфер: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Console_ClearBtn">
+            <summary>
+              Looks up a localized string similar to Очистить.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Console_LevelFilterAriaLabel">
+            <summary>
+              Looks up a localized string similar to Фильтр уровня логирования.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Console_LiveLabel">
+            <summary>
+              Looks up a localized string similar to Обновление (2с).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Console_MemoryBufferDisabled">
+            <summary>
+              Looks up a localized string similar to Буферизация логов в памяти отключена (Serilog.MemoryBufferCapacity &lt;= 0)..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Console_Title">
+            <summary>
+              Looks up a localized string similar to Системный журнал.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Error_DynamicCompilationDisabled">
+            <summary>
+              Looks up a localized string similar to DynamicCompilation отключен..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_Application">
+            <summary>
+              Looks up a localized string similar to Приложение.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_AssembliesSectionTitle">
+            <summary>
+              Looks up a localized string similar to Загруженные сборки (AppDomain).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_Environment">
+            <summary>
+              Looks up a localized string similar to Окружение (Environment).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_EnvVarsSectionTitle">
+            <summary>
+              Looks up a localized string similar to Переменные окружения (DOTNET_ / ASPNETCORE_).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_OsHost">
+            <summary>
+              Looks up a localized string similar to ОС / Хост.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_ProcessStatsFormat">
+            <summary>
+              Looks up a localized string similar to PID: {0} | Старт: {1} | Память: {2} МБ.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_ProcessUptime">
+            <summary>
+              Looks up a localized string similar to Процесс / Аптайм.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_RuntimeSectionTitle">
+            <summary>
+              Looks up a localized string similar to Среда выполнения и приложение.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Info_TotalFormat">
+            <summary>
+              Looks up a localized string similar to Всего: {0}.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.KeyGen_CopyBtn">
+            <summary>
+              Looks up a localized string similar to Копировать.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.KeyGen_CustomKeyLabel">
+            <summary>
+              Looks up a localized string similar to Свой ключ (необязательно).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.KeyGen_CustomKeyPlaceholder">
+            <summary>
+              Looks up a localized string similar to Автогенерация.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.KeyGen_GenerateBtn">
+            <summary>
+              Looks up a localized string similar to Сгенерировать.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.KeyGen_JsonResultLabel">
+            <summary>
+              Looks up a localized string similar to Строка для секции SystemHelpers:AccessList в appsettings.json.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.KeyGen_PlainKeyResultLabel">
+            <summary>
+              Looks up a localized string similar to Персональный ключ (передайте пользователю, на сервере не сохраняется).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.KeyGen_Title">
+            <summary>
+              Looks up a localized string similar to Генератор ключа системного доступа (PBKDF2-SHA256).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.TestPages_NodesNotFoundHtml">
+            <summary>
+              Looks up a localized string similar to Каталог &lt;code&gt;Views/Nodes&lt;/code&gt; не найден..
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.TestPages_NodesTitle">
+            <summary>
+              Looks up a localized string similar to Узлы и страницы (.cshtml) в Views/Nodes.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.TestPages_SitemapTitle">
+            <summary>
+              Looks up a localized string similar to Индексы страниц в карте сайта.
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Resources.SystemHelpers.Text_NotConfigured">
+            <summary>
+              Looks up a localized string similar to Не настроено.
+            </summary>
+        </member>
         <member name="T:Ans.Net10.Web.Services.AnsExceptionHandler">
             <summary>
             Компонент конвейера обработки ошибок (Exception Handler) экосистемы Ans, реализующий 
@@ -3478,6 +3899,70 @@
             <param name="margin">Отступы со всех сторон (по умолчанию 10mm).</param>
             <param name="footerTemplate">Пользовательский HTML-шаблон футера. Если не задан, используется стандартный.</param>
             <returns>Экземпляр <see cref="T:PuppeteerSharp.PdfOptions"/>.</returns>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.AnsSystemAccessService">
+            <summary>
+            Служба проверки прав доступа к системным эндпоинтам и диагностическим представлениям библиотеки.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsSystemAccessService.#ctor(Ans.Net10.Web.CurrentContext,Microsoft.AspNetCore.Authorization.IAuthorizationService,Microsoft.AspNetCore.DataProtection.IDataProtectionProvider,Microsoft.Extensions.Caching.Memory.IMemoryCache,Microsoft.Extensions.Logging.ILogger{Ans.Net10.Web.Services.AnsSystemAccessService})">
+            <summary>
+            Инициализирует новый экземпляр класса <see cref="T:Ans.Net10.Web.Services.AnsSystemAccessService"/>.
+            </summary>
+            <param name="current">Текущий оркестровый контекст обработки HTTP-запроса.</param>
+            <param name="authorizationService">Служба проверки политик авторизации ASP.NET Core.</param>
+            <param name="dataProtectionProvider">Провайдер криптографической защиты данных.</param>
+            <param name="cache">Кэш в памяти для отслеживания неудачных попыток входа.</param>
+            <param name="logger">Экземпляр логгера.</param>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsSystemAccessService.HasAccessList">
+            <summary>
+            Возвращает признак наличия записей в списке персональных ключей доступа (<see cref="P:Ans.Net10.Web.SystemHelpersOptions.AccessList"/>).
+            </summary>
+        </member>
+        <member name="P:Ans.Net10.Web.Services.AnsSystemAccessService.AuthenticatedKeyUser">
+            <summary>
+            Возвращает имя пользователя, авторизованного по персональному ключу через сессионную куку, либо <see langword="null"/>.
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsSystemAccessService.HasAccessAsync">
+            <summary>
+            Асинхронно проверяет, разрешен ли текущему запросу доступ к системным ресурсам.
+            </summary>
+            <returns><see langword="true"/>, если доступ разрешен; иначе — <see langword="false"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsSystemAccessService.TryLoginAsync(System.String,System.String)">
+            <summary>
+            Асинхронно выполняет аутентификацию пользователя по имени и персональному ключу с установкой защищенной куки.
+            </summary>
+            <param name="username">Имя пользователя из списка доступа.</param>
+            <param name="key">Персональный ключ доступа.</param>
+            <returns>Результат попытки входа <see cref="T:Ans.Net10.Web.Services.SystemAccessLoginResult"/>.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.Services.AnsSystemAccessService.Logout">
+            <summary>
+            Завершает сессию доступа по персональному ключу и удаляет защищенную куку.
+            </summary>
+        </member>
+        <member name="T:Ans.Net10.Web.Services.SystemAccessLoginResult">
+            <summary>
+            Перечисление результатов попытки аутентификации по персональному ключу системного доступа.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Services.SystemAccessLoginResult.Success">
+            <summary>
+            Вход выполнен успешно.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Services.SystemAccessLoginResult.InvalidCredentials">
+            <summary>
+            Неверное имя пользователя или персональный ключ.
+            </summary>
+        </member>
+        <member name="F:Ans.Net10.Web.Services.SystemAccessLoginResult.TooManyAttempts">
+            <summary>
+            Превышено количество неудачных попыток входа.
+            </summary>
         </member>
         <member name="T:Ans.Net10.Web.Services.IViewRenderService">
             <summary>
@@ -9673,6 +10158,34 @@
             <exception cref="T:System.ArgumentException">
             Вызывается, если параметр <paramref name="path"/> или <paramref name="contentType"/> пуст или равен <see langword="null"/>.
             </exception>
+        </member>
+        <member name="T:Ans.Net10.Web.SuppSystemAccess">
+            <summary>
+            Предоставляет криптографические методы генерации и проверки персональных ключей системного доступа (PBKDF2-SHA256).
+            </summary>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppSystemAccess.GenerateKey(System.Int32)">
+            <summary>
+            Генерирует криптостойкий случайный персональный ключ доступа в формате URL-safe Base64.
+            </summary>
+            <param name="byteLength">Длина случайной последовательности в байтах (по умолчанию <c>24</c>).</param>
+            <returns>Строка сгенерированного ключа доступа.</returns>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppSystemAccess.HashKey(System.String)">
+            <summary>
+            Вычисляет необратимый криптографический хэш PBKDF2-SHA256 для указанного ключа доступа.
+            </summary>
+            <param name="key">Исходный ключ доступа.</param>
+            <returns>Строка хэша в формате <c>PBKDF2$100000$&lt;salt&gt;$&lt;hash&gt;</c>.</returns>
+            <exception cref="T:System.ArgumentException">Вызывается, если ключ пустой или состоит из пробелов.</exception>
+        </member>
+        <member name="M:Ans.Net10.Web.SuppSystemAccess.VerifyKey(System.String,System.String)">
+            <summary>
+            Выполняет безопасную проверку соответствия введенного ключа сохраненному хэшу PBKDF2-SHA256.
+            </summary>
+            <param name="key">Проверяемый ключ доступа.</param>
+            <param name="storedHash">Сохраненная строка хэша из конфигурации.</param>
+            <returns><see langword="true"/>, если ключ соответствует хэшу; иначе — <see langword="false"/>.</returns>
         </member>
         <member name="T:Ans.Net10.Web.SuppWebCache">
             <summary>

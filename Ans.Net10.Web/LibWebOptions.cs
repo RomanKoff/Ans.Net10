@@ -1,4 +1,4 @@
-﻿// rev 2026-11-25
+﻿// rev 2026-11-27
 
 using Ans.Net10.Common;
 using Ans.Net10.Common.Services;
@@ -153,6 +153,12 @@ namespace Ans.Net10.Web
 
 
         /// <summary>
+        /// Получает или задает параметры маршрутизации и защиты системных диагностических хелперов и API-обработчиков библиотеки.
+        /// </summary>
+        public SystemHelpersOptions SystemHelpers { get; set; } = new();
+
+
+        /// <summary>
         /// Получает или задает настройки отображения и обработки ошибок.
         /// </summary>
         public ErrorsOptions Errors { get; set; } = new();
@@ -228,6 +234,59 @@ namespace Ans.Net10.Web
      * Options Classes
      * ========================================================================
      */
+
+
+
+    /// <summary>
+    /// Параметры конфигурации базовых маршрутов и правил защиты системных диагностических хелперов и API-обработчиков библиотеки.
+    /// </summary>
+    public class SystemHelpersOptions
+    {
+        /// <summary>
+        /// Возвращает зарегистрированный базовый маршрут API системной консоли.
+        /// Заполняется автоматически при вызове <c>AnsApi_Console</c>.
+        /// </summary>
+        public string? ConsoleApiUrl { get; internal set; } = null;
+
+        /// <summary>
+        /// Возвращает зарегистрированный базовый маршрут API динамической компиляции.
+        /// Заполняется автоматически при вызове <c>AnsApi_Compile</c>.
+        /// </summary>
+        public string? CompileApiUrl { get; internal set; } = null;
+
+        /// <summary>
+        /// Возвращает зарегистрированный базовый маршрут API управления системным доступом.
+        /// Заполняется автоматически при вызове <c>AnsApi_SystemAccess</c>.
+        /// </summary>
+        public string? SystemAccessApiUrl { get; internal set; } = null;
+
+        /// <summary>
+        /// Получает или задает имя разрешенной группы подсетей из <see cref="SubnetsOptions"/>
+        /// (<c>"Admin"</c>, <c>"Safe"</c> или <c>"Allow"</c>), достаточной для доступа к системным ресурсам.
+        /// </summary>
+        public string? AllowedSubnet { get; set; } = null;
+
+        /// <summary>
+        /// Получает или задает имя политики авторизации ASP.NET Core (например, <see cref="SuppClaims.AUTH_POLICY_ADMINS"/>),
+        /// достаточной для доступа к системным ресурсам.
+        /// </summary>
+        public string? RequiredPolicy { get; set; } = null;
+
+        /// <summary>
+        /// Получает или задает словарь доверенных пользователей и PBKDF2-хэшей их персональных ключей доступа.
+        /// </summary>
+        public Dictionary<string, string>? AccessList { get; set; } = null;
+
+        /// <summary>
+        /// Получает или задает время жизни сессионной куки системного доступа в часах (по умолчанию <c>8</c>).
+        /// </summary>
+        public int CookieLifetimeHours { get; set; } = 8;
+
+        /// <summary>
+        /// Получает или задает флаг автоматического разрешения доступа в режиме разработки (<see cref="LibWebOptions.UseDeveloperMode"/>).
+        /// </summary>
+        public bool AllowInDeveloperMode { get; set; } = true;
+    }
 
 
 

@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string" />
+                            <xsd:attribute name="type" type="xsd:string" />
+                            <xsd:attribute name="mimetype" type="xsd:string" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string" />
+                            <xsd:attribute name="name" type="xsd:string" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Text_NotConfigured" xml:space="preserve">
+    <value>Не настроено</value>
+  </data>
+    <data name="Error_DynamicCompilationDisabled" xml:space="preserve">
+    <value>DynamicCompilation отключен.</value>
+  </data>
+    <data name="Col_Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+    <data name="Col_File" xml:space="preserve">
+    <value>Файл</value>
+  </data>
+    <data name="Col_LineColumn" xml:space="preserve">
+    <value>Строка:Столбец</value>
+  </data>
+    <data name="Col_Description" xml:space="preserve">
+    <value>Описание</value>
+  </data>
+    <data name="Col_Assembly" xml:space="preserve">
+    <value>Сборка</value>
+  </data>
+    <data name="Col_Version" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+    <data name="Col_Configuration" xml:space="preserve">
+    <value>Конфигурация</value>
+  </data>
+    <data name="Col_BuildTimeUtc" xml:space="preserve">
+    <value>Время сборки (UTC)</value>
+  </data>
+    <data name="Col_Location" xml:space="preserve">
+    <value>Расположение</value>
+  </data>
+    <data name="Compile_ModelsDirectoryLabel" xml:space="preserve">
+    <value>Каталог сборок моделей</value>
+  </data>
+    <data name="Compile_ReloadModelsBtn" xml:space="preserve">
+    <value>Перезагрузить модели и сбросить кэш</value>
+  </data>
+    <data name="Compile_BatchCheckBtn" xml:space="preserve">
+    <value>Проверить все представления сайта</value>
+  </data>
+    <data name="Compile_SubsystemDisabledHtml" xml:space="preserve">
+    <value>Подсистема &lt;code&gt;DynamicCompilation&lt;/code&gt; не активирована в конфигурации &lt;code&gt;appsettings.json&lt;/code&gt;.</value>
+  </data>
+    <data name="Compile_AssemblyActiveFormat" xml:space="preserve">
+    <value>Сборка [{0}] активна</value>
+  </data>
+    <data name="Compile_AssemblyErrorFormat" xml:space="preserve">
+    <value>Ошибка компиляции [{0}] (сохранена предыдущая версия)</value>
+  </data>
+    <data name="Compile_BuiltInFormat" xml:space="preserve">
+    <value>Собрано за {0} мс (UTC: {1})</value>
+  </data>
+    <data name="Compile_FilesCsFormat" xml:space="preserve">
+    <value>Файлов .cs: {0}</value>
+  </data>
+    <data name="Compile_ExportedTypesFormat" xml:space="preserve">
+    <value>Экспортировано типов: {0}</value>
+  </data>
+    <data name="Compile_BatchSuccess" xml:space="preserve">
+    <value>Пакетная проверка завершена успешно</value>
+  </data>
+    <data name="Compile_BatchErrorFormat" xml:space="preserve">
+    <value>Обнаружены ошибки в представлениях ({0} из {1})</value>
+  </data>
+    <data name="Compile_BuildTimeFormat" xml:space="preserve">
+    <value>Время сборки: {0} мс</value>
+  </data>
+    <data name="Compile_TotalFormat" xml:space="preserve">
+    <value>Всего: {0}</value>
+  </data>
+    <data name="Compile_SucceededFormat" xml:space="preserve">
+    <value>Успешно: {0}</value>
+  </data>
+    <data name="Compile_FailedFormat" xml:space="preserve">
+    <value>С ошибками: {0}</value>
+  </data>
+    <data name="Console_Title" xml:space="preserve">
+    <value>Системный журнал</value>
+  </data>
+    <data name="Console_BufferFormat" xml:space="preserve">
+    <value>Буфер: {0}</value>
+  </data>
+    <data name="Console_LevelFilterAriaLabel" xml:space="preserve">
+    <value>Фильтр уровня логирования</value>
+  </data>
+    <data name="Console_AllLevels" xml:space="preserve">
+    <value>Все уровни</value>
+  </data>
+    <data name="Console_LiveLabel" xml:space="preserve">
+    <value>Обновление (2с)</value>
+  </data>
+    <data name="Console_ClearBtn" xml:space="preserve">
+    <value>Очистить</value>
+  </data>
+    <data name="Console_MemoryBufferDisabled" xml:space="preserve">
+    <value>Буферизация логов в памяти отключена (Serilog.MemoryBufferCapacity &lt;= 0).</value>
+  </data>
+    <data name="Info_RuntimeSectionTitle" xml:space="preserve">
+    <value>Среда выполнения и приложение</value>
+  </data>
+    <data name="Info_Application" xml:space="preserve">
+    <value>Приложение</value>
+  </data>
+    <data name="Info_Environment" xml:space="preserve">
+    <value>Окружение (Environment)</value>
+  </data>
+    <data name="Info_OsHost" xml:space="preserve">
+    <value>ОС / Хост</value>
+  </data>
+    <data name="Info_ProcessUptime" xml:space="preserve">
+    <value>Процесс / Аптайм</value>
+  </data>
+    <data name="Info_ProcessStatsFormat" xml:space="preserve">
+    <value>PID: {0} | Старт: {1} | Память: {2} МБ</value>
+  </data>
+    <data name="Info_EnvVarsSectionTitle" xml:space="preserve">
+    <value>Переменные окружения (DOTNET_ / ASPNETCORE_)</value>
+  </data>
+    <data name="Info_AssembliesSectionTitle" xml:space="preserve">
+    <value>Загруженные сборки (AppDomain)</value>
+  </data>
+    <data name="Info_TotalFormat" xml:space="preserve">
+    <value>Всего: {0}</value>
+  </data>
+    <data name="TestPages_NodesTitle" xml:space="preserve">
+    <value>Узлы и страницы (.cshtml) в Views/Nodes</value>
+  </data>
+    <data name="TestPages_NodesNotFoundHtml" xml:space="preserve">
+    <value>Каталог &lt;code&gt;Views/Nodes&lt;/code&gt; не найден.</value>
+  </data>
+    <data name="TestPages_SitemapTitle" xml:space="preserve">
+    <value>Индексы страниц в карте сайта</value>
+  </data>
+    <data name="Access_Title" xml:space="preserve">
+    <value>Системный доступ</value>
+  </data>
+    <data name="Access_UsernameLabel" xml:space="preserve">
+    <value>Имя пользователя</value>
+  </data>
+    <data name="Access_KeyLabel" xml:space="preserve">
+    <value>Персональный ключ</value>
+  </data>
+    <data name="Access_LoginBtn" xml:space="preserve">
+    <value>Войти</value>
+  </data>
+    <data name="Access_LogoutBtn" xml:space="preserve">
+    <value>Выйти</value>
+  </data>
+    <data name="Access_SignedInAsFormat" xml:space="preserve">
+    <value>Доступ открыт: {0}</value>
+  </data>
+    <data name="Access_ErrorInvalidCredentials" xml:space="preserve">
+    <value>Неверное имя пользователя или персональный ключ.</value>
+  </data>
+    <data name="Access_ErrorTooManyAttempts" xml:space="preserve">
+    <value>Слишком много неудачных попыток. Повторите позже.</value>
+  </data>
+    <data name="Access_ErrorInvalidToken" xml:space="preserve">
+    <value>Недействительный токен безопасности запроса.</value>
+  </data>
+    <data name="Access_ErrorGeneric" xml:space="preserve">
+    <value>Ошибка проверки доступа.</value>
+  </data>
+    <data name="KeyGen_Title" xml:space="preserve">
+    <value>Генератор ключа системного доступа (PBKDF2-SHA256)</value>
+  </data>
+    <data name="KeyGen_CustomKeyLabel" xml:space="preserve">
+    <value>Свой ключ (необязательно)</value>
+  </data>
+    <data name="KeyGen_CustomKeyPlaceholder" xml:space="preserve">
+    <value>Автогенерация</value>
+  </data>
+    <data name="KeyGen_GenerateBtn" xml:space="preserve">
+    <value>Сгенерировать</value>
+  </data>
+    <data name="KeyGen_PlainKeyResultLabel" xml:space="preserve">
+    <value>Персональный ключ (передайте пользователю, на сервере не сохраняется)</value>
+  </data>
+    <data name="KeyGen_JsonResultLabel" xml:space="preserve">
+    <value>Строка для секции SystemHelpers:AccessList в appsettings.json</value>
+  </data>
+    <data name="KeyGen_CopyBtn" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+</root>

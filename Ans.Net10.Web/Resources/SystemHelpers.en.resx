@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+        <xsd:element name="root" msdata:IsDataSet="true">
+            <xsd:complexType>
+                <xsd:choice maxOccurs="unbounded">
+                    <xsd:element name="metadata">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" use="required" type="xsd:string" />
+                            <xsd:attribute name="type" type="xsd:string" />
+                            <xsd:attribute name="mimetype" type="xsd:string" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="assembly">
+                        <xsd:complexType>
+                            <xsd:attribute name="alias" type="xsd:string" />
+                            <xsd:attribute name="name" type="xsd:string" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="data">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+                            <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+                            <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+                            <xsd:attribute ref="xml:space" />
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="resheader">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                            </xsd:sequence>
+                            <xsd:attribute name="name" type="xsd:string" use="required" />
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:choice>
+            </xsd:complexType>
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>2.0</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+
+
+
+    <data name="Text_NotConfigured" xml:space="preserve">
+    <value>Not configured</value>
+  </data>
+    <data name="Error_DynamicCompilationDisabled" xml:space="preserve">
+    <value>DynamicCompilation is disabled.</value>
+  </data>
+    <data name="Col_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+    <data name="Col_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+    <data name="Col_LineColumn" xml:space="preserve">
+    <value>Line:Column</value>
+  </data>
+    <data name="Col_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+    <data name="Col_Assembly" xml:space="preserve">
+    <value>Assembly</value>
+  </data>
+    <data name="Col_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+    <data name="Col_Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+    <data name="Col_BuildTimeUtc" xml:space="preserve">
+    <value>Build Time (UTC)</value>
+  </data>
+    <data name="Col_Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+    <data name="Compile_ModelsDirectoryLabel" xml:space="preserve">
+    <value>Models assembly directory</value>
+  </data>
+    <data name="Compile_ReloadModelsBtn" xml:space="preserve">
+    <value>Reload models and clear cache</value>
+  </data>
+    <data name="Compile_BatchCheckBtn" xml:space="preserve">
+    <value>Check all site views</value>
+  </data>
+    <data name="Compile_SubsystemDisabledHtml" xml:space="preserve">
+    <value>The &lt;code&gt;DynamicCompilation&lt;/code&gt; subsystem is not enabled in &lt;code&gt;appsettings.json&lt;/code&gt;.</value>
+  </data>
+    <data name="Compile_AssemblyActiveFormat" xml:space="preserve">
+    <value>Assembly [{0}] is active</value>
+  </data>
+    <data name="Compile_AssemblyErrorFormat" xml:space="preserve">
+    <value>Compilation error [{0}] (previous version retained)</value>
+  </data>
+    <data name="Compile_BuiltInFormat" xml:space="preserve">
+    <value>Built in {0} ms (UTC: {1})</value>
+  </data>
+    <data name="Compile_FilesCsFormat" xml:space="preserve">
+    <value>.cs files: {0}</value>
+  </data>
+    <data name="Compile_ExportedTypesFormat" xml:space="preserve">
+    <value>Exported types: {0}</value>
+  </data>
+    <data name="Compile_BatchSuccess" xml:space="preserve">
+    <value>Batch check completed successfully</value>
+  </data>
+    <data name="Compile_BatchErrorFormat" xml:space="preserve">
+    <value>Errors found in views ({0} of {1})</value>
+  </data>
+    <data name="Compile_BuildTimeFormat" xml:space="preserve">
+    <value>Build time: {0} ms</value>
+  </data>
+    <data name="Compile_TotalFormat" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
+    <data name="Compile_SucceededFormat" xml:space="preserve">
+    <value>Succeeded: {0}</value>
+  </data>
+    <data name="Compile_FailedFormat" xml:space="preserve">
+    <value>Failed: {0}</value>
+  </data>
+    <data name="Console_Title" xml:space="preserve">
+    <value>System Log</value>
+  </data>
+    <data name="Console_BufferFormat" xml:space="preserve">
+    <value>Buffer: {0}</value>
+  </data>
+    <data name="Console_LevelFilterAriaLabel" xml:space="preserve">
+    <value>Log level filter</value>
+  </data>
+    <data name="Console_AllLevels" xml:space="preserve">
+    <value>All levels</value>
+  </data>
+    <data name="Console_LiveLabel" xml:space="preserve">
+    <value>Live (2s)</value>
+  </data>
+    <data name="Console_ClearBtn" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+    <data name="Console_MemoryBufferDisabled" xml:space="preserve">
+    <value>In-memory log buffering is disabled (Serilog.MemoryBufferCapacity &lt;= 0).</value>
+  </data>
+    <data name="Info_RuntimeSectionTitle" xml:space="preserve">
+    <value>Runtime and Application</value>
+  </data>
+    <data name="Info_Application" xml:space="preserve">
+    <value>Application</value>
+  </data>
+    <data name="Info_Environment" xml:space="preserve">
+    <value>Environment</value>
+  </data>
+    <data name="Info_OsHost" xml:space="preserve">
+    <value>OS / Host</value>
+  </data>
+    <data name="Info_ProcessUptime" xml:space="preserve">
+    <value>Process / Uptime</value>
+  </data>
+    <data name="Info_ProcessStatsFormat" xml:space="preserve">
+    <value>PID: {0} | Started: {1} | Memory: {2} MB</value>
+  </data>
+    <data name="Info_EnvVarsSectionTitle" xml:space="preserve">
+    <value>Environment Variables (DOTNET_ / ASPNETCORE_)</value>
+  </data>
+    <data name="Info_AssembliesSectionTitle" xml:space="preserve">
+    <value>Loaded Assemblies (AppDomain)</value>
+  </data>
+    <data name="Info_TotalFormat" xml:space="preserve">
+    <value>Total: {0}</value>
+  </data>
+    <data name="TestPages_NodesTitle" xml:space="preserve">
+    <value>Nodes and Pages (.cshtml) in Views/Nodes</value>
+  </data>
+    <data name="TestPages_NodesNotFoundHtml" xml:space="preserve">
+    <value>Directory &lt;code&gt;Views/Nodes&lt;/code&gt; not found.</value>
+  </data>
+    <data name="TestPages_SitemapTitle" xml:space="preserve">
+    <value>Page Indexes in Sitemap</value>
+  </data>
+    <data name="Access_Title" xml:space="preserve">
+    <value>System Access</value>
+  </data>
+    <data name="Access_UsernameLabel" xml:space="preserve">
+    <value>Username</value>
+  </data>
+    <data name="Access_KeyLabel" xml:space="preserve">
+    <value>Personal Key</value>
+  </data>
+    <data name="Access_LoginBtn" xml:space="preserve">
+    <value>Sign In</value>
+  </data>
+    <data name="Access_LogoutBtn" xml:space="preserve">
+    <value>Sign Out</value>
+  </data>
+    <data name="Access_SignedInAsFormat" xml:space="preserve">
+    <value>Signed in as: {0}</value>
+  </data>
+    <data name="Access_ErrorInvalidCredentials" xml:space="preserve">
+    <value>Invalid username or personal key.</value>
+  </data>
+    <data name="Access_ErrorTooManyAttempts" xml:space="preserve">
+    <value>Too many failed attempts. Please try again later.</value>
+  </data>
+    <data name="Access_ErrorInvalidToken" xml:space="preserve">
+    <value>Invalid request security token.</value>
+  </data>
+    <data name="Access_ErrorGeneric" xml:space="preserve">
+    <value>Access verification error.</value>
+  </data>
+    <data name="KeyGen_Title" xml:space="preserve">
+    <value>System Access Key Generator (PBKDF2-SHA256)</value>
+  </data>
+    <data name="KeyGen_CustomKeyLabel" xml:space="preserve">
+    <value>Custom key (optional)</value>
+  </data>
+    <data name="KeyGen_CustomKeyPlaceholder" xml:space="preserve">
+    <value>Auto-generate</value>
+  </data>
+    <data name="KeyGen_GenerateBtn" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+    <data name="KeyGen_PlainKeyResultLabel" xml:space="preserve">
+    <value>Personal key (share with the user, not stored on the server)</value>
+  </data>
+    <data name="KeyGen_JsonResultLabel" xml:space="preserve">
+    <value>Entry for SystemHelpers:AccessList in appsettings.json</value>
+  </data>
+    <data name="KeyGen_CopyBtn" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+</root>

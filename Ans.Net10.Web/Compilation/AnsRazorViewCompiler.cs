@@ -459,6 +459,7 @@ namespace Ans.Net10.Web.Compilation
 					@using System.Net.Http
 					@using System.Threading
 					@using System.Threading.Tasks
+					@using Microsoft.AspNetCore.Html
 					@using Microsoft.AspNetCore.Http
 					@using Microsoft.AspNetCore.Mvc
 					@using Microsoft.AspNetCore.Mvc.Rendering

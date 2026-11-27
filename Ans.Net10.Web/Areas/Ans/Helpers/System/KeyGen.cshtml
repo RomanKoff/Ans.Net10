@@ -1,0 +1,104 @@
+﻿@*
+    rev 2026-11-27
+    
+    Компонент библиотеки Ans.Net10.Web.
+    Код не предназначен для редактирования и компиляции во время выполнения!
+    
+    ===================================================
+    Генератор персональных ключей и PBKDF2-хэшей доступа
+    ===================================================
+
+*@
+@model object?
+@using Ans.Net10.Common
+@using System.Text.Json
+
+@{
+    Current.Meta.RobotsOff();
+
+    var qUser1 = Context.Request.Query["u"].ToString().Trim();
+    var qKey1 = Context.Request.Query["k"].ToString().Trim();
+
+    var username1 = !string.IsNullOrEmpty(qUser1) ? qUser1 : "admin";
+    var plainKey1 = !string.IsNullOrEmpty(qKey1) ? qKey1 : SuppCrypto.GenerateApiToken(24);
+
+    var hash1 = SuppCrypto.HashPassword(plainKey1);
+    var jsonSnippet1 = $"{JsonSerializer.Serialize(username1)}: {JsonSerializer.Serialize(hash1)}";
+}
+
+<div class="card shadow-sm mx-auto" style="max-width: 44rem;">
+    <div class="card-header fw-semibold">
+        @Ans.Net10.Web.Resources.SystemHelpers.KeyGen_Title
+    </div>
+    <div class="card-body d-flex flex-column gap-4">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label small mb-1" for="ansKeyGenUser">
+                    @Ans.Net10.Web.Resources.SystemHelpers.Access_UsernameLabel
+                </label>
+                <input type="text"
+                       id="ansKeyGenUser"
+                       name="u"
+                       class="form-control font-monospace"
+                       value="@username1"
+                       required />
+            </div>
+            <div class="col-md-5">
+                <label class="form-label small mb-1" for="ansKeyGenCustomKey">
+                    @Ans.Net10.Web.Resources.SystemHelpers.KeyGen_CustomKeyLabel
+                </label>
+                <input type="text"
+                       id="ansKeyGenCustomKey"
+                       name="k"
+                       class="form-control font-monospace"
+                       value="@qKey1"
+                       placeholder="@Ans.Net10.Web.Resources.SystemHelpers.KeyGen_CustomKeyPlaceholder" />
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">
+                    @Ans.Net10.Web.Resources.SystemHelpers.KeyGen_GenerateBtn
+                </button>
+            </div>
+        </form>
+
+        <div class="border-top pt-3 d-flex flex-column gap-3">
+            <div>
+                <div class="small text-body-secondary mb-1">
+                    @Ans.Net10.Web.Resources.SystemHelpers.KeyGen_PlainKeyResultLabel
+                </div>
+                <div class="input-group">
+                    <input type="text"
+                           id="ansKeyGenPlainOut"
+                           class="form-control font-monospace bg-body-tertiary"
+                           value="@plainKey1"
+                           readonly />
+                    <button type="button"
+                            class="btn btn-outline-secondary js-ans-copy"
+                            data-target="ansKeyGenPlainOut">
+                        @Ans.Net10.Web.Resources.SystemHelpers.KeyGen_CopyBtn
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <div class="small text-body-secondary mb-1">
+                    @Ans.Net10.Web.Resources.SystemHelpers.KeyGen_JsonResultLabel
+                </div>
+                <div class="input-group">
+                    <input type="text"
+                           id="ansKeyGenJsonOut"
+                           class="form-control font-monospace bg-body-tertiary"
+                           value="@jsonSnippet1"
+                           readonly />
+                    <button type="button"
+                            class="btn btn-outline-secondary js-ans-copy"
+                            data-target="ansKeyGenJsonOut">
+                        @Ans.Net10.Web.Resources.SystemHelpers.KeyGen_CopyBtn
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/_content/Ans.Net10.Web/Areas/Ans/Helpers/System/KeyGen.cshtml.js" defer></script>
